@@ -45,7 +45,7 @@ export const MrpTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
         setSearch(inputValue)
     }
 
-    const selectorHandler = (id, { itemCode, itemDescription, soh, bufferLevel }) => {
+    const selectorHandler = (id, { itemCode, itemDescription, soh, bufferLevel , averageIssuance, daysLevel}) => {
         if (id) {
             setSelectorId(id)
             setRawMatsInfo({
@@ -53,6 +53,8 @@ export const MrpTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                 itemDescription: itemDescription,
                 soh: soh,
                 bufferLevel: bufferLevel,
+                averageIssuance: averageIssuance,
+                daysLevel: daysLevel,
             })
         } else {
             setSelectorId('')
@@ -61,6 +63,8 @@ export const MrpTable = ({ mrpData, setSelectorId, selectorId, setRawMatsInfo, p
                 itemDescription: '',
                 soh: '',
                 bufferLevel: '',
+                averageIssuance: '',
+                daysLevel: '',
             })
         }
     }

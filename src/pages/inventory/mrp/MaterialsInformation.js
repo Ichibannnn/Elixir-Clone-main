@@ -11,7 +11,7 @@ export const MaterialsInformation = ({ rawMatsInfo, mrpDataLength }) => {
           <Box w="15%" bg="blue.200" >
             <Text textAlign='center' fontSize="xs" fontWeight="semibold" >MATERIALS INFORMATION</Text>
           </Box>
-          <Box w="15%" bg="blue.200" >
+          <Box w="15%">
             <Text textAlign='center' fontSize="xs" fontWeight="semibold">TOTAL RECORDS/PAGE: {mrpDataLength}</Text    >
           </Box>
         </Flex>
@@ -43,8 +43,12 @@ export const MaterialsInformation = ({ rawMatsInfo, mrpDataLength }) => {
 
             <VStack alignItems='start' w='40%' mx={5}>
               <HStack w='full'>
-                {/* <Text w='full' bgColor='secondary' color='white' pl={2} py={2.5} fontSize='xs'>Suggested PO: </Text> */}
-                {/* <Input w='95%' readOnly bgColor='white' value={rawMatsInfo.suggestedPo.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })} /> */}
+                <Text w='full' bgColor='secondary' color='white' pl={2} py={2.5} fontSize='xs'>Average Issuance: </Text>
+                <Input w='95%' readOnly bgColor='white' fontSize='xs' value={rawMatsInfo.averageIssuance.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })} />
+              </HStack>
+              <HStack w='full'>
+                <Text w='full' bgColor='secondary' color='white' pl={2} py={2.5} fontSize='xs'>Days Level: </Text>
+                <Input w='95%' readOnly bgColor='white' fontSize='xs' value={rawMatsInfo.daysLevel.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })} />
               </HStack>
             </VStack>
           </Flex>

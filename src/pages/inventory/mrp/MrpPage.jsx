@@ -38,7 +38,8 @@ const MrpPage = () => {
     itemDescription: '',
     soh: '',
     bufferLevel: '',
-    suggestedPo: '',
+    averageIssuance: '',
+    daysLevel: '',
     lastUsed: ''
   })
 
