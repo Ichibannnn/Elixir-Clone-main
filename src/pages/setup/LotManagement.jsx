@@ -462,10 +462,11 @@ export default LotManagement;
 
 const schema = yup.object().shape({
   formData: yup.object().shape({
-    id: yup.string(),
-    lotNameCode: yup.string().required("Lot Code is required"),
-    lotCategoryId: yup.string().required("Lot Name is required"),
-    sectionName: yup.string().required("Section Name is required"),
+    id: yup.string().uppercase(),
+    lotNameCode: yup.string().uppercase().required("Lot Code is required"),
+    lotCategoryId: yup.string().uppercase().required("Lot Name is required"),
+    sectionName: yup.string().uppercase().required("Section Name is required"),
+    addedBy: yup.string().uppercase(),
   }),
 });
 
@@ -609,10 +610,10 @@ const DrawerComponent = (props) => {
                   </Text>
                 </Box>
                 <Box>
-                  <FormLabel>Section Name:</FormLabel>
+                  <FormLabel>Lot Section:</FormLabel>
                   <Input
                     {...register("formData.sectionName")}
-                    placeholder="Please enter Section Name"
+                    placeholder="Please enter Lot Section"
                     autoComplete="off"
                   />
                   <Text color="red" fontSize="xs">

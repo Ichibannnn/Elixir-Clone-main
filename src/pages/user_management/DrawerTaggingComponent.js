@@ -224,7 +224,7 @@ const DrawerTaggingComponent = ({isOpen, onClose, taggingData, onOpen}) => {
                                   <Flex justifyContent="right">
                                     <Button
                                       p={4}
-                                      colorScheme="green"
+                                      colorScheme="blue"
                                       size="sm"
                                       onClick={() => untagHandler(tag.id)}
                                     >
@@ -295,7 +295,7 @@ const DrawerTaggingComponent = ({isOpen, onClose, taggingData, onOpen}) => {
                                   <Flex justifyContent="right">
                                     <Button
                                       p={4}
-                                      colorScheme="green"
+                                      colorScheme="blue"
                                       size="sm"
                                       onClick={() => tagHandler(untag.roleId, untag.moduleId)}
                                     >

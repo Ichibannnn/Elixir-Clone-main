@@ -283,9 +283,9 @@ const WarehouseReceiving = () => {
                     <Th color="white" fontSize="9px">
                       Actual Remaining
                     </Th>
-                    <Th color="white" fontSize="9px">
+                    {/* <Th color="white" fontSize="9px">
                       Total Reject
-                    </Th>
+                    </Th> */}
                     <Th color="white" fontSize="9px">
                       Action
                     </Th>
@@ -317,7 +317,7 @@ const WarehouseReceiving = () => {
                           minimumFractionDigits: 2,
                         })}
                       </Td>
-                      <Td fontSize="11px" >{pos.totalReject}</Td>
+                      {/* <Td fontSize="11px" >{pos.totalReject}</Td> */}
                       <Td ml={3}>
                         <Flex pl={2}>
                           <Box>
@@ -543,7 +543,7 @@ const ViewModal = ({ isOpen, onClose, viewData }) => {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button onClick={onClose} color="gray.600" fontSize="11px">
+            <Button onClick={onClose} fontSize="11px">
               Close
             </Button>
           </ModalFooter>

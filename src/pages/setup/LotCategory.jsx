@@ -450,8 +450,9 @@ export default LotCategory;
 
 const schema = yup.object().shape({
   formData: yup.object().shape({
-    id: yup.string(),
-    lotName: yup.string().required("Lot Name name is required"),
+    id: yup.string().uppercase(),
+    lotName: yup.string().uppercase().required("Lot Name name is required"),
+    addedBy: yup.string().uppercase(),
   }),
 });
 

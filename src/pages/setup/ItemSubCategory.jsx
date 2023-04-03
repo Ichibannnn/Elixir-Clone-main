@@ -457,9 +457,10 @@ export default ItemSubCategory;
 
 const schema = yup.object().shape({
   formData: yup.object().shape({
-    id: yup.string(),
-    itemCategoryId: yup.string().required("Item Category name is required"),
-    subcategoryName: yup.string().required("Sub Category name is required"),
+    id: yup.string().uppercase(),
+    itemCategoryId: yup.string().uppercase().required("Item Category name is required"),
+    subcategoryName: yup.string().uppercase().required("Sub Category name is required"),
+    addedBy: yup.string().uppercase().uppercase(),
   }),
 });
 

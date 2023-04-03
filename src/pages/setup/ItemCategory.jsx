@@ -451,8 +451,9 @@ export default ItemCategory;
 
 const schema = yup.object().shape({
   formData: yup.object().shape({
-    id: yup.string(),
-    itemCategoryName: yup.string().required("Item Category name is required"),
+    id: yup.string().uppercase(),
+    itemCategoryName: yup.string().uppercase().required("Item Category name is required"),
+    addedBy: yup.string().uppercase().uppercase(),
   }),
 });
 

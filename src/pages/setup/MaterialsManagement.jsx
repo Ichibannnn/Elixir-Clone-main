@@ -476,9 +476,9 @@ export default MaterialsManagement;
 
 const schema = yup.object().shape({
   formData: yup.object().shape({
-    id: yup.string(),
-    itemCode: yup.string().required("Item code is required"),
-    itemDescription: yup.string().required("Description is required"),
+    id: yup.string().uppercase(),
+    itemCode: yup.string().uppercase().required("Item code is required"),
+    itemDescription: yup.string().uppercase().required("Description is required"),
     subCategoryId: yup.number().required("Sub Category is required"),
     // itemCategoryId: yup.number().required("Sub Category is required"),
     uomId: yup.number().required("UOM is required"),
@@ -489,7 +489,9 @@ const schema = yup.object().shape({
       .positive("Negative value is not valid")
       .integer()
       .min(1, "Bufffer level must be greater than or equal to 1"),
+    addedBy: yup.string().uppercase().uppercase(),
   }),
+    
 });
 
 const currentUser = decodeUser();

@@ -265,15 +265,15 @@ const CustomersManagement = () => {
                       <Th color="#D6D6D6" fontSize="10px">
                         Customer Type
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      {/* <Th color="#D6D6D6" fontSize="10px">
                         Company
-                      </Th>
+                      </Th> */}
                       {/* <Th color="#D6D6D6" fontSize="10px">
                         Mobile Number
                       </Th> */}
-                      <Th color="#D6D6D6" fontSize="10px">
+                      {/* <Th color="#D6D6D6" fontSize="10px">
                         Address
-                      </Th>
+                      </Th> */}
                       {/* <Th color="#D6D6D6" fontSize="10px">
                         Added By
                       </Th> */}
@@ -291,10 +291,10 @@ const CustomersManagement = () => {
                         <Td fontSize="11px">{cust.id}</Td>
                         <Td fontSize="11px">{cust.customerCode}</Td>
                         <Td fontSize="11px">{cust.customerName}</Td>
-                        <Td fontSize="11px">{cust.customerType}</Td>
+                        {/* <Td fontSize="11px">{cust.customerType}</Td> */}
                         <Td fontSize="11px">{cust.companyName}</Td>
                         {/* <Td fontSize="11px">{cust.mobileNumber}</Td> */}
-                        <Td fontSize="11px">{cust.address}</Td>
+                        {/* <Td fontSize="11px">{cust.address}</Td> */}
                         {/* <Td fontSize="11px">{cust.addedBy}</Td> */}
                         <Td fontSize="11px">{cust.dateAdded}</Td>
 
@@ -479,12 +479,12 @@ export default CustomersManagement;
 const schema = yup.object().shape({
   formData: yup.object().shape({
     id: yup.string(),
-    customerCode: yup.string().required("Customer Code is required"),
-    customerName: yup.string().required("Customer Name is required"),
-    customerTypeId: yup.string().required("Customer Type is required"),
-    companyName: yup.string().required("Company is required"),
+    customerCode: yup.string().uppercase().required("Customer Code is required"),
+    customerName: yup.string().uppercase().required("Customer Name is required"),
+    customerTypeId: yup.string().uppercase().required("Customer Type is required"),
+    companyName: yup.string().uppercase().required("Company is required"),
     // mobileNumber: yup.string().required('Mobile Number is required').max(11, 'Number must be 11 numbers'),
-    address: yup.string().required("Address is required"),
+    address: yup.string().uppercase().required("Address is required"),
   }),
 });
 

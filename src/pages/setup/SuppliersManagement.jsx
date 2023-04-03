@@ -461,10 +461,11 @@ export default SuppliersManagement;
 
 const schema = yup.object().shape({
   formData: yup.object().shape({
-    id: yup.string(),
-    supplierCode: yup.string().required("Supplier Code is required"),
-    supplierName: yup.string().required("Supplier Name is required"),
-    supplierAddress: yup.string().required("Supplier Address is required"),
+    id: yup.string().uppercase(),
+    supplierCode: yup.string().uppercase().required("Supplier Code is required"),
+    supplierName: yup.string().uppercase().required("Supplier Name is required"),
+    supplierAddress: yup.string().uppercase().required("Supplier Address is required"),
+    addedBy: yup.string().uppercase(),
   }),
 });
 

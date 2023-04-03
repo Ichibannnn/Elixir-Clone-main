@@ -154,7 +154,7 @@ export const SaveButton = ({
         colorScheme="blue"
         px={6}
       >
-        Transact
+        Save
       </Button>
       {
         <AccountTitleModal
@@ -506,7 +506,7 @@ export const AccountTitleModal = ({
                 colorScheme="blue"
                 px={4}
               >
-                Save
+                Submit
               </Button>
             </ModalFooter>
           </ModalContent>

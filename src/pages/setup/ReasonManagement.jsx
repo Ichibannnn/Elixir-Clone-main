@@ -457,7 +457,9 @@ const schema = yup.object().shape({
   formData: yup.object().shape({
     id: yup.string(),
     mainMenuId: yup.number().required("Main Menu is required"),
-    reasonName: yup.string().required("Reason is required"),
+    mainMenu: yup.string().uppercase(),
+    reasonName: yup.string().uppercase().required("Reason is required"),
+    addedBy: yup.string().uppercase(),
   }),
 });
 

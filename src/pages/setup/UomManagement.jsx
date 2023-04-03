@@ -187,7 +187,7 @@ const UomManagement = () => {
       h="full"
       w="full"
       flexDirection="column"
-      p={2}
+      p={4}
       bg="form"
       boxShadow="md"
     >
@@ -248,22 +248,22 @@ const UomManagement = () => {
                 >
                   <Thead bg="secondary">
                     <Tr fontSize="15px">
-                      <Th color="#D6D6D6" fontSize="9px">
+                      <Th p={2} color="white" fontSize="11px">
                         ID
                       </Th>
-                      <Th color="#D6D6D6" fontSize="9px">
+                      <Th p={2} color="white" fontSize="11px">
                         UOM Code
                       </Th>
-                      <Th color="#D6D6D6" fontSize="9px">
+                      <Th p={2} color="white" fontSize="11px">
                         Description
                       </Th>
-                      <Th color="#D6D6D6" fontSize="9px">
+                      <Th p={2} color="white" fontSize="11px">
                         Date Added
                       </Th>
-                      <Th color="#D6D6D6" fontSize="9px">
+                      <Th p={2} color="white" fontSize="11px">
                         Added By
                       </Th>
-                      <Th color="#D6D6D6" fontSize="9px">
+                      <Th p={2} color="white" fontSize="11px">
                         Action
                       </Th>
                     </Tr>
@@ -455,9 +455,10 @@ export default UomManagement;
 
 const schema = yup.object().shape({
   formData: yup.object().shape({
-    id: yup.string(),
-    uomCode: yup.string().required("Uom Code name is required"),
-    uomDescription: yup.string().required("Description name is required"),
+    id: yup.string().uppercase(),
+    uomCode: yup.string().uppercase().required("Uom Code name is required"),
+    uomDescription: yup.string().uppercase().required("Description name is required"),
+    addedBy: yup.string().uppercase().uppercase(),
   }),
 });
 

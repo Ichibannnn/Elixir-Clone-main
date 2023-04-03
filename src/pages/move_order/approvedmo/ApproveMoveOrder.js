@@ -172,11 +172,11 @@ export const ApproveMoveOrder = ({
 
       <Flex mt={5}>
         <PageScroll minHeight="200px" maxHeight="500px">
-          <Table size="sm">
+          <Table size="sm" variant ="striped">
             <Thead bgColor="primary">
               <Tr>
                 {TableHead?.map((head, i) => (
-                  <Th key={i} color="white" fontSize="10px">
+                  <Th p={3} key={i} color="white" fontSize="10px">
                     {head}
                   </Th>
                 ))}
@@ -185,19 +185,19 @@ export const ApproveMoveOrder = ({
             <Tbody>
               {approvedData?.moveorder?.map((order, i) => (
                 <Tr key={i}>
-                  <Td fontSize="11px">{i + 1}</Td>
-                  <Td fontSize="11px">{order.orderNo}</Td>
-                  <Td fontSize="11px">{order.customerCode}</Td>
-                  <Td fontSize="11px">{order.category}</Td>
-                  <Td fontSize="11px">{order.quantity}</Td>
-                  <Td fontSize="11px">
+                  <Td fontSize="13px">{i + 1}</Td>
+                  <Td fontSize="13px">{order.orderNo}</Td>
+                  <Td fontSize="13px">{order.customerCode}</Td>
+                  <Td fontSize="13px">{order.category}</Td>
+                  <Td fontSize="13px">{order.quantity}</Td>
+                  <Td fontSize="13px">
                     {moment(order.preparedDate).format("MM/DD/yyyy")}
                   </Td>
                   <Td>
                     <Button
                       size="xs"
                       p={0}
-                      bgColor="white"
+                      bg="none"
                       onClick={() => trackHandler(order)}
                     >
                       <ImLocation color="#314E89" fontSize="19px" />
@@ -205,7 +205,7 @@ export const ApproveMoveOrder = ({
                   </Td>
                   <Td>
                     <Button
-                      fontSize="11px"
+                      fontSize="13px"
                       borderRadius="none"
                       size="xs"
                       colorScheme="blue"
@@ -228,7 +228,7 @@ export const ApproveMoveOrder = ({
                       }
                       borderRadius="none"
                       size="xs"
-                      fontSize="11px"
+                      fontSize="13px"
                       color="white"
                       bg="gray.400"
                       _hover={{ bg: "gray.500" }}

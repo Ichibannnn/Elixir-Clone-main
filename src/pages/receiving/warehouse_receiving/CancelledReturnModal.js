@@ -133,8 +133,8 @@ const CancelledReturnModal = ({
             <Button
               onClick={onClose}
               // disabled={!Boolean(submitReason)}
-              color="gray.500"
-              _hover={{ bgColor: "gray", color: "white" }}
+              variant="outline"
+              color="black"
             >
               No
             </Button>

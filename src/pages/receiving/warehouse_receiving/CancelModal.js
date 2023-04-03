@@ -119,7 +119,7 @@ const CancelModal = ({ isOpen, onClose, getAvailablePOHandler, poId }) => {
               >
                 Yes
               </Button>
-              <Button onClick={onClose}>No</Button>
+              <Button onClick={onClose} variant="outline">No</Button>
             </Flex>
           </ModalFooter>
         </ModalContent>

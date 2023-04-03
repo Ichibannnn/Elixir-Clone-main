@@ -113,8 +113,8 @@ const ImportOrder = () => {
       title: "Confirmation!",
       text: "Are you sure you want to sync these orders?",
       icon: "info",
-      color: "white",
-      background: "#1B1C1D",
+      color: "black",
+      background: "#white",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#CBD1D8",
@@ -122,6 +122,7 @@ const ImportOrder = () => {
       heightAuto: false,
       width: "40em",
     }).then((result) => {
+      if (result.isConfirmed) {
       if (resultArray.length > 0) {
         try {
           setIsLoading(true);
@@ -164,6 +165,7 @@ const ImportOrder = () => {
           toast
         );
       }
+    }
     });
 
     // console.log(errorData);
