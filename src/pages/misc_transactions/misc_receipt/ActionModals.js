@@ -54,7 +54,7 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
           <Text textAlign='center' fontSize='lg'>Are you sure you want to add this information?</Text>
         </ModalBody>
 
-        <ModalFooter>
+        <ModalFooter justifyContent="center">
           <ButtonGroup>
             <Button
               onClick={addItemHandler}
@@ -63,7 +63,7 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
             >
               Yes
             </Button>
-            <Button onClick={onClose} isLoading={isLoading} colorScheme='blackAlpha'>No</Button>
+            <Button onClick={onClose} isLoading={isLoading} color="black" variant="outline">No</Button>
           </ButtonGroup>
         </ModalFooter>
       </ModalContent>
@@ -152,22 +152,22 @@ export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTe
 
   return (
     <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
-      <ModalContent bgColor='secondary' color='white' pt={10} pb={5}>
+      <ModalContent color='black' pt={10} pb={5}>
         <ModalHeader>
           <Flex justifyContent='center'>
             <BsPatchQuestionFill fontSize='50px' />
           </Flex>
         </ModalHeader>
-        <ModalCloseButton onClick={onClose} />
+        <ModalCloseButton fontColor="black" onClick={onClose} />
 
         <ModalBody mb={5}>
           <Text textAlign='center' fontSize='lg'>Are you sure you want to save this information?</Text>
         </ModalBody>
 
-        <ModalFooter>
+        <ModalFooter justifyContent="center">
           <ButtonGroup>
             <Button onClick={saveSubmitHandler} isLoading={isLoading} disabled={isLoading} colorScheme='blue'>Yes</Button>
-            <Button onClick={onClose} isLoading={isLoading} colorScheme='blackAlpha'>No</Button>
+            <Button onClick={onClose} isLoading={isLoading} color="black" variant="outline">No</Button>
           </ButtonGroup>
         </ModalFooter>
       </ModalContent>

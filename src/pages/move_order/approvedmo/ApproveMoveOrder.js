@@ -229,9 +229,7 @@ export const ApproveMoveOrder = ({
                       borderRadius="none"
                       size="xs"
                       fontSize="13px"
-                      color="white"
-                      bg="gray.400"
-                      _hover={{ bg: "gray.500" }}
+                      colorScheme="red"
                     >
                       Reject
                     </Button>

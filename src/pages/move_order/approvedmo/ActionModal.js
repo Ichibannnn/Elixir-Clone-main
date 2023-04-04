@@ -636,7 +636,8 @@ export const PrintModal = ({
             <Button
               isLoading={isLoading}
               disabled={isLoading}
-              colorScheme="blackAlpha"
+              color="black"
+              variant="outline"
               onClick={closeHandler}
             >
               Close
@@ -758,7 +759,7 @@ export const TrackModal = ({ isOpen, onClose, trackData, trackList }) => {
 
         <ModalFooter>
           <ButtonGroup size="sm" mt={7}>
-            <Button colorScheme="blackAlpha" onClick={onClose} borderRadius="none" fontSize="11px">
+            <Button color="black" variant="outline" onClick={onClose} borderRadius="none" fontSize="11px">
               Close
             </Button>
           </ButtonGroup>
@@ -869,7 +870,7 @@ export const RejectModal = ({ isOpen, onClose, id, fetchApprovedMO, fetchNotific
                       <Button
                           disabled={isLoading}
                           isLoading={isLoading}
-                          colorScheme='blackAlpha' onClick={onClose}
+                          color="black" variant="outline" onClick={onClose}
                       >
                           No
                       </Button>

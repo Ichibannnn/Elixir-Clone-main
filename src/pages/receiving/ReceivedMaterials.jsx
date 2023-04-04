@@ -423,7 +423,7 @@ const PrintModal = ({ isOpen, onClose, printData }) => {
             <Button colorScheme="blue" onClick={handlePrint}>
               Print
             </Button>
-            <Button colorScheme="blackAlpha" onClick={onClose}>
+            <Button color="black" onClick={onClose}>
               Close
             </Button>
           </ButtonGroup>

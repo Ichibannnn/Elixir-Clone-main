@@ -28,7 +28,7 @@ export const ActionButtons = ({ listDataTempo, setListDataTempo, selectorId, row
                 <ButtonGroup size='xs'>
                     {/* <Button colorScheme='yellow' color='white' px={5} disabled={!selectorId} onClick={editHandler}>Edit</Button> */}
                     <Button colorScheme='blue' px={5} disabled={listDataTempo.length === 0} onClick={saveHandler}>Save</Button>
-                    <Button colorScheme='blackAlpha' px={3} disabled={!selectorId} onClick={cancelHandler}>Cancel</Button>
+                    <Button color="black" variant="outline" px={3} disabled={!selectorId} onClick={cancelHandler}>Cancel</Button>
                 </ButtonGroup>
             </Flex>
 

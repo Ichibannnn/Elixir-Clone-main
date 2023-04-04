@@ -367,11 +367,10 @@ export const PreparationListOrders = ({
                   <Td fontSize="11px">
                     <Button
                       onClick={() => cancelHandler(item)}
-                      color="white"
+                      colorScheme="red"
                       size="xs"
-                      bg="gray.500"
                       borderRadius="none"
-                      _hover={{ bg: "gray.400" }}
+
                     >
                       <Text fontSize="11px">Cancel</Text>
                     </Button>

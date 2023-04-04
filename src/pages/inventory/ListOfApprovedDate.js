@@ -299,10 +299,7 @@ export const ListofApprovedDate = ({
                     <Button
                       size="xs"
                       fontSize="11px"
-                      color="white"
-                      bg="gray.500"
-                      borderRadius="none"
-                      _hover={{ bg: "gray.400" }}
+                      colorScheme="red"
                       onClick={() => cancelHandler(order.id)}
                       disabled={preparedLength > 0}
                       title={

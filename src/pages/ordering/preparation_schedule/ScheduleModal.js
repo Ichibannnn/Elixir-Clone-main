@@ -180,9 +180,7 @@ export const ScheduleModal = ({
               Yes
             </Button>
             <Button
-              bg="gray.500"
-              _hover={{ bg: "gray.400" }}
-              color="white"
+              colorScheme="red"
               borderRadius="none"
               onClick={onClose}
             >
@@ -252,10 +250,10 @@ export const EditModal = ({
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={() => {}} isCentered size="md">
+      <Modal isOpen={isOpen} onClose={() => {}} isCentered size="2xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bg="primary" color="white">
+          <ModalHeader color="black">
             <Flex justifyContent="left">
               <Text fontSize="15px">Edit Order</Text>
             </Flex>
@@ -326,7 +324,8 @@ export const EditModal = ({
                 onClick={onClose}
                 isLoading={isLoading}
                 disabled={isLoading}
-                colorScheme="gray"
+                variant="outline"
+                color="black"
               >
                 Cancel
               </Button>
@@ -453,7 +452,8 @@ export const CancelModalConfirmation = ({
             Yes
           </Button>
           <Button
-            colorScheme="gray"
+            variant="outline"
+            color="black"
             onClick={onClose}
             disabled={isLoading}
             isLoading={isLoading}

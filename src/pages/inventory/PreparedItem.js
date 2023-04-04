@@ -87,10 +87,8 @@ export const PreparedItem = ({
                   <Button
                     onClick={() => cancelHandler(items.id)}
                     size="xs"
-                    color="white"
-                    bg="gray.500"
+                    colorScheme="red"
                     borderRadius="none"
-                    _hover={{ bg: "gray.400" }}
                     fontSize="11px"
                   >
                     Cancel

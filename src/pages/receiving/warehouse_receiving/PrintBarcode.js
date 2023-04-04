@@ -52,7 +52,7 @@ const PrintBarcode = ({
     UOM: printData.uom,
     Supplier: printData.supplier,
     "Quantity Good": actualDelivered,
-    "Total Reject": sumQuantity,
+    // "Total Reject": sumQuantity,
     "Receiving Date": moment(receivingDate).format("MM/DD/YYYY"),
   };
 
@@ -75,6 +75,9 @@ const PrintBarcode = ({
           }}
         />
         <ModalBody>
+
+          {/* Printed on Paper */}
+          <Box display='none'>
           <VStack spacing={0} justifyContent="center" ref={componentRef}>
             <VStack spacing={0} justifyContent="start"></VStack>
             <Flex mt={3} w="90%" justifyContent="center">
@@ -113,10 +116,51 @@ const PrintBarcode = ({
 
             <Flex w="full"></Flex>
           </VStack>
+          </Box>
+
+          {/* Display on Preview */}
+          <VStack spacing={0} justifyContent="center">
+            <VStack spacing={0} justifyContent="start"></VStack>
+              <Flex mt={3} w="90%" justifyContent="center">
+                <Text fontSize="15px" fontWeight="semibold">
+                  Materials
+                </Text>
+              </Flex>
+
+              {Object.keys(displayData)?.map((key, i) => (
+                <Flex w="full" justifyContent="center" key={i}>
+                  <Flex ml="10%" w="full">
+                    <Flex>
+                      <Text fontWeight="semibold" fontSize="13px">
+                        {key}:
+                      </Text>
+                    </Flex>
+                  </Flex>
+                  <Flex w="full">
+                    <Flex>
+                      <Text fontWeight="normal" fontSize="13px">
+                        {displayData[key]}
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </Flex>
+              ))}
+
+              <VStack spacing={0} w="90%" ml={4} justifyContent="center">
+                <Barcode
+                  fontSize="16"
+                  width={3}
+                  height={25}
+                  value={receivingId}
+                />
+              </VStack>
+
+              <Flex w="full"></Flex>
+          </VStack>
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={handlePrint}>
-            Re-Print
+            Print Preview
           </Button>
           <Button
             color="white"

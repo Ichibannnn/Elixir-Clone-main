@@ -20,6 +20,7 @@ import { HiInformationCircle } from "react-icons/hi";
 import request from "../../../services/ApiClient";
 import { decodeUser } from "../../../services/decode-user";
 import { ToastComponent } from "../../../components/Toast";
+import { FcAbout } from "react-icons/fc";
 
 const currentUser = decodeUser();
 
@@ -72,9 +73,9 @@ export const ApproveModal = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          {/* <Flex justifyContent="center">
-            <HiInformationCircle fontSize="40px" />
-          </Flex> */}
+         <Flex justifyContent="center">
+            <FcAbout fontSize="50px" />
+          </Flex>
           <Text textAlign="center" fontSize="15px">
             Confirmation!
           </Text>
@@ -176,14 +177,14 @@ export const RejectModal = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={() => {}} isCentered size="sm">
+    <Modal isOpen={isOpen} onClose={() => {}} isCentered size="md">
       <ModalOverlay />
-      <ModalContent bg="primary" color="white">
-        <ModalHeader>
+      <ModalContent color="black">
+        <ModalHeader>   
           <Flex justifyContent="center">
-            <HiInformationCircle fontSize="40px" />
+            <FcAbout fontSize="50px" />
           </Flex>
-          <Text textAlign="center" fontSize="12px">
+          <Text textAlign="center" fontSize="16px">
             Confirmation!
           </Text>
         </ModalHeader>
@@ -229,7 +230,8 @@ export const RejectModal = ({
               Yes
             </Button>
             <Button
-              colorScheme="red"
+              variant="outline"
+              color="black"
               isLoading={isLoading}
               disabled={isLoading}
               fontSize="10px"

@@ -91,7 +91,7 @@ const WarehouseReceiving = () => {
   const [disableEdit, setDisableEdit] = useState(false);
   const [receivingDate, setReceivingDate] = useState('')
   const [lotCategory, setLotCategory] = useState("")
-  const [quantity, setQuantity] = useState("")
+  const [disableQuantity, setDisableQuantity] = useState(0)
 
   const {
     isOpen: isViewModalOpen,
@@ -305,7 +305,7 @@ const WarehouseReceiving = () => {
                           minimumFractionDigits: 2,
                         })}
                       </Td>
-                      <Td fontSize="11px" value={actualGood?.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}>
+                      <Td fontSize="11px">
                         {pos.actualGood.toLocaleString(undefined, {
                           maximumFractionDigits: 2,
                           minimumFractionDigits: 2,
@@ -461,6 +461,7 @@ const WarehouseReceiving = () => {
                 getAvailablePOHandler={getAvailablePOHandler}
                 setReceivingDate={setReceivingDate} receivingDate={receivingDate}
                 setLotCategory={setLotCategory} lotCategory={lotCategory}
+                disableQuantity={disableQuantity} setDisableQuantity={setDisableQuantity}
               />
             )}
 

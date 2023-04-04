@@ -358,13 +358,13 @@ const OrdersConfirmation = ({
 
               {/* FILTERED ORDERS */}
               {filteredOrders?.length > 0 ? (
-                <AccordionItem bgColor="teal.500">
+                <AccordionItem bgColor="blue.200">
                   <Flex>
-                    <AccordionButton color="white" fontWeight="semibold">
+                    <AccordionButton fontWeight="semibold">
                       <Box
                         flex="1"
                         textAlign="left"
-                        color="white"
+                        color="black"
                         fontSize="13px"
                         fontWeight="semibold"
                       >
@@ -376,9 +376,9 @@ const OrdersConfirmation = ({
                   </Flex>
 
                   <AccordionPanel pb={4}>
-                    <PageScrollImport>
+                    <PageScroll minHeight="500px" maxHeight="501px">
                       {filteredOrders ? (
-                        <Table variant="striped" size="sm">
+                        <Table variant="striped" size="sm" bg="form">
                           <Thead bgColor="gray.600">
                             <Tr>
                               <Th color="white" fontSize="9px">
@@ -467,7 +467,7 @@ const OrdersConfirmation = ({
                           </VStack>
                         </Flex>
                       )}
-                    </PageScrollImport>
+                    </PageScroll>
                     {filteredOrders ? (
                       <Flex justifyContent="end">
                         <Button

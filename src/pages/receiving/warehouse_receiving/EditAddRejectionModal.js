@@ -25,19 +25,27 @@ import { ReceivingContext } from "../../../components/context/ReceivingContext";
 import request from "../../../services/ApiClient";
 import { ToastComponent } from "../../../components/Toast";
 import { AiFillMinusCircle } from "react-icons/ai";
+import { IoIosAdd } from "react-icons/io";
 
-const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood}) => {
+const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood, setDisableQuantity, quantity, setQuantity, actualDelivered}) => {
   const { setSubmitDataTwo, setSumQuantity } = useContext(ReceivingContext);
 
   const [reasons, setReasons] = useState([]);
-  const [quantity, setQuantity] = useState(undefined);
+  
   const [remarks, setRemarks] = useState("");
   const [remarksName, setRemarksName] = useState("");
   const [errors, setErrors] = useState({});
   const [finalData, setFinalData] = useState([]);
+  const [disabled, setDisabled] = useState(true);
+  const [disabledQuantity, setDisabledQuantity] = useState("")
+
 
   const remarksDisplay = useRef(null);
   const toast = useToast();
+
+  const rejectQuantityProvider = (data) => {
+    setDisableQuantity(data);
+  }
 
   // FETCH REASON API
   const fetchReasonsApi = async () => {
@@ -73,7 +81,7 @@ const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood}) => {
   // QTY HANDLER FOR QUANTITY INPUT
     const quantityHandler = (data) => {
         if (data) {
-            if (data >= actualGood) {
+            if (data >= actualDelivered) {
                 ToastComponent("Warning", "You are providing a value greater than or equal to your Actual Good!", "warning", toast)
                 setQuantity("")
             } else {
@@ -83,6 +91,15 @@ const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood}) => {
             setQuantity("")
         }
     }
+
+  // Disabled reject quantity
+  const disabledQuantityReject = () => {
+    setDisabled(false)
+  }
+
+  const disabledQuantityProvider = (data) => {
+    setDisableQuantity(data);
+  };
 
   // REASON HANDLER
   const remarksHandler = (data) => {
@@ -97,6 +114,7 @@ const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood}) => {
 
   // HANDLER FOR REJECTION BUTTON
   const addNewRowHandler = () => {
+    // quantityHandler()
     if (finalData.some((data) => data.remarks === remarks)) {
       ToastComponent(
         "Error!",
@@ -135,6 +153,7 @@ const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood}) => {
 
     remarksDisplay.current.selectedIndex = 0;
     setQuantity("");
+    setDisabled(true)
   };
 
   // REMOVE THE DATA FROM THE TABLE ADD REJECT
@@ -159,13 +178,16 @@ const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood}) => {
               </Text>
             </AccordionButton>
             <Button
-              colorScheme="whiteAlpha"
+              // leftIcon={<IoIosAdd />}
+              colorScheme="red"
               size="xs"
               mr={1}
               borderRadius="none"
-              onClick={addNewRowHandler}
+              onClick={disabledQuantityReject}
+              onChange={(e) => rejectQuantityProvider(e.target.value)}
+              
             >
-              Add Rejection
+              New Rejection
             </Button>
           </Flex>
 
@@ -174,6 +196,7 @@ const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood}) => {
               <FormLabel w="40%" fontSize="12px" p={0}>
                 Quantity
                 <Input
+                  disabled={disabled}
                   value={quantity}
                   onChange={(e) => quantityHandler(parseInt(e.target.value))}
                   onWheel={(e) => e.target.blur()}
@@ -209,12 +232,17 @@ const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood}) => {
                 )}
               </FormLabel>
             </Flex>
-
-            <Badge colorScheme="blue"> Total Quantity: {sumQuantity} </Badge>
+            
+            <Flex justifyContent="space-between">
+              <Badge colorScheme="blue"> Total Quantity: {sumQuantity} </Badge>
+              <Button size="xs" colorScheme="blue" borderRadius="none" onClick={addNewRowHandler}>
+                Save Rejection
+              </Button>
+            </Flex>
             {!finalData.length > 0 ? (
               ""
             ) : (
-              <Table variant="striped" size="sm" mt={2}>
+              <Table size="sm" mt={2} bg="form">
                 <Thead>
                   <Tr bgColor="primary">
                     <Th color="white" fontSize="10px">

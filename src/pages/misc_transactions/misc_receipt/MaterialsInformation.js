@@ -318,7 +318,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                             >
                                 Add
                             </Button>
-                            <Button colorScheme='blackAlpha' onClick={onClose}>Cancel</Button>
+                            <Button color='black' variant="outline" onClick={onClose}>Cancel</Button>
                         </ButtonGroup>
                     </ModalFooter>
                 </ModalContent>

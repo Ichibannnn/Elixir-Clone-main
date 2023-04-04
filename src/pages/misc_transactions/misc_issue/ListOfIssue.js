@@ -57,7 +57,7 @@ useEffect(() => {
                                         <Td fontSize="xs">
                                             <Button
                                                 onClick={() => cancelHandler(item.id)}
-                                                colorScheme='blackAlpha' size='xs'
+                                                size='xs'
                                             >
                                                 Cancel
                                             </Button>

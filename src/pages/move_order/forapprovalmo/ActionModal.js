@@ -200,7 +200,7 @@ export const RejectModal = ({
           </VStack>
         </ModalBody>
 
-        <ModalFooter>
+        <ModalFooter justifyContent="center">
           <ButtonGroup size="sm" mt={7}>
             <Button
               onClick={submitHandler}
@@ -214,7 +214,8 @@ export const RejectModal = ({
               onClick={onClose}
               disabled={isLoading}
               isLoading={isLoading}
-              colorScheme="blackAlpha"
+              color="black"
+              variant="outline"
             >
               No
             </Button>
@@ -324,9 +325,8 @@ export const ApproveModal = ({
                 isLoading={isLoading}
                 disabled={isLoading}
                 fontSize="13px"
-                color="white"
-                bg="gray.500"
-                _hover={{ bg: "gray.400" }}
+                color="black"
+                variant="outline"
               >
                 No
               </Button>

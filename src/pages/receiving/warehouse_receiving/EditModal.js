@@ -15,7 +15,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 // import request from '../../../services/ApiClient'
@@ -46,13 +46,16 @@ export const EditModal = ({
   lotCategory, 
   receivingDate,
   actualGood,
-  setActualGood
+  setActualGood,
 }) => {
   const [actualDelivered, setActualDelivered] = useState(null);
   const [batchNo, setBatchNo] = useState(null);
+  const [receiveDate, setReceiveDate] = useState(null);
+  const [lotName, setLotName] = useState(null)
   const [expectedDelivery, setExpectedDelivery] = useState(null);
   const toast = useToast();
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
+  const [quantity, setQuantity] = useState(undefined);
 
   const [sumQuantity, setSumQuantity] = useState(0);
   const [receivingId, setReceivingId] = useState(null);
@@ -61,6 +64,7 @@ export const EditModal = ({
   const [submitDataTwo, setSubmitDataTwo] = useState([]);
   const [lotCategories, setLotCategories] = useState([])
   const [receivingDateDisplay, setReceivingDateDisplay] = useState(null)
+  const [disableQuantity, setDisableQuantity] = useState(0)
 
 
   // FETCH LOT CATEGORY
@@ -122,6 +126,17 @@ export const EditModal = ({
     setExpectedDelivery(data);
   };
 
+  const receiveDateProvider = (data) => {
+    setReceiveDate(data);
+  };
+  
+  const lotNameProvider = (data) => {
+    setLotName(data);
+  };
+
+
+  const actualDeliveredRef = useRef()
+
   const actualDeliveredProvider = (data) => {
     const allowablePercent = editData.quantityOrdered * 1.10;
     const allowableAmount =  allowablePercent - editData.actualGood;
@@ -133,6 +148,7 @@ export const EditModal = ({
         "warning",
         toast
       );
+      actualDeliveredRef.current.value = ""
     } else {
       setActualDelivered(data);
     }
@@ -141,6 +157,8 @@ export const EditModal = ({
   const batchNoProvider = (data) => {
     setBatchNo(data);
   };
+
+
 
   let submitDataOne = {
     poSummaryId: editData.id,
@@ -365,16 +383,17 @@ export const EditModal = ({
                         onChange={(e) =>
                           actualDeliveredProvider(e.target.value)
                         }
+                        ref={actualDeliveredRef}
                       />
                     </FormLabel>
                   </Flex>
 
                   <Flex justifyContent="space-between" p={1}>
                     <FormLabel w="40%" fontSize="12px">
-                      No. Qty. Actual Good Needed
+                      Actual Remaining
                       <Input
                         {...register("displayData.actualRemaining")}
-                        // value={actualRemaining.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}
+                        // value={actualGood.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}
                         disabled={true}
                         readOnly={true}
                         _disabled={{ color: "black" }}
@@ -407,8 +426,8 @@ export const EditModal = ({
                             fontSize="11px"
                             bgColor='#ffffe0'
                             onChange={(date) => receivingDateProvider(date)}
-                            min={new Date(new Date().setDate(new Date().getDate() - 3))}
-                            max={new Date()}
+                            min={moment(new Date(new Date().setDate(new Date().getDate() - 3))).format('yyyy-MM-DD')}
+                            max={moment(new Date(new Date().setDate(new Date().getDate() + 4))).format('yyyy-MM-DD')}
                             type='date'
                             
                             // shouldCloseOnSelect
@@ -425,7 +444,7 @@ export const EditModal = ({
                               (<Select
                                   size="sm"
                                   fontSize="11px"
-                                  onChange={(e) => setLotCategory(e.target.value)}
+                                  onChange={(e) => lotNameProvider(e.target.value)}
                                   disabled={!receivingDate}
                                   title={!receivingDate ? 'Please provide a Receiving Date first' : 'Select a lot category'}
                                   // isInvalid={errors.rms}
@@ -446,6 +465,11 @@ export const EditModal = ({
                     sumQuantity={sumQuantity}
                     receivingId={receivingId}
                     actualGood={actualGood}
+                    setDisableQuantity={setDisableQuantity}
+                    disableQuantity={disableQuantity}
+                    quantity={quantity}
+                    setQuantity={setQuantity}
+                    actualDelivered={actualDelivered}
                   />
                 </Stack>
 
@@ -462,6 +486,7 @@ export const EditModal = ({
                                 Save
                             </Button> */}
               <EditModalSave
+                quantity={quantity}
                 sumQuantity={sumQuantity}
                 receivingId={receivingId}
                 po_ReceivingId={submitDataOne.po_Summary_Id}
@@ -476,7 +501,11 @@ export const EditModal = ({
                 closeModal={onClose}
                 editData={editData}
                 receivingDate={receivingDate}
+                receiveDate={receiveDate}
+                lotName={lotName}
                 lotCategory={lotCategory}
+                setDisableQuantity={setDisableQuantity}
+                disableQuantity={disableQuantity}
               />
             </ModalFooter>
           </ModalContent>

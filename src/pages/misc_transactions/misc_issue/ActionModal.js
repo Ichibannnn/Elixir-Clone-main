@@ -77,7 +77,7 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
             <ModalFooter justifyContent="center">
                 <ButtonGroup>
                     <Button size="sm" onClick={submitHandler} isLoading={isLoading} colorScheme='blue'>Yes</Button>
-                    <Button size="sm" onClick={onClose} isLoading={isLoading} colorScheme='blackAlpha'>No</Button>
+                    <Button size="sm" onClick={onClose} isLoading={isLoading} color="black" variant="outline">No</Button>
                 </ButtonGroup>
             </ModalFooter>
         </ModalContent>
@@ -130,7 +130,7 @@ export const CancelConfirmation = ({ isOpen, onClose, selectorId, setSelectorId,
                 <ModalFooter>
                     <ButtonGroup>
                         <Button size="sm" onClick={cancelSubmitHandler} isLoading={isLoading} disabled={isLoading} colorScheme='blue'>Yes</Button>
-                        <Button size="sm" onClick={onClose} isLoading={isLoading} colorScheme='blackAlpha'>No</Button>
+                        <Button size="sm" onClick={onClose} isLoading={isLoading} color="black" variant="outline">No</Button>
                     </ButtonGroup>
                 </ModalFooter>
             </ModalContent>
@@ -230,7 +230,7 @@ export const SaveConfirmation = ({ isOpen, onClose, totalQuantity, details, cust
                 <ModalFooter justifyContent="center">
                     <ButtonGroup>
                         <Button size="sm" onClick={saveSubmitHandler} isLoading={isLoading} disabled={isLoading} colorScheme='blue'>Yes</Button>
-                        <Button size="sm" onClick={closeHandler} isLoading={isLoading} colorScheme='blackAlpha'>No</Button>
+                        <Button size="sm" onClick={closeHandler} isLoading={isLoading} color="black" variant="outline">No</Button>
                     </ButtonGroup>
                 </ModalFooter>
             </ModalContent>
@@ -272,7 +272,7 @@ export const AllCancelConfirmation = ({ isOpen, onClose, miscData, setSelectorId
 
     return (
         <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
-            <ModalContent bgColor='secondary' color='white' pt={10} pb={5}>
+            <ModalContent color='black' pt={10} pb={5}>
                 <ModalHeader>
                     <Flex justifyContent='center'>
                         <BsPatchQuestionFill fontSize='50px' />
@@ -284,10 +284,10 @@ export const AllCancelConfirmation = ({ isOpen, onClose, miscData, setSelectorId
                     <Text textAlign='center' fontSize='lg'>Are you sure you want to cancel all items in the list?</Text>
                 </ModalBody>
 
-                <ModalFooter>
+                <ModalFooter justifyContent="center">
                     <ButtonGroup>
                         <Button onClick={allCancelSubmitHandler} isLoading={isLoading} disabled={isLoading} colorScheme='blue'>Yes</Button>
-                        <Button onClick={onClose} isLoading={isLoading} colorScheme='blackAlpha'>No</Button>
+                        <Button onClick={onClose} isLoading={isLoading} color="black" variant="outline">No</Button>
                     </ButtonGroup>
                 </ModalFooter>
             </ModalContent>

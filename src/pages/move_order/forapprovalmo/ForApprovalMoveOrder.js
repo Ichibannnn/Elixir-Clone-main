@@ -190,8 +190,7 @@ export const ForApprovalMoveOrder = ({
                       size="xs"
                       fontSize="11px"
                       color="white"
-                      bg="gray.400"
-                      _hover={{ bg: "gray.500" }}
+                      colorScheme="red"
                       px={3}
                       onClick={() => rejectHandler(item.orderNo)}
                     >

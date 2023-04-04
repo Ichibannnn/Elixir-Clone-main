@@ -102,7 +102,8 @@ const ReturnModal = ({ isOpen, onClose, orderNo, fetchRejectedMO }) => {
                             onClick={onClose}
                             disabled={isLoading}
                             isLoading={isLoading}
-                            colorScheme='blackAlpha'
+                            color="black"
+                            variant="outline"
                         >
                             No
                         </Button>

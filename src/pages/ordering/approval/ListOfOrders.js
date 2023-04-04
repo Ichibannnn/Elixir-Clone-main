@@ -132,8 +132,7 @@ export const ListOfOrders = ({
             onClick={rejectModal}
             color="white"
             size="xs"
-            bg="gray.500"
-            _hover={{ bg: "gray.400" }}
+            colorScheme="red"
           >
             REJECT
           </Button>

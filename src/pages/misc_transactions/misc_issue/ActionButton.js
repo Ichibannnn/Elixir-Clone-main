@@ -34,7 +34,7 @@ export const ActionButton = ({ selectorId, setSelectorId, totalQuantity, custome
                   >
                       Save
                   </Button>
-                  <Button colorScheme='blackAlpha' px={3} onClick={cancelHandler}>Cancel All</Button>
+                  <Button color="black" variant="outline" px={3} onClick={cancelHandler}>Cancel All</Button>
               </ButtonGroup>
           </Flex>
 

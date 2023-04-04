@@ -606,7 +606,8 @@ export const AddQuantityConfirmation = ({
                 onClick={onClose}
                 isLoading={isLoading}
                 disabled={isLoading}
-                colorScheme="blackAlpha"
+                color="black"
+                variant="outline"
                 px={4}
                 size="xs"
               >
@@ -661,6 +662,7 @@ export const CancelConfirmation = ({
   return (
     <>
       <Modal isOpen={isOpen} onClose={() => {}} size="xl" isCentered>
+        <ModalOverlay />
         <ModalContent>
           <ModalHeader>
             <Flex justifyContent="center">
@@ -675,7 +677,7 @@ export const CancelConfirmation = ({
             </VStack>
           </ModalBody>
 
-          <ModalFooter>
+          <ModalFooter justifyContent="center">
             <ButtonGroup size="sm" mt={3}>
               <Button
                 onClick={submitHandler}
@@ -690,7 +692,8 @@ export const CancelConfirmation = ({
                 onClick={onClose}
                 isLoading={isLoading}
                 disabled={isLoading}
-                colorScheme="red"
+                color="black"
+                variant="outline"
                 px={4}
               >
                 No

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import {
     Accordion,
     AccordionButton,
@@ -15,15 +15,26 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Text, Table, Tbody, Td, Th, Thead, Tr, Badge, VStack, HStack,
+    Text, Table, Tbody, Td, Th, Thead, Tr, Badge, VStack, HStack, useToast,
 } from '@chakra-ui/react'
 import moment from 'moment'
 import PageScrollModalErrorList from '../../components/PageScrollModalErrorList'
 import PageScrollImportModal from '../../components/PageScrollImportModal'
 import { RiFileList3Fill } from 'react-icons/ri'
 import { TiWarning } from 'react-icons/ti'
+import Swal from 'sweetalert2'
+import request from '../../services/ApiClient'
+import { ToastComponent } from '../../components/Toast'
+import PageScroll from '../../utils/PageScroll'
+import { decodeUser } from '../../services/decode-user'
+import DateConverter from '../../components/DateConverter'
 
-const ErrorList = ({ isOpen, onClose, errorData }) => {
+const currentUser = decodeUser();
+
+const ErrorList = ({ isOpen, onClose, errorData, setErrorData, setErrorOpener, errorOpener, isLoading, setIsLoading, setIsDisabled, setExcelData, excelData }) => {
+    const toast = useToast();
+    const clearExcelFile = useRef();
+
 
     const availableImportData = errorData?.availableImport?.map(list => {
         return {
@@ -31,14 +42,14 @@ const ErrorList = ({ isOpen, onClose, errorData }) => {
             pR_Date: moment(list.pR_Date).format("YYYY-MM-DD"),
             pO_Number: list.pO_Number,
             pO_Date: moment(list.pO_Date).format("YYYY-MM-DD"),
-            item_Code: list.itemCode,
-            item_Description: list.itemDescription,
+            itemCode: list.itemCode,
+            itemDescription: list.itemDescription,
             ordered: list.ordered,
             delivered: list.delivered,
             billed: list.billed,
             uom: list.uom,
             unit_Price: list.unitPrice,
-            vendor_Name: list.vendorName
+            vendorName: list.vendorName
         }
     })
 
@@ -116,6 +127,87 @@ const ErrorList = ({ isOpen, onClose, errorData }) => {
     const supplier = supplierNotExistData
     const uom = uomCodeNotExistData
 
+    // const resultArray = excelData.map((item) => {
+    //     let newPrData = DateConverter(item.pr_date);
+    //     let newPoDate = DateConverter(item.po_date);
+    
+    //     return {
+    //       pR_Number: item.pr_number,
+    //       pR_Date: moment(newPrData).format("YYYY-MM-DD"),
+    //       pO_Number: item.po_number,
+    //       pO_Date: moment(newPoDate).format("YYYY-MM-DD"),
+    //       itemCode: item.item_code,
+    //       itemDescription: item.item_description,
+    //       ordered: item.qty_ordered,
+    //       delivered: item.qty_delivered,
+    //       billed: item.qty_billed,
+    //       uom: item.uom,
+    //       unitPrice: item.unit_price,
+    //       vendorName: item.supplier_name,
+    //       addedBy: currentUser.username,
+    //     };
+    //   });
+
+    const submitAvailablePOHandler = () => {
+        Swal.fire({
+          title: "Confirmation!",
+          text: "Are you sure you want to import this purchase order list?",
+          icon: "info",
+          color: "black",
+          background: "white",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#CBD1D8",
+          confirmButtonText: "Yes",
+          heightAuto: false,
+          width: "40em",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            if (available?.length > 0) {
+                console.log(available)
+              try {
+                setIsLoading(true);
+                const res = request
+                  .post("Import/AddNewPOSummary", available)
+                  .then((res) => {
+                    ToastComponent("Success!", "PO Imported", "success", toast);
+                    setIsLoading(false);
+                    setIsDisabled(true);
+                    clearExcelFile.current.value = "";
+                    setExcelData([]);
+                  })
+                  .catch((err) => {
+                    setIsLoading(false);
+                    // ToastComponent("Error", "Import Failed, Please check your fields.", "error", toast)
+                    // setErrorData(err.response.data);
+                    // if (err.response.data) {
+                    //   setErrorOpener(true);
+                    // //   onErrorOpen();
+                    // }
+                  });
+              } catch (err) {
+                ToastComponent(
+                  "Error!",
+                  "Wrong excel format imported for PO",
+                  "error",
+                  toast
+                );
+              }
+            } else {
+              ToastComponent(
+                "Error!",
+                "No data provided, please check your import",
+                "error",
+                toast
+              );
+            }
+          }
+        });
+      };
+
+      
+    
+
     return (
         <Modal isOpen={isOpen} onClose={() => { }} isCentered size='6xl'>
             <ModalOverlay />
@@ -135,7 +227,146 @@ const ErrorList = ({ isOpen, onClose, errorData }) => {
                     <ModalBody>
                         <Accordion allowToggle>
 
-                            {/* Duplicated */}
+                    {/* FILTERED ORDERS */}
+                    {available?.length > 0 ? (
+                        <AccordionItem bgColor="blue.200">
+                        <Flex>
+                            <AccordionButton fontWeight="semibold">
+                            <Box
+                                flex="1"
+                                textAlign="left"
+                                color="black"
+                                fontSize="13px"
+                                fontWeight="semibold"
+                            >
+                                Available for syncing{" "}
+                                <Badge color="green">{available?.length}</Badge>
+                            </Box>
+                            <AccordionIcon color="secondary" />
+                            </AccordionButton>
+                        </Flex>
+
+                        <AccordionPanel pb={4}>
+                            <PageScroll minHeight="500px" maxHeight="501px">
+                            {available ? (
+                                <Table variant="striped" size="sm" bg="form">
+                                <Thead bgColor="gray.600">
+                                    <Tr>
+                                    <Th color="white" fontSize="9px">
+                                        Line
+                                    </Th>
+                                    <Th color="white" fontSize="9px">
+                                        PR Number
+                                    </Th>
+                                    <Th color="white" fontSize="9px">
+                                        PR Date
+                                    </Th>
+                                    <Th color="white" fontSize="9px">
+                                        PO Number
+                                    </Th>
+                                    <Th color="white" fontSize="9px">
+                                        PO Date
+                                    </Th>
+                                    <Th color="white" fontSize="9px">
+                                        Item Code
+                                    </Th>
+                                    <Th color="white" fontSize="9px">
+                                        Item Description
+                                    </Th>
+                                    <Th color="white" fontSize="9px">
+                                        Qty Ordered
+                                    </Th>
+                                    <Th color="white" fontSize="9px">
+                                        Qty Delivered
+                                    </Th>
+                                    <Th color="white" fontSize="9px">
+                                        Qty Billed
+                                    </Th>
+                                    <Th color="white" fontSize="9px">
+                                        UOM
+                                    </Th>
+                                    <Th color="white" fontSize="9px">
+                                        Supplier Name
+                                    </Th>
+                                    </Tr>
+                                </Thead>
+
+                                <Tbody>
+                                    {available?.map((d, i) => (
+                                    <Tr key={i}>
+                                        <Td color="gray.600" fontSize="11px">
+                                        {i + 1}
+                                        </Td>
+                                        <Td color="gray.600" fontSize="11px">
+                                        {d?.pR_Number}
+                                        </Td>
+                                        <Td color="gray.600" fontSize="11px">
+                                        {moment(d?.pR_Date).format("yyyy-MM-DD")}
+                                        </Td>
+                                        <Td color="gray.600" fontSize="11px">
+                                        {d?.pO_Number}
+                                        </Td>
+                                        <Td color="gray.600" fontSize="11px">
+                                        {moment(d?.pO_Date).format("yyyy-MM-DD")}
+                                        </Td>
+                                        <Td color="gray.600" fontSize="11px">
+                                        {d?.itemCode}
+                                        </Td>
+                                        <Td color="gray.600" fontSize="11px">
+                                        {d?.itemDescription}
+                                        </Td>
+                                        <Td color="gray.600" fontSize="11px">
+                                        {d?.ordered}
+                                        </Td>
+                                        <Td color="gray.600" fontSize="11px">
+                                        {d?.delivered}
+                                        </Td>
+                                        <Td color="gray.600" fontSize="11px">
+                                        {d?.billed}
+                                        </Td>
+                                        <Td color="gray.600" fontSize="11px">
+                                        {d?.uom}
+                                        </Td>
+                                        <Td color="gray.600" fontSize="11px">
+                                        {d?.vendorName}
+                                        </Td>
+                                    </Tr>
+                                    ))}
+                                </Tbody>
+                                </Table>
+                            ) : (
+                                <Flex justifyContent="center" mt="30px">
+                                <VStack>
+                                    <RiFileList3Fill fontSize="200px" />
+                                    <Text color="white">
+                                    There are no duplicated lists on this file
+                                    </Text>
+                                </VStack>
+                                </Flex>
+                            )}
+                            </PageScroll>
+                            {available ? (
+                            <Flex justifyContent="end">
+                                <Button
+                                onClick={() => submitAvailablePOHandler()}
+                                size="sm"
+                                _hover={{ bgColor: "accent", color: "white" }}
+                                colorScheme="blue"
+                                isLoading={isLoading}
+                                >
+                                Sync
+                                </Button>
+                            </Flex>
+                            ) : (
+                            ""
+                            )}
+                        </AccordionPanel>
+                        </AccordionItem>
+                    ) : (
+                        ""
+                    )}
+
+                            {/* Duplicated ---------------*/} 
                             {duplicate?.length > 0 ?
                                 <AccordionItem bgColor='gray.200'>
                                     <Flex>

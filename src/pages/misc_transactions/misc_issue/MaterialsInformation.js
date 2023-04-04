@@ -360,7 +360,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                                         ?
                                         <Text textAlign='center' fontSize="xs" w='full' bgColor='gray.200' border='1px' borderColor='gray.200' py={1.5}>No Available Stock</Text>
                                         :
-                                        <Text textAlign='center' fontSize="xs" w='full' bgColor='gray.200' border='1px' borderColor='gray.200' py={1.5}>{availableStock ? availableStock : 'Select an expiration date'}</Text>
+                                        <Text textAlign='center' fontSize="xs" w='full' bgColor='gray.200' border='1px' borderColor='gray.200' py={1.5}>{availableStock ? availableStock : 'Available Stocks'}</Text>
                                     }
                                 </HStack>
                             </VStack>
@@ -379,7 +379,7 @@ export const RawMatsInfoModal = ({ isOpen, onClose, details, setDetails, rawMats
                             >
                                 Add
                             </Button>
-                            <Button colorScheme='blackAlpha' onClick={onClose}>Cancel</Button>
+                            <Button color="black" variant="outline" onClick={onClose}>Cancel</Button>
                         </ButtonGroup>
                     </ModalFooter>
                 </ModalContent>

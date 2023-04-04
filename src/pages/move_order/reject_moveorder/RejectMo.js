@@ -97,9 +97,7 @@ export const RejectMo = ({ setCurrentPage, setPageSize, setSearch, pagesCount, c
                                             borderRadius="none" 
                                             size="xs" 
                                             fontSize="11px" 
-                                            color="white" 
-                                            bg="gray.400" 
-                                            _hover={{ bg: "gray.500" }} 
+                                            colorScheme='red'
                                             onClick={() => returnHandler(data.orderNo)}
                                             >
                                                 Return

@@ -469,6 +469,15 @@ const ImportPO = () => {
           onClose={onErrorClose}
           onOpen={onErrorOpen}
           errorData={errorData}
+          setErrorData={setErrorData}
+          setErrorOpener={setErrorOpener}
+          errorOpener={errorOpener}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          setExcelData={setExcelData} excelData={excelData}
+          setIsDisabled={setIsDisabled}
+
+
         />
       )}
     </Flex>
