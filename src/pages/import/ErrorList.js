@@ -170,9 +170,10 @@ const ErrorList = ({ isOpen, onClose, errorData, setErrorData, setErrorOpener, e
                 const res = request
                   .post("Import/AddNewPOSummary", available)
                   .then((res) => {
+                    onClose();
                     ToastComponent("Success!", "PO Imported", "success", toast);
                     setIsLoading(false);
-                    setIsDisabled(true);
+                    setIsDisabled(false);
                     clearExcelFile.current.value = "";
                     setExcelData([]);
                   })
@@ -229,19 +230,19 @@ const ErrorList = ({ isOpen, onClose, errorData, setErrorData, setErrorOpener, e
 
                     {/* FILTERED ORDERS */}
                     {available?.length > 0 ? (
-                        <AccordionItem bgColor="blue.200">
+                        <AccordionItem bgColor="gray.200">
                         <Flex>
                             <AccordionButton fontWeight="semibold">
                             <Box
                                 flex="1"
                                 textAlign="left"
-                                color="black"
                                 fontSize="13px"
                                 fontWeight="semibold"
+                                color="green"
                             >
                                 Available for syncing{" "}
-                                <Badge color="green">{available?.length}</Badge>
-                            </Box>
+                                <Badge color="green" >{available?.length}</Badge>
+                            </Box>  
                             <AccordionIcon color="secondary" />
                             </AccordionButton>
                         </Flex>
@@ -372,7 +373,8 @@ const ErrorList = ({ isOpen, onClose, errorData, setErrorData, setErrorOpener, e
                                     <Flex>
                                         <AccordionButton color='white' fontWeight='semibold'>
                                             <Box flex='1' textAlign='left' color='#dc2f02' fontWeight='semibold' fontSize="13px">
-                                                <Badge fontSize="10px" color='red'>{duplicate?.length}</Badge> Duplicated Lists
+                                                     Duplicated Lists
+                                                <Badge fontSize="10px" color='red'>{duplicate?.length}</Badge> 
                                             </Box>
                                             <AccordionIcon color='secondary' />
                                         </AccordionButton>

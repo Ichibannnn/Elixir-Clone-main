@@ -37,6 +37,7 @@ import {
   VStack,
   Portal,
   Image,
+  Badge,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { useEffect } from "react";
@@ -48,6 +49,7 @@ import { RiAddFill } from "react-icons/ri";
 import PageScroll from "../../utils/PageScroll";
 import request from "../../services/ApiClient";
 import { ToastComponent } from "../../components/Toast";
+import { CUIAutoComplete } from "chakra-ui-autocomplete";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -61,6 +63,7 @@ import {
   PaginationContainer,
   PaginationPageGroup,
 } from "@ajna/pagination";
+import axios from "axios";
 
 const UserAccount = () => {
   const [users, setUsers] = useState([]);
@@ -168,7 +171,7 @@ const UserAccount = () => {
       userName: "",
       password: "",
       userRoleId: "",
-      departmentId: "",
+      department: "",
       addedBy: currentUser.userName,
       modifiedBy: "",
     });
@@ -479,7 +482,7 @@ const schema = yup.object().shape({
       .required("Password is required")
       .min(5, "Password must be at least 5 characters"),
     userRoleId: yup.string().required("User Role is required"),
-    departmentId: yup.string().required("Department is required"),
+    department: yup.string().required("Department is required"),
   }),
 });
 
@@ -493,10 +496,25 @@ const DrawerComponent = (props) => {
   const [departments, setDepartment] = useState([]);
   const toast = useToast();
 
+  // SEDAR
+  const [pickerItems, setPickerItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  const handleCreateItem = (item) => {
+    setPickerItems((curr) => [item]);
+    setSelectedItems((curr) => [item]);
+  };
+
+  const handleSelectedItemsChange = (selectedItems) => {
+    if (selectedItems) {
+      setSelectedItems(selectedItems);
+    }
+  };
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     setValue,
   } = useForm({
     resolver: yupResolver(schema),
@@ -508,9 +526,10 @@ const DrawerComponent = (props) => {
         userName: "",
         password: "",
         userRoleId: "",
-        departmentId: "",
+        department: "",
         addedBy: currentUser?.userName,
         modifiedBy: "",
+        empId: "",
       },
     },
   });
@@ -539,6 +558,29 @@ const DrawerComponent = (props) => {
     try {
       fetchDepartment();
     } catch (error) {}
+  }, []);
+
+  const fetchEmployees = async () => {
+    try {
+      const res = await axios.get("http://rdfsedar.com/api/data/employees", {
+        headers: {
+          Authorization: "Bearer " + process.env.REACT_APP_SEDAR_TOKEN,
+        },
+      });
+
+      const sedarEmployees = res.data.data.map((item) => {
+        return {
+          label: item.general_info.full_id_number,
+          value: item.general_info.full_id_number,
+        };
+      });
+
+      setPickerItems(res.data.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchEmployees();
   }, []);
 
   const submitHandler = async (data) => {
@@ -577,7 +619,82 @@ const DrawerComponent = (props) => {
     } catch (err) {}
   };
 
-  // console.log(editData);
+  const [idNumber, setIdNumber] = useState();
+  const [info, setInfo] = useState();
+  const [showLoading, setShowLoading] = useState(false);
+
+  useEffect(() => {
+    // console.log(pickerItems.filter(item=> {
+    //   return item?.label.toLowerCase().includes(idNumber)
+    // }).splice(0,10))
+
+    setInfo(
+      pickerItems
+        .filter((item) => {
+          return item?.general_info?.full_id_number_full_name
+            .toLowerCase()
+            .includes(idNumber);
+        })
+        .splice(0, 50)
+    );
+
+    // console.log(
+    //   pickerItems
+    //     .filter((item) => {
+    //       return item?.general_info?.full_id_number_full_name
+    //         .toLowerCase()
+    //         .includes(idNumber);
+    //     })
+    //     .splice(0, 50)
+    // );
+
+    return () => {};
+  }, [idNumber]);
+
+  const handleAutoFill = (data) => {
+    console.log("handleautofill data:", data);
+    setValue("formData.empId", data?.general_info?.full_id_number);
+    setValue("formData.fullName", data?.general_info?.full_name);
+    setValue("formData.department", data?.unit_info?.department_name);
+    // let data;
+    // function generateUsername(data) {
+    //   const names = data?.general_info?.full_name.split(' ');
+    //   const username = names[0][0] + names[names.length - 1];
+    //   return username.toLowerCase();
+    // }
+
+    // setValue("formData.userName", )
+    setValue(
+      "formData.userName",
+      data?.general_info?.first_name.charAt(0).toLowerCase() +
+        data?.general_info.last_name.toLowerCase()
+    );
+    setValue(
+      "formData.password",
+      data?.general_info?.first_name.charAt(0).toLowerCase() +
+        data?.general_info.last_name.toLowerCase() +
+        "1234"
+    );
+    setShowLoading(false);
+  };
+
+  // const handleEmpId = (data) => {
+  //   if (data) {
+  //     setIdNumber(data);
+  //   } else {
+  //     setIdNumber("");
+  //     setValue("formData.fullName", "");
+  //     setValue("formData.department", "");
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (!idNumber) {
+  //     setIdNumber("");
+  //     setValue("formData.fullName", "");
+  //     setValue("formData.department", "");
+  //   }
+  // }, [idNumber]);
 
   useEffect(() => {
     if (editData.id) {
@@ -589,7 +706,7 @@ const DrawerComponent = (props) => {
           userName: editData?.userName,
           password: editData?.password,
           userRoleId: editData?.userRoleId,
-          departmentId: editData?.departmentId,
+          department: editData?.department,
           modifiedBy: currentUser.userName,
         },
         { shouldValidate: true }
@@ -605,11 +722,241 @@ const DrawerComponent = (props) => {
         <DrawerOverlay />
         <form onSubmit={handleSubmit(submitHandler)}>
           <DrawerContent>
-            <DrawerHeader borderBottomWidth="1px">User Form</DrawerHeader>
-            <DrawerCloseButton />
+            <DrawerHeader
+              borderBottomWidth="1px"
+              bg="secondary"
+              color="white"
+              fontSize="md"
+            >
+              User Form
+            </DrawerHeader>
+            <DrawerCloseButton color="white" />
             <DrawerBody>
-              <Stack spacing="7px">
+              <Stack spacing={4} mt={4}>
                 <Box>
+                  <Badge
+                    fontWeight="semibold"
+                    fontFamily="revert"
+                    fontSize="sm"
+                    mb={3}
+                  >
+                    USER DETAILS:
+                  </Badge>
+
+                  <Box pl={2}>
+                    <Text fontSize="sm" fontWeight="semibold">
+                      Employee ID:
+                    </Text>
+                    <Input
+                      fontSize="14px"
+                      {...register("formData.empId")}
+                      autoComplete="off"
+                      onChange={(e) => setIdNumber(e.target.value)}
+                      onFocus={() => setShowLoading(true)}
+                      // onBlur={() => setShowLoading(false)}
+                    />
+                    <Box
+                      style={{ position: "relative", width: "100%" }}
+                      onBlur={() => setShowLoading(false)}
+                    >
+                      <div
+                        className="filteredData"
+                        style={{ display: showLoading ? "block" : "none" }}
+                      >
+                        {showLoading &&
+                          info?.map((item, i) => {
+                            return (
+                              <Text
+                                key={i}
+                                onClick={() => {
+                                  handleAutoFill(item);
+                                }}
+                                style={{ cursor: "pointer", zIndex: 999 }}
+                              >
+                                {item?.general_info?.full_id_number}
+                              </Text>
+                            );
+                          })}
+                        {showLoading && pickerItems.length <= 0 && (
+                          <div>LOADING...</div>
+                        )}
+                      </div>
+                    </Box>
+                    {/* <CUIAutoComplete
+                        label="Choose preferred work locations"
+                        placeholder="Type a Country"
+                        onCreateItem={handleCreateItem}
+                        items={pickerItems}
+                        selectedItems={selectedItems}
+                        onSelectedItemsChange={(changes) =>
+                          handleSelectedItemsChange(changes.selectedItems)
+                        }
+                        disableCreateItem
+                      /> */}
+
+                    {/* {departments.length > 0 ? (
+                        <Select
+                          
+                          {...register("formData.departmentId")}
+                          placeholder="Select Department"
+                        >
+                          {departments.map((dept) => (
+                            <option key={dept.id} value={dept.id}>
+                              {dept.departmentName}
+                            </option>
+                          ))}
+                        </Select>
+                      ) : (
+                        "loading"
+                      )} */}
+
+                    {/* <Text color="red" fontSize="xs">
+                        {errors.formData?.fullName?.message}
+                      </Text> */}
+                  </Box>
+
+                  <Box pl={2}>
+                    <Text fontSize="sm" fontWeight="semibold">
+                      Full Name:
+                    </Text>
+                    <Input
+                      fontSize="14px"
+                      {...register("formData.fullName")}
+                      // placeholder="Please enter Fullname"
+                      autoFocus
+                      autoComplete="off"
+                      readOnly
+                    />
+                    <Text color="red" fontSize="xs">
+                      {errors.formData?.fullName?.message}
+                    </Text>
+                  </Box>
+
+                  <Flex mt={3}></Flex>
+                  <Box pl={2}>
+                    <Text fontSize="sm" fontWeight="semibold">
+                      Department:
+                    </Text>
+                    <Input
+                      fontSize="xs"
+                      {...register("formData.department")}
+                      // placeholder="Please enter Fullname"
+                      autoFocus
+                      autoComplete="off"
+                      readOnly
+                    />
+                    <Text color="red" fontSize="xs">
+                      {errors.formData?.department?.message}
+                    </Text>
+                    {/* {departments.length > 0 ? (
+                        <Select
+                          
+                          {...register("formData.departmentId")}
+                          placeholder="Select Department"
+                        >
+                          {departments.map((dept) => (
+                            <option key={dept.id} value={dept.id}>
+                              {dept.departmentName}
+                            </option>
+                          ))}
+                        </Select>
+                      ) : (
+                        "loading"
+                      )} */}
+                    <Text color="red" fontSize="xs">
+                      {errors.formData?.department?.message}
+                    </Text>
+                  </Box>
+                </Box>
+
+                <Box>
+                  <Badge
+                    fontWeight="semibold"
+                    fontFamily="revert"
+                    fontSize="sm"
+                    mb={3}
+                  >
+                    USER PERMISSION:
+                  </Badge>
+                  <Box pl={2}>
+                    <Text fontSize="sm" fontWeight="semibold">
+                      Username:
+                    </Text>
+                    <Input
+                      fontSize="14px"
+                      {...register("formData.userName")}
+                      placeholder="Please enter Fullname"
+                      autoComplete="off"
+                      disabled={disableEdit}
+                      readOnly={disableEdit}
+                      _disabled={{ color: "black" }}
+                      bgColor={disableEdit && "gray.300"}
+                    />
+                    <Text color="red" fontSize="xs">
+                      {errors.formData?.userName?.message}
+                    </Text>
+                  </Box>
+
+                  <Flex mt={3}></Flex>
+                  <Box pl={2}>
+                    <Text fontSize="sm" fontWeight="semibold">
+                      Password:
+                    </Text>
+                    <InputGroup>
+                      <Input
+                        fontSize="14px"
+                        type={showPassword ? "text" : "password"}
+                        {...register("formData.password")}
+                        placeholder="Please enter Password"
+                        autoComplete="off"
+                      />
+                      <InputRightElement>
+                        <Button
+                          bg="none"
+                          onClick={() => setShowPassword(!showPassword)}
+                          size="sm"
+                        >
+                          {showPassword ? <VscEye /> : <VscEyeClosed />}
+                        </Button>
+                      </InputRightElement>
+                    </InputGroup>
+                    <Text color="red" fontSize="xs">
+                      {errors.formData?.password?.message}
+                    </Text>
+                  </Box>
+
+                  <Flex mt={3}></Flex>
+
+                  <Box pl={2}>
+                    <Text fontSize="sm" fontWeight="semibold">
+                      User Role:
+                    </Text>
+                    {roles.length > 0 ? (
+                      <Select
+                        fontSize="14px"
+                        disabled={disableEdit}
+                        readOnly={disableEdit}
+                        _disabled={{ color: "black" }}
+                        bgColor={disableEdit && "gray.400"}
+                        {...register("formData.userRoleId")}
+                        placeholder="Select Role"
+                      >
+                        {roles.map((rol) => (
+                          <option key={rol.id} value={rol.id}>
+                            {rol.roleName}
+                          </option>
+                        ))}
+                      </Select>
+                    ) : (
+                      "loading"
+                    )}
+                    <Text color="red" fontSize="xs">
+                      {errors.formData?.userRoleId?.message}
+                    </Text>
+                  </Box>
+                </Box>
+
+                {/* <Box>
                   <FormLabel>Full Name:</FormLabel>
                   <Input
                     {...register("formData.fullName")}
@@ -708,14 +1055,14 @@ const DrawerComponent = (props) => {
                   <Text color="red" fontSize="xs">
                     {errors.formData?.departmentId?.message}
                   </Text>
-                </Box>
+                </Box> */}
               </Stack>
             </DrawerBody>
             <DrawerFooter borderTopWidth="1px">
               <Button variant="outline" mr={3} onClick={onClose}>
                 Cancel
               </Button>
-              <Button type="submit" colorScheme="blue" disabled={!isValid}>
+              <Button type="submit" colorScheme="blue">
                 Submit
               </Button>
             </DrawerFooter>

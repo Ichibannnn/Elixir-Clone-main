@@ -158,7 +158,7 @@ export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTe
             <BsPatchQuestionFill fontSize='50px' />
           </Flex>
         </ModalHeader>
-        <ModalCloseButton fontColor="black" onClick={onClose} />
+        <ModalCloseButton color="black" onClick={onClose} />
 
         <ModalBody mb={5}>
           <Text textAlign='center' fontSize='lg'>Are you sure you want to save this information?</Text>

@@ -256,6 +256,7 @@ const WarehouseReceiving = () => {
                 boxShadow="md"
                 bg="gray.200"
                 variant="striped"
+                className="uppercase"
               >
                 <Thead bg="primary" position="sticky" top={0}>
                   <Tr>

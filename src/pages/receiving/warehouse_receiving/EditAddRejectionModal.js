@@ -81,7 +81,7 @@ const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood, setDisabl
   // QTY HANDLER FOR QUANTITY INPUT
     const quantityHandler = (data) => {
         if (data) {
-            if (data >= actualDelivered) {
+            if (data + Number(sumQuantity) >= actualDelivered) {
                 ToastComponent("Warning", "You are providing a value greater than or equal to your Actual Good!", "warning", toast)
                 setQuantity("")
             } else {

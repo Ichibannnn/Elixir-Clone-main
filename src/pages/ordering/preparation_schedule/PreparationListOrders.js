@@ -156,16 +156,41 @@ export const PreparationListOrders = ({
     openSchedule();
   };
 
+  const [checkItemsData, setCheckItemsData] = useState([])
   const childCheckHandler = (e) => {
+    const newData = JSON.parse(e.target.value)
+    // console.log(newData)
+    const id = newData?.id
     if (e.target.checked) {
-      setCheckedItems([...checkedItems, parseInt(e.target.value)]);
+      setCheckedItems([...checkedItems, parseInt(id)]);
+      setCheckItemsData([...checkItemsData, newData])
     } else {
       const data = checkedItems?.filter(
-        (item) => item !== parseInt(e.target.value)
+        (item) => item !== parseInt(id)
       );
       setCheckedItems(data);
+      const revertData = checkItemsData?.filter(
+        (item) => item.id !== parseInt(id)
+      )
+      setCheckItemsData(revertData)
     }
   };
+
+  useEffect(() => {
+    if(checkItemsData?.length){
+      let totalQuantity = checkItemsData.map((q) => parseFloat(q.quantityOrder))
+      let sum = totalQuantity.reduce((a, b) => a + b)
+      checkItemsData?.map((item) => {
+          if (item.stockOnHand < sum) {
+              setDisableIfStock(true)
+          }
+          else {
+            setDisableIfStock(false)
+          }
+        }
+      )
+    }
+}, [checkItemsData])
 
   return (
     <Flex w="full" flexDirection="column">
@@ -319,8 +344,10 @@ export const PreparationListOrders = ({
                       <Checkbox
                         size="sm"
                         onChange={childCheckHandler}
+                        // isChecked={checkedItems.includes(item.id)}
+                        // value={item.id}
                         isChecked={checkedItems.includes(item.id)}
-                        value={item.id}
+                        value={JSON.stringify(item)}
                         color="black"
                       >
                         <Text fontSize="11px">{i + 1}</Text>

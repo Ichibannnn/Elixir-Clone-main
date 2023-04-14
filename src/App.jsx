@@ -70,6 +70,8 @@ import { useEffect } from "react";
 import { FcHighPriority } from "react-icons/fc";
 import BorrowedTransactionPage from "./BorrowedTransactionPage";
 import BorrowedMaterialsPage from "./pages/borrowed_transaction/BorrowedMaterialsPage";
+import ReportsPage from "./ReportsPage";
+import Reports from "./pages/reports/Reports";
 
 const App = () => {
   const [menu, setMenu] = useState(null);
@@ -294,6 +296,11 @@ const App = () => {
             <Route path="/borrowed" element={<BorrowedTransactionPage />}>
               <Route path="/borrowed/borrowed-materials" element={user ? <BorrowedMaterialsPage borrowedData={borrowedData} fetchActiveBorrowed={fetchActiveBorrowed} borrowedNav={borrowedNav} setBorrowedNav={setBorrowedNav}  /> 
               : <Navigate to="/login" />} />
+            </Route>
+
+            {/* REPORTS */}
+            <Route path="/reports" element={<ReportsPage />}>
+              <Route path="/reports/report-details" element={<Reports />} />
             </Route>
 
             <Route path="*" element={<ErrorPage />} />

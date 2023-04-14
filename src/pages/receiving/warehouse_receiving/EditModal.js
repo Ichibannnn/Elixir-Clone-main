@@ -162,12 +162,17 @@ export const EditModal = ({
 
   let submitDataOne = {
     poSummaryId: editData.id,
+    poNumber: editData.poNumber,
     itemCode: editData.itemCode,
     itemDescription: editData.itemDescription,
     expectedDelivery: Number(expectedDelivery),
+    // actualDelivered: Number(actualDelivered),
+    uom: editData.uom,
+    supplier: editData.supplier,
     actualDelivered: Number(actualDelivered),
     batchNo: batchNo,
     totalReject: sumQuantity,
+    addedBy: currentUser.userName,
   };
 
   useEffect(() => {

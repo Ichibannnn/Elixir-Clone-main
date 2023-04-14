@@ -262,12 +262,12 @@ const CustomersManagement = () => {
                       <Th color="#D6D6D6" fontSize="10px">
                         Customer Name
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
-                        Customer Type
-                      </Th>
                       {/* <Th color="#D6D6D6" fontSize="10px">
-                        Company
+                        Customer Type
                       </Th> */}
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Company
+                      </Th>
                       {/* <Th color="#D6D6D6" fontSize="10px">
                         Mobile Number
                       </Th> */}
@@ -630,7 +630,7 @@ const DrawerComponent = (props) => {
                     {errors.formData?.customerName?.message}
                   </Text>
                 </Box>
-                <Box>
+                {/* <Box>
                   <FormLabel>Customer Type:</FormLabel>
                   {customerType.length > 0 ? (
                     <Select
@@ -649,7 +649,7 @@ const DrawerComponent = (props) => {
                   <Text color="red" fontSize="xs">
                     {errors.formData?.customerTypeId?.message}
                   </Text>
-                </Box>
+                </Box> */}
                 <Box>
                   <FormLabel>Company Name:</FormLabel>
                   <Input
@@ -678,7 +678,7 @@ const DrawerComponent = (props) => {
                     {errors.formData?.mobileNumber?.message}
                   </Text>
                 </Box> */}
-                <Box>
+                {/* <Box>
                   <FormLabel>Address:</FormLabel>
                   <Input
                     {...register("formData.address")}
@@ -688,7 +688,7 @@ const DrawerComponent = (props) => {
                   <Text color="red" fontSize="xs">
                     {errors.formData?.address?.message}
                   </Text>
-                </Box>
+                </Box> */}
               </Stack>
             </DrawerBody>
             <DrawerFooter borderTopWidth="1px">

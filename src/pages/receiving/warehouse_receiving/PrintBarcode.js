@@ -51,12 +51,12 @@ const PrintBarcode = ({
     "Item Description": printData.itemDescription,
     UOM: printData.uom,
     Supplier: printData.supplier,
-    "Quantity Good": actualDelivered,
+    "Quantity Good": Number(actualDelivered) - Number(sumQuantity),
     // "Total Reject": sumQuantity,
     "Receiving Date": moment(receivingDate).format("MM/DD/YYYY"),
   };
 
-  console.log(displayData)
+  // console.log(displayData)
 
   return (
     <Modal isOpen={isOpen} onClose={() => {}} isCentered size="sm">
@@ -160,7 +160,7 @@ const PrintBarcode = ({
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={handlePrint}>
-            Print Preview
+            Print
           </Button>
           <Button
             color="white"

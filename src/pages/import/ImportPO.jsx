@@ -124,7 +124,7 @@ const ImportPO = () => {
     };
   });
 
-  console.log(resultArray);
+  // console.log(resultArray);
 
   const submitExcelHandler = (resultArray) => {
     Swal.fire({
