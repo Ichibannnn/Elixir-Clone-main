@@ -1,14 +1,28 @@
-
 import React, { useState } from "react";
-import { Routes, Route} from "react-router-dom";
-import { Button, ButtonGroup, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure, useMediaQuery, useToast, VStack } from '@chakra-ui/react';
+import { Routes, Route } from "react-router-dom";
+import {
+  Button,
+  ButtonGroup,
+  Flex,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
+  useMediaQuery,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
 import request from "./services/ApiClient";
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from "react-router-dom";
 import { decodeUser } from "./services/decode-user";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from "react-router-dom";
 import { ToastComponent } from "./components/Toast";
-import { RiFileWarningFill } from 'react-icons/ri';
-
+import { RiFileWarningFill } from "react-icons/ri";
 
 //Component Main Container
 import MainContainer from "./components/MainContainer";
@@ -72,85 +86,97 @@ import BorrowedTransactionPage from "./BorrowedTransactionPage";
 import BorrowedMaterialsPage from "./pages/borrowed_transaction/BorrowedMaterialsPage";
 import ReportsPage from "./ReportsPage";
 import Reports from "./pages/reports/Reports";
+import SupplierNew from "./pages/setup/suppliers_new/SupplierNew";
 
 const App = () => {
   const [menu, setMenu] = useState(null);
-  const user = decodeUser()
+  const user = decodeUser();
 
   //Miscellaneous Issue Fetch and Cancel Feature
-  const [miscData, setMiscData] = useState([])
-  const [navigation, setNavigation] = useState('')
+  const [miscData, setMiscData] = useState([]);
+  const [navigation, setNavigation] = useState("");
 
   //Borrowed Mats Fetch and Cancel Feature
-  const [borrowedData, setBorrowedData] = useState([])
-  const [borrowedNav, setBorrowedNav] = useState('')
-
+  const [borrowedData, setBorrowedData] = useState([]);
+  const [borrowedNav, setBorrowedNav] = useState("");
 
   //Get Added Misc Issues per Item
-  const userId = user?.id
+  const userId = user?.id;
   const fetchActiveMiscIssuesApi = async (userId) => {
-    const res = await request.get(`Miscellaneous/GetAllActiveMiscellaneousIssueTransaction?empId=${userId}`)
-    return res.data
-  }
+    const res = await request.get(
+      `Miscellaneous/GetAllActiveMiscellaneousIssueTransaction?empId=${userId}`
+    );
+    return res.data;
+  };
 
   //Get Added Borrowed per Item
-  const borrowedUserId = user?.id
+  const borrowedUserId = user?.id;
   const fetchActiveBorrowedApi = async (borrowedUserId) => {
-    const res = await request.get(`Borrowed/GetAllActiveBorrowedIssueTransaction?empId=${borrowedUserId}`)
-    return res.data
-  }
-
+    const res = await request.get(
+      `Borrowed/GetAllActiveBorrowedIssueTransaction?empId=${borrowedUserId}`
+    );
+    return res.data;
+  };
 
   //Misc Issue Data
   const fetchActiveMiscIssues = () => {
-    fetchActiveMiscIssuesApi(userId).then(res => {
-      setMiscData(res)
-    })
-  }
+    fetchActiveMiscIssuesApi(userId).then((res) => {
+      setMiscData(res);
+    });
+  };
   useEffect(() => {
-    fetchActiveMiscIssues()
+    fetchActiveMiscIssues();
 
     return () => {
-      setMiscData([])
-    }
-  }, [userId])
+      setMiscData([]);
+    };
+  }, [userId]);
 
   //Misc Issue Data
   const fetchActiveBorrowed = () => {
-    fetchActiveBorrowedApi(borrowedUserId).then(res => {
-      setBorrowedData(res)
-    })
-  }
+    fetchActiveBorrowedApi(borrowedUserId).then((res) => {
+      setBorrowedData(res);
+    });
+  };
   useEffect(() => {
-    fetchActiveBorrowed()
+    fetchActiveBorrowed();
 
     return () => {
-      setBorrowedData([])
-    }
-  }, [borrowedUserId])
-
+      setBorrowedData([]);
+    };
+  }, [borrowedUserId]);
 
   // console.log(user)
   // Open modal to cancel all ID on table if re-routed without saving
-  const { isOpen: isArrayCancel, onClose: closeArrayCancel, onOpen: openArrayCancel } = useDisclosure()
-  const path = useLocation()
-  const pathMiscIssue = "/miscellaneous/misc-issue"
+  const {
+    isOpen: isArrayCancel,
+    onClose: closeArrayCancel,
+    onOpen: openArrayCancel,
+  } = useDisclosure();
+  const path = useLocation();
+  const pathMiscIssue = "/miscellaneous/misc-issue";
   useEffect(() => {
     if (path.pathname !== pathMiscIssue && miscData?.length > 0) {
-      openArrayCancel()
+      openArrayCancel();
     }
-  }, [path.pathname !== pathMiscIssue])
-
+  }, [path.pathname !== pathMiscIssue]);
 
   // Open modal to cancel all ID on table if re-routed without saving (Borrowed Transaction)
-  const { isOpen: isArrayBorrowedCancel, onClose: closeArrayBorrowedCancel, onOpen: openArrayBorrowedCancel } = useDisclosure()
-  const pathBorrowed = useLocation()
-  const pathBorrowedMats = "/borrowed/borrowed-materials"
+  const {
+    isOpen: isArrayBorrowedCancel,
+    onClose: closeArrayBorrowedCancel,
+    onOpen: openArrayBorrowedCancel,
+  } = useDisclosure();
+  const pathBorrowed = useLocation();
+  const pathBorrowedMats = "/borrowed/borrowed-materials";
   useEffect(() => {
-    if (pathBorrowed.pathname !== pathBorrowedMats && borrowedData?.length > 0) {
-      openArrayBorrowedCancel()
+    if (
+      pathBorrowed.pathname !== pathBorrowedMats &&
+      borrowedData?.length > 0
+    ) {
+      openArrayBorrowedCancel();
     }
-  }, [pathBorrowed.pathname !== pathBorrowedMats])
+  }, [pathBorrowed.pathname !== pathBorrowedMats]);
 
   return (
     <Context.Provider value={{ menu, setMenu }}>
@@ -171,10 +197,7 @@ const App = () => {
                 path="/setup/item-subcategory"
                 element={<ItemSubCategory />}
               />
-              <Route
-                path="/setup/suppliers"
-                element={<SuppliersManagement />}
-              />
+              <Route path="/setup/suppliers" element={<SupplierNew />} />
               <Route
                 path="/setup/customers-management"
                 element={<CustomersManagement />}
@@ -282,20 +305,49 @@ const App = () => {
               />
             </Route>
 
-
             {/* MISCELLANEOUS */}
-            <Route path="/miscellaneous" element={<MiscellaneousTransactions />}>
-              <Route path="/miscellaneous/misc-receipt" element={<MiscReceiptPage />} />
-              <Route path="/miscellaneous/misc-issue" element={user ?
-              <MiscIssuePage miscData={miscData} fetchActiveMiscIssues={fetchActiveMiscIssues} navigation={navigation} setNavigation={setNavigation} />
-              : <Navigate to="/login" />} />
+            <Route
+              path="/miscellaneous"
+              element={<MiscellaneousTransactions />}
+            >
+              <Route
+                path="/miscellaneous/misc-receipt"
+                element={<MiscReceiptPage />}
+              />
+              <Route
+                path="/miscellaneous/misc-issue"
+                element={
+                  user ? (
+                    <MiscIssuePage
+                      miscData={miscData}
+                      fetchActiveMiscIssues={fetchActiveMiscIssues}
+                      navigation={navigation}
+                      setNavigation={setNavigation}
+                    />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
+              />
             </Route>
-
 
             {/* BORROWED MATERIALS */}
             <Route path="/borrowed" element={<BorrowedTransactionPage />}>
-              <Route path="/borrowed/borrowed-materials" element={user ? <BorrowedMaterialsPage borrowedData={borrowedData} fetchActiveBorrowed={fetchActiveBorrowed} borrowedNav={borrowedNav} setBorrowedNav={setBorrowedNav}  /> 
-              : <Navigate to="/login" />} />
+              <Route
+                path="/borrowed/borrowed-materials"
+                element={
+                  user ? (
+                    <BorrowedMaterialsPage
+                      borrowedData={borrowedData}
+                      fetchActiveBorrowed={fetchActiveBorrowed}
+                      borrowedNav={borrowedNav}
+                      setBorrowedNav={setBorrowedNav}
+                    />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
+              />
             </Route>
 
             {/* REPORTS */}
@@ -308,165 +360,223 @@ const App = () => {
         </Route>
       </Routes>
 
-      {
-        isArrayCancel && (
-          <CancelArrayModalConfirmation
-            isOpen={isArrayCancel}
-            onClose={closeArrayCancel}
-            miscData={miscData}
-            fetchActiveMiscIssues={fetchActiveMiscIssues}
-            setNavigation={setNavigation}
-          />
-        )
-      }
+      {isArrayCancel && (
+        <CancelArrayModalConfirmation
+          isOpen={isArrayCancel}
+          onClose={closeArrayCancel}
+          miscData={miscData}
+          fetchActiveMiscIssues={fetchActiveMiscIssues}
+          setNavigation={setNavigation}
+        />
+      )}
 
-      {
-        isArrayBorrowedCancel && (
-          <CancelBorrowedArrayModalConfirmation
-            isOpen={isArrayBorrowedCancel}
-            onClose={closeArrayBorrowedCancel}
-            borrowedData={borrowedData}
-            fetchActiveBorrowed={fetchActiveBorrowed}
-            setBorrowedNav={setBorrowedNav}
-          />
-        )
-      }
+      {isArrayBorrowedCancel && (
+        <CancelBorrowedArrayModalConfirmation
+          isOpen={isArrayBorrowedCancel}
+          onClose={closeArrayBorrowedCancel}
+          borrowedData={borrowedData}
+          fetchActiveBorrowed={fetchActiveBorrowed}
+          setBorrowedNav={setBorrowedNav}
+        />
+      )}
     </Context.Provider>
   );
 };
 
 export default App;
 
-
 //Misc Issue Cancel Array
-const CancelArrayModalConfirmation = ({ isOpen, onClose, miscData, fetchActiveMiscIssues, setNavigation }) => {
-
-  const [isLoading, setIsLoading] = useState(false)
-  const toast = useToast()
-  const navigate = useNavigate()
+const CancelArrayModalConfirmation = ({
+  isOpen,
+  onClose,
+  miscData,
+  fetchActiveMiscIssues,
+  setNavigation,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
+  const navigate = useNavigate();
 
   const cancelArraySubmitHandler = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const cancelArray = miscData?.map(item => {
+      const cancelArray = miscData?.map((item) => {
         return {
-          id: item.id
-        }
-      })
-      const res = request.put(`Miscellaneous/CancelItemCodeInMiscellaneousIssue`, cancelArray)
-        .then(res => {
-          ToastComponent("Warning", "Items has been cancelled", "success", toast)
-          fetchActiveMiscIssues()
-          onClose()
+          id: item.id,
+        };
+      });
+      const res = request
+        .put(`Miscellaneous/CancelItemCodeInMiscellaneousIssue`, cancelArray)
+        .then((res) => {
+          ToastComponent(
+            "Warning",
+            "Items has been cancelled",
+            "success",
+            toast
+          );
+          fetchActiveMiscIssues();
+          onClose();
         })
-        .catch(err => {
+        .catch((err) => {
           // ToastComponent("Error", "Item was not cancelled", "Error", toast)
-        })
-    } catch (error) {
-    }
-  }
+        });
+    } catch (error) {}
+  };
 
   const noHandler = () => {
-    setNavigation(1)
-    navigate('/miscellaneous/misc-issue')
-    onClose()
-  }
+    setNavigation(1);
+    navigate("/miscellaneous/misc-issue");
+    onClose();
+  };
 
   return (
-    <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
+    <Modal isOpen={isOpen} onClose={() => {}} isCentered size="xl">
       <ModalOverlay />
       <ModalContent bg="gray.50" pt={10} pb={5}>
         <ModalHeader>
-          <VStack justifyContent='center'>
-            <FcHighPriority  fontSize='50px' />
-            <Text color='warning' textAlign='center' fontSize='lg'>[Warning]</Text>
-            <Text color='warning' textAlign='center' fontSize='sm'>[Miscellaneous Issue]</Text>
+          <VStack justifyContent="center">
+            <FcHighPriority fontSize="50px" />
+            <Text color="warning" textAlign="center" fontSize="lg">
+              [Warning]
+            </Text>
+            <Text color="warning" textAlign="center" fontSize="sm">
+              [Miscellaneous Issue]
+            </Text>
           </VStack>
         </ModalHeader>
         <ModalCloseButton onClick={noHandler} />
 
         <ModalBody mb={5}>
           <VStack spacing={0}>
-            <Text textAlign='center' fontSize='sm'>Your created lists will be cancelled.</Text>
-            <Text textAlign='center' fontSize='xs'>Are you sure you want to leave this page?</Text>
+            <Text textAlign="center" fontSize="sm">
+              Your created lists will be cancelled.
+            </Text>
+            <Text textAlign="center" fontSize="xs">
+              Are you sure you want to leave this page?
+            </Text>
           </VStack>
         </ModalBody>
 
-        <ModalFooter justifyContent='center'>
+        <ModalFooter justifyContent="center">
           <ButtonGroup>
-            <Button size="sm" onClick={cancelArraySubmitHandler} isLoading={isLoading} disabled={isLoading} colorScheme='blue'>Yes</Button>
-            <Button size="sm" onClick={noHandler} isLoading={isLoading} colorScheme='blackAlpha'>No</Button>
+            <Button
+              size="sm"
+              onClick={cancelArraySubmitHandler}
+              isLoading={isLoading}
+              disabled={isLoading}
+              colorScheme="blue"
+            >
+              Yes
+            </Button>
+            <Button
+              size="sm"
+              onClick={noHandler}
+              isLoading={isLoading}
+              colorScheme="blackAlpha"
+            >
+              No
+            </Button>
           </ButtonGroup>
         </ModalFooter>
       </ModalContent>
     </Modal>
-  )
-
-}
-
+  );
+};
 
 //Borrowed Cancel Array
-const CancelBorrowedArrayModalConfirmation = ({ isOpen, onClose, borrowedData, fetchActiveBorrowed, setBorrowedNav }) => {
-
-  const [isLoading, setIsLoading] = useState(false)
-  const toast = useToast()
-  const navigateBorrowed = useNavigate()
+const CancelBorrowedArrayModalConfirmation = ({
+  isOpen,
+  onClose,
+  borrowedData,
+  fetchActiveBorrowed,
+  setBorrowedNav,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
+  const navigateBorrowed = useNavigate();
 
   const cancelArraySubmitHandler = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const cancelArray = borrowedData?.map(item => {
+      const cancelArray = borrowedData?.map((item) => {
         return {
-          id: item.id
-        }
-      })
-      const res = request.put(`Borrowed/CancelItemForTransactBorrow`, cancelArray)
-        .then(res => {
-          ToastComponent("Warning", "Items has been cancelled", "success", toast)
-          fetchActiveBorrowed()
-          onClose()
+          id: item.id,
+        };
+      });
+      const res = request
+        .put(`Borrowed/CancelItemForTransactBorrow`, cancelArray)
+        .then((res) => {
+          ToastComponent(
+            "Warning",
+            "Items has been cancelled",
+            "success",
+            toast
+          );
+          fetchActiveBorrowed();
+          onClose();
         })
-        .catch(err => {
+        .catch((err) => {
           // ToastComponent("Error", "Item was not cancelled", "Error", toast)
-        })
-    } catch (error) {
-    }
-  }
+        });
+    } catch (error) {}
+  };
 
   const noHandler = () => {
-    setBorrowedNav(1)
-    navigateBorrowed('/borrowed/borrowed-materials')
-    onClose()
-  }
+    setBorrowedNav(1);
+    navigateBorrowed("/borrowed/borrowed-materials");
+    onClose();
+  };
 
   return (
-    <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
+    <Modal isOpen={isOpen} onClose={() => {}} isCentered size="xl">
       <ModalOverlay />
       <ModalContent bg="gray.50" pt={10} pb={5}>
         <ModalHeader>
-          <VStack justifyContent='center'>
-            <FcHighPriority  fontSize='50px' />
-            <Text color='warning' textAlign='center' fontSize='lg'>[Warning]</Text>
-            <Text color='warning' textAlign='center' fontSize='sm'>[Borrowed Materials]</Text>
+          <VStack justifyContent="center">
+            <FcHighPriority fontSize="50px" />
+            <Text color="warning" textAlign="center" fontSize="lg">
+              [Warning]
+            </Text>
+            <Text color="warning" textAlign="center" fontSize="sm">
+              [Borrowed Materials]
+            </Text>
           </VStack>
         </ModalHeader>
         <ModalCloseButton onClick={noHandler} />
 
         <ModalBody mb={5}>
           <VStack spacing={0}>
-            <Text textAlign='center' fontSize='sm'>Your created lists will be cancelled.</Text>
-            <Text textAlign='center' fontSize='xs'>Are you sure you want to leave this page?</Text>
+            <Text textAlign="center" fontSize="sm">
+              Your created lists will be cancelled.
+            </Text>
+            <Text textAlign="center" fontSize="xs">
+              Are you sure you want to leave this page?
+            </Text>
           </VStack>
         </ModalBody>
 
-        <ModalFooter justifyContent='center'>
+        <ModalFooter justifyContent="center">
           <ButtonGroup>
-            <Button size="sm" onClick={cancelArraySubmitHandler} isLoading={isLoading} disabled={isLoading} colorScheme='blue'>Yes</Button>
-            <Button size="sm" onClick={noHandler} isLoading={isLoading} colorScheme='blackAlpha'>No</Button>
+            <Button
+              size="sm"
+              onClick={cancelArraySubmitHandler}
+              isLoading={isLoading}
+              disabled={isLoading}
+              colorScheme="blue"
+            >
+              Yes
+            </Button>
+            <Button
+              size="sm"
+              onClick={noHandler}
+              isLoading={isLoading}
+              colorScheme="blackAlpha"
+            >
+              No
+            </Button>
           </ButtonGroup>
         </ModalFooter>
       </ModalContent>
     </Modal>
-  )
-
-}
+  );
+};

@@ -185,11 +185,8 @@ const schema = yup.object().shape({
     orderId: yup.string(),
     companyCode: yup.string().required("Company Code is required"),
     companyName: yup.string().required("Company Name is required"),
-    // departmentCode: yup.string().required("Department Code is required"),
     departmentName: yup.string().required("Department Name is required"),
-    // locationCode: yup.string().required("Location Code is required"),
     locationName: yup.string().required("Location Name is required"),
-    // accountCode: yup.string().required("User is required"),
     accountTitles: yup.string().required("Account Title is required"),
   }),
 });
