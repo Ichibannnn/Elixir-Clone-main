@@ -42,7 +42,7 @@ export const ListOrders = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [keyword, setKeyword] = useState("");
-  const [errorDate, setErrorDate] = useState([]);
+  // const [errorDate, setErrorDate] = useState([]);
   const [errorData, setErrorData] = useState([]);
 
   const toast = useToast();
@@ -54,10 +54,15 @@ export const ListOrders = ({
     return {
       transactId: item?.transaction_id,
       customerName: item?.customer?.name,
+      // customerPosition: item?.customer?.position,
+      // farmType: item?.order_details?.farm_name,
+      // farmCode: item?.order_details?.farm_code,
       orderNo: item?.order_details?.orderNo,
       batchNo: item?.order_details?.batchNo,
       orderDate: item?.order_details?.dateOrdered,
       dateNeeded: item?.order_details?.dateNeeded,
+      // timeNeeded: item?.order_details?.timeNeeded,
+      // transactionType: item?.order_details?.type,
       itemCode: item?.order_details?.order?.itemCode,
       itemDescription: item?.order_details?.order?.itemDescription,
       uom: item?.order_details?.order?.uom,

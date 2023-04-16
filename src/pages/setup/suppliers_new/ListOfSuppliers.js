@@ -29,6 +29,7 @@ import {
     import Swal from "sweetalert2";
     import request from "../../../services/ApiClient";
     import moment from "moment";
+import { ListOfErrors } from "./ListOfErrors";
     // import OrdersConfirmation from "./OrdersConfirmation";
     
     export const ListOfSuppliers = ({genusSupplier, fetchingData}) => {
@@ -184,21 +185,21 @@ import {
                           bg="gray.200"
                           variant="striped"
                         >
-                          <Thead bg="secondary" position="sticky" top={0} >
-                            <Tr flex={3}>
-                              <Th color="#D6D6D6" fontSize="10px">
+                          <Thead bg="secondary" position="sticky" top={0}>
+                            <Tr h="30px">
+                              <Th color="#D6D6D6" fontSize="10px" pl="100px">
                                 ID
                               </Th>
-                              <Th color="#D6D6D6" fontSize="10px">
+                              <Th color="#D6D6D6" fontSize="10px" pl="100px">
                                 Supplier No.
                               </Th>
-                              <Th color="#D6D6D6" fontSize="10px">
+                              {/* <Th color="#D6D6D6" fontSize="10px" pl="100px">
                                
-                              </Th>
-                              <Th color="#D6D6D6" fontSize="10px">
+                              </Th> */}
+                              <Th color="#D6D6D6" fontSize="10px" pl="100px">
                                 Supplier Code
                               </Th>
-                              <Th color="#D6D6D6" fontSize="10px">
+                              <Th color="#D6D6D6" fontSize="10px" pl="200px">
                                 Supplier Name
                               </Th>
                             </Tr>
@@ -215,15 +216,15 @@ import {
                               })
                               ?.map((supp, i) => (
                                 <Tr key={i}>
-                                  <Td fontSize="12px">{i + 1}</Td>
-                                  <Td fontSize="12px">
+                                  <Td fontSize="12px" pl="100px">{i + 1}</Td>
+                                  <Td fontSize="12px" pl="100px">
                                     {supp.id}
                                   </Td>
-                                  <Td fontSize="12px"></Td>
-                                  <Td fontSize="12px">
+                                  {/* <Td fontSize="12px" pl="100px"></Td> */}
+                                  <Td fontSize="12px" pl="100px">
                                     {supp.code}
                                   </Td>
-                                  <Td fontSize="12px">{supp.name}</Td>
+                                  <Td fontSize="12px" pl="200px">{supp.name}</Td>
                                 </Tr>
                               ))}
                           </Tbody>
@@ -246,8 +247,8 @@ import {
               </Flex>
     
     
-            {/* {isOpen && (
-              <OrdersConfirmation
+            {isOpen && (
+              <ListOfErrors
                 isOpen={isOpen}
                 onOpen={onOpen}
                 onClose={onClose}
@@ -257,7 +258,7 @@ import {
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
               />
-            )} */}
+            )}
           </Flex>
         </Flex>
       );
