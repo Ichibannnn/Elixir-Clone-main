@@ -244,25 +244,26 @@ const ReasonManagement = () => {
                   boxShadow="md"
                   bg="gray.200"
                   variant="striped"
+                  className="inputUpperCase"
                 >
                   <Thead bg="secondary">
-                    <Tr fontSize="15px">
-                      <Th color="#D6D6D6" fontSize="10px">
+                    <Tr>
+                      <Th h="40px" color="white" fontSize="10px">
                         ID
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Module
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Reason
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Added By
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Date Added
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Action
                       </Th>
                     </Tr>
@@ -270,11 +271,11 @@ const ReasonManagement = () => {
                   <Tbody>
                     {reasons.reason?.map((rs, i) => (
                       <Tr key={i}>
-                        <Td fontSize="11px">{rs.id}</Td>
-                        <Td fontSize="11px">{rs.mainMenu}</Td>
-                        <Td fontSize="11px">{rs.reasonName}</Td>
-                        <Td fontSize="11px">{rs.addedBy}</Td>
-                        <Td fontSize="11px">{rs.dateAdded}</Td>
+                        <Td fontSize="xs">{rs.id}</Td>
+                        <Td fontSize="xs">{rs.mainMenu}</Td>
+                        <Td fontSize="xs">{rs.reasonName}</Td>
+                        <Td fontSize="xs">{rs.addedBy}</Td>
+                        <Td fontSize="xs">{rs.dateAdded}</Td>
 
                         <Td pl={0}>
                           <Flex>
@@ -371,7 +372,7 @@ const ReasonManagement = () => {
                 borderRadius="none"
                 onClick={addReasonHandler}
               >
-                New Reason
+                New
               </Button>
 
               {/* PROPS */}

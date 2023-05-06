@@ -87,6 +87,11 @@ const UserAccount = () => {
 
   //FOR DRAWER
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isEdit,
+    onOpen: onOpenEdit,
+    onClose: onCloseEdit,
+  } = useDisclosure();
 
   //PAGINATION
   const outerLimit = 2;
@@ -183,7 +188,7 @@ const UserAccount = () => {
   const editUserHandler = (user) => {
     setDisableEdit(true);
     setEditData(user);
-    onOpen();
+    onOpenEdit();
   };
 
   // console.log(status);
@@ -257,30 +262,30 @@ const UserAccount = () => {
                   bg="gray.200"
                   variant="striped"
                 >
-                  <Thead bg="secondary">
+                  <Thead bg="primary">
                     <Tr>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         ID
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Fullname
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Username
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Department
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         User Role
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Added By
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Date Added
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Action
                       </Th>
                     </Tr>
@@ -288,13 +293,13 @@ const UserAccount = () => {
                   <Tbody>
                     {users.user?.map((user, i) => (
                       <Tr key={i}>
-                        <Td fontSize="11px">{user.id}</Td>
-                        <Td fontSize="11px">{user.fullName}</Td>
-                        <Td fontSize="11px">{user.userName}</Td>
-                        <Td fontSize="11px">{user.department}</Td>
-                        <Td fontSize="11px">{user.userRole}</Td>
-                        <Td fontSize="11px">{user.addedBy}</Td>
-                        <Td fontSize="11px">{user.dateAdded}</Td>
+                        <Td fontSize="xs">{user.id}</Td>
+                        <Td fontSize="xs">{user.fullName}</Td>
+                        <Td fontSize="xs">{user.userName}</Td>
+                        <Td fontSize="xs">{user.department}</Td>
+                        <Td fontSize="xs">{user.userRole}</Td>
+                        <Td fontSize="xs">{user.addedBy}</Td>
+                        <Td fontSize="xs">{user.dateAdded}</Td>
 
                         <Td pl={0}>
                           <HStack>
@@ -389,7 +394,7 @@ const UserAccount = () => {
                 borderRadius="none"
                 onClick={addUserHandler}
               >
-                New User
+                New
               </Button>
 
               {/* PROPS */}
@@ -397,6 +402,18 @@ const UserAccount = () => {
                 <DrawerComponent
                   isOpen={isOpen}
                   onClose={onClose}
+                  fetchUserApi={fetchUserApi}
+                  getUserHandler={getUserHandler}
+                  editData={editData}
+                  disableEdit={disableEdit}
+                />
+              )}
+
+              {/* PROPS */}
+              {isEdit && (
+                <DrawerComponentEdit
+                  isEdit={isEdit}
+                  onCloseEdit={onCloseEdit}
                   fetchUserApi={fetchUserApi}
                   getUserHandler={getUserHandler}
                   editData={editData}
@@ -547,18 +564,18 @@ const DrawerComponent = (props) => {
     } catch (error) {}
   }, []);
 
-  const fetchDepartment = async () => {
-    try {
-      const res = await request.get("User/GetAllActiveDepartment");
-      setDepartment(res.data);
-    } catch (error) {}
-  };
+  // const fetchDepartment = async () => {
+  //   try {
+  //     const res = await request.get("User/GetAllActiveDepartment");
+  //     setDepartment(res.data);
+  //   } catch (error) {}
+  // };
 
-  useEffect(() => {
-    try {
-      fetchDepartment();
-    } catch (error) {}
-  }, []);
+  // useEffect(() => {
+  //   try {
+  //     fetchDepartment();
+  //   } catch (error) {}
+  // }, []);
 
   const fetchEmployees = async () => {
     try {
@@ -782,37 +799,6 @@ const DrawerComponent = (props) => {
                         )}
                       </div>
                     </Box>
-                    {/* <CUIAutoComplete
-                        label="Choose preferred work locations"
-                        placeholder="Type a Country"
-                        onCreateItem={handleCreateItem}
-                        items={pickerItems}
-                        selectedItems={selectedItems}
-                        onSelectedItemsChange={(changes) =>
-                          handleSelectedItemsChange(changes.selectedItems)
-                        }
-                        disableCreateItem
-                      /> */}
-
-                    {/* {departments.length > 0 ? (
-                        <Select
-                          
-                          {...register("formData.departmentId")}
-                          placeholder="Select Department"
-                        >
-                          {departments.map((dept) => (
-                            <option key={dept.id} value={dept.id}>
-                              {dept.departmentName}
-                            </option>
-                          ))}
-                        </Select>
-                      ) : (
-                        "loading"
-                      )} */}
-
-                    {/* <Text color="red" fontSize="xs">
-                        {errors.formData?.fullName?.message}
-                      </Text> */}
                   </Box>
 
                   <Box pl={2}>
@@ -845,24 +831,6 @@ const DrawerComponent = (props) => {
                       autoComplete="off"
                       readOnly
                     />
-                    <Text color="red" fontSize="xs">
-                      {errors.formData?.department?.message}
-                    </Text>
-                    {/* {departments.length > 0 ? (
-                        <Select
-                          
-                          {...register("formData.departmentId")}
-                          placeholder="Select Department"
-                        >
-                          {departments.map((dept) => (
-                            <option key={dept.id} value={dept.id}>
-                              {dept.departmentName}
-                            </option>
-                          ))}
-                        </Select>
-                      ) : (
-                        "loading"
-                      )} */}
                     <Text color="red" fontSize="xs">
                       {errors.formData?.department?.message}
                     </Text>
@@ -955,111 +923,451 @@ const DrawerComponent = (props) => {
                     </Text>
                   </Box>
                 </Box>
-
-                {/* <Box>
-                  <FormLabel>Full Name:</FormLabel>
-                  <Input
-                    {...register("formData.fullName")}
-                    placeholder="Please enter Fullname"
-                    autoFocus
-                    autoComplete="off"
-                  />
-                  <Text color="red" fontSize="xs">
-                    {errors.formData?.fullName?.message}
-                  </Text>
-                </Box>
-
-                <Box>
-                  <FormLabel>Username:</FormLabel>
-                  <Input
-                    {...register("formData.userName")}
-                    placeholder="Please enter Fullname"
-                    autoComplete="off"
-                    disabled={disableEdit}
-                    readOnly={disableEdit}
-                    _disabled={{ color: "black" }}
-                    bgColor={disableEdit && "gray.300"}
-                  />
-                  <Text color="red" fontSize="xs">
-                    {errors.formData?.userName?.message}
-                  </Text>
-                </Box>
-
-                <Box>
-                  <FormLabel>Password:</FormLabel>
-                  <InputGroup>
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      {...register("formData.password")}
-                      placeholder="Please enter Password"
-                      autoComplete="off"
-                    />
-                    <InputRightElement>
-                      <Button
-                        bg="none"
-                        onClick={() => setShowPassword(!showPassword)}
-                        size="sm"
-                      >
-                        {showPassword ? <VscEye /> : <VscEyeClosed />}
-                      </Button>
-                    </InputRightElement>
-                  </InputGroup>
-                  <Text color="red" fontSize="xs">
-                    {errors.formData?.password?.message}
-                  </Text>
-                </Box>
-
-                <Flex mt={3}></Flex>
-
-                <Box>
-                  <FormLabel>Role:</FormLabel>
-                  {roles.length > 0 ? (
-                    <Select
-                      disabled={disableEdit}
-                      readOnly={disableEdit}
-                      _disabled={{ color: "black" }}
-                      bgColor={disableEdit && "gray.400"}
-                      {...register("formData.userRoleId")}
-                      placeholder="Select Role"
-                    >
-                      {roles.map((rol) => (
-                        <option key={rol.id} value={rol.id}>
-                          {rol.roleName}
-                        </option>
-                      ))}
-                    </Select>
-                  ) : (
-                    "loading"
-                  )}
-                  <Text color="red" fontSize="xs">
-                    {errors.formData?.userRoleId?.message}
-                  </Text>
-                </Box>
-
-                <Box>
-                  <FormLabel>Department:</FormLabel>
-                  {departments.length > 0 ? (
-                    <Select
-                      {...register("formData.departmentId")}
-                      placeholder="Select Department"
-                    >
-                      {departments.map((dept) => (
-                        <option key={dept.id} value={dept.id}>
-                          {dept.departmentName}
-                        </option>
-                      ))}
-                    </Select>
-                  ) : (
-                    "loading"
-                  )}
-                  <Text color="red" fontSize="xs">
-                    {errors.formData?.departmentId?.message}
-                  </Text>
-                </Box> */}
               </Stack>
             </DrawerBody>
             <DrawerFooter borderTopWidth="1px">
               <Button variant="outline" mr={3} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button type="submit" colorScheme="blue">
+                Submit
+              </Button>
+            </DrawerFooter>
+          </DrawerContent>
+        </form>
+      </Drawer>
+    </>
+  );
+};
+
+const DrawerComponentEdit = (props) => {
+  const { isEdit, onCloseEdit, getUserHandler, editData, disableEdit } = props;
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [roles, setRoles] = useState([]);
+  const [departments, setDepartment] = useState([]);
+  const toast = useToast();
+
+  // SEDAR
+  const [pickerItems, setPickerItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  const handleCreateItem = (item) => {
+    setPickerItems((curr) => [item]);
+    setSelectedItems((curr) => [item]);
+  };
+
+  const handleSelectedItemsChange = (selectedItems) => {
+    if (selectedItems) {
+      setSelectedItems(selectedItems);
+    }
+  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: "onChange",
+    defaultValues: {
+      formData: {
+        id: "",
+        fullName: "",
+        userName: "",
+        password: "",
+        userRoleId: "",
+        department: "",
+        addedBy: currentUser?.userName,
+        modifiedBy: "",
+        empId: "",
+      },
+    },
+  });
+
+  const fetchRoles = async () => {
+    try {
+      const res = await request.get("Role/GetAllActiveRoles");
+      setRoles(res.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    try {
+      fetchRoles();
+    } catch (error) {}
+  }, []);
+
+  // const fetchDepartment = async () => {
+  //   try {
+  //     const res = await request.get("User/GetAllActiveDepartment");
+  //     setDepartment(res.data);
+  //   } catch (error) {}
+  // };
+
+  // useEffect(() => {
+  //   try {
+  //     fetchDepartment();
+  //   } catch (error) {}
+  // }, []);
+
+  const fetchEmployees = async () => {
+    try {
+      const res = await axios.get("http://rdfsedar.com/api/data/employees", {
+        headers: {
+          Authorization: "Bearer " + process.env.REACT_APP_SEDAR_TOKEN,
+        },
+      });
+
+      const sedarEmployees = res.data.data.map((item) => {
+        return {
+          label: item.general_info.full_id_number,
+          value: item.general_info.full_id_number,
+        };
+      });
+
+      setPickerItems(res.data.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
+
+  const submitHandler = async (data) => {
+    // console.log(first)
+    try {
+      if (data.formData.id === "") {
+        delete data.formData["id"];
+        const res = await request
+          .post(`User/AddNewUser`, data.formData)
+          .then((res) => {
+            ToastComponent("Success", "New user created!", "success", toast);
+            getUserHandler();
+            onCloseEdit();
+          })
+          .catch((err) => {
+            ToastComponent("Error", err.response.data, "error", toast);
+            data.formData.id = "";
+          });
+      } else {
+        const res = await request
+          .put(`User/UpdateUserInfo`, data.formData)
+          .then((res) => {
+            ToastComponent("Success", "User Updated", "success", toast);
+            getUserHandler();
+            onCloseEdit(onCloseEdit);
+          })
+          .catch((error) => {
+            ToastComponent(
+              "Update Failed",
+              error.response.data,
+              "warning",
+              toast
+            );
+          });
+      }
+    } catch (err) {}
+  };
+
+  const [idNumber, setIdNumber] = useState();
+  const [info, setInfo] = useState();
+  const [showLoading, setShowLoading] = useState(false);
+
+  useEffect(() => {
+    // console.log(pickerItems.filter(item=> {
+    //   return item?.label.toLowerCase().includes(idNumber)
+    // }).splice(0,10))
+
+    setInfo(
+      pickerItems
+        .filter((item) => {
+          return item?.general_info?.full_id_number_full_name
+            .toLowerCase()
+            .includes(idNumber);
+        })
+        .splice(0, 50)
+    );
+
+    // console.log(
+    //   pickerItems
+    //     .filter((item) => {
+    //       return item?.general_info?.full_id_number_full_name
+    //         .toLowerCase()
+    //         .includes(idNumber);
+    //     })
+    //     .splice(0, 50)
+    // );
+
+    return () => {};
+  }, [idNumber]);
+
+  const handleAutoFill = (data) => {
+    console.log("handleautofill data:", data);
+    setValue("formData.empId", data?.general_info?.full_id_number);
+    setValue("formData.fullName", data?.general_info?.full_name);
+    setValue("formData.department", data?.unit_info?.department_name);
+    // let data;
+    // function generateUsername(data) {
+    //   const names = data?.general_info?.full_name.split(' ');
+    //   const username = names[0][0] + names[names.length - 1];
+    //   return username.toLowerCase();
+    // }
+
+    // setValue("formData.userName", )
+    setValue(
+      "formData.userName",
+      data?.general_info?.first_name.charAt(0).toLowerCase() +
+        data?.general_info.last_name.toLowerCase()
+    );
+    setValue(
+      "formData.password",
+      data?.general_info?.first_name.charAt(0).toLowerCase() +
+        data?.general_info.last_name.toLowerCase() +
+        "1234"
+    );
+    setShowLoading(false);
+  };
+
+  // const handleEmpId = (data) => {
+  //   if (data) {
+  //     setIdNumber(data);
+  //   } else {
+  //     setIdNumber("");
+  //     setValue("formData.fullName", "");
+  //     setValue("formData.department", "");
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (!idNumber) {
+  //     setIdNumber("");
+  //     setValue("formData.fullName", "");
+  //     setValue("formData.department", "");
+  //   }
+  // }, [idNumber]);
+
+  useEffect(() => {
+    if (editData.id) {
+      setValue(
+        "formData",
+        {
+          id: editData.id,
+          fullName: editData?.fullName,
+          userName: editData?.userName,
+          password: editData?.password,
+          userRoleId: editData?.userRoleId,
+          department: editData?.department,
+          modifiedBy: currentUser.userName,
+        },
+        { shouldValidate: true }
+      );
+    }
+  }, [editData]);
+
+  // console.log(watch('formData.userRoleId'))
+
+  return (
+    <>
+      <Drawer isOpen={isEdit} placement="right" onClose={onCloseEdit}>
+        <DrawerOverlay />
+        <form onSubmit={handleSubmit(submitHandler)}>
+          <DrawerContent>
+            <DrawerHeader
+              borderBottomWidth="1px"
+              bg="secondary"
+              color="white"
+              fontSize="md"
+            >
+              User Form
+            </DrawerHeader>
+            <DrawerCloseButton color="white" />
+            <DrawerBody>
+              <Stack spacing={4} mt={4}>
+                <Box>
+                  <Badge
+                    fontWeight="semibold"
+                    fontFamily="revert"
+                    fontSize="sm"
+                    mb={3}
+                  >
+                    USER DETAILS:
+                  </Badge>
+
+                  {/* <Box pl={2}>
+                    <Text fontSize="sm" fontWeight="semibold">
+                      Employee ID:
+                    </Text>
+                    <Input
+                      fontSize="14px"
+                      {...register("formData.empId")}
+                      autoComplete="off"
+                      onChange={(e) => setIdNumber(e.target.value)}
+                      onFocus={() => setShowLoading(true)}
+                      // onBlur={() => setShowLoading(false)}
+                    />
+                    <Box
+                      style={{ position: "relative", width: "100%" }}
+                      onBlur={() => setShowLoading(false)}
+                    >
+                      <div
+                        className="filteredData"
+                        style={{ display: showLoading ? "block" : "none" }}
+                      >
+                        {showLoading &&
+                          info?.map((item, i) => {
+                            return (
+                              <Text
+                                key={i}
+                                onClick={() => {
+                                  handleAutoFill(item);
+                                }}
+                                style={{ cursor: "pointer", zIndex: 999 }}
+                              >
+                                {item?.general_info?.full_id_number}
+                              </Text>
+                            );
+                          })}
+                        {showLoading && pickerItems.length <= 0 && (
+                          <div>LOADING...</div>
+                        )}
+                      </div>
+                    </Box>
+                  </Box> */}
+
+                  <Box pl={2}>
+                    <Text fontSize="sm" fontWeight="semibold">
+                      Full Name:
+                    </Text>
+                    <Input
+                      fontSize="14px"
+                      {...register("formData.fullName")}
+                      // placeholder="Please enter Fullname"
+                      disabled={disableEdit}
+                      autoFocus
+                      autoComplete="off"
+                      readOnly={disableEdit}
+                      _disabled={{ color: "black" }}
+                      bgColor={disableEdit && "gray.300"}
+                    />
+                    <Text color="red" fontSize="xs">
+                      {errors.formData?.fullName?.message}
+                    </Text>
+                  </Box>
+
+                  <Flex mt={3}></Flex>
+                  <Box pl={2}>
+                    <Text fontSize="sm" fontWeight="semibold">
+                      Department:
+                    </Text>
+                    <Input
+                      disabled={disableEdit}
+                      fontSize="xs"
+                      {...register("formData.department")}
+                      // placeholder="Please enter Fullname"
+                      autoFocus
+                      autoComplete="off"
+                      readOnly={disableEdit}
+                      _disabled={{ color: "black" }}
+                      bgColor={disableEdit && "gray.300"}
+                    />
+                    <Text color="red" fontSize="xs">
+                      {errors.formData?.department?.message}
+                    </Text>
+                  </Box>
+                </Box>
+
+                <Box>
+                  <Badge
+                    fontWeight="semibold"
+                    fontFamily="revert"
+                    fontSize="sm"
+                    mb={3}
+                  >
+                    USER PERMISSION:
+                  </Badge>
+                  <Box pl={2}>
+                    <Text fontSize="sm" fontWeight="semibold">
+                      Username:
+                    </Text>
+                    <Input
+                      fontSize="14px"
+                      {...register("formData.userName")}
+                      placeholder="Please enter Fullname"
+                      autoComplete="off"
+                      disabled={disableEdit}
+                      readOnly={disableEdit}
+                      _disabled={{ color: "black" }}
+                      bgColor={disableEdit && "gray.300"}
+                    />
+                    <Text color="red" fontSize="xs">
+                      {errors.formData?.userName?.message}
+                    </Text>
+                  </Box>
+
+                  <Flex mt={3}></Flex>
+                  <Box pl={2}>
+                    <Text fontSize="sm" fontWeight="semibold">
+                      Password:
+                    </Text>
+                    <InputGroup>
+                      <Input
+                        fontSize="14px"
+                        type={showPassword ? "text" : "password"}
+                        {...register("formData.password")}
+                        placeholder="Please enter Password"
+                        autoComplete="off"
+                      />
+                      <InputRightElement>
+                        <Button
+                          bg="none"
+                          onClick={() => setShowPassword(!showPassword)}
+                          size="sm"
+                        >
+                          {showPassword ? <VscEye /> : <VscEyeClosed />}
+                        </Button>
+                      </InputRightElement>
+                    </InputGroup>
+                    <Text color="red" fontSize="xs">
+                      {errors.formData?.password?.message}
+                    </Text>
+                  </Box>
+
+                  <Flex mt={3}></Flex>
+
+                  <Box pl={2}>
+                    <Text fontSize="sm" fontWeight="semibold">
+                      User Role:
+                    </Text>
+                    {roles.length > 0 ? (
+                      <Select
+                        fontSize="14px"
+                        disabled={disableEdit}
+                        readOnly={disableEdit}
+                        _disabled={{ color: "black" }}
+                        bgColor={disableEdit && "gray.400"}
+                        {...register("formData.userRoleId")}
+                        placeholder="Select Role"
+                      >
+                        {roles.map((rol) => (
+                          <option key={rol.id} value={rol.id}>
+                            {rol.roleName}
+                          </option>
+                        ))}
+                      </Select>
+                    ) : (
+                      "loading"
+                    )}
+                    <Text color="red" fontSize="xs">
+                      {errors.formData?.userRoleId?.message}
+                    </Text>
+                  </Box>
+                </Box>
+              </Stack>
+            </DrawerBody>
+            <DrawerFooter borderTopWidth="1px">
+              <Button variant="outline" mr={3} onClick={onCloseEdit}>
                 Cancel
               </Button>
               <Button type="submit" colorScheme="blue">

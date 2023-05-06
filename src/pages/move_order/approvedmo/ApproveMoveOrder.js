@@ -152,7 +152,13 @@ export const ApproveMoveOrder = ({
   return (
     <Flex w="full" flexDirection="column" p={5} bg="form">
       <Flex justifyContent="space-between">
-        <Select onChange={handlePageSizeChange} w="7%" variant="filled" fontSize="11px" borderColor="gray.400">
+        <Select
+          onChange={handlePageSizeChange}
+          w="7%"
+          variant="filled"
+          fontSize="11px"
+          borderColor="gray.400"
+        >
           <option value={Number(10)}>10</option>
           <option value={Number(20)}>20</option>
           <option value={Number(30)}>30</option>
@@ -161,7 +167,7 @@ export const ApproveMoveOrder = ({
         <HStack w="17%">
           <Text fontSize="13px">Search:</Text>
           <Input
-            borderColor="gray.400"  
+            borderColor="gray.400"
             fontSize="11px"
             borderRadius="none"
             placeholder="Order Id"
@@ -171,12 +177,12 @@ export const ApproveMoveOrder = ({
       </Flex>
 
       <Flex mt={5}>
-        <PageScroll minHeight="200px" maxHeight="500px">
-          <Table size="sm" variant ="striped">
+        <PageScroll minHeight="200px" maxHeight="700px">
+          <Table size="sm" variant="striped">
             <Thead bgColor="primary">
               <Tr>
                 {TableHead?.map((head, i) => (
-                  <Th p={3} key={i} color="white" fontSize="10px">
+                  <Th h="30px" p={3} key={i} color="white" fontSize="10px">
                     {head}
                   </Th>
                 ))}
@@ -299,17 +305,15 @@ export const ApproveMoveOrder = ({
         />
       )}
 
-      {
-        isReject && (
+      {isReject && (
         <RejectModal
           isOpen={isReject}
           onClose={closeReject}
           id={orderId}
           fetchApprovedMO={fetchApprovedMO}
-            // fetchNotification={fetchNotification}
+          // fetchNotification={fetchNotification}
         />
-        )
-      }
+      )}
     </Flex>
   );
 };

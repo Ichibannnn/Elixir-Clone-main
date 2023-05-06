@@ -263,29 +263,28 @@ const UserRole = () => {
                   variant="striped"
                 >
                   <Thead
-                    bg="secondary"
-                    position="sticky"
-                    zIndex="docked"
-                    top={0}
-                    bgColor="secondary"
+                    // position="sticky"
+                    // zIndex="docked"
+                    // top={0}
+                    bgColor="primary"
                   >
-                    <Tr fontSize="15px">
-                      <Th color="#D6D6D6" fontSize="10px">
+                    <Tr>
+                      <Th h="40px" color="white" fontSize="11px">
                         ID
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="11px">
                         User Role
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="11px">
                         Added By
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="11px">
                         Date Added
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="11px">
                         Action
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="11px">
                         Access
                       </Th>
                     </Tr>
@@ -293,10 +292,10 @@ const UserRole = () => {
                   <Tbody>
                     {roles.role?.map((rol, i) => (
                       <Tr key={i}>
-                        <Td fontSize="11px">{rol.id}</Td>
-                        <Td fontSize="11px">{rol.roleName}</Td>
-                        <Td fontSize="11px">{rol.addedBy}</Td>
-                        <Td fontSize="11px">{rol.dateAdded}</Td>
+                        <Td fontSize="xs">{rol.id}</Td>
+                        <Td fontSize="xs">{rol.roleName}</Td>
+                        <Td fontSize="xs">{rol.addedBy}</Td>
+                        <Td fontSize="xs">{rol.dateAdded}</Td>
 
                         <Td pl={0}>
                           <Flex>
@@ -403,7 +402,7 @@ const UserRole = () => {
                 borderRadius="none"
                 onClick={addRolesHandler}
               >
-                New Role
+                New
               </Button>
 
               {/* PROPS */}

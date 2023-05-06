@@ -50,26 +50,23 @@ export const ListOrders = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // ARRAY FOR THE LIST DATA
-  const resultArray = genusOrders?.genus_orders?.map((item) => {
-    return {
-      transactId: item?.transaction_id,
-      customerName: item?.customer?.name,
-      // customerPosition: item?.customer?.position,
-      // farmType: item?.order_details?.farm_name,
-      // farmCode: item?.order_details?.farm_code,
-      orderNo: item?.order_details?.orderNo,
-      batchNo: item?.order_details?.batchNo,
-      orderDate: item?.order_details?.dateOrdered,
-      dateNeeded: item?.order_details?.dateNeeded,
-      // timeNeeded: item?.order_details?.timeNeeded,
-      // transactionType: item?.order_details?.type,
-      itemCode: item?.order_details?.order?.itemCode,
-      itemDescription: item?.order_details?.order?.itemDescription,
-      uom: item?.order_details?.order?.uom,
-      quantityOrdered: item?.order_details?.order?.quantity,
-      category: item?.order_details?.order?.category,
-    };
-  });
+  const resultArray = genusOrders?.result?.map((item) =>
+    item.orders?.map((itemsub) => {
+      return {
+        trasactId: itemsub?.transaction_id,
+        orderNo: itemsub?.order_no,
+        orderDate: item?.date_ordered,
+        dateNeeded: item?.date_needed,
+        department: item?.department_name,
+        customerName: item?.customer_name,
+        itemCode: itemsub?.material_code,
+        itemdDescription: itemsub?.material_name,
+        category: itemsub?.category_name,
+        uom: itemsub?.uom_code,
+        quantityOrdered: itemsub?.quantity,
+      };
+    })
+  );
 
   const dateVar = new Date();
   const startDate = moment(dateVar.setDate(dateVar.getDate() - 5)).format(
@@ -91,34 +88,27 @@ export const ListOrders = ({
       heightAuto: false,
       width: "40em",
     }).then((result) => {
+      const submitBody = resultArray.flat().map((submit) => {
+        return {
+          trasactId: submit?.trasactId,
+          orderNo: submit?.orderNo,
+          orderDate: moment(submit?.orderDate).format("yyyy-MM-DD"),
+          dateNeeded: moment(submit?.dateNeeded).format("yyyy-MM-DD"),
+          department: submit?.department,
+          customerName: submit?.customerName,
+          itemCode: submit?.itemCode,
+          itemdDescription: submit?.itemdDescription,
+          category: submit?.category,
+          uom: submit?.uom,
+          quantityOrdered: submit?.quantityOrdered,
+        };
+      });
+      console.log(submitBody);
       if (result.isConfirmed) {
         try {
           setIsLoading(true);
           const res = request
-            .post(
-              `Ordering/AddNewOrders`,
-              resultArray.map((item) => {
-                return {
-                  transactId: item?.transactId,
-                  customerName: item?.customerName,
-                  // customerPosition: item?.customerPosition,
-                  // farmType: item?.farmType,
-                  // farmCode: item?.farmCode,
-                  // farmName: item?.farmName,
-                  orderNo: item?.orderNo,
-                  batchNo: item?.batchNo.toString(),
-                  orderDate: moment(item?.orderDate).format("yyyy-MM-DD"),
-                  dateNeeded: moment(item?.dateNeeded).format("yyyy-MM-DD"),
-                  // timeNeeded: item?.dateNeeded,
-                  // transactionType: item?.transactionType,
-                  itemCode: item?.itemCode,
-                  itemDescription: item?.itemDescription,
-                  uom: item?.uom,
-                  quantityOrdered: item?.quantityOrdered,
-                  category: item?.category,
-                };
-              })
-            )
+            .post(`Ordering/AddNewOrders`, submitBody)
             .then((res) => {
               ToastComponent("Success", "Orders Synced!", "success", toast);
               // fetchNotification();
@@ -137,6 +127,8 @@ export const ListOrders = ({
       }
     });
   };
+
+  //console.log(errorData);
 
   return (
     <Flex
@@ -186,7 +178,7 @@ export const ListOrders = ({
                     fontSize="13px"
                     size="sm"
                     type="text"
-                    placeholder="Search: ex. Store Name"
+                    placeholder="Search: ex. Customer"
                     onChange={(e) => setKeyword(e.target.value)}
                     disabled={isLoading}
                     borderColor="gray.200"
@@ -256,11 +248,11 @@ export const ListOrders = ({
                           <Th color="#D6D6D6" fontSize="10px">
                             Ordered Needed
                           </Th>
-                          {/* <Th color="#D6D6D6" fontSize="10px">
-                            Customer Code
-                          </Th> */}
                           <Th color="#D6D6D6" fontSize="10px">
-                            Customer Name
+                            Department
+                          </Th>
+                          <Th color="#D6D6D6" fontSize="10px">
+                            Customer
                           </Th>
                           <Th color="#D6D6D6" fontSize="10px">
                             Item Code
@@ -280,48 +272,39 @@ export const ListOrders = ({
                         </Tr>
                       </Thead>
                       <Tbody>
-                        {genusOrders?.genus_orders
+                        {genusOrders?.result
                           ?.filter((val) => {
                             const newKeyword = new RegExp(
                               `${keyword.toLowerCase()}`
                             );
-                            return val.order_details.farm_name
+                            return val?.customer_name
                               ?.toLowerCase()
                               .match(newKeyword, "*");
                           })
-                          ?.map((order, i) => (
-                            <Tr key={i}>
-                              <Td fontSize="12px">{i + 1}</Td>
-                              <Td fontSize="12px">
-                                {order.order_details.dateOrdered}
-                              </Td>
-                              <Td fontSize="12px">
-                                {order.order_details.dateNeeded}
-                              </Td>
-                              <Td fontSize="12px">{order.customer.name}</Td>
-                              {/* <Td fontSize="12px">
-                                {order.order_details.farm_code}
-                              </Td>
-                              <Td fontSize="12px">
-                                {order.order_details.farm_name}
-                              </Td> */}
-                              <Td fontSize="12px">
-                                {order.order_details.order.itemCode}
-                              </Td>
-                              <Td fontSize="12px">
-                                {order.order_details.order.itemDescription}
-                              </Td>
-                              <Td fontSize="12px">
-                                {order.order_details.order.category}
-                              </Td>
-                              <Td fontSize="12px">
-                                {order.order_details.order.uom}
-                              </Td>
-                              <Td fontSize="12px">
-                                {order.order_details.order.quantity}
-                              </Td>
-                            </Tr>
-                          ))}
+                          ?.map((order, i) =>
+                            order.orders?.map((sub) => (
+                              <Tr key={i}>
+                                <Td fontSize="12px">{i + 1}</Td>
+                                <Td fontSize="12px">
+                                  {moment(order.date_ordered).format(
+                                    "yyyy-MM-DD"
+                                  )}
+                                </Td>
+                                <Td fontSize="12px">
+                                  {moment(order.date_needed).format(
+                                    "yyyy-MM-DD"
+                                  )}
+                                </Td>
+                                <Td fontSize="12px">{order.department_name}</Td>
+                                <Td fontSize="12px">{order.customer_name}</Td>
+                                <Td fontSize="12px">{sub.material_code}</Td>
+                                <Td fontSize="12px">{sub.material_name}</Td>
+                                <Td fontSize="12px">{sub.category_name}</Td>
+                                <Td fontSize="12px">{sub.uom_code}</Td>
+                                <Td fontSize="12px">{sub.quantity}</Td>
+                              </Tr>
+                            ))
+                          )}
                       </Tbody>
                     </Table>
                   )}
@@ -338,7 +321,7 @@ export const ListOrders = ({
             <HStack>
               <Badge colorScheme="cyan">
                 <Text color="secondary">
-                  Number of Records: {genusOrders?.genus_orders?.length}
+                  Number of Records: {genusOrders?.result?.length}
                 </Text>
               </Badge>
             </HStack>

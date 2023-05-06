@@ -33,17 +33,15 @@ const EditModalSave = ({
   isSubmitDisabled,
   getAvailablePOHandler,
   closeModal,
-  itemCodeData,
   receivingDate,
-  receiveDate,
   actualGood,
   setCode,
   editData,
-  lotCategory,
-  setDisableQuantity,
   disableQuantity,
   lotName,
-  quantity
+  quantity,
+  // setReceivingId,
+  receivingId
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
@@ -175,6 +173,7 @@ const EditModalSave = ({
           onClose={closePrintModal}
           actualDelivered={actualDelivered}
           closeModal={closeModal}
+          receivingId={receivingId}
         />
       )}
     </Flex>

@@ -249,21 +249,21 @@ const MenuManagement = () => {
                   bg="gray.200"
                   variant="striped"
                 >
-                  <Thead bg="secondary">
-                    <Tr fontSize="15px">
-                      <Th color="#D6D6D6" fontSize="10px">
+                  <Thead bg="primary">
+                    <Tr>
+                      <Th h="40px" color="white" fontSize="10px">
                         ID
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Main Menu
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Added By
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Date Added
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Action
                       </Th>
                     </Tr>
@@ -271,10 +271,10 @@ const MenuManagement = () => {
                   <Tbody>
                     {mainMenu?.module?.map((mod, i) => (
                       <Tr key={i}>
-                        <Td fontSize="11px">{mod.id}</Td>
-                        <Td fontSize="11px">{mod.mainMenu}</Td>
-                        <Td fontSize="11px">{mod.addedBy}</Td>
-                        <Td fontSize="11px">{mod.dateAdded}</Td>
+                        <Td fontSize="xs">{mod.id}</Td>
+                        <Td fontSize="xs">{mod.mainMenu}</Td>
+                        <Td fontSize="xs">{mod.addedBy}</Td>
+                        <Td fontSize="xs">{mod.dateAdded}</Td>
 
                         <Td pl={0}>
                           <Flex>
@@ -371,7 +371,7 @@ const MenuManagement = () => {
                 borderRadius="none"
                 onClick={addMainMenuHandler}
               >
-                New Main Menu
+                New
               </Button>
 
               {/* PROPS */}

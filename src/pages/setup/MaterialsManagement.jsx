@@ -73,7 +73,7 @@ const MaterialsManagement = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [pageTotal, setPageTotal] = useState(undefined);
   const [disableEdit, setDisableEdit] = useState(false);
-  const itemCategoryRef = useRef();
+  const subCategoryRef = useRef();
 
   // FETCH API MATERIALS:
   const fetchMaterialApi = async (pageNumber, pageSize, status, search) => {
@@ -165,7 +165,7 @@ const MaterialsManagement = () => {
       id: "",
       itemCode: "",
       itemDescription: "",
-      subCategoryId: "",
+      itemCategoryId: "",
       uomId: "",
       bufferLevel: "",
       addedBy: currentUser.userName,
@@ -176,11 +176,11 @@ const MaterialsManagement = () => {
   };
 
   //EDIT ROLE--
-  const editMaterialHandler = (materials) => {
+  const editMaterialHandler = (mats) => {
     setDisableEdit(true);
-    setEditData(materials);
+    setEditData(mats);
     onOpen();
-    // console.log(mod.mainMenu)
+    // console.log(mod.mainMenu);
   };
 
   //FOR DRAWER (Drawer / Drawer Tagging)
@@ -250,37 +250,38 @@ const MaterialsManagement = () => {
                   boxShadow="md"
                   bg="gray.200"
                   variant="striped"
+                  className="inputUpperCase"
                 >
-                  <Thead bg="secondary">
-                    <Tr fontSize="15px">
-                      <Th color="#D6D6D6" fontSize="10px">
+                  <Thead bg="primary">
+                    <Tr>
+                      <Th h="40px" color="white" fontSize="10px">
                         ID
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Item Code
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Item Description
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Item Sub Category
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Item Category
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         UOM
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Buffer Level
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Date Added
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Added By
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Action
                       </Th>
                     </Tr>
@@ -288,15 +289,20 @@ const MaterialsManagement = () => {
                   <Tbody>
                     {materials?.materials?.map((mats, i) => (
                       <Tr key={i}>
-                        <Td fontSize="11px">{mats.id}</Td>
-                        <Td fontSize="11px">{mats.itemCode}</Td>
-                        <Td fontSize="11px">{mats.itemDescription}</Td>
-                        <Td fontSize="11px">{mats.subCategoryName}</Td>
-                        <Td fontSize="11px">{mats.itemCategoryName}</Td>
-                        <Td fontSize="11px">{mats.uom}</Td>
-                        <Td fontSize="11px">{mats.bufferLevel}</Td>
-                        <Td fontSize="11px">{mats.dateAdded}</Td>
-                        <Td fontSize="11px">{mats.addedBy}</Td>
+                        <Td fontSize="xs">{mats.id}</Td>
+                        <Td fontSize="xs">{mats.itemCode}</Td>
+                        <Td fontSize="xs">{mats.itemDescription}</Td>
+                        <Td fontSize="xs">{mats.subCategoryName}</Td>
+                        <Td fontSize="xs">{mats.itemCategoryName}</Td>
+                        <Td fontSize="xs">{mats.uom}</Td>
+                        <Td fontSize="xs">
+                          {mats.bufferLevel.toLocaleString(undefined, {
+                            maximumFractionDigits: 2,
+                            minimumFractionDigirts: 2,
+                          })}
+                        </Td>
+                        <Td fontSize="xs">{mats.dateAdded}</Td>
+                        <Td fontSize="xs">{mats.addedBy}</Td>
 
                         <Td pl={0}>
                           <Flex>
@@ -378,93 +384,93 @@ const MaterialsManagement = () => {
                   </Tbody>
                 </Table>
               )}
+            </PageScroll>
 
-              <Flex justifyContent="space-between" mt={2}>
-                <Button
-                  size="sm"
-                  colorScheme="blue"
-                  fontSize="13px"
-                  fontWeight="normal"
-                  _hover={{ bg: "blue.400", color: "#fff" }}
-                  w="auto"
-                  leftIcon={<RiAddFill fontSize="20px" />}
-                  borderRadius="none"
-                  onClick={addMaterialHandler}
+            <Flex justifyContent="space-between" mt={2}>
+              <Button
+                size="sm"
+                colorScheme="blue"
+                fontSize="13px"
+                fontWeight="normal"
+                _hover={{ bg: "blue.400", color: "#fff" }}
+                w="auto"
+                leftIcon={<RiAddFill fontSize="20px" />}
+                borderRadius="none"
+                onClick={addMaterialHandler}
+              >
+                New
+              </Button>
+              <Stack>
+                <Pagination
+                  pagesCount={pagesCount}
+                  currentPage={currentPage}
+                  onPageChange={handlePageChange}
                 >
-                  New Material
-                </Button>
-                <Stack>
-                  <Pagination
-                    pagesCount={pagesCount}
-                    currentPage={currentPage}
-                    onPageChange={handlePageChange}
-                  >
-                    <PaginationContainer>
-                      <PaginationPrevious
+                  <PaginationContainer>
+                    <PaginationPrevious
+                      bg="primary"
+                      color="white"
+                      p={1}
+                      _hover={{ bg: "btnColor", color: "white" }}
+                      size="sm"
+                    >
+                      {"<<"}
+                    </PaginationPrevious>
+                    <PaginationPageGroup ml={1} mr={1}>
+                      {pages.map((page) => (
+                        <PaginationPage
+                          _hover={{ bg: "btnColor", color: "white" }}
+                          _focus={{ bg: "btnColor" }}
+                          p={3}
+                          bg="primary"
+                          color="white"
+                          key={`pagination_page_${page}`}
+                          page={page}
+                          size="sm"
+                        />
+                      ))}
+                    </PaginationPageGroup>
+                    <HStack>
+                      <PaginationNext
                         bg="primary"
                         color="white"
                         p={1}
                         _hover={{ bg: "btnColor", color: "white" }}
                         size="sm"
+                        mb={2}
                       >
-                        {"<<"}
-                      </PaginationPrevious>
-                      <PaginationPageGroup ml={1} mr={1}>
-                        {pages.map((page) => (
-                          <PaginationPage
-                            _hover={{ bg: "btnColor", color: "white" }}
-                            _focus={{ bg: "btnColor" }}
-                            p={3}
-                            bg="primary"
-                            color="white"
-                            key={`pagination_page_${page}`}
-                            page={page}
-                            size="sm"
-                          />
-                        ))}
-                      </PaginationPageGroup>
-                      <HStack>
-                        <PaginationNext
-                          bg="primary"
-                          color="white"
-                          p={1}
-                          _hover={{ bg: "btnColor", color: "white" }}
-                          size="sm"
-                          mb={2}
-                        >
-                          {">>"}
-                        </PaginationNext>
-                        <Select
-                          onChange={handlePageSizeChange}
-                          bg="#FFFFFF"
-                          // size="sm"
-                          mb={2}
-                          variant="outline"
-                        >
-                          <option value={Number(5)}>5</option>
-                          <option value={Number(10)}>10</option>
-                          <option value={Number(25)}>25</option>
-                          <option value={Number(50)}>50</option>
-                        </Select>
-                      </HStack>
-                    </PaginationContainer>
-                  </Pagination>
-                </Stack>
+                        {">>"}
+                      </PaginationNext>
+                      <Select
+                        onChange={handlePageSizeChange}
+                        bg="#FFFFFF"
+                        // size="sm"
+                        mb={2}
+                        variant="outline"
+                      >
+                        <option value={Number(5)}>5</option>
+                        <option value={Number(10)}>10</option>
+                        <option value={Number(25)}>25</option>
+                        <option value={Number(50)}>50</option>
+                      </Select>
+                    </HStack>
+                  </PaginationContainer>
+                </Pagination>
+              </Stack>
 
-                {/* PROPS */}
-                {isOpen && (
-                  <DrawerComponent
-                    itemCategoryRef={itemCategoryRef}
-                    isOpen={isOpen}
-                    onClose={onClose}
-                    fetchMaterialApi={fetchMaterialApi}
-                    getMaterialHandler={getMaterialHandler}
-                    editData={editData}
-                    disableEdit={disableEdit}
-                  />
-                )}
-              </Flex>
-            </PageScroll>
+              {/* PROPS */}
+              {isOpen && (
+                <DrawerComponent
+                  subCategoryRef={subCategoryRef}
+                  isOpen={isOpen}
+                  onClose={onClose}
+                  fetchMaterialApi={fetchMaterialApi}
+                  getMaterialHandler={getMaterialHandler}
+                  editData={editData}
+                  disableEdit={disableEdit}
+                />
+              )}
+            </Flex>
           </Flex>
         </Flex>
       </Flex>
@@ -478,9 +484,17 @@ const schema = yup.object().shape({
   formData: yup.object().shape({
     id: yup.string().uppercase(),
     itemCode: yup.string().uppercase().required("Item code is required"),
-    itemDescription: yup.string().uppercase().required("Description is required"),
-    subCategoryId: yup.number().required("Sub Category is required"),
+    itemDescription: yup
+      .string()
+      .uppercase()
+      .required("Description is required"),
+    // itemCategoryId: yup.number().required("Item Category is required"),
     // itemCategoryId: yup.number().required("Sub Category is required"),
+    subCategoryId: yup.number().required(),
+    itemCategoryName: yup
+      .string()
+      .uppercase()
+      .required("Item Category Name is required"),
     uomId: yup.number().required("UOM is required"),
     bufferLevel: yup
       .number()
@@ -489,9 +503,8 @@ const schema = yup.object().shape({
       .positive("Negative value is not valid")
       .integer()
       .min(1, "Bufffer level must be greater than or equal to 1"),
-    addedBy: yup.string().uppercase().uppercase(),
+    addedBy: yup.string().uppercase(),
   }),
-    
 });
 
 const currentUser = decodeUser();
@@ -503,7 +516,7 @@ const DrawerComponent = (props) => {
     getMaterialHandler,
     editData,
     disableEdit,
-    itemCategoryRef,
+    subCategoryRef,
   } = props;
 
   const [subCategory, setSubCategory] = useState([]);
@@ -526,8 +539,12 @@ const DrawerComponent = (props) => {
         id: "",
         itemCode: "",
         itemDescription: "",
+        // itemCategoryId: "",
+        // itemCategoryName: "",
+        // subCategoryId: "",
+        // subcategoryName: "",
         subCategoryId: "",
-        itemCategoryId: "",
+        itemCategoryName: "",
         uomId: "",
         bufferLevel: "",
         addedBy: currentUser?.userName,
@@ -536,57 +553,36 @@ const DrawerComponent = (props) => {
     },
   });
 
-  const fetchSubCat = async () => {
-    try {
-      const res = await request.get("Material/GetAllActiveSubcategoryDropDown");
-      setSubCategory(res.data);
-    } catch (error) {}
-  };
-
-  useEffect(() => {
-    try {
-      fetchSubCat();
-    } catch (error) {}
-  }, []);
-
-  const categoryStatusHandler = (data) => {
-    const newData = JSON.parse(data);
-    if (data) {
-      setItemCategory(newData.subcategoryName);
-    } else {
-      setItemCategory("");
-    }
-  };
-
-  const categoryCategoryStatusHandler = (data) => {
-    const newData = JSON.parse(data);
-    if (data) {
-      setValue("formData.subCategoryId", newData.subCategoryId);
-      setValue("formData.itemCategoryName", newData.categoryName);
-    } else {
-      setValue("formData.subCategoryId", "");
-      setValue("formData.itemCategoryName", "");
-    }
-    console.log(newData);
-  };
-
-  // useEffect(() => {
-  //   console.log(itemCategoryRef);
-  // }, [watch("formData.subCategoryId")]);
-
+  // FETCHING ITEM CATEGORY --------------------------------------------------
   const fetchItemCat = async () => {
     try {
-      const res = await request.get(
-        `Material/GetAllSubcategoriesmaterial?category=${itemCategoryName}`
-      );
+      const res = await request.get(`Material/GetallActiveSubcategoryDropDown`);
       setCategoryData(res.data);
     } catch (error) {}
   };
 
   useEffect(() => {
+    // try {
+    fetchItemCat();
+    // } catch (error) {}
+  }, []);
+
+  // FETCHING SUB CATEGORY ---------------------
+  const fetchSubCat = async () => {
     try {
-      fetchItemCat();
+      const res = await request.get(`Material/GetAllItemcategoriesmaterial`, {
+        params: {
+          category: itemCategoryName,
+        },
+      });
+      setSubCategory(res.data);
     } catch (error) {}
+  };
+
+  useEffect(() => {
+    // try {
+    fetchSubCat();
+    // } catch (error) {}
   }, [itemCategoryName]);
 
   const fetchUom = async () => {
@@ -601,6 +597,35 @@ const DrawerComponent = (props) => {
       fetchUom();
     } catch (error) {}
   }, []);
+
+  const categoryStatusHandler = (data) => {
+    const newData = JSON.parse(data);
+    // x`console.log(newData);
+    if (data) {
+      setItemCategory(newData.itemCategoryName);
+      setValue("formData.itemCategoryName", newData.itemCategoryName);
+    } else {
+      setItemCategory("");
+      setValue("formData.itemCategoryName", "");
+    }
+    // console.log(newData);
+  };
+  console.log(watch("formData"));
+  const subCategoryStatusHandler = (data) => {
+    const newData = JSON.parse(data);
+    // console.log(newData);
+    if (data) {
+      setValue("formData.subCategoryId", newData.subcategoryId);
+    } else {
+      // setValue("formData.itemCategoryId", "");
+      setValue("formData.subCategoryId", "");
+    }
+    // console.log(newData);
+  };
+
+  // useEffect(() => {
+  //   console.log(subCategoryRef);
+  // }, [watch("formData.subCategoryId")]);
 
   const submitHandler = async (data) => {
     console.log(data);
@@ -651,8 +676,10 @@ const DrawerComponent = (props) => {
           id: editData.id,
           itemCode: editData?.itemCode,
           itemDescription: editData?.itemDescription,
+          itemCategoryName: editData?.itemCategoryName,
+          // itemCategoryId: editData?.itemCategoryId,
           subCategoryId: editData?.subCategoryId,
-
+          // subCategoryName: editData?.subCategoryName,
           uomId: editData?.uomId,
           bufferLevel: editData?.bufferLevel,
           modifiedBy: currentUser.userName,
@@ -661,8 +688,6 @@ const DrawerComponent = (props) => {
       );
     }
   }, [editData]);
-
-  console.log(watch("formData"));
 
   return (
     <>
@@ -706,12 +731,40 @@ const DrawerComponent = (props) => {
                 <Flex mt={3}></Flex>
 
                 <Box>
+                  <FormLabel>Item Category:</FormLabel>
+                  {categoryData.length > 0 ? (
+                    <Select
+                      // ref={subCategoryRef}
+                      // {...register("formData.itemCategoryId")}
+                      placeholder="Select Item Category"
+                      onChange={(e) => categoryStatusHandler(e.target.value)}
+                    >
+                      {categoryData.map((itemCat, i) => (
+                        <option key={i} value={JSON.stringify(itemCat)}>
+                          {itemCat.itemCategoryName}
+                        </option>
+                      ))}
+                    </Select>
+                  ) : (
+                    ""
+                  )}
+                  <Text color="red" fontSize="xs">
+                    {errors.formData?.itemCategoryId?.message}
+                  </Text>
+                </Box>
+
+                <Box>
                   <FormLabel>Item Sub Category:</FormLabel>
                   {subCategory.length > 0 ? (
                     <Select
+                      className="inputUpperCase"
+                      ref={subCategoryRef}
                       // {...register("formData.subCategoryId")}
                       placeholder="Select Sub Category"
-                      onChange={(e) => categoryStatusHandler(e.target.value)}
+                      // onChange={(e) =>
+                      //   subCategoryStatusHandler(e.target.value)
+                      // }
+                      onChange={(e) => subCategoryStatusHandler(e.target.value)}
                     >
                       {subCategory.map((subCat, i) => (
                         <option key={i} value={JSON.stringify(subCat)}>
@@ -720,37 +773,12 @@ const DrawerComponent = (props) => {
                       ))}
                     </Select>
                   ) : (
-                    "loading"
+                    <Select>
+                      <option>Select Sub Category</option>
+                    </Select>
                   )}
                   <Text color="red" fontSize="xs">
                     {errors.formData?.subCategoryId?.message}
-                  </Text>
-                </Box>
-
-                <Box>
-                  <FormLabel>Item Category:</FormLabel>
-                  {categoryData.length > 0 ? (
-                    <Select
-                      ref={itemCategoryRef}
-                      // {...register("formData.itemCategoryId")}
-                      placeholder="Select Item Category"
-                      onChange={(e) =>
-                        categoryCategoryStatusHandler(e.target.value)
-                      }
-                    >
-                      {categoryData.map((itemCat, i) => (
-                        <option key={i} value={JSON.stringify(itemCat)}>
-                          {itemCat.categoryName}
-                        </option>
-                      ))}
-                    </Select>
-                  ) : (
-                    <Select>
-                      <option>Select Item Category</option>
-                    </Select>
-                  )}
-                  <Text color="red" fontSize="xs">
-                    {errors.formData?.itemCategoryId?.message}
                   </Text>
                 </Box>
 

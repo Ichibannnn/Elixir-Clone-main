@@ -35,8 +35,9 @@ const PrintBarcode = ({
   itemCode,
   actualDelivered,
   closeModal,
+  receivingId,
 }) => {
-  const { receivingId } = useContext(ReceivingContext);
+  // const { receivingId } = useContext(ReceivingContext);
 
   const componentRef = useRef();
 
@@ -46,6 +47,7 @@ const PrintBarcode = ({
 
   const displayData = {
     Date: moment().format("MM/DD/YYYY, h:mm:ss a"),
+    "Receiving Date": moment(receivingDate).format("MM/DD/YYYY"),
     // "Receiving Id": receivingId,
     "Item Code": printData.itemCode,
     "Item Description": printData.itemDescription,
@@ -53,7 +55,6 @@ const PrintBarcode = ({
     Supplier: printData.supplier,
     "Quantity Good": Number(actualDelivered) - Number(sumQuantity),
     // "Total Reject": sumQuantity,
-    "Receiving Date": moment(receivingDate).format("MM/DD/YYYY"),
   };
 
   // console.log(displayData)
@@ -75,10 +76,50 @@ const PrintBarcode = ({
           }}
         />
         <ModalBody>
-
           {/* Printed on Paper */}
-          <Box display='none'>
-          <VStack spacing={0} justifyContent="center" ref={componentRef}>
+          <Box display="none">
+            <VStack spacing={0} justifyContent="center" ref={componentRef}>
+              <VStack spacing={0} justifyContent="start"></VStack>
+              <Flex mt={3} w="90%" justifyContent="center">
+                <Text fontSize="15px" fontWeight="semibold">
+                  Materials
+                </Text>
+              </Flex>
+
+              {Object.keys(displayData)?.map((key, i) => (
+                <Flex w="full" justifyContent="center" key={i}>
+                  <Flex ml="10%" w="full">
+                    <Flex>
+                      <Text fontWeight="semibold" fontSize="8px">
+                        {key}:
+                      </Text>
+                    </Flex>
+                  </Flex>
+                  <Flex w="full">
+                    <Flex>
+                      <Text fontWeight="semibold" fontSize="8px">
+                        {displayData[key]}
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </Flex>
+              ))}
+
+              <VStack spacing={0} w="90%" ml={4} justifyContent="center">
+                <Barcode
+                  fontSize="16"
+                  width={3}
+                  height={25}
+                  value={receivingId}
+                />
+              </VStack>
+
+              <Flex w="full"></Flex>
+            </VStack>
+          </Box>
+
+          {/* Display on Preview */}
+          <VStack spacing={0} justifyContent="center">
             <VStack spacing={0} justifyContent="start"></VStack>
             <Flex mt={3} w="90%" justifyContent="center">
               <Text fontSize="15px" fontWeight="semibold">
@@ -90,14 +131,14 @@ const PrintBarcode = ({
               <Flex w="full" justifyContent="center" key={i}>
                 <Flex ml="10%" w="full">
                   <Flex>
-                    <Text fontWeight="semibold" fontSize="8px">
+                    <Text fontWeight="semibold" fontSize="13px">
                       {key}:
                     </Text>
                   </Flex>
                 </Flex>
                 <Flex w="full">
                   <Flex>
-                    <Text fontWeight="semibold" fontSize="8px">
+                    <Text fontWeight="normal" fontSize="13px">
                       {displayData[key]}
                     </Text>
                   </Flex>
@@ -116,56 +157,15 @@ const PrintBarcode = ({
 
             <Flex w="full"></Flex>
           </VStack>
-          </Box>
-
-          {/* Display on Preview */}
-          <VStack spacing={0} justifyContent="center">
-            <VStack spacing={0} justifyContent="start"></VStack>
-              <Flex mt={3} w="90%" justifyContent="center">
-                <Text fontSize="15px" fontWeight="semibold">
-                  Materials
-                </Text>
-              </Flex>
-
-              {Object.keys(displayData)?.map((key, i) => (
-                <Flex w="full" justifyContent="center" key={i}>
-                  <Flex ml="10%" w="full">
-                    <Flex>
-                      <Text fontWeight="semibold" fontSize="13px">
-                        {key}:
-                      </Text>
-                    </Flex>
-                  </Flex>
-                  <Flex w="full">
-                    <Flex>
-                      <Text fontWeight="normal" fontSize="13px">
-                        {displayData[key]}
-                      </Text>
-                    </Flex>
-                  </Flex>
-                </Flex>
-              ))}
-
-              <VStack spacing={0} w="90%" ml={4} justifyContent="center">
-                <Barcode
-                  fontSize="16"
-                  width={3}
-                  height={25}
-                  value={receivingId}
-                />
-              </VStack>
-
-              <Flex w="full"></Flex>
-          </VStack>
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={handlePrint}>
             Print
           </Button>
           <Button
-            color="white"
-            bg="gray.500"
-            _hover={{ bg: "gray.600" }}
+            // color="white"
+            // bg="gray.500"
+            // _hover={{ bg: "gray.600" }}
             onClick={() => {
               onClose();
               closeModal();

@@ -63,12 +63,12 @@ export const ListOfOrders = ({
       <Box w="full" bgColor="primary" h="22px">
         <Text
           fontWeight="semibold"
-          fontSize="11px"
+          fontSize="xs"
           color="white"
           textAlign="center"
           justifyContent="center"
         >
-          List of Orders
+          LIST OF ORDERS
         </Text>
       </Box>
       <PageScroll minHeight="150px" maxHeight="200px">
@@ -76,7 +76,7 @@ export const ListOfOrders = ({
           <Thead bgColor="secondary">
             <Tr>
               {TableHead?.map((head, i) => (
-                <Th key={i} color="white" fontSize="9px">
+                <Th key={i} color="white" fontSize="10px">
                   {head}
                 </Th>
               ))}

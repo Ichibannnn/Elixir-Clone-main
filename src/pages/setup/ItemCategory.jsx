@@ -117,7 +117,7 @@ const ItemCategory = () => {
   const changeStatusHandler = (id, isActive) => {
     let routeLabel;
     // console.log(id)
-    // console.log(isActive)
+    console.log(isActive);
     if (isActive) {
       routeLabel = "InActiveItemCategory";
     } else {
@@ -130,8 +130,8 @@ const ItemCategory = () => {
         ToastComponent("Success", "Status updated", "success", toast);
         getItemCategoryHandler();
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        ToastComponent("Status Failed", error.response.data, "warning", toast);
       });
   };
 
@@ -162,6 +162,7 @@ const ItemCategory = () => {
   const addItemCategoryHandler = () => {
     setEditData({
       id: "",
+      // subCategoryId: "",
       itemCategoryName: "",
       addedBy: currentUser.userName,
       modifiedBy: "",
@@ -248,19 +249,22 @@ const ItemCategory = () => {
                 >
                   <Thead bg="secondary">
                     <Tr fontSize="15px">
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         ID
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Category Name
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      {/* <Th h="40px" color="white" fontSize="10px">
+                        Sub Category Name
+                      </Th> */}
+                      <Th h="40px" color="white" fontSize="10px">
                         Added By
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Date Added
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Action
                       </Th>
                     </Tr>
@@ -268,10 +272,11 @@ const ItemCategory = () => {
                   <Tbody>
                     {itemCategory?.category?.map((cat, i) => (
                       <Tr key={i}>
-                        <Td fontSize="11px">{cat.id}</Td>
-                        <Td fontSize="11px">{cat.itemCategoryName}</Td>
-                        <Td fontSize="11px">{cat.addedBy}</Td>
-                        <Td fontSize="11px">{cat.dateAdded}</Td>
+                        <Td fontSize="xs">{cat.id}</Td>
+                        <Td fontSize="xs">{cat.itemCategoryName}</Td>
+                        {/* <Td fontSize="xs">{cat.subCategoryName}</Td> */}
+                        <Td fontSize="xs">{cat.addedBy}</Td>
+                        <Td fontSize="xs">{cat.dateAdded}</Td>
 
                         <Td pl={0}>
                           <Flex>
@@ -367,7 +372,7 @@ const ItemCategory = () => {
                 borderRadius="none"
                 onClick={addItemCategoryHandler}
               >
-                New Item Category
+                New
               </Button>
 
               {/* PROPS */}
@@ -452,8 +457,15 @@ export default ItemCategory;
 const schema = yup.object().shape({
   formData: yup.object().shape({
     id: yup.string().uppercase(),
-    itemCategoryName: yup.string().uppercase().required("Item Category name is required"),
-    addedBy: yup.string().uppercase().uppercase(),
+    // subCategoryId: yup
+    //   .string()
+    //   .uppercase()
+    //   .required("Sub Item Category name is required"),
+    itemCategoryName: yup
+      .string()
+      .uppercase()
+      .required("Item Category name is required"),
+    addedBy: yup.string().uppercase(),
   }),
 });
 
@@ -463,6 +475,20 @@ const DrawerComponent = (props) => {
   const { isOpen, onClose, getItemCategoryHandler, editData, disableEdit } =
     props;
   const toast = useToast();
+  // const [subCategory, setSubCategory] = useState([]);
+
+  // const fetchSubCategory = async () => {
+  //   try {
+  //     const res = await request.get("Material/GetAllActiveSubCategory");
+  //     setSubCategory(res.data);
+  //   } catch (error) {}
+  // };
+
+  // useEffect(() => {
+  //   try {
+  //     fetchSubCategory();
+  //   } catch (error) {}
+  // }, []);
 
   const {
     register,
@@ -476,6 +502,7 @@ const DrawerComponent = (props) => {
     defaultValues: {
       formData: {
         id: "",
+        // subCategoryId: "",
         itemCategoryName: "",
         addedBy: currentUser?.userName,
         modifiedBy: "",
@@ -484,6 +511,7 @@ const DrawerComponent = (props) => {
   });
 
   const submitHandler = async (data) => {
+    console.log(data);
     try {
       if (data.formData.id === "") {
         delete data.formData["id"];
@@ -534,6 +562,7 @@ const DrawerComponent = (props) => {
         "formData",
         {
           id: editData.id,
+          // subCategoryId: editData?.subCategoryId,
           itemCategoryName: editData?.itemCategoryName,
           modifiedBy: currentUser.userName,
         },
@@ -556,6 +585,28 @@ const DrawerComponent = (props) => {
             <DrawerCloseButton />
             <DrawerBody>
               <Stack spacing="7px">
+                {/* <Box>
+                  <FormLabel>Sub Category Name:</FormLabel>
+                  {subCategory.length > 0 ? (
+                    <Select
+                      color="black"
+                      {...register("formData.subCategoryId")}
+                      placeholder="Select Category"
+                    >
+                      {subCategory.map((subcat) => (
+                        <option key={subcat.id} value={subcat.id}>
+                          {subcat.subcategoryName}
+                        </option>
+                      ))}
+                    </Select>
+                  ) : (
+                    "loading"
+                  )}
+                  <Text color="red" fontSize="xs">
+                    {errors.formData?.subCategoryId?.message}
+                  </Text>
+                </Box> */}
+
                 <Box>
                   <FormLabel>Category Name:</FormLabel>
                   <Input

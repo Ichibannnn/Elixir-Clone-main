@@ -115,7 +115,7 @@ const ItemSubCategory = () => {
     console.log(data);
   };
 
-  const changeStatusHandler = (subcategoryId, isActive) => {
+  const changeStatusHandler = (id, isActive) => {
     let routeLabel;
     // console.log(subcategoryId);
     console.log(isActive);
@@ -126,13 +126,13 @@ const ItemSubCategory = () => {
     }
 
     request
-      .put(`Material/${routeLabel}`, { id: subcategoryId })
+      .put(`Material/${routeLabel}`, { id: id })
       .then((res) => {
         ToastComponent("Success", "Status updated", "success", toast);
         getSubCategoryHandler();
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        ToastComponent("Status Failed", error.response.data, "warning", toast);
       });
   };
 
@@ -162,9 +162,9 @@ const ItemSubCategory = () => {
   //ADD SUB CATEGORY HANDLER---
   const addSubCategoryHandler = () => {
     setEditData({
-      subcategoryId: "",
+      id: "",
       itemCategoryId: "",
-      subcategoryName: "",
+      // subcategoryName: "",
       addedBy: currentUser.userName,
       modifiedBy: "",
     });
@@ -173,11 +173,10 @@ const ItemSubCategory = () => {
   };
 
   //EDIT SUB CATEGORY--
-  const editSubCategoryHandler = (category) => {
+  const editSubCategoryHandler = (subcat) => {
     setDisableEdit(true);
-    setEditData(category);
+    setEditData(subcat);
     onOpen();
-    // console.log(mod.mainMenu)
   };
 
   //FOR DRAWER (Drawer / Drawer Tagging)
@@ -241,6 +240,7 @@ const ItemSubCategory = () => {
                 </Stack>
               ) : (
                 <Table
+                  className="inputUpperCase"
                   size="sm"
                   width="full"
                   border="none"
@@ -248,24 +248,24 @@ const ItemSubCategory = () => {
                   bg="gray.200"
                   variant="striped"
                 >
-                  <Thead bg="secondary">
-                    <Tr fontSize="15px">
-                      <Th color="#D6D6D6" fontSize="10px">
+                  <Thead bg="primary">
+                    <Tr>
+                      <Th h="40px" color="white" fontSize="10px">
                         ID
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Category Name
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Sub Category Name
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Added By
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Date Added
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Action
                       </Th>
                     </Tr>
@@ -273,11 +273,11 @@ const ItemSubCategory = () => {
                   <Tbody>
                     {subCategory?.category?.map((subcat, i) => (
                       <Tr key={i}>
-                        <Td fontSize="11px">{subcat.id}</Td>
-                        <Td fontSize="11px">{subcat.categoryName}</Td>
-                        <Td fontSize="11px">{subcat.subcategoryName}</Td>
-                        <Td fontSize="11px">{subcat.addedBy}</Td>
-                        <Td fontSize="11px">{subcat.dateAdded}</Td>
+                        <Td fontSize="xs">{subcat.id}</Td>
+                        <Td fontSize="xs">{subcat.itemCategoryName}</Td>
+                        <Td fontSize="xs">{subcat.subcategoryName}</Td>
+                        <Td fontSize="xs">{subcat.addedBy}</Td>
+                        <Td fontSize="xs">{subcat.dateAdded}</Td>
 
                         <Td pl={0}>
                           <Flex>
@@ -373,7 +373,7 @@ const ItemSubCategory = () => {
                 borderRadius="none"
                 onClick={addSubCategoryHandler}
               >
-                New Sub Category
+                New
               </Button>
 
               {/* PROPS */}
@@ -457,10 +457,16 @@ export default ItemSubCategory;
 
 const schema = yup.object().shape({
   formData: yup.object().shape({
-    id: yup.string().uppercase(),
-    itemCategoryId: yup.string().uppercase().required("Item Category name is required"),
-    subcategoryName: yup.string().uppercase().required("Sub Category name is required"),
-    addedBy: yup.string().uppercase().uppercase(),
+    id: yup.string(),
+    itemCategoryId: yup
+      .string()
+      .uppercase()
+      .required("Item Category name is required"),
+    subcategoryName: yup
+      .string()
+      .uppercase()
+      .required("Sub Category name is required"),
+    addedBy: yup.string().uppercase(),
   }),
 });
 
@@ -497,7 +503,7 @@ const DrawerComponent = (props) => {
     defaultValues: {
       formData: {
         id: "",
-        categoryId: "",
+        itemCategoryId: "",
         subcategoryName: "",
         addedBy: currentUser?.userName,
         modifiedBy: "",
@@ -523,7 +529,7 @@ const DrawerComponent = (props) => {
           })
           .catch((err) => {
             ToastComponent("Error", err.response.data, "error", toast);
-            data.formData.subcategoryId = "";
+            data.formData.id = "";
           });
       } else {
         const res = await request
@@ -558,7 +564,7 @@ const DrawerComponent = (props) => {
         { shouldValidate: true }
       );
     }
-    // console.log(editData);
+    console.log(editData);
   }, [editData]);
 
   // console.log(watch('formData'))
@@ -582,6 +588,7 @@ const DrawerComponent = (props) => {
                       color="black"
                       {...register("formData.itemCategoryId")}
                       placeholder="Select Category"
+                      autoFocus
                     >
                       {category.map((cat) => (
                         <option key={cat.id} value={cat.id}>
@@ -601,7 +608,7 @@ const DrawerComponent = (props) => {
                   <FormLabel>Sub Category:</FormLabel>
                   <Input
                     {...register("formData.subcategoryName")}
-                    placeholder="Please enter Sub Category name"
+                    // placeholder="Please enter Sub Category name"
                     autoComplete="off"
                     autoFocus
                   />

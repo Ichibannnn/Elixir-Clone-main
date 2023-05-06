@@ -44,7 +44,7 @@ const OrdersConfirmation = ({
   isLoading,
   setIsLoading,
 }) => {
-  console.log("Open Orders Confimation ");
+  //console.log("Open Orders Confimation ");
 
   const toast = useToast();
 
@@ -59,7 +59,7 @@ const OrdersConfirmation = ({
       trasactId: list?.trasactId,
       orderDate: list.orderDate,
       dateNeeded: list.dateNeeded,
-      customercode: list.customercode,
+      department: list.department,
       customerName: list.customerName,
       category: list.category,
       itemCode: list.itemCode,
@@ -73,7 +73,7 @@ const OrdersConfirmation = ({
   const filteredOrders = errorData?.availableImport?.map((list) => {
     return {
       trasactId: list?.trasactId,
-      customercode: list?.customercode,
+      department: list?.department,
       customerName: list?.customerName,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
@@ -89,7 +89,7 @@ const OrdersConfirmation = ({
   const itemCodesExist = errorData?.itemCodesExist?.map((list) => {
     return {
       trasactId: list?.trasactId,
-      customercode: list?.customercode,
+      department: list?.department,
       customerName: list?.customerName,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
@@ -105,7 +105,7 @@ const OrdersConfirmation = ({
   const uomNotExist = errorData?.uomNotExist?.map((list) => {
     return {
       trasactId: list?.trasactId,
-      customercode: list?.customercode,
+      department: list?.department,
       customerName: list?.customerName,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
@@ -121,7 +121,7 @@ const OrdersConfirmation = ({
   const customerNameNotExist = errorData?.customerNameNotExist?.map((list) => {
     return {
       trasactId: list?.trasactId,
-      customercode: list?.customercode,
+      department: list?.department,
       customerName: list?.customerName,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
@@ -137,7 +137,23 @@ const OrdersConfirmation = ({
   const previousDateNeeded = errorData?.previousDateNeeded?.map((list) => {
     return {
       trasactId: list?.trasactId,
-      customercode: list?.customercode,
+      department: list?.department,
+      customerName: list?.customerName,
+      orderNo: list?.orderNo,
+      orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
+      dateNeeded: moment(list?.dateNeeded).format("yyyy-MM-DD"),
+      itemCode: list?.itemCode,
+      itemdDescription: list?.itemdDescription,
+      uom: list?.uom,
+      quantityOrdered: list?.quantityOrdered,
+      category: list?.category,
+    };
+  });
+
+  const quantityInValid = errorData?.quantityInValid?.map((list) => {
+    return {
+      trasactId: list?.trasactId,
+      department: list?.department,
       customerName: list?.customerName,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
@@ -153,7 +169,7 @@ const OrdersConfirmation = ({
   const resultArray = filteredOrders?.map((list) => {
     return {
       trasactId: list?.trasactId,
-      customercode: list?.customercode,
+      department: list?.department,
       customerName: list?.customerName,
       orderNo: list?.orderNo,
       batchNo: list?.batchNo,
@@ -186,19 +202,19 @@ const OrdersConfirmation = ({
           const res = request
             .post(
               `Ordering/AddNewOrders`,
-              resultArray.map((item) => {
+              resultArray.map((submit) => {
                 return {
-                  trasactId: item?.trasactId,
-                  customercode: item?.customercode,
-                  customerName: item?.customerName,
-                  orderNo: item?.orderNo,
-                  orderDate: moment(item?.orderDate).format("yyyy-MM-DD"),
-                  dateNeeded: moment(item?.dateNeeded).format("yyyy-MM-DD"),
-                  itemCode: item?.itemCode,
-                  itemdDescription: item?.itemdDescription,
-                  uom: item?.uom,
-                  quantityOrdered: item?.quantityOrdered,
-                  category: item?.category,
+                  trasactId: submit?.trasactId,
+                  department: submit?.department,
+                  customerName: submit?.customerName,
+                  orderNo: submit?.orderNo,
+                  orderDate: moment(submit?.orderDate).format("yyyy-MM-DD"),
+                  dateNeeded: moment(submit?.dateNeeded).format("yyyy-MM-DD"),
+                  itemCode: submit?.itemCode,
+                  itemdDescription: submit?.itemdDescription,
+                  uom: submit?.uom,
+                  quantityOrdered: submit?.quantityOrdered,
+                  category: submit?.category,
                 };
               })
             )
@@ -276,7 +292,7 @@ const OrdersConfirmation = ({
                                 Date Needed
                               </Th>
                               <Th color="white" fontSize="9px">
-                                Customer Code
+                                Department
                               </Th>
                               <Th color="white" fontSize="9px">
                                 Customer Name
@@ -315,7 +331,7 @@ const OrdersConfirmation = ({
                                   {moment(d?.dateNeeded).format("yyyy-MM-DD")}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
-                                  {d?.customercode}
+                                  {d?.department}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
@@ -394,7 +410,7 @@ const OrdersConfirmation = ({
                                 Date Needed
                               </Th>
                               <Th color="white" fontSize="9px">
-                                Customer Code
+                                Department
                               </Th>
                               <Th color="white" fontSize="9px">
                                 Customer Name
@@ -433,7 +449,7 @@ const OrdersConfirmation = ({
                                   {moment(d?.dateNeeded).format("yyyy-MM-DD")}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
-                                  {d?.customercode}
+                                  {d?.department}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
@@ -527,7 +543,7 @@ const OrdersConfirmation = ({
                                 Date Needed
                               </Th>
                               <Th color="white" fontSize="9px">
-                                Customer Code
+                                Department
                               </Th>
                               <Th color="white" fontSize="9px">
                                 Customer Name
@@ -566,7 +582,7 @@ const OrdersConfirmation = ({
                                   {moment(d?.dateNeeded).format("yyyy-MM-DD")}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
-                                  {d?.customercode}
+                                  {d?.department}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
@@ -634,7 +650,7 @@ const OrdersConfirmation = ({
                           <Thead bgColor="gray.600">
                             <Tr>
                               <Th color="white" fontSize="9px">
-                                Liness
+                                Line
                               </Th>
                               <Th color="white" fontSize="9px">
                                 Transact ID
@@ -646,7 +662,7 @@ const OrdersConfirmation = ({
                                 Date Needed
                               </Th>
                               <Th color="white" fontSize="9px">
-                                Customer Code
+                                Department
                               </Th>
                               <Th color="white" fontSize="9px">
                                 Customer Name
@@ -685,7 +701,7 @@ const OrdersConfirmation = ({
                                   {moment(d?.dateNeeded).format("yyyy-MM-DD")}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
-                                  {d?.customercode}
+                                  {d?.department}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
@@ -766,7 +782,7 @@ const OrdersConfirmation = ({
                                 Date Needed
                               </Th>
                               <Th color="white" fontSize="9px">
-                                Customer Code
+                                Department
                               </Th>
                               <Th color="white" fontSize="9px">
                                 Customer Name
@@ -805,7 +821,7 @@ const OrdersConfirmation = ({
                                   {moment(d?.dateNeeded).format("yyyy-MM-DD")}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
-                                  {d?.customercode}
+                                  {d?.department}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
@@ -885,7 +901,7 @@ const OrdersConfirmation = ({
                                 Date Needed
                               </Th>
                               <Th color="white" fontSize="9px">
-                                Customer Code
+                                Department
                               </Th>
                               <Th color="white" fontSize="9px">
                                 Customer Name
@@ -924,7 +940,7 @@ const OrdersConfirmation = ({
                                   {moment(d?.dateNeeded).format("yyyy-MM-DD")}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
-                                  {d?.customercode}
+                                  {d?.department}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
@@ -954,6 +970,124 @@ const OrdersConfirmation = ({
                             <RiFileList3Fill fontSize="200px" />
                             <Text color="white">
                               There are no duplicated lists on this file
+                            </Text>
+                          </VStack>
+                        </Flex>
+                      )}
+                    </PageScrollImport>
+                  </AccordionPanel>
+                </AccordionItem>
+              ) : (
+                ""
+              )}
+
+              {/* Invalid Quantity */}
+              {quantityInValid?.length > 0 ? (
+                <AccordionItem bgColor="gray.200">
+                  <Flex>
+                    <AccordionButton color="white" fontWeight="semibold">
+                      <Box
+                        flex="1"
+                        textAlign="left"
+                        color="black"
+                        fontSize="13px"
+                        fontWeight="semibold"
+                      >
+                        Invalid Quantity{" "}
+                        <Badge color="red">{quantityInValid?.length}</Badge>
+                      </Box>
+                      <AccordionIcon color="secondary" />
+                    </AccordionButton>
+                  </Flex>
+
+                  <AccordionPanel pb={4}>
+                    <PageScrollImport maxHeight="470px">
+                      {quantityInValid ? (
+                        <Table variant="striped" size="sm">
+                          <Thead bgColor="gray.600">
+                            <Tr>
+                              <Th color="white" fontSize="9px">
+                                Line
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Transact ID
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Order Date
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Date Needed
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Department
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Customer Name
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Category
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Item Code
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Item Description
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                UOM
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Quantity Order
+                              </Th>
+                            </Tr>
+                          </Thead>
+
+                          <Tbody>
+                            {quantityInValid?.map((d, i) => (
+                              <Tr key={i}>
+                                <Td color="gray.600" fontSize="11px">
+                                  {i + 1}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.trasactId}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {moment(d?.orderDate).format("yyyy-MM-DD")}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {moment(d?.dateNeeded).format("yyyy-MM-DD")}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.department}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.customerName}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.category}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.itemCode}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.itemdDescription}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.uom}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.quantityOrdered}
+                                </Td>
+                              </Tr>
+                            ))}
+                          </Tbody>
+                        </Table>
+                      ) : (
+                        <Flex justifyContent="center" mt="30px">
+                          <VStack>
+                            <RiFileList3Fill fontSize="200px" />
+                            <Text color="white">
+                              There are no invalid quantity on this file
                             </Text>
                           </VStack>
                         </Flex>

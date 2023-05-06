@@ -29,15 +29,14 @@ import { ToastComponent } from "../../../components/Toast";
 import Swal from "sweetalert2";
 import request from "../../../services/ApiClient";
 import moment from "moment";
-import { ListOfErrors } from "./ListOfErrors";
+import { ErrorCustomers } from "./ErrorCustomers";
 // import OrdersConfirmation from "./OrdersConfirmation";
 
-export const ListOfSuppliers = ({
-  genusSupplier,
+export const ListOfCustomers = ({
+  genusCustomers,
   fetchingData,
-  fetchElixirSuppliers,
-  elixirSuppliers,
-  setElixirSuppliers,
+  elixirCustomers,
+  fetchElixirCustomers,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [keyword, setKeyword] = useState("");
@@ -47,11 +46,17 @@ export const ListOfSuppliers = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // ARRAY FOR THE LIST DATA OF SUPPLIERS
-  const resultArray = genusSupplier?.result?.suppliers?.map((item) => {
+  const resultArray = genusCustomers?.result?.map((item) => {
     return {
-      supplier_No: item?.id,
-      supplierCode: item?.code,
-      supplierName: item?.name,
+      customer_No: item?.id,
+      customerCode: item?.account_code,
+      customerName: item?.account_name,
+      companyCode: item?.company_code,
+      companyName: item?.company,
+      departmentCode: item?.department_code,
+      departmentName: item?.department,
+      locationCode: item?.location_code,
+      locationName: item?.location,
     };
   });
 
@@ -59,7 +64,7 @@ export const ListOfSuppliers = ({
   const syncHandler = () => {
     Swal.fire({
       title: "Confirmation!",
-      text: "Are you sure you want to sync these suppliers?",
+      text: "Are you sure you want to sync these customers?",
       icon: "info",
       color: "white",
       background: "#1B1C1D",
@@ -75,18 +80,24 @@ export const ListOfSuppliers = ({
           setIsLoading(true);
           const res = request
             .put(
-              `Supplier/AddNewSupplier`,
+              `Customer/AddNewCustomer`,
               resultArray.map((item) => {
                 return {
-                  supplier_No: item?.supplier_No,
-                  supplierCode: item?.supplierCode,
-                  supplierName: item?.supplierName,
+                  customer_No: item?.customer_No,
+                  customerCode: item?.customerCode,
+                  customerName: item?.customerName,
+                  companyCode: item?.customerCode,
+                  companyName: item?.companyName,
+                  departmentCode: item?.departmentCode,
+                  departmentName: item?.departmentName,
+                  locationCode: item?.locationCode,
+                  locationName: item?.locationName,
                 };
               })
             )
             .then((res) => {
-              ToastComponent("Success", "Orders Synced!", "success", toast);
-              fetchElixirSuppliers();
+              ToastComponent("Success", "Customer Synced!", "success", toast);
+              fetchElixirCustomers();
               // fetchNotification();
               // onClose();
               setIsLoading(false);
@@ -128,7 +139,7 @@ export const ListOfSuppliers = ({
                 fontSize="13px"
                 size="sm"
                 type="text"
-                placeholder="Search: ex. Supplier Name"
+                placeholder="Search: ex. Customer Name"
                 onChange={(e) => setKeyword(e.target.value)}
                 disabled={isLoading}
                 borderColor="gray.200"
@@ -156,7 +167,7 @@ export const ListOfSuppliers = ({
         <Flex p={4}>
           <VStack bg="primary" alignItems="center" w="100%" p={1} mt={-7}>
             <Text color="white" fontSize="13px" textAlign="center">
-              LIST OF SUPPLIERS
+              LIST OF CUSTOMERS
             </Text>
           </VStack>
         </Flex>
@@ -191,48 +202,44 @@ export const ListOfSuppliers = ({
                 >
                   <Thead bg="secondary" position="sticky" top={0}>
                     <Tr h="30px">
-                      <Th w="25%" color="#D6D6D6" fontSize="10px">
+                      <Th color="#D6D6D6" fontSize="10px">
                         ID
                       </Th>
-                      <Th w="25%" color="#D6D6D6" fontSize="10px">
-                        Supplier No.
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Customer No.
                       </Th>
                       {/* <Th color="#D6D6D6" fontSize="10px" pl="100px">
                                
                               </Th> */}
-                      <Th w="25%" color="#D6D6D6" fontSize="10px">
-                        Supplier Code
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Customer Code
                       </Th>
-                      <Th w="25%" color="#D6D6D6" fontSize="10px">
-                        Supplier Name
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Customer Name
+                      </Th>
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Company
                       </Th>
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {elixirSuppliers?.supplier
+                    {elixirCustomers?.customer
                       ?.filter((val) => {
                         const newKeyword = new RegExp(
                           `${keyword.toLowerCase()}`
                         );
-                        return val?.supplierName
+                        return val?.customerName
                           ?.toLowerCase()
                           .match(newKeyword, "*");
                       })
-                      ?.map((supp, i) => (
+                      ?.map((comp, i) => (
                         <Tr key={i}>
-                          <Td w="25%" fontSize="12px">
-                            {i + 1}
-                          </Td>
-                          <Td w="25%" fontSize="12px">
-                            {supp.id}
-                          </Td>
+                          <Td fontSize="12px">{i + 1}</Td>
+                          <Td fontSize="12px">{comp.id}</Td>
                           {/* <Td fontSize="12px" pl="100px"></Td> */}
-                          <Td w="25%" fontSize="12px">
-                            {supp.supplierCode}
-                          </Td>
-                          <Td w="25%" fontSize="12px">
-                            {supp.supplierName}
-                          </Td>
+                          <Td fontSize="12px">{comp.customerCode}</Td>
+                          <Td fontSize="12px">{comp.customerName}</Td>
+                          <Td fontSize="12px">{comp.companyName}</Td>
                         </Tr>
                       ))}
                   </Tbody>
@@ -246,14 +253,14 @@ export const ListOfSuppliers = ({
           <HStack>
             <Badge colorScheme="cyan">
               <Text color="secondary">
-                Number of Records: {elixirSuppliers?.supplier?.length}
+                Number of Records: {elixirCustomers?.customer?.length}
               </Text>
             </Badge>
           </HStack>
         </Flex>
 
         {isOpen && (
-          <ListOfErrors
+          <ErrorCustomers
             isOpen={isOpen}
             onOpen={onOpen}
             onClose={onClose}

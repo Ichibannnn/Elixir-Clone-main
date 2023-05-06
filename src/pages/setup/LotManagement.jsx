@@ -74,7 +74,7 @@ const LotManagement = () => {
   // FETCH API LOT CATEGORY:
   const fetchLotApi = async (pageNumber, pageSize, status, search) => {
     const response = await request.get(
-      `Lot/GetAllLotNameWithPaginationOrig/${status}?PageNumber=${pageNumber}&PageSize=${pageSize}&search=${search}`
+      `Lot/GetAllLotCategoryWithPaginationOrig/${status}?PageNumber=${pageNumber}&PageSize=${pageSize}&search=${search}`
     );
 
     return response.data;
@@ -161,9 +161,9 @@ const LotManagement = () => {
   const addLotHandler = () => {
     setEditData({
       id: "",
-      lotNameCode: "",
-      lotCategoryId: "",
-      sectionName: "",
+      lotCode: "",
+      // lotCategoryId: "",
+      lotName: "",
       addedBy: currentUser.userName,
       modifiedBy: "",
     });
@@ -247,40 +247,40 @@ const LotManagement = () => {
                   bg="gray.200"
                   variant="striped"
                 >
-                  <Thead bg="secondary">
-                    <Tr fontSize="15px">
-                      <Th color="#D6D6D6" fontSize="10px">
+                  <Thead bg="primary">
+                    <Tr>
+                      <Th h="40px" color="white" fontSize="10px">
                         ID
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Lot Code
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Lot Name
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      {/* <Th color="#D6D6D6" fontSize="10px">
                         Section Name
-                      </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      </Th> */}
+                      <Th h="40px" color="white" fontSize="10px">
                         Added By
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Date Added
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Action
                       </Th>
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {lots?.lotname?.map((lot, i) => (
+                    {lots?.category?.map((lot, i) => (
                       <Tr key={i}>
-                        <Td fontSize="11px">{lot.id}</Td>
-                        <Td fontSize="11px">{lot.lotNameCode}</Td>
-                        <Td fontSize="11px">{lot.lotCategory}</Td>
-                        <Td fontSize="11px">{lot.sectionName}</Td>
-                        <Td fontSize="11px">{lot.addedBy}</Td>
-                        <Td fontSize="11px">{lot.dateAdded}</Td>
+                        <Td fontSize="xs">{lot.id}</Td>
+                        <Td fontSize="xs">{lot.lotCode}</Td>
+                        <Td fontSize="xs">{lot.lotName}</Td>
+                        {/* <Td fontSize="11px">{lot.sectionName}</Td> */}
+                        <Td fontSize="xs">{lot.addedBy}</Td>
+                        <Td fontSize="xs">{lot.dateAdded}</Td>
 
                         <Td pl={0}>
                           <Flex>
@@ -378,7 +378,7 @@ const LotManagement = () => {
                 borderRadius="none"
                 onClick={addLotHandler}
               >
-                New Lot
+                New
               </Button>
 
               {/* PROPS */}
@@ -463,9 +463,9 @@ export default LotManagement;
 const schema = yup.object().shape({
   formData: yup.object().shape({
     id: yup.string().uppercase(),
-    lotNameCode: yup.string().uppercase().required("Lot Code is required"),
-    lotCategoryId: yup.string().uppercase().required("Lot Name is required"),
-    sectionName: yup.string().uppercase().required("Section Name is required"),
+    lotCode: yup.string().uppercase().required("Lot Code is required"),
+    lotName: yup.string().uppercase().required("Lot Name is required"),
+    // sectionName: yup.string().uppercase().required("Section Name is required"),
     addedBy: yup.string().uppercase(),
   }),
 });
@@ -475,47 +475,34 @@ const currentUser = decodeUser();
 const DrawerComponent = (props) => {
   const { isOpen, onClose, getLotHandler, editData, disableEdit } = props;
   const toast = useToast();
-  const [lotName, setLotName] = useState([]);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     setValue,
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
     defaultValues: {
       formData: {
         id: "",
-        lotNameCode: "",
-        lotCategoryId: "",
-        sectionName: "",
+        lotCode: "",
+        // lotCategoryId: "",
+        lotName: "",
         addedBy: currentUser?.userName,
         modifiedBy: "",
       },
     },
   });
 
-  const fetchLot = async () => {
-    try {
-      const res = await request.get("Lot/GetAllActiveLotCategories");
-      setLotName(res.data);
-    } catch (error) {}
-  };
-
-  useEffect(() => {
-    try {
-      fetchLot();
-    } catch (error) {}
-  }, []);
-
   const submitHandler = async (data) => {
     try {
       if (data.formData.id === "") {
         delete data.formData["id"];
         const res = await request
-          .post("Lot/AddNewLotName", data.formData)
+          .post("Lot/AddNewLotCategory", data.formData)
           .then((res) => {
             ToastComponent("Success", "Lot created!", "success", toast);
             getLotHandler();
@@ -527,7 +514,7 @@ const DrawerComponent = (props) => {
           });
       } else {
         const res = await request
-          .put(`Lot/UpdateLotName`, data.formData)
+          .put(`Lot/UpdateLotCategories`, data.formData)
           .then((res) => {
             ToastComponent("Success", "Lot Updated", "success", toast);
             getLotHandler();
@@ -551,9 +538,9 @@ const DrawerComponent = (props) => {
         "formData",
         {
           id: editData.id,
-          lotNameCode: editData?.lotNameCode,
-          lotCategoryId: editData?.lotCategoryId,
-          sectionName: editData?.sectionName,
+          lotCode: editData?.lotCode,
+          // lotCategoryId: editData?.lotCategoryId,
+          lotName: editData?.lotName,
           modifiedBy: currentUser.userName,
         },
         { shouldValidate: true }
@@ -561,7 +548,7 @@ const DrawerComponent = (props) => {
     }
   }, [editData]);
 
-  console.log(lotName);
+  console.log(watch("formData"));
 
   return (
     <>
@@ -576,7 +563,7 @@ const DrawerComponent = (props) => {
                 <Box>
                   <FormLabel>Lot Code:</FormLabel>
                   <Input
-                    {...register("formData.lotNameCode")}
+                    {...register("formData.lotCode")}
                     placeholder="Please enter Lot Code"
                     autoComplete="off"
                     disabled={disableEdit}
@@ -586,10 +573,10 @@ const DrawerComponent = (props) => {
                     autoFocus
                   />
                   <Text color="red" fontSize="xs">
-                    {errors.formData?.lotNameCode?.message}
+                    {errors.formData?.lotCode?.message}
                   </Text>
                 </Box>
-                <Box>
+                {/* <Box>
                   <FormLabel>Lot Name:</FormLabel>
                   {lotName.length > 0 ? (
                     <Select
@@ -608,16 +595,16 @@ const DrawerComponent = (props) => {
                   <Text color="red" fontSize="xs">
                     {errors.formData?.lotCategoryId?.message}
                   </Text>
-                </Box>
+                </Box> */}
                 <Box>
-                  <FormLabel>Lot Section:</FormLabel>
+                  <FormLabel>Lot Name:</FormLabel>
                   <Input
-                    {...register("formData.sectionName")}
-                    placeholder="Please enter Lot Section"
+                    {...register("formData.lotName")}
+                    placeholder="Please enter Lot Name"
                     autoComplete="off"
                   />
                   <Text color="red" fontSize="xs">
-                    {errors.formData?.sectionName?.message}
+                    {errors.formData?.lotName?.message}
                   </Text>
                 </Box>
               </Stack>

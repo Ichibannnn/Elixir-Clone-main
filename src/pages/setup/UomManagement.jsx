@@ -246,24 +246,24 @@ const UomManagement = () => {
                   bg="gray.200"
                   variant="striped"
                 >
-                  <Thead bg="secondary">
-                    <Tr fontSize="15px">
-                      <Th p={2} color="white" fontSize="11px">
+                  <Thead bg="primary">
+                    <Tr>
+                      <Th h="40px" color="white" fontSize="10px">
                         ID
                       </Th>
-                      <Th p={2} color="white" fontSize="11px">
+                      <Th h="40px" color="white" fontSize="10px">
                         UOM Code
                       </Th>
-                      <Th p={2} color="white" fontSize="11px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Description
                       </Th>
-                      <Th p={2} color="white" fontSize="11px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Date Added
                       </Th>
-                      <Th p={2} color="white" fontSize="11px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Added By
                       </Th>
-                      <Th p={2} color="white" fontSize="11px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Action
                       </Th>
                     </Tr>
@@ -271,11 +271,11 @@ const UomManagement = () => {
                   <Tbody>
                     {uom?.uom?.map((uoms, i) => (
                       <Tr key={i}>
-                        <Td fontSize="11px">{uoms.id}</Td>
-                        <Td fontSize="11px">{uoms.uomCode}</Td>
-                        <Td fontSize="11px">{uoms.uomDescription}</Td>
-                        <Td fontSize="11px">{uoms.dateAdded}</Td>
-                        <Td fontSize="11px">{uoms.addedBy}</Td>
+                        <Td fontSize="xs">{uoms.id}</Td>
+                        <Td fontSize="xs">{uoms.uomCode}</Td>
+                        <Td fontSize="xs">{uoms.uomDescription}</Td>
+                        <Td fontSize="xs">{uoms.dateAdded}</Td>
+                        <Td fontSize="xs">{uoms.addedBy}</Td>
 
                         <Td pl={0}>
                           <Flex>
@@ -371,7 +371,7 @@ const UomManagement = () => {
                 borderRadius="none"
                 onClick={addUomHandler}
               >
-                New UOM
+                New
               </Button>
 
               {/* PROPS */}
@@ -457,7 +457,10 @@ const schema = yup.object().shape({
   formData: yup.object().shape({
     id: yup.string().uppercase(),
     uomCode: yup.string().uppercase().required("Uom Code name is required"),
-    uomDescription: yup.string().uppercase().required("Description name is required"),
+    uomDescription: yup
+      .string()
+      .uppercase()
+      .required("Description name is required"),
     addedBy: yup.string().uppercase().uppercase(),
   }),
 });

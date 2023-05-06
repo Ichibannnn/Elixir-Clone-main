@@ -86,9 +86,8 @@ const ImportPO = () => {
     const jsonData = XLSX.utils.sheet_to_json(initialWorkSheet);
 
     const isColumnComplete = jsonData.every((item) => {
-     return Object.keys(item).length === 12
-    })
-    
+      return Object.keys(item).length === 12;
+    });
 
     // console.log(isColumnComplete)
 
@@ -183,11 +182,11 @@ const ImportPO = () => {
   };
 
   const stringValidation = (data) => {
-    if (data === isNaN ) {
-      setIsDisabled(true)
-      ToastComponent("Please check empty fields", "success", toast)
+    if (data === isNaN) {
+      setIsDisabled(true);
+      ToastComponent("Please check empty fields", "success", toast);
     }
-  }
+  };
 
   const openErrorModal = () => {
     onErrorOpen();
@@ -208,8 +207,7 @@ const ImportPO = () => {
   // }
 
   const actualDeliveredProvider = (data) => {
-
-    if (data = isNaN) {
+    if ((data = isNaN)) {
       setIsDisabled(true);
       ToastComponent(
         "Warning!",
@@ -274,40 +272,40 @@ const ImportPO = () => {
             <Table variant="striped" size="sm">
               <Thead bg="primary" position="sticky" zIndex="0" top={0}>
                 <Tr>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     PR Number
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     PR Date
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     PO Number
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     PO Date
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Item Code
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Item Description
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Qty Ordered
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Qty Delivered
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Qty Billed
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     UOM
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Unit Price
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Supplier Name
                   </Th>
                 </Tr>
@@ -315,7 +313,7 @@ const ImportPO = () => {
               <Tbody>
                 {resultArray?.map((eData, i) => (
                   <Tr key={i}>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {eData.pR_Number ? (
                         eData.pR_Number
                       ) : (
@@ -325,7 +323,7 @@ const ImportPO = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {eData.pR_Date ? (
                         eData.pR_Date
                       ) : (
@@ -335,9 +333,9 @@ const ImportPO = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px" onChange={(e) =>
-                          actualDeliveredProvider(e.target.value)
-                        }
+                    <Td
+                      fontSize="xs"
+                      onChange={(e) => actualDeliveredProvider(e.target.value)}
                     >
                       {eData.pO_Number ? (
                         eData.pO_Number
@@ -348,7 +346,7 @@ const ImportPO = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {eData.pO_Date ? (
                         eData.pO_Date
                       ) : (
@@ -358,7 +356,7 @@ const ImportPO = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {eData.itemCode ? (
                         eData.itemCode
                       ) : (
@@ -368,7 +366,7 @@ const ImportPO = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {eData.itemDescription ? (
                         eData.itemDescription
                       ) : (
@@ -378,14 +376,17 @@ const ImportPO = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px" 
-                    // onChange={(e) => {
-                    //   stringValidation(e.target.value)
-                    // }}
+                    <Td
+                      fontSize="xs"
+                      // onChange={(e) => {
+                      //   stringValidation(e.target.value)
+                      // }}
                     >
-                    {
-                      !isNaN(eData.ordered) ? eData.ordered : `${eData.ordered} is not a number`
-                    }
+                      {!isNaN(eData.ordered)
+                        ? eData.ordered.toLocaleString(undefined, {
+                            maximumFractionDigits: 2,
+                          })
+                        : `${eData.ordered} is not a number`}
                       {/* {eData.ordered ? (
                         eData.ordered
                       ) : (
@@ -395,16 +396,18 @@ const ImportPO = () => {
                         </Text>
                       )} */}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {eData.delivered ? (
-                        eData.delivered
+                        eData.delivered.toLocaleString(undefined, {
+                          maximumFractionDigit: 2,
+                        })
                       ) : (
                         <Text fontWeight="semibold" color="red">
                           Empty field
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {eData.billed < 0 ? (
                         <Text fontWeight="semibold" color="danger">
                           Data missing. Please make sure correct excel file for
@@ -414,7 +417,7 @@ const ImportPO = () => {
                         eData.billed
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {eData.uom ? (
                         eData.uom
                       ) : (
@@ -424,9 +427,12 @@ const ImportPO = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {eData.unitPrice ? (
-                        eData.unitPrice
+                        eData.unitPrice.toLocaleString(undefined, {
+                          maximumFractionDigit: 2,
+                          minimumFractionDigit: 2,
+                        })
                       ) : (
                         <Text fontWeight="semibold" color="danger">
                           Data missing. Please make sure correct excel file for
@@ -434,7 +440,7 @@ const ImportPO = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {eData.vendorName ? (
                         eData.vendorName
                       ) : (
@@ -474,10 +480,9 @@ const ImportPO = () => {
           errorOpener={errorOpener}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
-          setExcelData={setExcelData} excelData={excelData}
+          setExcelData={setExcelData}
+          excelData={excelData}
           setIsDisabled={setIsDisabled}
-
-
         />
       )}
     </Flex>

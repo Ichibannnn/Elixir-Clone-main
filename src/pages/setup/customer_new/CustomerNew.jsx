@@ -35,16 +35,16 @@ import request from "../../../services/ApiClient";
 import PageScroll from "../../../utils/PageScroll";
 
 import axios from "axios";
-import { ListOfSuppliers } from "./ListOfSuppliers";
+import { ListOfCustomers } from "./ListOfCustomers";
 
 const fetchGenusApi = async () => {
   // const fromDateFormatted = moment(fromDate).format("yyyy-MM-DD");
   // const toDateFormatted = moment(toDate).format("yyyy-MM-DD");
   const res = await axios.get(
-    `http://10.10.2.76:8000/api/dropdown/suppliers?status=1&paginate=0&api_for=vladimir`,
+    `http://pretestomega.rdfmis.ph/genus-etd/backend/public/api/customer`,
     {
       headers: {
-        Authorization: "Bearer " + process.env.REACT_APP_FISTO_TOKEN,
+        Authorization: "Bearer " + process.env.REACT_APP_GENUS_TOKEN,
       },
     }
   );
@@ -54,64 +54,64 @@ const fetchGenusApi = async () => {
 // FETCH API REASON:
 const fetchElixirApi = async () => {
   const response = await request.get(
-    `https://localhost:7151/api/Supplier/GetAllSupplierithPagination/true?PageNumber=1&PageSize=10000`
+    `https://localhost:7151/api/Customer/GetAllCustomerWithPagination/true?PageNumber=1&PageSize=4000`
   );
 
   return response.data;
 };
 
-const SupplierNew = () => {
+const CustomerNew = () => {
   const [isLoading, setIsLoading] = useState(true);
 
-  const [genusSupplier, setGenusSupplier] = useState([]);
-  const [elixirSuppliers, setElixirSuppliers] = useState([]);
+  const [genusCustomers, setGenusCustomers] = useState([]);
+  const [elixirCustomers, setElixirCustomers] = useState([]);
   const [search, setSearch] = useState("");
 
   // GET GENUS SUPPLIERS
-  const fetchGenusSuppliers = () => {
+  const fetchGenusCustomer = () => {
     fetchGenusApi().then((res) => {
-      setGenusSupplier(res);
+      setGenusCustomers(res);
       setIsLoading(false);
     });
   };
 
   useEffect(() => {
-    fetchGenusSuppliers();
+    fetchGenusCustomer();
 
     return () => {
-      setGenusSupplier([]);
+      setGenusCustomers([]);
     };
   }, []);
 
   // GET ELIXIR SUPPLIERS
-  const fetchElixirSuppliers = () => {
+  const fetchElixirCustomers = () => {
     fetchElixirApi().then((res) => {
-      setElixirSuppliers(res);
+      setElixirCustomers(res);
       setIsLoading(false);
     });
   };
 
   useEffect(() => {
-    fetchElixirSuppliers();
+    fetchElixirCustomers();
 
     return () => {
-      setElixirSuppliers([]);
+      setElixirCustomers([]);
     };
   }, []);
 
-  console.log(elixirSuppliers);
+  //console.log(elixirCustomers);
 
   return (
-    <ListOfSuppliers
-      fetchElixirSuppliers={fetchElixirSuppliers}
-      elixirSuppliers={elixirSuppliers}
-      setElixirSuppliers={setElixirSuppliers}
-      genusSupplier={genusSupplier}
-      setGenusSupplier={setGenusSupplier}
+    <ListOfCustomers
+      fetchElixirCustomers={fetchElixirCustomers}
+      elixirCustomers={elixirCustomers}
+      setElixirCustomers={setElixirCustomers}
+      genusCustomers={genusCustomers}
+      setGenusCustomers={setGenusCustomers}
       search={search}
       fetchingData={isLoading}
     />
   );
 };
 
-export default SupplierNew;
+export default CustomerNew;

@@ -52,15 +52,15 @@ export const PreparedItem = ({
 
   return (
     <VStack w="full" spacing={0} justifyContent="center" mt={10}>
-      <Box w="full" bgColor="primary" h="22px">
+      <Box w="full" bgColor="primary" h="25px">
         <Text
           fontWeight="semibold"
-          fontSize="11px"
+          fontSize="xs"
           color="white"
           textAlign="center"
           justifyContent="center"
         >
-          Prepared Items
+          PREPARED ITEMS
         </Text>
       </Box>
       <PageScroll minHeight="150px" maxHeight="200px">
@@ -68,7 +68,7 @@ export const PreparedItem = ({
           <Thead bgColor="secondary">
             <Tr>
               {TableHead?.map((head, i) => (
-                <Th key={i} color="white" fontSize="9px">
+                <Th key={i} color="white" fontSize="10px">
                   {head}
                 </Th>
               ))}
@@ -77,11 +77,11 @@ export const PreparedItem = ({
           <Tbody>
             {preparedData?.map((items, i) => (
               <Tr key={i}>
-                <Td fontSize="11px">{i + 1}</Td>
-                <Td fontSize="11px">{items.barCodes}</Td>
-                <Td fontSize="11px">{items.itemCode}</Td>
-                <Td fontSize="11px">{items.itemDescription}</Td>
-                <Td fontSize="11px">{items.quantity}</Td>
+                <Td fontSize="xs">{i + 1}</Td>
+                <Td fontSize="xs">{items.barCodes}</Td>
+                <Td fontSize="xs">{items.itemCode}</Td>
+                <Td fontSize="xs">{items.itemDescription}</Td>
+                <Td fontSize="xs">{items.quantity}</Td>
                 {/* <Td>{moment(items.expiration).format("yyyy-MM-DD")}</Td> */}
                 <Td>
                   <Button

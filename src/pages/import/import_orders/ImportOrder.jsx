@@ -123,49 +123,49 @@ const ImportOrder = () => {
       width: "40em",
     }).then((result) => {
       if (result.isConfirmed) {
-      if (resultArray.length > 0) {
-        try {
-          setIsLoading(true);
-          const res = request
-            .post(
-              `Ordering/AddNewOrders`,
-              resultArray.map((item) => ({
-                trasactId: item?.trasactId,
-                customercode: item?.customercode,
-                customerName: item?.customerName,
-                orderNo: item?.orderNo,
-                orderDate: moment(item?.orderDate).format("yyyy-MM-DD"),
-                dateNeeded: moment(item?.dateNeeded).format("yyyy-MM-DD"),
-                itemCode: item?.itemCode,
-                itemdDescription: item?.itemdDescription,
-                uom: item?.uom,
-                quantityOrdered: item?.quantityOrdered,
-                category: item?.category,
-              }))
-            )
-            .then((res) => {
-              ToastComponent("Success", "Orders Imported!", "success", toast);
-              setIsLoading(false);
-              fileClear.current.value = "";
-              setExcelData([]);
-            })
-            .catch((err) => {
-              setIsLoading(false);
-              setErrorData(err.response.data);
-              if (err.response.data) {
-                openError();
-              }
-            });
-        } catch (error) {}
-      } else {
-        ToastComponent(
-          "Error!",
-          "No data provided, please check your import",
-          "error",
-          toast
-        );
+        if (resultArray.length > 0) {
+          try {
+            setIsLoading(true);
+            const res = request
+              .post(
+                `Ordering/AddNewOrders`,
+                resultArray.map((item) => ({
+                  trasactId: item?.trasactId,
+                  customercode: item?.customercode,
+                  customerName: item?.customerName,
+                  orderNo: item?.orderNo,
+                  orderDate: moment(item?.orderDate).format("yyyy-MM-DD"),
+                  dateNeeded: moment(item?.dateNeeded).format("yyyy-MM-DD"),
+                  itemCode: item?.itemCode,
+                  itemdDescription: item?.itemdDescription,
+                  uom: item?.uom,
+                  quantityOrdered: item?.quantityOrdered,
+                  category: item?.category,
+                }))
+              )
+              .then((res) => {
+                ToastComponent("Success", "Orders Imported!", "success", toast);
+                setIsLoading(false);
+                fileClear.current.value = "";
+                setExcelData([]);
+              })
+              .catch((err) => {
+                setIsLoading(false);
+                setErrorData(err.response.data);
+                if (err.response.data) {
+                  openError();
+                }
+              });
+          } catch (error) {}
+        } else {
+          ToastComponent(
+            "Error!",
+            "No data provided, please check your import",
+            "error",
+            toast
+          );
+        }
       }
-    }
     });
 
     // console.log(errorData);
@@ -204,34 +204,34 @@ const ImportOrder = () => {
             <Table variant="striped" size="sm">
               <Thead bg="primary" position="sticky" zIndex="0" top={0}>
                 <Tr>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Transaction Id
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Order Date
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Date Needed
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Customer Code
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Customer Name
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Category
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Item Code
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Item Description
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     UOM
                   </Th>
-                  <Th color="white" fontSize="9px">
+                  <Th h="40px" color="white" fontSize="10px">
                     Quantity Ordered
                   </Th>
                 </Tr>
@@ -239,7 +239,7 @@ const ImportOrder = () => {
               <Tbody>
                 {resultArray?.map((ed, i) => (
                   <Tr key={i}>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {ed.trasactId ? (
                         ed.trasactId
                       ) : (
@@ -249,7 +249,7 @@ const ImportOrder = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {ed.orderDate ? (
                         ed.orderDate
                       ) : (
@@ -259,7 +259,7 @@ const ImportOrder = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {ed.dateNeeded ? (
                         ed.dateNeeded
                       ) : (
@@ -269,7 +269,7 @@ const ImportOrder = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {ed.customercode ? (
                         ed.customercode
                       ) : (
@@ -279,7 +279,7 @@ const ImportOrder = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {ed.customerName ? (
                         ed.customerName
                       ) : (
@@ -289,7 +289,7 @@ const ImportOrder = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {ed.category ? (
                         ed.category
                       ) : (
@@ -299,7 +299,7 @@ const ImportOrder = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {ed.itemCode ? (
                         ed.itemCode
                       ) : (
@@ -309,7 +309,7 @@ const ImportOrder = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {ed.itemdDescription ? (
                         ed.itemdDescription
                       ) : (
@@ -319,7 +319,7 @@ const ImportOrder = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {ed.uom ? (
                         ed.uom
                       ) : (
@@ -329,9 +329,11 @@ const ImportOrder = () => {
                         </Text>
                       )}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
                       {ed.quantityOrdered ? (
-                        ed.quantityOrdered
+                        ed.quantityOrdered.toLocaleString(undefined, {
+                          maximumFractionDigit: 2,
+                        })
                       ) : (
                         <Text fontWeight="semibold" color="danger">
                           Data missing. Please make sure correct excel file for

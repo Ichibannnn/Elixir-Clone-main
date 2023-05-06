@@ -173,12 +173,13 @@ const ModuleManagement = () => {
   };
 
   //EDIT MODULE--
-  const editModuleHandler = (module) => {
+  const editModuleHandler = (mod) => {
     setDisableEdit(true);
-    setEditData(module);
+    setEditData(mod);
     onOpen();
-    // console.log(module.mainMenuId)
   };
+
+  console.log(editData);
 
   //FOR DRAWER
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -248,24 +249,24 @@ const ModuleManagement = () => {
                   bg="gray.200"
                   variant="striped"
                 >
-                  <Thead bg="secondary">
-                    <Tr fontSize="15px">
-                      <Th color="#D6D6D6" fontSize="10px">
+                  <Thead bg="primary">
+                    <Tr>
+                      <Th h="40px" color="white" fontSize="10px">
                         ID
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Menu Name
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Sub-Menu Name
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Date Added
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Added By
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Action
                       </Th>
                     </Tr>
@@ -273,11 +274,11 @@ const ModuleManagement = () => {
                   <Tbody>
                     {module.module?.map((mod, i) => (
                       <Tr key={i}>
-                        <Td fontSize="11px">{mod.id}</Td>
-                        <Td fontSize="11px">{mod.mainMenu}</Td>
-                        <Td fontSize="11px">{mod.subMenuName}</Td>
-                        <Td fontSize="11px">{mod.dateAdded}</Td>
-                        <Td fontSize="11px">{mod.addedBy}</Td>
+                        <Td fontSize="xs">{mod.id}</Td>
+                        <Td fontSize="xs">{mod.mainMenu}</Td>
+                        <Td fontSize="xs">{mod.subMenuName}</Td>
+                        <Td fontSize="xs">{mod.dateAdded}</Td>
+                        <Td fontSize="xs">{mod.addedBy}</Td>
 
                         <Td pl={0}>
                           <Flex>
@@ -380,7 +381,7 @@ const ModuleManagement = () => {
                 borderRadius="none"
                 onClick={addModuleHandler}
               >
-                New Module
+                New
               </Button>
 
               {/* PROPS */}

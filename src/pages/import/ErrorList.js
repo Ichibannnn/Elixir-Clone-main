@@ -212,7 +212,7 @@ const ErrorList = ({ isOpen, onClose, errorData, setErrorData, setErrorOpener, e
     return (
         <Modal isOpen={isOpen} onClose={() => { }} isCentered size='6xl'>
             <ModalOverlay />
-            <ModalContent color="white" bg="linear-gradient(rgba(0, 0, 0, 0.800),rgba(0, 0, 0, 0.5))">
+            <ModalContent color="white" bg="primary">
                 <ModalHeader>
                     <Flex justifyContent='left'>
 

@@ -74,7 +74,7 @@ const LotCategory = () => {
   // FETCH API LOT CATEGORY:
   const fetchLotCategoryApi = async (pageNumber, pageSize, status, search) => {
     const response = await request.get(
-      `Lot/GetAllLotCategoryWithPaginationOrig/${status}?PageNumber=${pageNumber}&PageSize=${pageSize}&search=${search}`
+      `Lot/GetAllLotNameWithPaginationOrig/${status}?PageNumber=${pageNumber}&PageSize=${pageSize}&search=${search}`
     );
 
     return response.data;
@@ -115,8 +115,8 @@ const LotCategory = () => {
 
   const changeStatusHandler = (id, isActive) => {
     let routeLabel;
-    console.log(id);
-    console.log(isActive);
+    // console.log(id);
+    // console.log(isActive);
     if (isActive) {
       routeLabel = "InActiveLotCategories";
     } else {
@@ -161,7 +161,7 @@ const LotCategory = () => {
   const addLotCategoryHandler = () => {
     setEditData({
       id: "",
-      lotName: "",
+      lotNamesId: "",
       addedBy: currentUser.userName,
       modifiedBy: "",
     });
@@ -170,9 +170,9 @@ const LotCategory = () => {
   };
 
   //EDIT LOT CATEGORY--
-  const editLotCategoryHandler = (category) => {
+  const editLotCategoryHandler = (cat) => {
     setDisableEdit(true);
-    setEditData(category);
+    setEditData(cat);
     onOpen();
     // console.log(mod.mainMenu)
   };
@@ -245,33 +245,40 @@ const LotCategory = () => {
                   bg="gray.200"
                   variant="striped"
                 >
-                  <Thead bg="secondary">
-                    <Tr fontSize="15px">
-                      <Th color="#D6D6D6" fontSize="10px">
+                  <Thead bg="primary">
+                    <Tr>
+                      <Th h="40px" color="white" fontSize="10px">
                         ID
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Lot Name
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
+                        Lot Section
+                      </Th>
+                      <Th h="40px" color="white" fontSize="10px">
                         Added By
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Date Added
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th h="40px" color="white" fontSize="10px">
                         Action
                       </Th>
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {lotCategory?.category?.map((cat, i) => (
+                    {lotCategory?.lotname?.map((cat, i) => (
                       <Tr key={i}>
-                        <Td fontSize="11px">{cat.id}</Td>
+                        <Td fontSize="xs">{cat.id}</Td>
+                        {/* <Td fontSize="11px">{cat.lotCode}</Td> */}
                         {/* <Td fontSize="11px">{cat.lotCategoryCode}</Td> */}
-                        <Td fontSize="11px">{cat.lotCategoryName}</Td>
-                        <Td fontSize="11px">{cat.addedBy}</Td>
-                        <Td fontSize="11px">{cat.dateAdded}</Td>
+                        <Td fontSize="xs">
+                          {cat.lotCode} - {cat.lotName}
+                        </Td>
+                        <Td fontSize="xs">{cat.sectionName}</Td>
+                        <Td fontSize="xs">{cat.addedBy}</Td>
+                        <Td fontSize="xs  ">{cat.dateAdded}</Td>
 
                         <Td pl={0}>
                           <Flex>
@@ -366,7 +373,7 @@ const LotCategory = () => {
                 borderRadius="none"
                 onClick={addLotCategoryHandler}
               >
-                New Lot Category
+                New
               </Button>
 
               {/* PROPS */}
@@ -451,7 +458,11 @@ export default LotCategory;
 const schema = yup.object().shape({
   formData: yup.object().shape({
     id: yup.string().uppercase(),
-    lotName: yup.string().uppercase().required("Lot Name name is required"),
+    lotNamesId: yup.number().required("Lot Name name is required"),
+    sectionName: yup
+      .string()
+      .uppercase()
+      .required("Lot Section name is required"),
     addedBy: yup.string().uppercase(),
   }),
 });
@@ -459,9 +470,22 @@ const schema = yup.object().shape({
 const currentUser = decodeUser();
 
 const DrawerComponent = (props) => {
-  const { isOpen, onClose, getLotCategoryHandler, editData } =
-    props;
+  const { isOpen, onClose, getLotCategoryHandler, editData } = props;
   const toast = useToast();
+  const [lotName, setLotName] = useState([]);
+
+  const fetchLot = async () => {
+    try {
+      const res = await request.get("Lot/GetAllActiveLotCategories");
+      setLotName(res.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    try {
+      fetchLot();
+    } catch (error) {}
+  }, []);
 
   const {
     register,
@@ -475,7 +499,8 @@ const DrawerComponent = (props) => {
     defaultValues: {
       formData: {
         id: "",
-        lotName: "",
+        lotNamesId: "",
+        sectionName: "",
         addedBy: currentUser?.userName,
         modifiedBy: "",
       },
@@ -487,11 +512,11 @@ const DrawerComponent = (props) => {
       if (data.formData.id === "") {
         delete data.formData["id"];
         const res = await request
-          .post("Lot/AddNewLotCategory", data.formData)
+          .post("Lot/AddNewLotName", data.formData)
           .then((res) => {
             ToastComponent(
               "Success",
-              "New Lot Category created!",
+              "New Lot Section created!",
               "success",
               toast
             );
@@ -504,9 +529,9 @@ const DrawerComponent = (props) => {
           });
       } else {
         const res = await request
-          .put(`Lot/UpdateLotCategories`, data.formData)
+          .put(`Lot/UpdateLotName`, data.formData)
           .then((res) => {
-            ToastComponent("Success", "Lot Category Updated", "success", toast);
+            ToastComponent("Success", "Lot Section Updated", "success", toast);
             getLotCategoryHandler();
             onClose(onClose);
           })
@@ -528,7 +553,8 @@ const DrawerComponent = (props) => {
         "formData",
         {
           id: editData.id,
-          lotName: editData?.lotCategoryName,
+          lotNamesId: editData?.lotNamesId,
+          sectionName: editData?.sectionName,
           modifiedBy: currentUser.userName,
         },
         { shouldValidate: true }
@@ -545,20 +571,41 @@ const DrawerComponent = (props) => {
         <form onSubmit={handleSubmit(submitHandler)}>
           <DrawerContent>
             <DrawerHeader borderBottomWidth="1px">
-              Lot Category Form
+              Lot Section Form
             </DrawerHeader>
             <DrawerCloseButton />
             <DrawerBody>
               <Stack spacing="7px">
                 <Box>
                   <FormLabel>Lot Name:</FormLabel>
+                  {lotName.length > 0 ? (
+                    <Select
+                      {...register("formData.lotNamesId")}
+                      placeholder="Select Lot Name"
+                    >
+                      {lotName.map((ln) => (
+                        <option key={ln.id} value={ln.id}>
+                          {ln.lotCode} - {ln.lotName}
+                        </option>
+                      ))}
+                    </Select>
+                  ) : (
+                    "loading"
+                  )}
+                  <Text color="red" fontSize="xs">
+                    {errors.formData?.lotNamesId?.message}
+                  </Text>
+                </Box>
+
+                <Box>
+                  <FormLabel>Lot Section:</FormLabel>
                   <Input
-                    {...register("formData.lotName")}
-                    placeholder="Please enter Lot Category name"
+                    {...register("formData.sectionName")}
+                    placeholder="Please enter Lot Section"
                     autoComplete="off"
                   />
                   <Text color="red" fontSize="xs">
-                    {errors.formData?.lotName?.message}
+                    {errors.formData?.sectionName?.message}
                   </Text>
                 </Box>
               </Stack>

@@ -87,6 +87,7 @@ import BorrowedMaterialsPage from "./pages/borrowed_transaction/BorrowedMaterial
 import ReportsPage from "./ReportsPage";
 import Reports from "./pages/reports/Reports";
 import SupplierNew from "./pages/setup/suppliers_new/SupplierNew";
+import CustomerNew from "./pages/setup/customer_new/CustomerNew";
 
 const App = () => {
   const [menu, setMenu] = useState(null);
@@ -187,9 +188,9 @@ const App = () => {
           <Route path="/" element={<MainContainer />}>
             {/* SETUP */}
             <Route path="/setup" element={<SetupManagementPage />}>
-              <Route path="/setup/uom-management" element={<UomManagement />} />
+              <Route path="/setup/uom" element={<UomManagement />} />
               <Route
-                path="/setup/materials-management"
+                path="/setup/materials"
                 element={<MaterialsManagement />}
               />
               <Route path="/setup/item-category" element={<ItemCategory />} />
@@ -198,17 +199,11 @@ const App = () => {
                 element={<ItemSubCategory />}
               />
               <Route path="/setup/suppliers" element={<SupplierNew />} />
-              <Route
-                path="/setup/customers-management"
-                element={<CustomersManagement />}
-              />
+              <Route path="/setup/customers" element={<CustomerNew />} />
               <Route path="/setup/customer-type" element={<CustomerType />} />
-              <Route path="/setup/lot-management" element={<LotManagement />} />
-              <Route path="/setup/lot-category" element={<LotCategory />} />
-              <Route
-                path="/setup/reason-management"
-                element={<ReasonManagement />}
-              />
+              <Route path="/setup/lot-name" element={<LotManagement />} />
+              <Route path="/setup/lot-section" element={<LotCategory />} />
+              <Route path="/setup/reasons" element={<ReasonManagement />} />
               <Route
                 path="/setup/account_title-company"
                 element={<CompanyManagement />}

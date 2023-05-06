@@ -32,7 +32,7 @@ import DatePicker from "react-date-picker";
 const currentUser = decodeUser();
 
 const fetchLotCategoryApi = async () => {
-  const res = await request.get('Lot/GetAllActiveLotCategories')
+  const res = await request.get('Lot/GetAllActiveLotNames')
   return res.data
 }
 
@@ -47,6 +47,8 @@ export const EditModal = ({
   receivingDate,
   actualGood,
   setActualGood,
+  setReceivingId,
+  receivingId
 }) => {
   const [actualDelivered, setActualDelivered] = useState(null);
   const [batchNo, setBatchNo] = useState(null);
@@ -58,7 +60,7 @@ export const EditModal = ({
   const [quantity, setQuantity] = useState(undefined);
 
   const [sumQuantity, setSumQuantity] = useState(0);
-  const [receivingId, setReceivingId] = useState(null);
+  // const [receivingId, setReceivingId] = useState(null);
 
   const [submitDataThree, setSubmitDataThree] = useState([]);
   const [submitDataTwo, setSubmitDataTwo] = useState([]);
@@ -432,7 +434,7 @@ export const EditModal = ({
                             bgColor='#ffffe0'
                             onChange={(date) => receivingDateProvider(date)}
                             min={moment(new Date(new Date().setDate(new Date().getDate() - 3))).format('yyyy-MM-DD')}
-                            max={moment(new Date(new Date().setDate(new Date().getDate() + 4))).format('yyyy-MM-DD')}
+                            max={moment(new Date()).format('yyyy-MM-DD')}
                             type='date'
                             
                             // shouldCloseOnSelect
@@ -443,7 +445,7 @@ export const EditModal = ({
                       </FormLabel>
 
                       <FormLabel w='40%' fontSize="12px">
-                        LOT Name
+                        LOT Section
                         {
                           lotCategories.length > 0 ?
                               (<Select
@@ -457,7 +459,7 @@ export const EditModal = ({
                                   bgColor='#ffffe0'
                               >
                                   {lotCategories?.map(lot =>
-                                      <option key={lot.id} value={lot.lotCategoryName}>{lot.lotCategoryName}</option>
+                                      <option key={lot.id} value={lot.id}>{lot.sectionName}</option>
                                   )}
                               </Select>) : "Loading"
                         }
@@ -493,7 +495,6 @@ export const EditModal = ({
               <EditModalSave
                 quantity={quantity}
                 sumQuantity={sumQuantity}
-                receivingId={receivingId}
                 po_ReceivingId={submitDataOne.po_Summary_Id}
                 submitDataOne={submitDataOne}
                 submitDataTwo={submitDataTwo}
@@ -511,6 +512,8 @@ export const EditModal = ({
                 lotCategory={lotCategory}
                 setDisableQuantity={setDisableQuantity}
                 disableQuantity={disableQuantity}
+                receivingId={receivingId}
+                setReceivingId={setReceivingId}
               />
             </ModalFooter>
           </ModalContent>

@@ -119,7 +119,13 @@ export const ForApprovalMoveOrder = ({
   return (
     <Flex w="full" flexDirection="column" p={5} bg="form">
       <Flex justifyContent="space-between">
-        <Select onChange={handlePageSizeChange} w="7%" variant="filled" fontSize="11px" borderColor="gray.400">
+        <Select
+          onChange={handlePageSizeChange}
+          w="7%"
+          variant="filled"
+          fontSize="11px"
+          borderColor="gray.400"
+        >
           <option value={Number(10)}>10</option>
           <option value={Number(20)}>20</option>
           <option value={Number(30)}>30</option>
@@ -128,7 +134,7 @@ export const ForApprovalMoveOrder = ({
         <HStack w="17%">
           <Text fontSize="13px">Search:</Text>
           <Input
-            borderColor="gray.400"  
+            borderColor="gray.400"
             fontSize="11px"
             placeholder="Order Id"
             onChange={(e) => searchHandler(e.target.value)}
@@ -142,7 +148,7 @@ export const ForApprovalMoveOrder = ({
             <Thead bgColor="primary">
               <Tr>
                 {TableHead?.map((head, i) => (
-                  <Th key={i} color="white" fontSize="10px">
+                  <Th h="40px" key={i} color="white" fontSize="10px">
                     {head}
                   </Th>
                 ))}
@@ -151,13 +157,13 @@ export const ForApprovalMoveOrder = ({
             <Tbody>
               {forApprovalData?.moveorder?.map((item, i) => (
                 <Tr key={i}>
-                  <Td fontSize="11px">{i + 1}</Td>
-                  <Td fontSize="11px">{item.orderNo}</Td>
-                  <Td fontSize="11px">{item.customerName}</Td>
-                  <Td fontSize="11px">{item.customercode}</Td>
-                  <Td fontSize="11px">{item.category}</Td>
-                  <Td fontSize="11px">{item.quantity}</Td>
-                  <Td fontSize="11px">
+                  <Td fontSize="xs">{i + 1}</Td>
+                  <Td fontSize="xs">{item.orderNo}</Td>
+                  <Td fontSize="xs">{item.customerName}</Td>
+                  <Td fontSize="xs">{item.customercode}</Td>
+                  <Td fontSize="xs">{item.category}</Td>
+                  <Td fontSize="xs">{item.quantity}</Td>
+                  <Td fontSize="xs">
                     {moment(item.preparedDate).format("MM/DD/yyyy")}
                   </Td>
                   {/* <Td>{item.dateNeeded}</Td> */}

@@ -103,3 +103,9 @@
     overflow: hidden;
     overflow-y: scroll;
 }
+
+.inputUpperCase{
+    text-transform: uppercase !important;
+}
+
+/* "linear-gradient(rgba(0, 0, 0, 0.800),rgba(0, 0, 0, 0.5))" */
