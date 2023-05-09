@@ -55,12 +55,12 @@ export const PreparedItem = ({
       <Box w="full" bgColor="primary" h="25px">
         <Text
           fontWeight="semibold"
-          fontSize="xs"
+          fontSize="13px"
           color="white"
           textAlign="center"
           justifyContent="center"
         >
-          PREPARED ITEMS
+          Prepared Items
         </Text>
       </Box>
       <PageScroll minHeight="150px" maxHeight="200px">

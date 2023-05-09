@@ -34,6 +34,7 @@ import { ErrorCustomers } from "./ErrorCustomers";
 
 export const ListOfCustomers = ({
   genusCustomers,
+  genusLocations,
   fetchingData,
   elixirCustomers,
   fetchElixirCustomers,
@@ -51,14 +52,40 @@ export const ListOfCustomers = ({
       customer_No: item?.id,
       customerCode: item?.account_code,
       customerName: item?.account_name,
-      companyCode: item?.company_code,
-      companyName: item?.company,
-      departmentCode: item?.department_code,
-      departmentName: item?.department,
-      locationCode: item?.location_code,
-      locationName: item?.location,
+      // companyCode: item?.company_code,
+      // companyName: item?.company,
+      // departmentCode: item?.department_code,
+      // departmentName: item?.department,
+      // locationCode: item?.location_code,
+      // locationName: item?.location,
     };
   });
+
+  const resultArrayNew = genusCustomers?.result
+    ?.filter((item) => item.scope_order.length) // kukunin nya yung mga customer na my scope for ordering
+    ?.reduce((a, item) => [...a, ...item.scope_order], []) // pagsasamahin nya sa isang array
+    ?.map((item) => {
+      return {
+        customer_No: item.location_id,
+        customerCode: item.location_code,
+        customerName: genusLocations.result.find(
+          (customer) => customer.code === item.location_code
+        ).name,
+      };
+    }) // format
+    ?.reduce((a, item) => {
+      const isExist = a.some(
+        (customer) => customer.customer_No === item.customer_No
+      );
+
+      if (isExist) {
+        return a;
+      } else {
+        return [...a, item];
+      }
+    }, []); // distinct
+
+  console.log(resultArrayNew);
 
   // SYNC ORDER BUTTON
   const syncHandler = () => {
@@ -81,17 +108,17 @@ export const ListOfCustomers = ({
           const res = request
             .put(
               `Customer/AddNewCustomer`,
-              resultArray.map((item) => {
+              resultArrayNew.map((item) => {
                 return {
                   customer_No: item?.customer_No,
                   customerCode: item?.customerCode,
                   customerName: item?.customerName,
-                  companyCode: item?.customerCode,
-                  companyName: item?.companyName,
-                  departmentCode: item?.departmentCode,
-                  departmentName: item?.departmentName,
-                  locationCode: item?.locationCode,
-                  locationName: item?.locationName,
+                  // companyCode: item?.customerCode,
+                  // companyName: item?.companyName,
+                  // departmentCode: item?.departmentCode,
+                  // departmentName: item?.departmentName,
+                  // locationCode: item?.locationCode,
+                  // locationName: item?.locationName,
                 };
               })
             )
@@ -202,24 +229,24 @@ export const ListOfCustomers = ({
                 >
                   <Thead bg="secondary" position="sticky" top={0}>
                     <Tr h="30px">
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th color="#D6D6D6" fontSize="10px" w="25%">
                         ID
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th color="#D6D6D6" fontSize="10px" w="25%">
                         Customer No.
                       </Th>
                       {/* <Th color="#D6D6D6" fontSize="10px" pl="100px">
                                
                               </Th> */}
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th color="#D6D6D6" fontSize="10px" w="25%">
                         Customer Code
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      <Th color="#D6D6D6" fontSize="10px" w="25%">
                         Customer Name
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      {/* <Th color="#D6D6D6" fontSize="10px">
                         Company
-                      </Th>
+                      </Th> */}
                     </Tr>
                   </Thead>
                   <Tbody>
@@ -234,12 +261,20 @@ export const ListOfCustomers = ({
                       })
                       ?.map((comp, i) => (
                         <Tr key={i}>
-                          <Td fontSize="12px">{i + 1}</Td>
-                          <Td fontSize="12px">{comp.id}</Td>
+                          <Td fontSize="12px" w="25%">
+                            {i + 1}
+                          </Td>
+                          <Td fontSize="12px" w="25%">
+                            {comp.id}
+                          </Td>
                           {/* <Td fontSize="12px" pl="100px"></Td> */}
-                          <Td fontSize="12px">{comp.customerCode}</Td>
-                          <Td fontSize="12px">{comp.customerName}</Td>
-                          <Td fontSize="12px">{comp.companyName}</Td>
+                          <Td fontSize="12px" w="25%">
+                            {comp.customerCode}
+                          </Td>
+                          <Td fontSize="12px" w="25%">
+                            {comp.customerName}
+                          </Td>
+                          {/* <Td fontSize="12px">{comp.companyName}</Td> */}
                         </Tr>
                       ))}
                   </Tbody>
@@ -264,6 +299,7 @@ export const ListOfCustomers = ({
             isOpen={isOpen}
             onOpen={onOpen}
             onClose={onClose}
+            resultArrayNew={resultArrayNew}
             resultArray={resultArray}
             errorData={errorData}
             setErrorData={setErrorData}

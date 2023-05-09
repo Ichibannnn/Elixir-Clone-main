@@ -248,7 +248,7 @@ const ReceivedMaterials = () => {
                 type="text"
                 border="none"
                 bg="#E9EBEC"
-                placeholder="Search PO Number"
+                placeholder="Search Item Description"
                 borderColor="gray.400"
                 _hover={{ borderColor: "gray.400" }}
                 onChange={(e) => searchHandler(e.target.value)}
@@ -354,7 +354,7 @@ const ReceivedMaterials = () => {
                     bg="primary"
                     color="white"
                     p={1}
-                    _hover={{ bg: "green", color: "white" }}
+                    _hover={{ bg: "btnColor", color: "white" }}
                     size="sm"
                   >
                     {"<<"}
@@ -362,8 +362,8 @@ const ReceivedMaterials = () => {
                   <PaginationPageGroup ml={1} mr={1}>
                     {pages.map((page) => (
                       <PaginationPage
-                        _hover={{ bg: "green", color: "white" }}
-                        _focus={{ bg: "green" }}
+                        _hover={{ bg: "btnColor", color: "white" }}
+                        _focus={{ bg: "btnColor" }}
                         p={3}
                         bg="primary"
                         color="white"
@@ -378,7 +378,7 @@ const ReceivedMaterials = () => {
                       bg="primary"
                       color="white"
                       p={1}
-                      _hover={{ bg: "green", color: "white" }}
+                      _hover={{ bg: "btnColor", color: "white" }}
                       size="sm"
                       mb={2}
                     >
@@ -427,6 +427,16 @@ const PrintModal = ({ isOpen, onClose, printData }) => {
     content: () => componentRef.current,
   });
 
+  const displayData = {
+    Date: moment().format("MM/DD/YYYY, h:mm:ss a"),
+    "Receiving Date": moment(printData?.dateReceive).format("MM/DD/YYYY"),
+    "Item Code": printData?.itemCode,
+    "Item Description": printData?.itemDescription,
+    UOM: printData?.uom,
+    Supplier: printData?.supplier,
+    "Quantity Good": printData?.actualGood,
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={() => {}} isCentered size="sm">
       <ModalOverlay />
@@ -440,8 +450,90 @@ const PrintModal = ({ isOpen, onClose, printData }) => {
           </Flex>
         </ModalHeader>
 
-        <ModalBody mt={5}>
-          <Box>
+        <ModalBody>
+          {/* Printed on Paper */}
+          <Box display="none">
+            <VStack spacing={0} justifyContent="center" ref={componentRef}>
+              <VStack spacing={0} justifyContent="start"></VStack>
+              <Flex mt={3} w="90%" justifyContent="center">
+                <Text fontSize="15px" fontWeight="semibold">
+                  Materials
+                </Text>
+              </Flex>
+
+              {Object.keys(displayData)?.map((key, i) => (
+                <Flex w="full" justifyContent="center" key={i}>
+                  <Flex ml="10%" w="full">
+                    <Flex>
+                      <Text fontWeight="semibold" fontSize="8px">
+                        {key}:
+                      </Text>
+                    </Flex>
+                  </Flex>
+                  <Flex w="full">
+                    <Flex>
+                      <Text fontWeight="semibold" fontSize="8px">
+                        {displayData[key]}
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </Flex>
+              ))}
+
+              <VStack spacing={0} w="90%" ml={4} justifyContent="center">
+                <Barcode
+                  fontSize="16"
+                  width={3}
+                  height={25}
+                  value={printData?.warehouseId}
+                />
+              </VStack>
+
+              <Flex w="full"></Flex>
+            </VStack>
+          </Box>
+
+          {/* Display on Preview */}
+          <VStack spacing={0} justifyContent="center">
+            <VStack spacing={0} justifyContent="start"></VStack>
+            <Flex mt={3} w="90%" justifyContent="center">
+              <Text fontSize="15px" fontWeight="semibold">
+                Materials
+              </Text>
+            </Flex>
+
+            {Object.keys(displayData)?.map((key, i) => (
+              <Flex w="full" justifyContent="center" key={i}>
+                <Flex ml="10%" w="full">
+                  <Flex>
+                    <Text fontWeight="semibold" fontSize="13px">
+                      {key}:
+                    </Text>
+                  </Flex>
+                </Flex>
+                <Flex w="full">
+                  <Flex>
+                    <Text fontWeight="normal" fontSize="13px">
+                      {displayData[key]}
+                    </Text>
+                  </Flex>
+                </Flex>
+              </Flex>
+            ))}
+
+            <VStack spacing={0} w="90%" ml={4} justifyContent="center">
+              <Barcode
+                fontSize="16"
+                width={3}
+                height={25}
+                value={printData?.warehouseId}
+              />
+            </VStack>
+
+            <Flex w="full"></Flex>
+          </VStack>
+
+          {/* <Box>
             <VStack spacing={0} justifyContent="center">
               <VStack spacing={0} justifyContent="start"></VStack>
               <Flex mt={3} w="90%" justifyContent="center">
@@ -453,21 +545,20 @@ const PrintModal = ({ isOpen, onClose, printData }) => {
               <Flex
                 spacing={0}
                 ref={componentRef}
-                w="full"
+                w="70%"
                 justifyContent="space-between"
               >
-                <Flex>
-                  <Box>
-                    <Text fontSize="13px" fontWeight="semibold">
-                      Date:
-                    </Text>
-                  </Box>
-                  <Box>
-                    <Text fontSize="13px">{printData?.Date} </Text>
-                  </Box>
-                </Flex>
+                <Box>
+                  <Text fontSize="13px" fontWeight="semibold">
+                    Date:
+                  </Text>
+                </Box>
+                <Box>
+                  <Text fontSize="13px">{printData?.Date} </Text>
+                </Box>
               </Flex>
-              {/* <VStack spacing={0} justifyContent="center" ref={componentRef}>
+
+              <VStack spacing={0} justifyContent="center" ref={componentRef}>
                 <Text>{printData?.itemCode}</Text>
                 <Text>{printData?.itemDescription}</Text>
                 <Text>Date Received: {printData?.dateReceive}</Text>
@@ -478,9 +569,9 @@ const PrintModal = ({ isOpen, onClose, printData }) => {
                     value={printData?.warehouseId}
                   />
                 </VStack>
-              </VStack> */}
+              </VStack>
             </VStack>
-          </Box>
+          </Box> */}
         </ModalBody>
         <ModalFooter mt={10}>
           <ButtonGroup size="xs">

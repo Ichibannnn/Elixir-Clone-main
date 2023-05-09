@@ -23,7 +23,6 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-
   ModalFooter,
   Badge,
   Select,
@@ -46,8 +45,6 @@ import {
 import moment from "moment";
 import { EditModal } from "./warehouse_receiving/EditModal";
 import CancelledReturnModal from "./warehouse_receiving/CancelledReturnModal";
-
-
 
 const CancelledPO = () => {
   const [pO, setPO] = useState([]);
@@ -75,9 +72,9 @@ const CancelledPO = () => {
   } = useDisclosure();
 
   // FETCH API CANCELLED PO:
-  const fetchCancelledPOApi = async (pageNumber, pageSize, status, search) => {
+  const fetchCancelledPOApi = async (pageNumber, pageSize, search) => {
     const response = await request.get(
-      `Warehouse/GetAllCancelledPoWithPaginationOrig?PageNumber=${pageNumber}&PageSize=${pageSize}`
+      `Warehouse/GetAllCancelledPoWithPaginationOrig?PageNumber=${pageNumber}&PageSize=${pageSize}&search=${search}`
     );
 
     return response.data;
@@ -137,7 +134,6 @@ const CancelledPO = () => {
   //FOR DRAWER (Drawer / Drawer Tagging)
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-
   const returnModalHandler = (data) => {
     setEditData(data);
     openReturnModal();
@@ -153,7 +149,13 @@ const CancelledPO = () => {
       bg="background"
     >
       <Flex bg="btnColor" borderRadius="none" w="20%" pl={2}>
-        <Text p={2} fontWeight="semibold" fontSize="12px" color="white" letterSpacing="wider">
+        <Text
+          p={2}
+          fontWeight="semibold"
+          fontSize="12px"
+          color="white"
+          letterSpacing="wider"
+        >
           CANCELLED PURCHASE ORDER
         </Text>
       </Flex>
@@ -252,8 +254,15 @@ const CancelledPO = () => {
                       <Td fontSize="11px">{canc.itemCode}</Td>
                       <Td fontSize="11px">{canc.itemDescription}</Td>
                       <Td fontSize="11px">{canc.supplier}</Td>
-                      <Td fontSize="11px">{canc.actualRemaining.toLocaleString(undefined, {maximumFractionDigits: 2, minimumFractionDigits: 2})}</Td>
-                      <Td fontSize="11px">{moment(canc.dateCancelled).format("MM/DD/YYYY")}</Td>
+                      <Td fontSize="11px">
+                        {canc.actualRemaining.toLocaleString(undefined, {
+                          maximumFractionDigits: 2,
+                          minimumFractionDigits: 2,
+                        })}
+                      </Td>
+                      <Td fontSize="11px">
+                        {moment(canc.dateCancelled).format("MM/DD/YYYY")}
+                      </Td>
                       {/* <Td fontSize="11px">{canc.remarks}</Td> */}
                       <Td pl={0}>
                         <Flex>
@@ -318,7 +327,7 @@ const CancelledPO = () => {
                     bg="primary"
                     color="white"
                     p={1}
-                    _hover={{ bg: "green", color: "white" }}
+                    _hover={{ bg: "btnColor", color: "white" }}
                     size="sm"
                   >
                     {"<<"}
@@ -326,8 +335,8 @@ const CancelledPO = () => {
                   <PaginationPageGroup ml={1} mr={1}>
                     {pages.map((page) => (
                       <PaginationPage
-                        _hover={{ bg: "green", color: "white" }}
-                        _focus={{ bg: "green" }}
+                        _hover={{ bg: "btnColor", color: "white" }}
+                        _focus={{ bg: "btnColor" }}
                         p={3}
                         bg="primary"
                         color="white"
@@ -342,7 +351,7 @@ const CancelledPO = () => {
                       bg="primary"
                       color="white"
                       p={1}
-                      _hover={{ bg: "green", color: "white" }}
+                      _hover={{ bg: "btnColor", color: "white" }}
                       size="sm"
                       mb={2}
                     >

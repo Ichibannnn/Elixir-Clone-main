@@ -93,8 +93,9 @@ const ImportOrder = () => {
 
     return {
       trasactId: item?.transaction_id,
-      customerName: item?.customer_name,
       customercode: item?.customer_code,
+      customerName: item?.customer_name,
+      department: item?.department,
       orderNo: item?.order_no,
       orderDate: moment(newOrderDate).format("yyyy-MM-DD"),
       dateNeeded: moment(newDateNeeded).format("yyyy-MM-DD"),
@@ -131,6 +132,7 @@ const ImportOrder = () => {
                 `Ordering/AddNewOrders`,
                 resultArray.map((item) => ({
                   trasactId: item?.trasactId,
+                  department: item?.department,
                   customercode: item?.customercode,
                   customerName: item?.customerName,
                   orderNo: item?.orderNo,
@@ -214,6 +216,9 @@ const ImportOrder = () => {
                     Date Needed
                   </Th>
                   <Th h="40px" color="white" fontSize="10px">
+                    Department
+                  </Th>
+                  <Th h="40px" color="white" fontSize="10px">
                     Customer Code
                   </Th>
                   <Th h="40px" color="white" fontSize="10px">
@@ -262,6 +267,16 @@ const ImportOrder = () => {
                     <Td fontSize="xs">
                       {ed.dateNeeded ? (
                         ed.dateNeeded
+                      ) : (
+                        <Text fontWeight="semibold" color="danger">
+                          Data missing. Please make sure correct excel file for
+                          Import Order is uploaded.
+                        </Text>
+                      )}
+                    </Td>
+                    <Td fontSize="xs">
+                      {ed.department ? (
+                        ed.department
                       ) : (
                         <Text fontWeight="semibold" color="danger">
                           Data missing. Please make sure correct excel file for

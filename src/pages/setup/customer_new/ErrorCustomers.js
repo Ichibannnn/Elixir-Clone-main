@@ -43,6 +43,7 @@ export const ErrorCustomers = ({
   setErrorData,
   isLoading,
   setIsLoading,
+  resultArrayNew,
 }) => {
   const toast = useToast();
 
@@ -51,12 +52,12 @@ export const ErrorCustomers = ({
       customer_No: list?.customer_No,
       customerCode: list?.customerCode,
       customerName: list?.customerName,
-      companyCode: list?.companyCode,
-      companyName: list?.companyName,
-      departmentCode: list?.departmentCode,
-      departmentName: list?.departmentName,
-      locationCode: list?.locationCode,
-      locationName: list?.locationName,
+      // companyCode: list?.companyCode,
+      // companyName: list?.companyName,
+      // departmentCode: list?.departmentCode,
+      // departmentName: list?.departmentName,
+      // locationCode: list?.locationCode,
+      // locationName: list?.locationName,
     };
   });
 
@@ -65,12 +66,12 @@ export const ErrorCustomers = ({
       customer_No: list?.customer_No,
       customerCode: list?.customerCode,
       customerName: list?.customerName,
-      companyCode: list?.companyCode,
-      companyName: list?.companyName,
-      departmentCode: list?.departmentCode,
-      departmentName: list?.departmentName,
-      locationCode: list?.locationCode,
-      locationName: list?.locationName,
+      // companyCode: list?.companyCode,
+      // companyName: list?.companyName,
+      // departmentCode: list?.departmentCode,
+      // departmentName: list?.departmentName,
+      // locationCode: list?.locationCode,
+      // locationName: list?.locationName,
     };
   });
 
@@ -80,11 +81,11 @@ export const ErrorCustomers = ({
       customerCode: list?.customerCode,
       customerName: list?.customerName,
       companyCode: list?.companyCode,
-      companyName: list?.companyName,
-      departmentCode: list?.departmentCode,
-      departmentName: list?.departmentName,
-      locationCode: list?.locationCode,
-      locationName: list?.locationName,
+      // companyName: list?.companyName,
+      // departmentCode: list?.departmentCode,
+      // departmentName: list?.departmentName,
+      // locationCode: list?.locationCode,
+      // locationName: list?.locationName,
     };
   });
 
@@ -107,17 +108,17 @@ export const ErrorCustomers = ({
           const res = request
             .post(
               `Customer/AddNewCustomer`,
-              resultArray.map((item) => {
+              resultArrayNew.map((item) => {
                 return {
                   customer_No: item?.customer_No,
                   customerCode: item?.customerCode,
                   customerName: item?.customerName,
-                  companyCode: item?.companyCode,
-                  companyName: item?.companyName,
-                  departmentCode: item?.departmentCode,
-                  departmentName: item?.departmentName,
-                  locationCode: item?.locationCode,
-                  locationName: item?.locationName,
+                  // companyCode: item?.companyCode,
+                  // companyName: item?.companyName,
+                  // departmentCode: item?.departmentCode,
+                  // departmentName: item?.departmentName,
+                  // locationCode: item?.locationCode,
+                  // locationName: item?.locationName,
                 };
               })
             )
@@ -197,9 +198,9 @@ export const ErrorCustomers = ({
                               <Th color="white" fontSize="9px">
                                 Customer Name
                               </Th>
-                              <Th color="white" fontSize="9px">
+                              {/* <Th color="white" fontSize="9px">
                                 Company
-                              </Th>
+                              </Th> */}
                             </Tr>
                           </Thead>
 
@@ -218,9 +219,9 @@ export const ErrorCustomers = ({
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
                                 </Td>
-                                <Td color="gray.600" fontSize="11px">
+                                {/* <Td color="gray.600" fontSize="11px">
                                   {d?.companyName}
-                                </Td>
+                                </Td> */}
                               </Tr>
                             ))}
                           </Tbody>
@@ -282,9 +283,9 @@ export const ErrorCustomers = ({
                               <Th color="white" fontSize="9px">
                                 Customer Name
                               </Th>
-                              <Th color="white" fontSize="9px">
+                              {/* <Th color="white" fontSize="9px">
                                 Company
-                              </Th>
+                              </Th> */}
                             </Tr>
                           </Thead>
 
@@ -303,9 +304,9 @@ export const ErrorCustomers = ({
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
                                 </Td>
-                                <Td color="gray.600" fontSize="11px">
+                                {/* <Td color="gray.600" fontSize="11px">
                                   {d?.companyName}
-                                </Td>
+                                </Td> */}
                               </Tr>
                             ))}
                           </Tbody>

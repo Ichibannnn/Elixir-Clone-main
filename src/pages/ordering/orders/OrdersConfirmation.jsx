@@ -57,9 +57,10 @@ const OrdersConfirmation = ({
   const duplicateList = errorData?.duplicateList?.map((list) => {
     return {
       trasactId: list?.trasactId,
-      orderDate: list.orderDate,
-      dateNeeded: list.dateNeeded,
-      department: list.department,
+      orderDate: list?.orderDate,
+      dateNeeded: list?.dateNeeded,
+      department: list?.department,
+      customercode: list?.customercode,
       customerName: list.customerName,
       category: list.category,
       itemCode: list.itemCode,
@@ -74,6 +75,7 @@ const OrdersConfirmation = ({
     return {
       trasactId: list?.trasactId,
       department: list?.department,
+      customercode: list?.customercode,
       customerName: list?.customerName,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
@@ -90,6 +92,7 @@ const OrdersConfirmation = ({
     return {
       trasactId: list?.trasactId,
       department: list?.department,
+      customercode: list?.customercode,
       customerName: list?.customerName,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
@@ -106,6 +109,24 @@ const OrdersConfirmation = ({
     return {
       trasactId: list?.trasactId,
       department: list?.department,
+      customercode: list?.customercode,
+      customerName: list?.customerName,
+      orderNo: list?.orderNo,
+      orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
+      dateNeeded: moment(list?.dateNeeded).format("yyyy-MM-DD"),
+      itemCode: list?.itemCode,
+      itemdDescription: list?.itemdDescription,
+      uom: list?.uom,
+      quantityOrdered: list?.quantityOrdered,
+      category: list?.category,
+    };
+  });
+
+  const departmentNotExist = errorData?.departmentNotExist?.map((list) => {
+    return {
+      trasactId: list?.trasactId,
+      department: list?.department,
+      customercode: list?.customercode,
       customerName: list?.customerName,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
@@ -122,6 +143,7 @@ const OrdersConfirmation = ({
     return {
       trasactId: list?.trasactId,
       department: list?.department,
+      customercode: list?.customercode,
       customerName: list?.customerName,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
@@ -138,6 +160,7 @@ const OrdersConfirmation = ({
     return {
       trasactId: list?.trasactId,
       department: list?.department,
+      customercode: list?.customercode,
       customerName: list?.customerName,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
@@ -150,26 +173,28 @@ const OrdersConfirmation = ({
     };
   });
 
-  const quantityInValid = errorData?.quantityInValid?.map((list) => {
-    return {
-      trasactId: list?.trasactId,
-      department: list?.department,
-      customerName: list?.customerName,
-      orderNo: list?.orderNo,
-      orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
-      dateNeeded: moment(list?.dateNeeded).format("yyyy-MM-DD"),
-      itemCode: list?.itemCode,
-      itemdDescription: list?.itemdDescription,
-      uom: list?.uom,
-      quantityOrdered: list?.quantityOrdered,
-      category: list?.category,
-    };
-  });
+  // const quantityInValid = errorData?.quantityInValid?.map((list) => {
+  //   return {
+  //     trasactId: list?.trasactId,
+  //     department: list?.department,
+  //     customerCode: list?.customerCode,
+  //     customerName: list?.customerName,
+  //     orderNo: list?.orderNo,
+  //     orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
+  //     dateNeeded: moment(list?.dateNeeded).format("yyyy-MM-DD"),
+  //     itemCode: list?.itemCode,
+  //     itemdDescription: list?.itemdDescription,
+  //     uom: list?.uom,
+  //     quantityOrdered: list?.quantityOrdered,
+  //     category: list?.category,
+  //   };
+  // });
 
   const resultArray = filteredOrders?.map((list) => {
     return {
       trasactId: list?.trasactId,
       department: list?.department,
+      customercode: list?.customercode,
       customerName: list?.customerName,
       orderNo: list?.orderNo,
       batchNo: list?.batchNo,
@@ -206,6 +231,7 @@ const OrdersConfirmation = ({
                 return {
                   trasactId: submit?.trasactId,
                   department: submit?.department,
+                  customercode: submit?.customercode,
                   customerName: submit?.customerName,
                   orderNo: submit?.orderNo,
                   orderDate: moment(submit?.orderDate).format("yyyy-MM-DD"),
@@ -295,6 +321,9 @@ const OrdersConfirmation = ({
                                 Department
                               </Th>
                               <Th color="white" fontSize="9px">
+                                Customer Code
+                              </Th>
+                              <Th color="white" fontSize="9px">
                                 Customer Name
                               </Th>
                               <Th color="white" fontSize="9px">
@@ -332,6 +361,9 @@ const OrdersConfirmation = ({
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.department}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.customercode}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
@@ -374,7 +406,7 @@ const OrdersConfirmation = ({
 
               {/* FILTERED ORDERS */}
               {filteredOrders?.length > 0 ? (
-                <AccordionItem bgColor="blue.200">
+                <AccordionItem bgColor="gray.300">
                   <Flex>
                     <AccordionButton fontWeight="semibold">
                       <Box
@@ -411,6 +443,9 @@ const OrdersConfirmation = ({
                               </Th>
                               <Th color="white" fontSize="9px">
                                 Department
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Customer Code
                               </Th>
                               <Th color="white" fontSize="9px">
                                 Customer Name
@@ -450,6 +485,9 @@ const OrdersConfirmation = ({
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.department}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.customercode}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
@@ -665,6 +703,9 @@ const OrdersConfirmation = ({
                                 Department
                               </Th>
                               <Th color="white" fontSize="9px">
+                                Customer Code
+                              </Th>
+                              <Th color="white" fontSize="9px">
                                 Customer Name
                               </Th>
                               <Th color="white" fontSize="9px">
@@ -702,6 +743,9 @@ const OrdersConfirmation = ({
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.department}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.customercode}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
@@ -742,7 +786,132 @@ const OrdersConfirmation = ({
                 ""
               )}
 
-              {/* CUSTOMER CODE DOES NOT EXIST */}
+              {/* DEPARTMENT DOES NOT EXIST */}
+              {departmentNotExist?.length > 0 ? (
+                <AccordionItem bgColor="gray.200">
+                  <Flex>
+                    <AccordionButton color="white" fontWeight="semibold">
+                      <Box
+                        flex="1"
+                        textAlign="left"
+                        color="black"
+                        fontSize="13px"
+                        fontWeight="semibold"
+                      >
+                        Department does not exist{" "}
+                        <Badge color="red">{departmentNotExist?.length}</Badge>
+                      </Box>
+                      <AccordionIcon color="secondary" />
+                    </AccordionButton>
+                  </Flex>
+
+                  <AccordionPanel pb={4}>
+                    <PageScrollImport maxHeight="470px">
+                      {departmentNotExist ? (
+                        <Table variant="striped" size="sm">
+                          <Thead bgColor="gray.600">
+                            <Tr>
+                              <Th color="white" fontSize="9px">
+                                Line
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Transact ID
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Order Date
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Date Needed
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Department
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Customer Code
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Customer Name
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Category
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Item Code
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Item Description
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                UOM
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Quantity Order
+                              </Th>
+                            </Tr>
+                          </Thead>
+
+                          <Tbody>
+                            {departmentNotExist?.map((d, i) => (
+                              <Tr key={i}>
+                                <Td color="gray.600" fontSize="11px">
+                                  {i + 1}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.trasactId}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {moment(d?.orderDate).format("yyyy-MM-DD")}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {moment(d?.dateNeeded).format("yyyy-MM-DD")}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.department}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.customercode}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.customerName}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.category}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.itemCode}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.itemdDescription}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.uom}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.quantityOrdered}
+                                </Td>
+                              </Tr>
+                            ))}
+                          </Tbody>
+                        </Table>
+                      ) : (
+                        <Flex justifyContent="center" mt="30px">
+                          <VStack>
+                            <RiFileList3Fill fontSize="200px" />
+                            <Text color="white">
+                              There are no duplicated customer code lists on
+                              this file
+                            </Text>
+                          </VStack>
+                        </Flex>
+                      )}
+                    </PageScrollImport>
+                  </AccordionPanel>
+                </AccordionItem>
+              ) : (
+                ""
+              )}
+
+              {/* CUSTOMER NAME DOES NOT EXIST */}
               {customerNameNotExist?.length > 0 ? (
                 <AccordionItem bgColor="gray.200">
                   <Flex>
@@ -754,7 +923,7 @@ const OrdersConfirmation = ({
                         fontSize="13px"
                         fontWeight="semibold"
                       >
-                        Customer Code does not exist{" "}
+                        Customer Code or Customer Name does not exist{" "}
                         <Badge color="red">
                           {customerNameNotExist?.length}
                         </Badge>
@@ -770,7 +939,7 @@ const OrdersConfirmation = ({
                           <Thead bgColor="gray.600">
                             <Tr>
                               <Th color="white" fontSize="9px">
-                                Liness
+                                Lines
                               </Th>
                               <Th color="white" fontSize="9px">
                                 Transact ID
@@ -783,6 +952,9 @@ const OrdersConfirmation = ({
                               </Th>
                               <Th color="white" fontSize="9px">
                                 Department
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Customer Code
                               </Th>
                               <Th color="white" fontSize="9px">
                                 Customer Name
@@ -824,6 +996,9 @@ const OrdersConfirmation = ({
                                   {d?.department}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
+                                  {d?.customercode}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
@@ -850,7 +1025,7 @@ const OrdersConfirmation = ({
                           <VStack>
                             <RiFileList3Fill fontSize="200px" />
                             <Text color="white">
-                              There are no duplicated customer code lists on
+                              There are no duplicated customer name lists on
                               this file
                             </Text>
                           </VStack>
@@ -904,6 +1079,9 @@ const OrdersConfirmation = ({
                                 Department
                               </Th>
                               <Th color="white" fontSize="9px">
+                                Customer Code
+                              </Th>
+                              <Th color="white" fontSize="9px">
                                 Customer Name
                               </Th>
                               <Th color="white" fontSize="9px">
@@ -941,6 +1119,9 @@ const OrdersConfirmation = ({
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.department}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.customercode}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
@@ -982,7 +1163,7 @@ const OrdersConfirmation = ({
               )}
 
               {/* Invalid Quantity */}
-              {quantityInValid?.length > 0 ? (
+              {/* {quantityInValid?.length > 0 ? (
                 <AccordionItem bgColor="gray.200">
                   <Flex>
                     <AccordionButton color="white" fontWeight="semibold">
@@ -1020,6 +1201,9 @@ const OrdersConfirmation = ({
                               </Th>
                               <Th color="white" fontSize="9px">
                                 Department
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Customer Code
                               </Th>
                               <Th color="white" fontSize="9px">
                                 Customer Name
@@ -1061,6 +1245,9 @@ const OrdersConfirmation = ({
                                   {d?.department}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
+                                  {d?.customerCode}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
@@ -1097,7 +1284,7 @@ const OrdersConfirmation = ({
                 </AccordionItem>
               ) : (
                 ""
-              )}
+              )} */}
             </Accordion>
           </ModalBody>
           <ModalFooter></ModalFooter>

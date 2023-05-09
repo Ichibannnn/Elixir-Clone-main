@@ -250,6 +250,7 @@ const ImportPO = () => {
               borderRadius="none"
               fontSize="12px"
               size="xs"
+              isLoading={isLoading}
               isDisabled={isDisabled}
               onClick={() => submitExcelHandler(resultArray)}
             >

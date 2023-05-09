@@ -40,7 +40,7 @@ const Orders = () => {
 
   const [genusOrders, setGenusOrders] = useState([]);
   const [fromDate, setFromDate] = useState(startDate);
-  const [toDate, setToDate] = useState(startDate);
+  const [toDate, setToDate] = useState("");
   const [search, setSearch] = useState("");
 
   // GET GENUS ORDERS

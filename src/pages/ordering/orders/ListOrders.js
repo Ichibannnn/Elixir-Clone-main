@@ -58,6 +58,7 @@ export const ListOrders = ({
         orderDate: item?.date_ordered,
         dateNeeded: item?.date_needed,
         department: item?.department_name,
+        customerCode: item?.customer_code,
         customerName: item?.customer_name,
         itemCode: itemsub?.material_code,
         itemdDescription: itemsub?.material_name,
@@ -95,6 +96,7 @@ export const ListOrders = ({
           orderDate: moment(submit?.orderDate).format("yyyy-MM-DD"),
           dateNeeded: moment(submit?.dateNeeded).format("yyyy-MM-DD"),
           department: submit?.department,
+          customerCode: submit?.customerCode,
           customerName: submit?.customerName,
           itemCode: submit?.itemCode,
           itemdDescription: submit?.itemdDescription,
@@ -145,18 +147,20 @@ export const ListOrders = ({
           <HStack>
             <Badge fontSize="11px">From:</Badge>
             <Input
-              onChange={(date) => setFromDate(date)}
-              value={fromDate}
-              min={fromDate}
+              onChange={(date) => setFromDate(date.target.value)}
+              // value={fromDate}
+              defaultValue={moment(new Date()).format("yyyy-MM-DD")}
+              // min={startDate}
               size="sm"
               type="date"
               fontSize="11px"
             />
             <Badge fontSize="11px">To:</Badge>
             <Input
-              onChange={(date) => setToDate(date)}
-              value={toDate}
-              min={fromDate}
+              onChange={(date) => setToDate(date.target.value)}
+              // value={toDate}
+              defaultValue={moment(new Date()).format("yyyy-MM-DD")}
+              // min={fromDate}
               size="sm"
               type="date"
               fontSize="11px"
@@ -252,6 +256,9 @@ export const ListOrders = ({
                             Department
                           </Th>
                           <Th color="#D6D6D6" fontSize="10px">
+                            Customer Code
+                          </Th>
+                          <Th color="#D6D6D6" fontSize="10px">
                             Customer
                           </Th>
                           <Th color="#D6D6D6" fontSize="10px">
@@ -296,6 +303,7 @@ export const ListOrders = ({
                                   )}
                                 </Td>
                                 <Td fontSize="12px">{order.department_name}</Td>
+                                <Td fontSize="12px">{order.customer_code}</Td>
                                 <Td fontSize="12px">{order.customer_name}</Td>
                                 <Td fontSize="12px">{sub.material_code}</Td>
                                 <Td fontSize="12px">{sub.material_name}</Td>
@@ -331,16 +339,18 @@ export const ListOrders = ({
         )}
 
         {isOpen && (
-          <OrdersConfirmation
-            isOpen={isOpen}
-            onOpen={onOpen}
-            onClose={onClose}
-            resultArray={resultArray}
-            errorData={errorData}
-            setErrorData={setErrorData}
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-          />
+          <>
+            <OrdersConfirmation
+              isOpen={isOpen}
+              onOpen={onOpen}
+              onClose={onClose}
+              resultArray={resultArray}
+              errorData={errorData}
+              setErrorData={setErrorData}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+            />
+          </>
         )}
       </Flex>
     </Flex>

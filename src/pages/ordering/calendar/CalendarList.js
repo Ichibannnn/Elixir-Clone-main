@@ -98,9 +98,9 @@ const ModalOfSchedules = ({ isOpen, onClose, forMOData, dateStr }) => {
             <PageScrollImport minHeight="400px" maxHeight="500px">
               <Table size="sm">
                 <Thead bgColor="primary">
-                  <Tr>
+                  <Tr h="30px">
                     {TableHead?.map((head, i) => (
-                      <Th key={i} color="white" fontSize="9px">
+                      <Th key={i} color="white" fontSize="10px">
                         {head}
                       </Th>
                     ))}
@@ -111,12 +111,12 @@ const ModalOfSchedules = ({ isOpen, onClose, forMOData, dateStr }) => {
                     moment(item.preparedDate).format("yyyy-MM-DD") ===
                     dateStr ? (
                       <Tr key={i}>
-                        <Td fontSize="12px">{item.customerCode}</Td>
-                        <Td fontSize="12px">{item.customerName}</Td>
-                        <Td fontSize="12px">
+                        <Td fontSize="xs">{item.customerCode}</Td>
+                        <Td fontSize="xs">{item.customerName}</Td>
+                        <Td fontSize="xs">
                           {moment(item.preparedDate).format("yyyy/MM/DD")}
                         </Td>
-                        <Td fontSize="12px">{item.totalOrders}</Td>
+                        <Td fontSize="xs">{item.totalOrders}</Td>
                       </Tr>
                     ) : null
                   )}

@@ -156,41 +156,39 @@ export const PreparationListOrders = ({
     openSchedule();
   };
 
-  const [checkItemsData, setCheckItemsData] = useState([])
+  const [checkItemsData, setCheckItemsData] = useState([]);
   const childCheckHandler = (e) => {
-    const newData = JSON.parse(e.target.value)
+    const newData = JSON.parse(e.target.value);
     // console.log(newData)
-    const id = newData?.id
+    const id = newData?.id;
     if (e.target.checked) {
       setCheckedItems([...checkedItems, parseInt(id)]);
-      setCheckItemsData([...checkItemsData, newData])
+      setCheckItemsData([...checkItemsData, newData]);
     } else {
-      const data = checkedItems?.filter(
-        (item) => item !== parseInt(id)
-      );
+      const data = checkedItems?.filter((item) => item !== parseInt(id));
       setCheckedItems(data);
       const revertData = checkItemsData?.filter(
         (item) => item.id !== parseInt(id)
-      )
-      setCheckItemsData(revertData)
+      );
+      setCheckItemsData(revertData);
     }
   };
 
   useEffect(() => {
-    if(checkItemsData?.length){
-      let totalQuantity = checkItemsData.map((q) => parseFloat(q.quantityOrder))
-      let sum = totalQuantity.reduce((a, b) => a + b)
+    if (checkItemsData?.length) {
+      let totalQuantity = checkItemsData.map((q) =>
+        parseFloat(q.quantityOrder)
+      );
+      let sum = totalQuantity.reduce((a, b) => a + b);
       checkItemsData?.map((item) => {
-          if (item.stockOnHand < sum) {
-              setDisableIfStock(true)
-          }
-          else {
-            setDisableIfStock(false)
-          }
+        if (item.stockOnHand < sum) {
+          setDisableIfStock(true);
+        } else {
+          setDisableIfStock(false);
         }
-      )
+      });
     }
-}, [checkItemsData])
+  }, [checkItemsData]);
 
   return (
     <Flex w="full" flexDirection="column">
@@ -261,10 +259,10 @@ export const PreparationListOrders = ({
             border="none"
             boxShadow="md"
             // bg="gray.200"
-            variant="simple"
+            variant="striped"
           >
             <Thead bg="secondary">
-              <Tr>
+              <Tr h="40px">
                 <Th>
                   <Checkbox
                     size="sm"
@@ -273,40 +271,43 @@ export const PreparationListOrders = ({
                     disabled={!stockData?.length > 0}
                     color="white"
                   >
-                    <Text fontSize="9px">Line</Text>
+                    <Text fontSize="10px">Line</Text>
                   </Checkbox>
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   ID
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Order Date
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Date Needed
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
+                  Department
+                </Th>
+                <Th color="white" fontSize="10px">
                   Customer Code
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Customer Name
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Category
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Item Code
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Item Description
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   UOM
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Quantity Order
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Reserve
                 </Th>
                 <Th color="white" fontSize="9px">
@@ -361,23 +362,24 @@ export const PreparationListOrders = ({
                       </HStack>
                     </Td>
                   )}
-                  <Td fontSize="11px">{item.id}</Td>
-                  <Td fontSize="11px">{item.orderDate}</Td>
-                  <Td fontSize="11px">{item.dateNeeded}</Td>
-                  <Td fontSize="11px">{item.customerCode}</Td>
-                  <Td fontSize="11px">{item.customerName}</Td>
-                  <Td fontSize="11px">{item.category.toUpperCase()}</Td>
-                  <Td fontSize="11px">{item.itemCode}</Td>
-                  <Td fontSize="11px">{item.itemDescription}</Td>
-                  <Td fontSize="11px">{item.uom}</Td>
-                  <Td fontSize="11px">
+                  <Td fontSize="xs">{item.id}</Td>
+                  <Td fontSize="xs">{item.orderDate}</Td>
+                  <Td fontSize="xs">{item.dateNeeded}</Td>
+                  <Td fontSize="xs">{item.department}</Td>
+                  <Td fontSize="xs">{item.customerCode}</Td>
+                  <Td fontSize="xs">{item.customerName}</Td>
+                  <Td fontSize="xs">{item.category.toUpperCase()}</Td>
+                  <Td fontSize="xs">{item.itemCode}</Td>
+                  <Td fontSize="xs">{item.itemDescription}</Td>
+                  <Td fontSize="xs">{item.uom}</Td>
+                  <Td fontSize="xs">
                     {item.quantityOrder.toLocaleString(undefined, {
                       maximumFractionDigits: 2,
                       minimumFractionDigits: 2,
                     })}
                   </Td>
-                  <Td fontSize="11px">{item.stockOnHand}</Td>
-                  <Td fontSize="11px">
+                  <Td fontSize="xs">{item.stockOnHand}</Td>
+                  <Td fontSize="xs">
                     <Button
                       onClick={() => editHandler(item)}
                       disabled={item.stockOnHand === 0}
@@ -387,7 +389,7 @@ export const PreparationListOrders = ({
                       px={4}
                       borderRadius="none"
                     >
-                      <Text fontSize="11px">Edit</Text>
+                      <Text fontSize="xs">Edit</Text>
                     </Button>
                   </Td>
 
@@ -397,9 +399,8 @@ export const PreparationListOrders = ({
                       colorScheme="red"
                       size="xs"
                       borderRadius="none"
-
                     >
-                      <Text fontSize="11px">Cancel</Text>
+                      <Text fontSize="xs">Cancel</Text>
                     </Button>
                   </Td>
                 </Tr>

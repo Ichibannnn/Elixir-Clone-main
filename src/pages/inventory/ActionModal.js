@@ -237,7 +237,7 @@ export const AccountTitleModal = ({
   const fetchDepartmentApi = async (id) => {
     try {
       const res = await axios.get(
-        "http://10.10.2.76:8000/api/dropdown/department?status=1&paginate=0&company_id=" +
+        "http://10.10.2.76:8000/api/dropdown/department?status=1&paginate=0&api_for=vladimir&company_id=" +
           id,
         {
           headers: {
@@ -254,7 +254,7 @@ export const AccountTitleModal = ({
   const fetchLocationApi = async (id) => {
     try {
       const res = await axios.get(
-        "http://10.10.2.76:8000/api/dropdown/location?status=1&paginate=0&company_id=" +
+        "http://10.10.2.76:8000/api/dropdown/location?status=1&paginate=0&api_for=vladimir&department_id=" +
           id,
         {
           headers: {
@@ -329,7 +329,7 @@ export const AccountTitleModal = ({
             "success",
             toast
           );
-          
+
           // fetchMoveOrder();
           setOrderId("");
           setHighlighterId("");
@@ -349,7 +349,7 @@ export const AccountTitleModal = ({
     }
   };
 
-  console.log(errors)
+  console.log(errors);
 
   return (
     <>
@@ -359,7 +359,7 @@ export const AccountTitleModal = ({
           <ModalContent>
             <ModalHeader>
               <Flex justifyContent="center">
-                <Text >Account Title</Text>
+                <Text>Account Title</Text>
               </Flex>
             </ModalHeader>
             <ModalCloseButton onClick={onClose} />
@@ -453,7 +453,7 @@ export const AccountTitleModal = ({
                       // fetchLocationApi(e.target.value);
                     }}
                   >
-                    {department?.map((item) => {
+                    {location?.map((item) => {
                       return (
                         <option key={item.id} value={item.id}>
                           {item.code} - {item.name}
@@ -513,8 +513,6 @@ export const AccountTitleModal = ({
   );
 };
 
-
-
 export const AddQuantityConfirmation = ({
   isOpen,
   onClose,
@@ -525,7 +523,6 @@ export const AddQuantityConfirmation = ({
   fetchOrderList,
   fetchPreparedItems,
   setQuantity,
-  // expirationDate,
   setHighlighterId,
   warehouseId,
   setWarehouseId,
@@ -543,7 +540,6 @@ export const AddQuantityConfirmation = ({
           orderNo: orderNo,
           itemCode: itemCode,
           quantityOrdered: Number(quantityOrdered),
-          // expirationDate: expirationDate,
           preparedBy: currentUser.userName,
         })
         .then((res) => {
@@ -582,7 +578,9 @@ export const AddQuantityConfirmation = ({
 
           <ModalBody>
             <VStack justifyContent="center">
-              <Text fontSize="sm">Are you sure you want to add this quantity?</Text>
+              <Text fontSize="sm">
+                Are you sure you want to add this quantity?
+              </Text>
               <Text fontSize="sm">{`[ Order No. ${orderNo} ] [ Item Code ${itemCode} ] [ Quantity Ordered ${quantityOrdered} ]`}</Text>
             </VStack>
           </ModalBody>

@@ -135,12 +135,12 @@ export const ActualItemQuantity = ({
       <Box w="full" bgColor="primary" h="22px">
         <Text
           fontWeight="semibold"
-          fontSize="11px"
+          fontSize="13px"
           color="white"
           textAlign="center"
           justifyContent="center"
         >
-          Actual Item Quantity
+          Actual Quantity
         </Text>
       </Box>
 
@@ -151,7 +151,7 @@ export const ActualItemQuantity = ({
             color="white"
             px={10}
             textAlign="start"
-            fontSize="11px"
+            fontSize="13px"
           >
             Scan Barcode:
           </Text>
@@ -186,7 +186,7 @@ export const ActualItemQuantity = ({
             color="white"
             px={10}
             textAlign="start"
-            fontSize="11px"
+            fontSize="13px"
           >
             Remaining Quantity:
           </Text>
@@ -198,7 +198,7 @@ export const ActualItemQuantity = ({
         </HStack>
         <HStack spacing={5}>
           <Text
-            fontSize="11px"
+            fontSize="13px"
             bgColor="secondary"
             color="white"
             px={10}
@@ -208,7 +208,7 @@ export const ActualItemQuantity = ({
           </Text>
           <Input
             borderRadius="none"
-            fontSize="11px"
+            fontSize="13px"
             onChange={(e) => setQuantity(e.target.value)}
             disabled={!barcodeData?.orders?.remaining}
             title={
@@ -312,14 +312,24 @@ const AvailableBarcodeModal = ({
             <PageScrollImport>
               <Table variant="striped" size="sm">
                 <Thead>
-                  <Tr bgColor="secondary">
-                    <Th color="white">Warehouse ID</Th>
-                    <Th color="white">Item Code</Th>
-                    <Th color="white">Item Description</Th>
-                    <Th color="white">Actual Good</Th>
+                  <Tr bgColor="secondary" h="30px">
+                    <Th color="white" fontSize="10px">
+                      Warehouse ID
+                    </Th>
+                    <Th color="white" fontSize="10px">
+                      Item Code
+                    </Th>
+                    <Th color="white" fontSize="10px">
+                      Item Description
+                    </Th>
+                    <Th color="white" fontSize="10px">
+                      Actual Good
+                    </Th>
                     {/* <Th color="white">Expiration Day</Th>
                     <Th color="white">Expiration Date</Th> */}
-                    <Th color="white">Select</Th>
+                    <Th color="white" fontSize="10px">
+                      Select
+                    </Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -328,10 +338,10 @@ const AvailableBarcodeModal = ({
                       ""
                     ) : (
                       <Tr key={items.id}>
-                        <Td>{items.id}</Td>
-                        <Td>{items.itemCode}</Td>
-                        <Td>{items.itemDescription}</Td>
-                        <Td>{items.actualGood}</Td>
+                        <Td fontSize="xs">{items.id}</Td>
+                        <Td fontSize="xs">{items.itemCode}</Td>
+                        <Td fontSize="xs">{items.itemDescription}</Td>
+                        <Td fontSize="xs">{items.actualGood}</Td>
                         {/* <Td>{items.expirationDay}</Td>
                         <Td
                           color={items.expirationDay <= 0 ? "red" : ""}

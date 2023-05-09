@@ -32,30 +32,33 @@ export const ListOfPreparedOrders = ({ orders, orderNo, setOrderNo }) => {
           textAlign="center"
           bgColor="secondary"
           color="white"
-          fontSize="11px"
+          fontSize="13px"
         >
           List of Prepared Date
         </Text>
         <PageScroll minHeight="200px" maxHeight="210px">
           <Table size="sm" variant="simple">
             <Thead bgColor="secondary">
-              <Tr>
-                <Th color="white" fontSize="9px">
+              <Tr h="30px">
+                <Th color="white" fontSize="10px">
                   Line
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Order ID
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
+                  Department
+                </Th>
+                <Th color="white" fontSize="10px">
                   Customer Code
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Customer Name
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Category
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Total Quantity Order
                 </Th>
                 <Th color="white" fontSize="9px">
@@ -71,13 +74,14 @@ export const ListOfPreparedOrders = ({ orders, orderNo, setOrderNo }) => {
                   key={i}
                   cursor="pointer"
                 >
-                  <Td fontSize="11px">{i + 1}</Td>
-                  <Td fontSize="11px">{item.orderNoPKey}</Td>
-                  <Td fontSize="11px">{item.customerCode}</Td>
-                  <Td fontSize="11px">{item.customerName}</Td>
-                  <Td fontSize="11px">{item.category}</Td>
-                  <Td fontSize="11px">{item.totalOrders}</Td>
-                  <Td fontSize="11px">
+                  <Td fontSize="xs">{i + 1}</Td>
+                  <Td fontSize="xs">{item.orderNoPKey}</Td>
+                  <Td fontSize="xs">{item.department}</Td>
+                  <Td fontSize="xs">{item.customerCode}</Td>
+                  <Td fontSize="xs">{item.customerName}</Td>
+                  <Td fontSize="xs">{item.category}</Td>
+                  <Td fontSize="xs">{item.totalOrders}</Td>
+                  <Td fontSize="xs">
                     {moment(item.preparedDate).format("MM/DD/yyyy")}
                   </Td>
                 </Tr>

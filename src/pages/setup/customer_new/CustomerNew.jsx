@@ -50,6 +50,19 @@ const fetchGenusApi = async () => {
   );
   return res.data;
 };
+const fetchGenusLocationsApi = async () => {
+  // const fromDateFormatted = moment(fromDate).format("yyyy-MM-DD");
+  // const toDateFormatted = moment(toDate).format("yyyy-MM-DD");
+  const res = await axios.get(
+    `https://genus.rdfmis.ph/StoreAPI/api/locations.php`,
+    {
+      params: {
+        token: "8AFASbzK5OH0E9OuZF5LlI9qZo8fqr1X",
+      },
+    }
+  );
+  return res.data;
+};
 
 // FETCH API REASON:
 const fetchElixirApi = async () => {
@@ -64,6 +77,7 @@ const CustomerNew = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [genusCustomers, setGenusCustomers] = useState([]);
+  const [genusLocations, setGenusLocations] = useState([]);
   const [elixirCustomers, setElixirCustomers] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -72,6 +86,10 @@ const CustomerNew = () => {
     fetchGenusApi().then((res) => {
       setGenusCustomers(res);
       setIsLoading(false);
+    });
+
+    fetchGenusLocationsApi().then((res) => {
+      setGenusLocations(res);
     });
   };
 
@@ -107,6 +125,7 @@ const CustomerNew = () => {
       elixirCustomers={elixirCustomers}
       setElixirCustomers={setElixirCustomers}
       genusCustomers={genusCustomers}
+      genusLocations={genusLocations}
       setGenusCustomers={setGenusCustomers}
       search={search}
       fetchingData={isLoading}

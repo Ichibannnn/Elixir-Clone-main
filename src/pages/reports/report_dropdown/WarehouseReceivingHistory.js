@@ -42,7 +42,7 @@ export const WarehouseReceivingHistory = ({
             "Item Code": item.itemCode,
             "Item Description": item.itemDescrption,
             UOM: item.uom,
-            Category: item.category ? item.category : "Miscellaneous",
+            // Category: item.category ? item.category : "Miscellaneous",
             Quantity: item.quantity,
             // 'Manufacturing Date': item.manufacturingDate,
             // 'Expiration Date': item.expirationDate,
@@ -91,9 +91,9 @@ export const WarehouseReceivingHistory = ({
                     <Th color="white" fontSize="10px" fontWeight="semibold">
                       UOM
                     </Th>
-                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                    {/* <Th color="white" fontSize="10px" fontWeight="semibold">
                       Category
-                    </Th>
+                    </Th> */}
                     <Th color="white" fontSize="10px" fontWeight="semibold">
                       Quantity
                     </Th>
@@ -129,9 +129,9 @@ export const WarehouseReceivingHistory = ({
                       <Td fontSize="xs">{item.itemCode}</Td>
                       <Td fontSize="xs">{item.itemDescrption}</Td>
                       <Td fontSize="xs">{item.uom}</Td>
-                      <Td fontSize="xs">
+                      {/* <Td fontSize="xs">
                         {item.category ? item.category : "Miscellaneous"}
-                      </Td>
+                      </Td> */}
                       <Td fontSize="xs">{item.quantity}</Td>
                       {/* <Td>{item.manufacturingDate}</Td> */}
                     </>

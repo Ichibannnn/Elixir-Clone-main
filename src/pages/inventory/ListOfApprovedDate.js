@@ -218,7 +218,7 @@ export const ListofApprovedDate = ({
             justifyContent="center"
             fontSize="xs"
           >
-            LIST OF APPROVED DATE
+            List of Approved Orders
           </Text>
         </Box>
         <PageScroll minHeight="150px" maxHeight="210px">
@@ -230,6 +230,9 @@ export const ListofApprovedDate = ({
                 </Th>
                 <Th color="white" fontSize="10px">
                   Order ID
+                </Th>
+                <Th color="white" fontSize="10px">
+                  Department
                 </Th>
                 <Th color="white" fontSize="10px">
                   Customer Code
@@ -288,6 +291,7 @@ export const ListofApprovedDate = ({
                     <Td fontSize="11px">{i + 1}</Td>
                   )}
                   <Td fontSize="xs">{order.id}</Td>
+                  <Td fontSize="xs">{order.department}</Td>
                   <Td fontSize="xs">{order.customerCode}</Td>
                   <Td fontSize="xs">{order.customerName}</Td>
                   <Td fontSize="xs">{order.category}</Td>

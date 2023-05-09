@@ -53,21 +53,21 @@ export const ListOfOrders = ({
           textAlign="center"
           bgColor="secondary"
           color="white"
-          fontSize="11px"
+          fontSize="13px"
         >
           List of Orders
         </Text>
-        <PageScroll minHeight='260px' maxHeight='270px'>
+        <PageScroll minHeight="260px" maxHeight="270px">
           <Table size="sm" variant="simple">
             <Thead bgColor="secondary">
-              <Tr>
-                <Th color="white" fontSize="9px">
+              <Tr h="30px">
+                <Th color="white" fontSize="10px">
                   Line
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Order Date
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Date Needed
                 </Th>
                 {/* <Th color="white" fontSize="9px">
@@ -79,16 +79,16 @@ export const ListOfOrders = ({
                 <Th color="white" fontSize="9px">
                   Category
                 </Th> */}
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Item Code
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Item Description
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   UOM
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Quantity Order
                 </Th>
               </Tr>
