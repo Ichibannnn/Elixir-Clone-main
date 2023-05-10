@@ -261,6 +261,7 @@ const UserRole = () => {
                   boxShadow="md"
                   bg="gray.200"
                   variant="striped"
+                  className="inputUpperCase"
                 >
                   <Thead
                     // position="sticky"

@@ -35,7 +35,6 @@ import { ToastComponent } from "../../../components/Toast";
 
 const currentUser = decodeUser();
 
-
 // PRINT MODAL --------------------------------------
 export const PrintModal = ({
   isOpen,
@@ -79,7 +78,7 @@ export const PrintModal = ({
     }
   };
 
-  console.log(printData)
+  console.log(printData);
 
   return (
     <Modal isOpen={isOpen} onClose={() => {}} isCentered size="5xl">
@@ -117,8 +116,8 @@ export const PrintModal = ({
                 <Text>Order ID: {orderId && orderId}</Text>
                 <Text>Unit: {`Warehouse`}</Text>
                 <Text>Customer: {printData[0]?.customerName}</Text>
-                <Text>Address: {printData[0]?.address}</Text>
-                {/* <Text>Batch Number: {printData[0]?.batchNo}</Text> */}  
+                {/* <Text>Address: {printData[0]?.address}</Text> */}
+                {/* <Text>Batch Number: {printData[0]?.batchNo}</Text> */}
               </Flex>
               <Flex flexDirection="column">
                 <Barcode width={3} height={50} value={Number(orderId)} />
@@ -150,9 +149,9 @@ export const PrintModal = ({
                 </Tbody>
               </Table>
 
-              <Flex justifyContent="start" mb={3}>
+              {/* <Flex justifyContent="start" mb={3}>
                 <Text>Total Quantity: {totalQuantity && totalQuantity}</Text>
-              </Flex>
+              </Flex> */}
             </PageScroll>
 
             <Flex justifyContent="space-between" mb={5} mt={2}>
@@ -227,7 +226,7 @@ export const PrintModal = ({
             <PageScroll minHeight="150px" maxHeight="300px">
               <VStack spacing={20} w="93%" ml={3} ref={componentRef}>
                 {/* Survey Form Ready to print*/}
-                <Flex w="full" mb="500px" p={5} flexDirection="column">
+                {/* <Flex w="full" mb="500px" p={5} flexDirection="column">
                   <HStack w="full" border="1px">
                     <Image src="/images/RDF Logo.png" w="18%" ml={3} />
 
@@ -473,8 +472,7 @@ export const PrintModal = ({
                       Evaluated By: __________________________________________
                     </Text>
                   </Flex>
-                </Flex>
-
+                </Flex> */}
 
                 {/* MO SLIP Ready to print*/}
                 <Flex w="full" mt={2} p={5} flexDirection="column">
@@ -544,12 +542,12 @@ export const PrintModal = ({
                       ))}
                     </Tbody>
                   </Table>
-
+                  {/* 
                   <Flex justifyContent="start" mb={3}>
                     <Text>
                       Total Quantity: {totalQuantity && totalQuantity}
                     </Text>
-                  </Flex>
+                  </Flex> */}
 
                   <Flex justifyContent="space-between" mb={5} mt={2}>
                     <HStack>
@@ -648,7 +646,6 @@ export const PrintModal = ({
     </Modal>
   );
 };
-
 
 // TRACKING OF ORDERS -------------------------------
 export const TrackModal = ({ isOpen, onClose, trackData, trackList }) => {
@@ -759,7 +756,13 @@ export const TrackModal = ({ isOpen, onClose, trackData, trackList }) => {
 
         <ModalFooter>
           <ButtonGroup size="sm" mt={7}>
-            <Button color="black" variant="outline" onClick={onClose} borderRadius="none" fontSize="11px">
+            <Button
+              color="black"
+              variant="outline"
+              onClick={onClose}
+              borderRadius="none"
+              fontSize="11px"
+            >
               Close
             </Button>
           </ButtonGroup>
@@ -769,114 +772,131 @@ export const TrackModal = ({ isOpen, onClose, trackData, trackList }) => {
   );
 };
 
-
 //REJECT APPROVED MO --------------------------------
-export const RejectModal = ({ isOpen, onClose, id, fetchApprovedMO, fetchNotification }) => {
+export const RejectModal = ({
+  isOpen,
+  onClose,
+  id,
+  fetchApprovedMO,
+  fetchNotification,
+}) => {
+  const [reasonSubmit, setReasonSubmit] = useState("");
 
-  const [reasonSubmit, setReasonSubmit] = useState('')
+  const [reasons, setReasons] = useState([]);
 
-  const [reasons, setReasons] = useState([])
+  const toast = useToast();
 
-  const toast = useToast()
-
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchReasonsApi = async () => {
-      const res = await request.get(`Reason/GetAllActiveReasons`)
-      return res.data
-  }
+    const res = await request.get(`Reason/GetAllActiveReasons`);
+    return res.data;
+  };
 
   const fetchReasons = () => {
-      fetchReasonsApi().then(res => {
-          setReasons(res)
-      })
-  }
+    fetchReasonsApi().then((res) => {
+      setReasons(res);
+    });
+  };
 
   useEffect(() => {
-      fetchReasons()
+    fetchReasons();
 
-      return () => {
-          setReasons([])
-      }
-  }, [])
+    return () => {
+      setReasons([]);
+    };
+  }, []);
 
   const submitHandler = () => {
-      setIsLoading(true)
-      try {
-          const res = request.put(`Ordering/RejectApproveListOfMoveOrder`,
-              {
-                  orderNo: id,
-                  remarks: reasonSubmit,
-                  rejectBy: currentUser?.userName
-              }
-          )
-              .then(res => {
-                  ToastComponent("Success", "Move order has been rejected", "success", toast)
-                  // fetchNotification()
-                  fetchApprovedMO()
-                  setIsLoading(false)
-                  onClose()
-              })
-              .catch(err => {
-                  ToastComponent("Error", "Move order was not rejected", "error", toast)
-                  setIsLoading(false)
-              })
-      } catch (error) {
-      }
-  }
+    setIsLoading(true);
+    try {
+      const res = request
+        .put(`Ordering/RejectApproveListOfMoveOrder`, {
+          orderNo: id,
+          remarks: reasonSubmit,
+          rejectBy: currentUser?.userName,
+        })
+        .then((res) => {
+          ToastComponent(
+            "Success",
+            "Move order has been rejected",
+            "success",
+            toast
+          );
+          // fetchNotification()
+          fetchApprovedMO();
+          setIsLoading(false);
+          onClose();
+        })
+        .catch((err) => {
+          ToastComponent(
+            "Error",
+            "Move order was not rejected",
+            "error",
+            toast
+          );
+          setIsLoading(false);
+        });
+    } catch (error) {}
+  };
 
   return (
-      <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
-          <ModalOverlay />
-          <ModalContent>
-              <ModalHeader bg="primary" color="white">
-                  <Flex justifyContent='center'>
-                      <Text fontSize="14px">Reject Move Order</Text>
-                  </Flex>
-              </ModalHeader>
-              <ModalCloseButton onClick={onClose} />
+    <Modal isOpen={isOpen} onClose={() => {}} isCentered size="xl">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader bg="primary" color="white">
+          <Flex justifyContent="center">
+            <Text fontSize="14px">Reject Move Order</Text>
+          </Flex>
+        </ModalHeader>
+        <ModalCloseButton onClick={onClose} />
 
-              <ModalBody>
-                  <VStack justifyContent='center'>
-                      <Text fontSize="sm" mt={2}>Are you sure you want to reject this move order?</Text>
-                      {
-                          reasons?.length > 0 ?
-                              <Select
-                                  fontSize="xs"
-                                  onChange={(e) => setReasonSubmit(e.target.value)}
-                                  w='70%' placeholder='Please select a reason'
-                              >
-                                  {
-                                      reasons?.map((reason, i) =>
-                                          <option key={i} value={reason.reasonName}>{reason.reasonName}</option>
-                                      )
-                                  }
-                              </Select>
-                              : 'loading'
-                      }
-                  </VStack>
-              </ModalBody>
+        <ModalBody>
+          <VStack justifyContent="center">
+            <Text fontSize="sm" mt={2}>
+              Are you sure you want to reject this move order?
+            </Text>
+            {reasons?.length > 0 ? (
+              <Select
+                fontSize="xs"
+                onChange={(e) => setReasonSubmit(e.target.value)}
+                w="70%"
+                placeholder="Please select a reason"
+              >
+                {reasons?.map((reason, i) => (
+                  <option key={i} value={reason.reasonName}>
+                    {reason.reasonName}
+                  </option>
+                ))}
+              </Select>
+            ) : (
+              "loading"
+            )}
+          </VStack>
+        </ModalBody>
 
-              <ModalFooter justifyContent="center">
-                  <ButtonGroup size='sm' mt={7}>
-                      <Button
-                          onClick={submitHandler}
-                          disabled={!reasonSubmit || isLoading}
-                          isLoading={isLoading}
-                          colorScheme='blue'
-                      >
-                          Yes
-                      </Button>
-                      <Button
-                          disabled={isLoading}
-                          isLoading={isLoading}
-                          color="black" variant="outline" onClick={onClose}
-                      >
-                          No
-                      </Button>
-                  </ButtonGroup>
-              </ModalFooter>
-          </ModalContent>
-      </Modal>
-  )
-}
+        <ModalFooter justifyContent="center">
+          <ButtonGroup size="sm" mt={7}>
+            <Button
+              onClick={submitHandler}
+              disabled={!reasonSubmit || isLoading}
+              isLoading={isLoading}
+              colorScheme="blue"
+            >
+              Yes
+            </Button>
+            <Button
+              disabled={isLoading}
+              isLoading={isLoading}
+              color="black"
+              variant="outline"
+              onClick={onClose}
+            >
+              No
+            </Button>
+          </ButtonGroup>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};

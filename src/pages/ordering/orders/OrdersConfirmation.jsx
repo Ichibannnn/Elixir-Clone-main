@@ -939,7 +939,7 @@ const OrdersConfirmation = ({
                           <Thead bgColor="gray.600">
                             <Tr>
                               <Th color="white" fontSize="9px">
-                                Lines
+                                Line
                               </Th>
                               <Th color="white" fontSize="9px">
                                 Transact ID

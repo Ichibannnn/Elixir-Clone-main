@@ -286,7 +286,7 @@ const ImportOrder = () => {
                     </Td>
                     <Td fontSize="xs">
                       {ed.customercode ? (
-                        ed.customercode
+                        ed.customercodes
                       ) : (
                         <Text fontWeight="semibold" color="danger">
                           Data missing. Please make sure correct excel file for

@@ -46,6 +46,7 @@ import {
   ButtonGroup,
   Badge,
   Select,
+  Image,
 } from "@chakra-ui/react";
 import React, { useState, useRef } from "react";
 import { FiSearch } from "react-icons/fi";
@@ -97,6 +98,7 @@ const ReceivedMaterials = () => {
     uom: "",
     supplier: "",
     actualGood: "",
+    lotSection: "",
   });
 
   // OPEN MODAL FOR PRINTER
@@ -175,6 +177,7 @@ const ReceivedMaterials = () => {
     uom,
     supplier,
     actualGood,
+    lotSection,
   }) => {
     if (id) {
       setPrintData({
@@ -186,6 +189,7 @@ const ReceivedMaterials = () => {
         uom: uom,
         supplier: supplier,
         actualGood: actualGood,
+        lotSection: lotSection,
       });
       openPrint();
     } else {
@@ -198,6 +202,7 @@ const ReceivedMaterials = () => {
         uom: "",
         supplier: "",
         actualGood: "",
+        lotSection: "",
       });
     }
   };
@@ -435,6 +440,7 @@ const PrintModal = ({ isOpen, onClose, printData }) => {
     UOM: printData?.uom,
     Supplier: printData?.supplier,
     "Quantity Good": printData?.actualGood,
+    "Lot Section": printData?.lotSection,
   };
 
   return (
@@ -454,7 +460,13 @@ const PrintModal = ({ isOpen, onClose, printData }) => {
           {/* Printed on Paper */}
           <Box display="none">
             <VStack spacing={0} justifyContent="center" ref={componentRef}>
-              <VStack spacing={0} justifyContent="start"></VStack>
+              <VStack spacing={0} justifyContent="start">
+                <Image src="/images/RDF Logo.png" w="20%" ml={3} />
+                <Text fontSize="9px" ml={2} textAlign="center">
+                  Purok 6, Brgy. Lara, City of San Fernando, Pampanga,
+                  Philippines
+                </Text>
+              </VStack>
               <Flex mt={3} w="90%" justifyContent="center">
                 <Text fontSize="15px" fontWeight="semibold">
                   Materials
@@ -495,7 +507,12 @@ const PrintModal = ({ isOpen, onClose, printData }) => {
 
           {/* Display on Preview */}
           <VStack spacing={0} justifyContent="center">
-            <VStack spacing={0} justifyContent="start"></VStack>
+            <VStack spacing={0} justifyContent="start">
+              <Image src="/images/RDF Logo.png" w="20%" ml={3} />
+              <Text fontSize="9px" ml={2} textAlign="center">
+                Purok 6, Brgy. Lara, City of San Fernando, Pampanga, Philippines
+              </Text>
+            </VStack>
             <Flex mt={3} w="90%" justifyContent="center">
               <Text fontSize="15px" fontWeight="semibold">
                 Materials
@@ -576,7 +593,7 @@ const PrintModal = ({ isOpen, onClose, printData }) => {
         <ModalFooter mt={10}>
           <ButtonGroup size="xs">
             <Button colorScheme="blue" onClick={handlePrint}>
-              Print
+              Re-Print
             </Button>
             <Button color="black" onClick={onClose}>
               Close

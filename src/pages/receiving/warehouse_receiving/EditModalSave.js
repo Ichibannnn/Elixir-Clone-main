@@ -38,10 +38,10 @@ const EditModalSave = ({
   setCode,
   editData,
   disableQuantity,
-  lotName,
+  lotSection,
   quantity,
   // setReceivingId,
-  receivingId
+  receivingId,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
@@ -119,10 +119,17 @@ const EditModalSave = ({
         colorScheme="blue"
         onClick={onOpen}
         disabled={
-          isSubmitDisabled || !expectedDelivery || !actualDelivered || !batchNo || !receivingDate || !lotName || disableQuantity < 0 || quantity
+          isSubmitDisabled ||
+          !expectedDelivery ||
+          !actualDelivered ||
+          !batchNo ||
+          !receivingDate ||
+          !lotSection ||
+          disableQuantity < 0 ||
+          quantity
         }
         title={
-          isSubmitDisabled || !expectedDelivery || !actualDelivered || !batchNo  
+          isSubmitDisabled || !expectedDelivery || !actualDelivered || !batchNo
             ? "Please provide required fields"
             : ""
         }
@@ -154,7 +161,12 @@ const EditModalSave = ({
               >
                 Yes
               </Button>
-              <Button size="sm" variant="outline" onClick={onClose} color="black">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={onClose}
+                color="black"
+              >
                 No
               </Button>
             </ButtonGroup>
@@ -166,6 +178,7 @@ const EditModalSave = ({
         <PrintBarcode
           printData={editData}
           receivingDate={receivingDate}
+          lotSection={lotSection}
           actualGood={actualGood}
           sumQuantity={sumQuantity}
           setCode={setCode}

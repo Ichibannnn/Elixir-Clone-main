@@ -255,6 +255,7 @@ const UserAccount = () => {
                 </Stack>
               ) : (
                 <Table
+                  className="inputUpperCase"
                   size="sm"
                   width="full"
                   border="none"

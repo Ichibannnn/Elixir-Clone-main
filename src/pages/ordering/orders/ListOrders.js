@@ -132,6 +132,11 @@ export const ListOrders = ({
 
   //console.log(errorData);
 
+  const filteredLength = genusOrders?.result?.filter((val) => {
+    const newKeyword = new RegExp(`${keyword.toLowerCase()}`);
+    return val?.customer_name?.toLowerCase().match(newKeyword, "*");
+  });
+
   return (
     <Flex
       color="fontColor"
@@ -329,7 +334,10 @@ export const ListOrders = ({
             <HStack>
               <Badge colorScheme="cyan">
                 <Text color="secondary">
-                  Number of Records: {genusOrders?.result?.length}
+                  {!keyword
+                    ? `Number of records: ${genusOrders?.result?.length}`
+                    : // : `Results for ${keyword}`}
+                      `Number of records from ${keyword}: ${filteredLength?.length}`}
                 </Text>
               </Badge>
             </HStack>

@@ -32,28 +32,28 @@ import DatePicker from "react-date-picker";
 const currentUser = decodeUser();
 
 const fetchLotCategoryApi = async () => {
-  const res = await request.get('Lot/GetAllActiveLotNames')
-  return res.data
-}
+  const res = await request.get("Lot/GetAllActiveLotNames");
+  return res.data;
+};
 
 export const EditModal = ({
   editData,
   isOpen,
   onClose,
   getAvailablePOHandler,
-  setReceivingDate, 
+  setReceivingDate,
   setLotCategory,
-  lotCategory, 
+  lotCategory,
   receivingDate,
   actualGood,
   setActualGood,
   setReceivingId,
-  receivingId
+  receivingId,
 }) => {
   const [actualDelivered, setActualDelivered] = useState(null);
   const [batchNo, setBatchNo] = useState(null);
   const [receiveDate, setReceiveDate] = useState(null);
-  const [lotName, setLotName] = useState(null)
+  const [lotSection, setLotSection] = useState(null);
   const [expectedDelivery, setExpectedDelivery] = useState(null);
   const toast = useToast();
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
@@ -64,21 +64,20 @@ export const EditModal = ({
 
   const [submitDataThree, setSubmitDataThree] = useState([]);
   const [submitDataTwo, setSubmitDataTwo] = useState([]);
-  const [lotCategories, setLotCategories] = useState([])
-  const [receivingDateDisplay, setReceivingDateDisplay] = useState(null)
-  const [disableQuantity, setDisableQuantity] = useState(0)
-
+  const [lotCategories, setLotCategories] = useState([]);
+  const [receivingDateDisplay, setReceivingDateDisplay] = useState(null);
+  const [disableQuantity, setDisableQuantity] = useState(0);
 
   // FETCH LOT CATEGORY
-    const fetchLotCategory = async () => {
-      fetchLotCategoryApi().then(res => {
-          setLotCategories(res)
-      })
-    }
+  const fetchLotCategory = async () => {
+    fetchLotCategoryApi().then((res) => {
+      setLotCategories(res);
+    });
+  };
 
-    useEffect(() => {
-        fetchLotCategory()
-    }, [setLotCategories])
+  useEffect(() => {
+    fetchLotCategory();
+  }, [setLotCategories]);
 
   const { register } = useForm({
     resolver: yupResolver(),
@@ -131,17 +130,17 @@ export const EditModal = ({
   const receiveDateProvider = (data) => {
     setReceiveDate(data);
   };
-  
-  const lotNameProvider = (data) => {
-    setLotName(data);
+
+  const lotSectionProvider = (data) => {
+    console.log(data);
+    setLotSection(data);
   };
 
-
-  const actualDeliveredRef = useRef()
+  const actualDeliveredRef = useRef();
 
   const actualDeliveredProvider = (data) => {
-    const allowablePercent = editData.quantityOrdered * 1.10;
-    const allowableAmount =  allowablePercent - editData.actualGood;
+    const allowablePercent = editData.quantityOrdered * 1.1;
+    const allowableAmount = allowablePercent - editData.actualGood;
     if (data > allowableAmount) {
       setActualDelivered("");
       ToastComponent(
@@ -150,7 +149,7 @@ export const EditModal = ({
         "warning",
         toast
       );
-      actualDeliveredRef.current.value = ""
+      actualDeliveredRef.current.value = "";
     } else {
       setActualDelivered(data);
     }
@@ -159,8 +158,6 @@ export const EditModal = ({
   const batchNoProvider = (data) => {
     setBatchNo(data);
   };
-
-
 
   let submitDataOne = {
     poSummaryId: editData.id,
@@ -175,22 +172,24 @@ export const EditModal = ({
     batchNo: batchNo,
     totalReject: sumQuantity,
     addedBy: currentUser.userName,
+    lotSection: lotSection,
   };
 
   useEffect(() => {
-    setActualGood(editData.actualDelivered - sumQuantity)
-  }, [sumQuantity])
+    setActualGood(editData.actualDelivered - sumQuantity);
+  }, [sumQuantity]);
 
   const receivingDateProvider = (data) => {
+    // console.log(data);
     if (data) {
-        setReceivingDateDisplay(data)
-        const newData = moment(data).format("YYYY-MM-DD")
-        setReceivingDate(newData)
+      setReceivingDateDisplay(data);
+      const newData = moment(data).format("YYYY-MM-DD");
+      setReceivingDate(newData);
     } else {
-        setReceivingDateDisplay(null)
-        setReceivingDate(null)
+      setReceivingDateDisplay(null);
+      setReceivingDate(null);
     }
-}
+  };
 
   return (
     <ReceivingContext.Provider
@@ -373,7 +372,7 @@ export const EditModal = ({
                         fontSize="11px"
                         size="sm"
                         placeholder="Please provide quantity of expected delivery  (Required)"
-                        bgColor='#ffffe0'
+                        bgColor="#ffffe0"
                         onChange={(e) =>
                           expectedDeliveryProvider(e.target.value)
                         }
@@ -386,7 +385,7 @@ export const EditModal = ({
                         fontSize="11px"
                         size="sm"
                         placeholder="Please enter quantity (Required)"
-                        bgColor='#ffffe0'
+                        bgColor="#ffffe0"
                         onChange={(e) =>
                           actualDeliveredProvider(e.target.value)
                         }
@@ -415,54 +414,61 @@ export const EditModal = ({
                         fontSize="11px"
                         size="sm"
                         placeholder="Please provide batch number (Required)"
-                        bgColor='#ffffe0'
+                        bgColor="#ffffe0"
                         onChange={(e) => batchNoProvider(e.target.value)}
                       />
                     </FormLabel>
                   </Flex>
 
                   <Flex justifyContent="space-between" p={1}>
+                    <FormLabel w="40%" fontSize="12px">
+                      Receiving Date
+                      <Input
+                        size="sm"
+                        border="1px"
+                        borderColor="gray.400"
+                        fontSize="11px"
+                        bgColor="#ffffe0"
+                        onChange={(date) => receivingDateProvider(date)}
+                        min={moment(
+                          new Date(new Date().setDate(new Date().getDate() - 3))
+                        ).format("yyyy-MM-DD")}
+                        max={moment(new Date()).format("yyyy-MM-DD")}
+                        type="date"
 
+                        // shouldCloseOnSelect
+                        // selected={receivingDateDisplay}
+                        // className='chakra-input css-7s3glp'
+                        // wrapperClassName='datePicker'
+                      />
+                    </FormLabel>
 
-                    <FormLabel w='40%' fontSize="12px">
-                        Receiving Date
-                        <Input
-                            size="sm"
-                            border="1px"
-                            borderColor="gray.400"
-                            fontSize="11px"
-                            bgColor='#ffffe0'
-                            onChange={(date) => receivingDateProvider(date)}
-                            min={moment(new Date(new Date().setDate(new Date().getDate() - 3))).format('yyyy-MM-DD')}
-                            max={moment(new Date()).format('yyyy-MM-DD')}
-                            type='date'
-                            
-                            // shouldCloseOnSelect
-                            // selected={receivingDateDisplay}
-                            // className='chakra-input css-7s3glp'
-                            // wrapperClassName='datePicker'
-                        />
-                      </FormLabel>
-
-                      <FormLabel w='40%' fontSize="12px">
-                        LOT Section
-                        {
-                          lotCategories.length > 0 ?
-                              (<Select
-                                  size="sm"
-                                  fontSize="11px"
-                                  onChange={(e) => lotNameProvider(e.target.value)}
-                                  disabled={!receivingDate}
-                                  title={!receivingDate ? 'Please provide a Receiving Date first' : 'Select a lot category'}
-                                  // isInvalid={errors.rms}
-                                  placeholder='Select Lot Category'
-                                  bgColor='#ffffe0'
-                              >
-                                  {lotCategories?.map(lot =>
-                                      <option key={lot.id} value={lot.id}>{lot.sectionName}</option>
-                                  )}
-                              </Select>) : "Loading"
-                        }
+                    <FormLabel w="40%" fontSize="12px">
+                      LOT Section
+                      {lotCategories.length > 0 ? (
+                        <Select
+                          size="sm"
+                          fontSize="11px"
+                          onChange={(e) => lotSectionProvider(e.target.value)}
+                          disabled={!receivingDate}
+                          title={
+                            !receivingDate
+                              ? "Please provide a Receiving Date first"
+                              : "Select a lot category"
+                          }
+                          // isInvalid={errors.rms}
+                          placeholder="Select Lot Category"
+                          bgColor="#ffffe0"
+                        >
+                          {lotCategories?.map((lot) => (
+                            <option key={lot.id} value={lot.sectionName}>
+                              {lot.sectionName}
+                            </option>
+                          ))}
+                        </Select>
+                      ) : (
+                        "Loading"
+                      )}
                     </FormLabel>
                   </Flex>
                 </Stack>
@@ -508,7 +514,7 @@ export const EditModal = ({
                 editData={editData}
                 receivingDate={receivingDate}
                 receiveDate={receiveDate}
-                lotName={lotName}
+                lotSection={lotSection}
                 lotCategory={lotCategory}
                 setDisableQuantity={setDisableQuantity}
                 disableQuantity={disableQuantity}

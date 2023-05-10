@@ -227,7 +227,6 @@ export const RejectModal = ({
 };
 
 // APPROVE MOVE ORDER ----------------------------
-
 export const ApproveModal = ({
   isOpen,
   onClose,
@@ -351,7 +350,7 @@ export const ApproveModal = ({
         <PageScroll minHeight="150px" maxHeight="300px">
           <VStack spacing={20} w="93%" ml={3} ref={componentRef}>
             {/* Survey Form */}
-            <Flex w="full" mb="510px" p={5} flexDirection="column">
+            {/* <Flex w="full" mb="510px" p={5} flexDirection="column">
               <HStack w="full" border="1px">
                 <Image src="/images/RDF Logo.png" w="18%" ml={3} />
 
@@ -597,9 +596,8 @@ export const ApproveModal = ({
                   Evaluated By: __________________________________________
                 </Text>
               </Flex>
-            </Flex>
+            </Flex> */}
 
-            
             {/* MO Slip */}
             <Flex
               w="full"
@@ -627,7 +625,7 @@ export const ApproveModal = ({
                   <Text>Order ID: {orderNo && orderNo}</Text>
                   <Text>Unit: {`Warehouse`}</Text>
                   <Text>Customer: {printData[0]?.customerName}</Text>
-                  <Text>Address: {printData[0]?.address}</Text>
+                  {/* <Text>Address: {printData[0]?.address}</Text> */}
                   {/* <Text>Batch Number: {printData[0]?.batchNo}</Text> */}
                 </Flex>
                 <Flex flexDirection="column">
@@ -661,9 +659,9 @@ export const ApproveModal = ({
                 </Tbody>
               </Table>
 
-              <Flex justifyContent="start" mb={3}>
+              {/* <Flex justifyContent="start" mb={3}>
                 <Text>Total Quantity: {totalQuantity && totalQuantity}</Text>
-              </Flex>
+              </Flex> */}
 
               <Flex justifyContent="space-between" mb={5} mt={2}>
                 <HStack>

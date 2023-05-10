@@ -28,6 +28,7 @@ import { ReceivingContext } from "../../../components/context/ReceivingContext";
 const PrintBarcode = ({
   printData,
   receivingDate,
+  lotSection,
   actualGood,
   sumQuantity,
   isOpen,
@@ -54,7 +55,7 @@ const PrintBarcode = ({
     UOM: printData.uom,
     Supplier: printData.supplier,
     "Quantity Good": Number(actualDelivered) - Number(sumQuantity),
-    // "Total Reject": sumQuantity,
+    "Lot Section": lotSection,
   };
 
   // console.log(displayData)
@@ -79,7 +80,13 @@ const PrintBarcode = ({
           {/* Printed on Paper */}
           <Box display="none">
             <VStack spacing={0} justifyContent="center" ref={componentRef}>
-              <VStack spacing={0} justifyContent="start"></VStack>
+              <VStack spacing={0} justifyContent="start">
+                <Image src="/images/RDF Logo.png" w="20%" ml={3} />
+                <Text fontSize="9px" ml={2} textAlign="center">
+                  Purok 6, Brgy. Lara, City of San Fernando, Pampanga,
+                  Philippines
+                </Text>
+              </VStack>
               <Flex mt={3} w="90%" justifyContent="center">
                 <Text fontSize="15px" fontWeight="semibold">
                   Materials
@@ -120,8 +127,13 @@ const PrintBarcode = ({
 
           {/* Display on Preview */}
           <VStack spacing={0} justifyContent="center">
-            <VStack spacing={0} justifyContent="start"></VStack>
-            <Flex mt={3} w="90%" justifyContent="center">
+            <VStack spacing={0} justifyContent="start">
+              <Image src="/images/RDF Logo.png" w="20%" ml={3} />
+              <Text fontSize="9px" ml={2} textAlign="center">
+                Purok 6, Brgy. Lara, City of San Fernando, Pampanga, Philippines
+              </Text>
+            </VStack>
+            <Flex mt={5} w="90%" justifyContent="center">
               <Text fontSize="15px" fontWeight="semibold">
                 Materials
               </Text>

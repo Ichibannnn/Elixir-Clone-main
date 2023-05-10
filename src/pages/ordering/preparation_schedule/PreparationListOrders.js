@@ -25,7 +25,6 @@ import {
   PaginationPageGroup,
 } from "@ajna/pagination";
 import { TiInfo } from "react-icons/ti";
-import PageScrollImport from "../../../components/PageScrollImport";
 import PageScroll from "../../../utils/PageScroll";
 import {
   CancelModalConfirmation,
@@ -252,7 +251,7 @@ export const PreparationListOrders = ({
         >
           List of Orders
         </Text>
-        <PageScroll maxHeight="700px">
+        <PageScroll minHeight="150px" maxHeight="640px">
           <Table
             size="sm"
             width="full"

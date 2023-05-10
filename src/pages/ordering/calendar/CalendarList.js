@@ -76,6 +76,7 @@ export const CalendarList = ({ forMOData }) => {
 
 const ModalOfSchedules = ({ isOpen, onClose, forMOData, dateStr }) => {
   const TableHead = [
+    "Department",
     "Customer Code",
     "Customer Name",
     "Preparation Date",
