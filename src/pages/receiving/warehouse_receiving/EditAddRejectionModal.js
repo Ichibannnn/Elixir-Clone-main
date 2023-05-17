@@ -26,26 +26,36 @@ import request from "../../../services/ApiClient";
 import { ToastComponent } from "../../../components/Toast";
 import { AiFillMinusCircle } from "react-icons/ai";
 import { IoIosAdd } from "react-icons/io";
+import { MdDeleteForever } from "react-icons/md";
+import { TiDeleteOutline } from "react-icons/ti";
+import { FaMinusCircle } from "react-icons/fa";
 
-const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood, setDisableQuantity, quantity, setQuantity, actualDelivered}) => {
+const EditAddRejectionModal = ({
+  receivingId,
+  sumQuantity,
+  actualGood,
+  setDisableQuantity,
+  quantity,
+  setQuantity,
+  actualDelivered,
+}) => {
   const { setSubmitDataTwo, setSumQuantity } = useContext(ReceivingContext);
 
   const [reasons, setReasons] = useState([]);
-  
+
   const [remarks, setRemarks] = useState("");
   const [remarksName, setRemarksName] = useState("");
   const [errors, setErrors] = useState({});
   const [finalData, setFinalData] = useState([]);
   const [disabled, setDisabled] = useState(true);
-  const [disabledQuantity, setDisabledQuantity] = useState("")
-
+  const [disabledQuantity, setDisabledQuantity] = useState("");
 
   const remarksDisplay = useRef(null);
   const toast = useToast();
 
   const rejectQuantityProvider = (data) => {
     setDisableQuantity(data);
-  }
+  };
 
   // FETCH REASON API
   const fetchReasonsApi = async () => {
@@ -79,23 +89,28 @@ const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood, setDisabl
   }, [finalData]);
 
   // QTY HANDLER FOR QUANTITY INPUT
-    const quantityHandler = (data) => {
-        if (data) {
-            if (data + Number(sumQuantity) >= actualDelivered) {
-                ToastComponent("Warning", "You are providing a value greater than or equal to your Actual Good!", "warning", toast)
-                setQuantity("")
-            } else {
-                setQuantity(data)
-            }
-        } else {
-            setQuantity("")
-        }
+  const quantityHandler = (data) => {
+    if (data) {
+      if (data + Number(sumQuantity) >= actualDelivered) {
+        ToastComponent(
+          "Warning",
+          "You are providing a value greater than or equal to your Actual Good!",
+          "warning",
+          toast
+        );
+        setQuantity("");
+      } else {
+        setQuantity(data);
+      }
+    } else {
+      setQuantity("");
     }
+  };
 
   // Disabled reject quantity
   const disabledQuantityReject = () => {
-    setDisabled(false)
-  }
+    setDisabled(false);
+  };
 
   const disabledQuantityProvider = (data) => {
     setDisableQuantity(data);
@@ -153,7 +168,7 @@ const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood, setDisabl
 
     remarksDisplay.current.selectedIndex = 0;
     setQuantity("");
-    setDisabled(true)
+    setDisabled(true);
   };
 
   // REMOVE THE DATA FROM THE TABLE ADD REJECT
@@ -185,7 +200,6 @@ const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood, setDisabl
               borderRadius="none"
               onClick={disabledQuantityReject}
               onChange={(e) => rejectQuantityProvider(e.target.value)}
-              
             >
               New Rejection
             </Button>
@@ -232,10 +246,15 @@ const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood, setDisabl
                 )}
               </FormLabel>
             </Flex>
-            
+
             <Flex justifyContent="space-between">
               <Badge colorScheme="blue"> Total Quantity: {sumQuantity} </Badge>
-              <Button size="xs" colorScheme="blue" borderRadius="none" onClick={addNewRowHandler}>
+              <Button
+                size="xs"
+                colorScheme="blue"
+                borderRadius="none"
+                onClick={addNewRowHandler}
+              >
                 Save Rejection
               </Button>
             </Flex>
@@ -269,7 +288,7 @@ const EditAddRejectionModal = ({ receivingId, sumQuantity, actualGood, setDisabl
                             deleteRejectionHandler(data.remarksName)
                           }
                         >
-                          <AiFillMinusCircle fontSize="15px" />
+                          <FaMinusCircle fontSize="17px" color="red" />
                         </Button>
                       </Td>
                     </Tr>

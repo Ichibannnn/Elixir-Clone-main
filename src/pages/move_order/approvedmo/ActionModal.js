@@ -107,14 +107,14 @@ export const PrintModal = ({
 
             <Flex justifyContent="center">
               <Text fontSize="xs" fontWeight="semibold">
-                (reprinted copy)
+                (Duplicated Copy)
               </Text>
             </Flex>
 
             <Flex justifyContent="space-between" mb={3}>
               <Flex flexDirection="column">
                 <Text>Order ID: {orderId && orderId}</Text>
-                <Text>Unit: {`Warehouse`}</Text>
+                <Text>Unit: {`WAREHOUSE`}</Text>
                 <Text>Customer: {printData[0]?.customerName}</Text>
                 {/* <Text>Address: {printData[0]?.address}</Text> */}
                 {/* <Text>Batch Number: {printData[0]?.batchNo}</Text> */}
@@ -496,14 +496,14 @@ export const PrintModal = ({
 
                   <Flex justifyContent="center">
                     <Text fontSize="xs" fontWeight="semibold">
-                      (reprinted copy)
+                      (Duplicated Copy)
                     </Text>
                   </Flex>
 
                   <Flex justifyContent="space-between" mb={3}>
                     <Flex flexDirection="column">
                       <Text>Order ID: {orderId && orderId}</Text>
-                      <Text>Warehouse: {`Warehouse`}</Text>
+                      <Text>Warehouse: {`WAREHOUSE`}</Text>
                       <Text>Customer: {printData[0]?.customerName}</Text>
                       <Text>Address: {printData[0]?.address}</Text>
                       {/* <Text>Batch Number: {printData[0]?.batchNo}</Text> */}

@@ -5,6 +5,7 @@ import {
   ButtonGroup,
   Flex,
   FormLabel,
+  HStack,
   Input,
   Modal,
   ModalBody,
@@ -133,6 +134,7 @@ export const SaveButton = ({
   setCurrentPage,
   currentPage,
   fetchNotification,
+  moveData,
 }) => {
   const {
     isOpen: isPlateNumber,
@@ -174,20 +176,34 @@ export const SaveButton = ({
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
           fetchNotification={fetchNotification}
+          moveData={moveData}
         />
       }
     </Flex>
   );
 };
 
+// const schema = yup.object().shape({
+//   formData: yup.object().shape({
+//     orderId: yup.string(),
+//     companyCode: yup.string().required("Company Code is required"),
+//     companyName: yup.string().required("Company Name is required"),
+//     departmentName: yup.string().required("Department Name is required"),
+//     locationName: yup.string().required("Location Name is required"),
+//     accountTitles: yup.string().required("Account Title is required"),
+//   }),
+// });
+
 const schema = yup.object().shape({
   formData: yup.object().shape({
     orderId: yup.string(),
-    companyCode: yup.string().required("Company Code is required"),
-    companyName: yup.string().required("Company Name is required"),
-    departmentName: yup.string().required("Department Name is required"),
-    locationName: yup.string().required("Location Name is required"),
-    accountTitles: yup.string().required("Account Title is required"),
+    companyId: yup.number().required().typeError("Company Name is required"),
+    departmentId: yup
+      .number()
+      .required()
+      .typeError("Department Category is required"),
+    locationId: yup.number().required().typeError("Location Name is required"),
+    accountTitles: yup.string().required("Account Name is required"),
   }),
 });
 
@@ -204,11 +220,11 @@ export const AccountTitleModal = ({
   setOrderId,
   setHighlighterId,
   setItemCode,
-  setDeliveryStatus,
   setButtonChanger,
   setCurrentPage,
   currentPage,
-  fetchNotification,
+  moveData,
+  // fetchNotification,
 }) => {
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -234,7 +250,7 @@ export const AccountTitleModal = ({
   };
 
   // FETCH DEPT API
-  const fetchDepartmentApi = async (id) => {
+  const fetchDepartmentApi = async (id = "") => {
     try {
       const res = await axios.get(
         "http://10.10.2.76:8000/api/dropdown/department?status=1&paginate=0&api_for=vladimir&company_id=" +
@@ -251,7 +267,7 @@ export const AccountTitleModal = ({
   };
 
   // FETCH Loc API
-  const fetchLocationApi = async (id) => {
+  const fetchLocationApi = async (id = "") => {
     try {
       const res = await axios.get(
         "http://10.10.2.76:8000/api/dropdown/location?status=1&paginate=0&api_for=vladimir&department_id=" +
@@ -266,10 +282,6 @@ export const AccountTitleModal = ({
       // console.log(res.data.result.companies);
     } catch (error) {}
   };
-
-  useEffect(() => {
-    fetchCompanyApi();
-  }, []);
 
   // FETCH ACcount API
   const fetchAccountApi = async () => {
@@ -288,6 +300,9 @@ export const AccountTitleModal = ({
   };
 
   useEffect(() => {
+    fetchCompanyApi();
+    fetchDepartmentApi();
+    fetchLocationApi();
     fetchAccountApi();
   }, []);
 
@@ -303,25 +318,55 @@ export const AccountTitleModal = ({
     defaultValues: {
       formData: {
         orderNo: orderId,
-        companyCode: "",
-        companyName: "",
-        // departmentCode: "",
-        departmentName: "",
-        // locationCode: "",
-        locationName: "",
-        // accountCode: "",
+        companyId: company?.find((x) => x.name === moveData[0]?.companyName)
+          ?.id,
+        departmentId: department?.find(
+          (x) => x.code === moveData[0]?.departmentCode
+        )?.id,
+        locationId: location?.find((x) => x.name === moveData[0]?.locationName)
+          ?.id,
         accountTitles: "",
+        addedBy: currentUser.userName,
       },
     },
   });
 
   // console.log(watch("formData"));
+  // console.log(moveData);
+  // console.log(
+  //   company?.find((x) => x.name === moveData[0]?.companyName)?.id,
+  //   department?.find((x) => x.code === moveData[0]?.departmentCode)?.id,
+  //   location?.find((x) => x.name === moveData[0]?.locationName)?.id
+  // );
+
+  console.log(location);
 
   const submitHandler = async (data) => {
-    console.log(data);
+    const submitArrayBody = moveData?.map((item) => {
+      return {
+        orderNo: orderId,
+        companyCode: company?.find((x) => x.id === data.formData.companyId)
+          ?.code,
+        companyName: company?.find((x) => x.id === data.formData.companyId)
+          ?.name,
+        departmentCode: department?.find(
+          (x) => x.id === data.formData.departmentId
+        )?.code,
+        departmentName: department?.find(
+          (x) => x.id === data.formData.departmentId
+        )?.name,
+        locationCode: location?.find((x) => x.id === data.formData.locationId)
+          ?.code,
+        locationName: location?.find((x) => x.id === data.formData.locationId)
+          ?.name,
+        accountTitles: data.formData.accountTitles,
+        addedBy: currentUser.fullName,
+      };
+    });
+    console.log(submitArrayBody);
     try {
       const response = await request
-        .put(`Ordering/AddSavePreparedMoveOrder`, [data.formData])
+        .put(`Ordering/AddSavePreparedMoveOrder`, submitArrayBody)
         .then((response) => {
           ToastComponent(
             "Success",
@@ -349,8 +394,6 @@ export const AccountTitleModal = ({
     }
   };
 
-  console.log(errors);
-
   return (
     <>
       <Modal isOpen={isOpen} onClose={() => {}} size="xl" isCentered>
@@ -368,123 +411,81 @@ export const AccountTitleModal = ({
               <Stack spacing={2} p={6}>
                 <Box>
                   <FormLabel fontSize="sm">Company</FormLabel>
-                  <Select
-                    fontSize="sm"
-                    onChange={(e) => {
-                      setValue(
-                        "formData.companyCode",
-                        company.find(
-                          (item) => item.id?.toString() === e.target.value
-                        )?.code
-                      );
-                      setValue(
-                        "formData.companyName",
-                        company.find(
-                          (item) => item.id?.toString() === e.target.value
-                        )?.name
-                      );
-                      fetchDepartmentApi(e.target.value);
-                    }}
-                    placeholder="Select Company"
-                    // {...register("formData.company")}
-                  >
-                    {company?.map((item) => {
-                      return (
-                        <option key={item.id} value={item.id}>
-                          {item.code} - {item.name}
-                        </option>
-                      );
-                    })}
-                  </Select>
+
+                  <HStack w="full">
+                    <Select
+                      {...register("formData.companyId")}
+                      defaultValue={
+                        company?.find(
+                          (x) => x.name === moveData[0]?.companyName
+                        )?.id
+                      }
+                      placeholder="Select Company"
+                      fontSize="sm"
+                      onChange={(e) => {
+                        setValue("formData.departmentId", "");
+                        setValue("formData.locationId", "");
+                        fetchDepartmentApi(e.target.value);
+                      }}
+                    >
+                      {company?.map((item) => {
+                        return (
+                          <option key={item.id} value={item.id}>
+                            {item.name}
+                          </option>
+                        );
+                      })}
+                    </Select>
+                  </HStack>
+
                   <Text color="red" fontSize="xs">
-                    {errors.formData?.companyName?.message}
+                    {errors.formData?.companyId?.message}
                   </Text>
                 </Box>
 
                 <Box>
                   <FormLabel fontSize="sm">Department</FormLabel>
                   <Select
-                    fontSize="sm"
+                    {...register("formData.departmentId")}
+                    defaultValue={
+                      department?.find(
+                        (x) => x.code === moveData[0]?.departmentCode
+                      )?.id
+                    }
                     placeholder="Select Department"
+                    fontSize="sm"
                     onChange={(e) => {
-                      setValue(
-                        "formData.departmentCode",
-                        department.find(
-                          (dept) => dept.id?.toString() === e.target.value
-                        )?.code
-                      );
-                      setValue(
-                        "formData.departmentName",
-                        department.find(
-                          (dept) => dept.id?.toString() === e.target.value
-                        )?.name
-                      );
+                      setValue("formData.locationId", "");
                       fetchLocationApi(e.target.value);
                     }}
                   >
                     {department?.map((dept) => {
                       return (
                         <option key={dept.id} value={dept.id}>
-                          {dept.code} - {dept.name}
+                          {dept.name}
                         </option>
                       );
                     })}
                   </Select>
+
+                  <Text color="red" fontSize="xs">
+                    {errors.formData?.departmentId?.message}
+                  </Text>
                 </Box>
 
                 <Box>
                   <FormLabel fontSize="sm">Location</FormLabel>
                   <Select
-                    fontSize="sm"
+                    {...register("formData.locationId")}
+                    defaultValue={
+                      location?.find(
+                        (x) => x.name === moveData[0]?.locationName
+                      )?.id
+                    }
                     placeholder="Select Location"
-                    onChange={(e) => {
-                      setValue(
-                        "formData.locationCode",
-                        location.find(
-                          (item) => item.id?.toString() === e.target.value
-                        )?.code
-                      );
-                      setValue(
-                        "formData.locationName",
-                        location.find(
-                          (item) => item.id?.toString() === e.target.value
-                        )?.name
-                      );
-                      // fetchLocationApi(e.target.value);
-                    }}
+                    fontSize="sm"
                   >
                     {location?.map((item) => {
-                      return (
-                        <option key={item.id} value={item.id}>
-                          {item.code} - {item.name}
-                        </option>
-                      );
-                    })}
-                  </Select>
-                </Box>
-                <Box>
-                  <FormLabel fontSize="sm">Account Title</FormLabel>
-                  <Select
-                    fontSize="sm"
-                    onChange={(e) => {
-                      // setValue(
-                      //   "formData.accountCode",
-                      //   account.find(
-                      //     (acc) => acc.id?.toString() === e.target.value
-                      //   )?.code
-                      // );
-                      setValue(
-                        "formData.accountTitles",
-                        account.find(
-                          (acc) => acc.id?.toString() === e.target.value
-                        )?.name
-                      );
-                      // fetchAccountApi(e.target.value);
-                    }}
-                    placeholder="Select Account"
-                    // {...register("formData.company")}
-                  >
-                    {account?.map((item) => {
                       return (
                         <option key={item.id} value={item.id}>
                           {item.name}
@@ -492,6 +493,30 @@ export const AccountTitleModal = ({
                       );
                     })}
                   </Select>
+
+                  <Text color="red" fontSize="xs">
+                    {errors.formData?.locationId?.message}
+                  </Text>
+                </Box>
+                <Box>
+                  <FormLabel fontSize="sm">Account Title</FormLabel>
+                  <Select
+                    {...register("formData.accountTitles")}
+                    placeholder="Select Account"
+                    fontSize="sm"
+                    bgColor="#fff8dc"
+                  >
+                    {account?.map((item) => {
+                      return (
+                        <option key={item.id} value={item.name}>
+                          {item.name}
+                        </option>
+                      );
+                    })}
+                  </Select>
+                  <Text color="red" fontSize="xs">
+                    {errors.formData?.accountTitles?.message}
+                  </Text>
                 </Box>
               </Stack>
             </ModalBody>

@@ -20,7 +20,7 @@ import {
   Td,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TiArrowSync } from "react-icons/ti";
 import PageScrollImport from "../../../components/PageScrollImport";
 import { FiSearch } from "react-icons/fi";
@@ -103,6 +103,22 @@ export const ListOfSuppliers = ({
       }
     });
   };
+
+  const filteredLength = elixirSuppliers?.supplier?.filter((val) => {
+    const newKeyword = new RegExp(`${keyword.toLowerCase()}`);
+    return val?.supplierName?.toLowerCase().match(newKeyword, "*");
+  });
+
+  const [ordersCount, setOrdersCount] = useState(0);
+
+  useEffect(() => {
+    setOrdersCount(0);
+    if (elixirSuppliers?.supplier) {
+      elixirSuppliers?.supplier?.map((supp) => {
+        setOrdersCount((prevState) => prevState + 1);
+      });
+    }
+  }, [elixirSuppliers]);
 
   return (
     <Flex
@@ -246,7 +262,10 @@ export const ListOfSuppliers = ({
           <HStack>
             <Badge colorScheme="cyan">
               <Text color="secondary">
-                Number of Records: {elixirSuppliers?.supplier?.length}
+                {!keyword
+                  ? `Number of records: ${ordersCount} `
+                  : `Number of records from ${keyword}: ${filteredLength.length}`}
+                {/* Number of Records: {elixirSuppliers?.supplier?.length} */}
               </Text>
             </Badge>
           </HStack>

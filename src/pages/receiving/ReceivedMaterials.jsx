@@ -452,7 +452,7 @@ const PrintModal = ({ isOpen, onClose, printData }) => {
             <Text fontSize="15px">Print Preview</Text>
           </Flex>
           <Flex justifyContent="center">
-            <Text fontSize="9px">(re-printed copy)</Text>
+            <Text fontSize="9px">(Duplicated Copy)</Text>
           </Flex>
         </ModalHeader>
 

@@ -32,6 +32,7 @@ import { FaArrowAltCircleRight, FaSort } from "react-icons/fa";
 import moment from "moment";
 import { CancelApprovedDate, CancelConfirmation } from "./ActionModal";
 import PageScroll from "../../utils/PageScroll";
+import { GoArrowSmallRight } from "react-icons/go";
 
 export const ListofApprovedDate = ({
   customerName,
@@ -231,9 +232,9 @@ export const ListofApprovedDate = ({
                 <Th color="white" fontSize="10px">
                   Order ID
                 </Th>
-                <Th color="white" fontSize="10px">
+                {/* <Th color="white" fontSize="10px">
                   Department
-                </Th>
+                </Th> */}
                 <Th color="white" fontSize="10px">
                   Customer Code
                 </Th>
@@ -264,7 +265,7 @@ export const ListofApprovedDate = ({
                     </Button>
                   </HStack>
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Cancel
                 </Th>
               </Tr>
@@ -285,13 +286,13 @@ export const ListofApprovedDate = ({
                 >
                   {orderId === order.id ? (
                     <Td>
-                      <FaArrowAltCircleRight fontSize="16px" />
+                      <GoArrowSmallRight fontSize="27px" />
                     </Td>
                   ) : (
                     <Td fontSize="11px">{i + 1}</Td>
                   )}
                   <Td fontSize="xs">{order.id}</Td>
-                  <Td fontSize="xs">{order.department}</Td>
+                  {/* <Td fontSize="xs">{order.department}</Td> */}
                   <Td fontSize="xs">{order.customerCode}</Td>
                   <Td fontSize="xs">{order.customerName}</Td>
                   <Td fontSize="xs">{order.category}</Td>

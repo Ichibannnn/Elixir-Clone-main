@@ -32,7 +32,6 @@ import moment from "moment";
 
 const currentUser = decodeUser();
 
-
 // SCHEDULE OF ORDERS
 export const ScheduleModal = ({
   isOpen,
@@ -84,6 +83,7 @@ export const ScheduleModal = ({
     }).then((result) => {
       if (result.isConfirmed) {
         const submitArray = checkedItems?.map((item) => {
+          console.log(item);
           return {
             id: item,
             preparedDate: preparationDate,
@@ -179,11 +179,7 @@ export const ScheduleModal = ({
             >
               Yes
             </Button>
-            <Button
-              colorScheme="red"
-              borderRadius="none"
-              onClick={onClose}
-            >
+            <Button colorScheme="red" borderRadius="none" onClick={onClose}>
               Cancel
             </Button>
           </ButtonGroup>
@@ -412,11 +408,11 @@ export const CancelModalConfirmation = ({
     <Modal isCentered size="xl" isOpen={isOpen} onClose={() => {}}>
       <ModalOverlay />
       <ModalContent>
-          <ModalHeader bg="primary" color="white">
-            <Flex justifyContent="left">
-              <Text fontSize="15px">Cancel Order</Text>
-            </Flex>
-          </ModalHeader>
+        <ModalHeader bg="primary" color="white">
+          <Flex justifyContent="left">
+            <Text fontSize="15px">Cancel Order</Text>
+          </Flex>
+        </ModalHeader>
         <ModalCloseButton onClick={onClose} />
         <ModalBody>
           <VStack justifyContent="center" mt={4} mb={7}>

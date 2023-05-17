@@ -15,8 +15,12 @@ import PageScroll from "../../../utils/PageScroll";
 import moment from "moment";
 
 const fetchCancelledOrdersApi = async (dateFrom, dateTo) => {
+  const toAdd = new Date(dateTo);
+  const plus1 = toAdd?.setDate(toAdd?.getDate() + 1);
+  const formmattedDateFrom = moment(dateFrom).format("DD/MM/yyyy");
+  const formmattedDateTo = moment(plus1).format("yyyy-MM-DD");
   const res = await request.get(
-    `Reports/CancelledOrderedReports?dateFrom=${dateFrom}&dateTo=${dateTo}`
+    `Reports/CancelledOrderedReports?dateFrom=${dateFrom}&dateTo=${formmattedDateTo}`
   );
   return res.data;
 };

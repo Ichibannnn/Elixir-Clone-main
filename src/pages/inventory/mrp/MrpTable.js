@@ -165,7 +165,7 @@ export const MrpTable = ({
 
       <PageScroll minHeight="387px" maxHeight="388px">
         <Table size="sm">
-          <Thead bgColor="primary">
+          <Thead bgColor="primary" position="sticky" top={0}>
             <Tr>
               <Th p={0} color="white" fontSize="xs"></Th>
               <Th p={0} color="white" fontSize="xs"></Th>

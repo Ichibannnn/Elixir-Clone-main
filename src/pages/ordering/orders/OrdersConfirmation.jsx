@@ -48,15 +48,14 @@ const OrdersConfirmation = ({
 
   const toast = useToast();
 
-  const {
-    isOpen: isFiltered,
-    onClose: closeFiltered,
-    onOpen: openFiltered,
-  } = useDisclosure();
+  // const {
+  //   isOpen: isFiltered,
+  //   onClose: closeFiltered,
+  //   onOpen: openFiltered,
+  // } = useDisclosure();
 
   const duplicateList = errorData?.duplicateList?.map((list) => {
     return {
-      trasactId: list?.trasactId,
       orderDate: list?.orderDate,
       dateNeeded: list?.dateNeeded,
       department: list?.department,
@@ -85,6 +84,13 @@ const OrdersConfirmation = ({
       uom: list?.uom,
       quantityOrdered: list?.quantityOrdered,
       category: list?.category,
+      companyCode: list?.companyCode,
+      companyName: list?.companyName,
+      departmentCode: list?.departmentCode,
+      departmentName: list?.departmentName,
+      locationCode: list?.locationCode,
+      locationName: list?.locationName,
+      rush: list?.rush,
     };
   });
 
@@ -104,6 +110,25 @@ const OrdersConfirmation = ({
       category: list?.category,
     };
   });
+
+  const itemDescriptionNotExist = errorData?.itemDescriptionNotExist?.map(
+    (list) => {
+      return {
+        trasactId: list?.trasactId,
+        department: list?.department,
+        customercode: list?.customercode,
+        customerName: list?.customerName,
+        orderNo: list?.orderNo,
+        orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
+        dateNeeded: moment(list?.dateNeeded).format("yyyy-MM-DD"),
+        itemCode: list?.itemCode,
+        itemdDescription: list?.itemdDescription,
+        uom: list?.uom,
+        quantityOrdered: list?.quantityOrdered,
+        category: list?.category,
+      };
+    }
+  );
 
   const uomNotExist = errorData?.uomNotExist?.map((list) => {
     return {
@@ -205,6 +230,13 @@ const OrdersConfirmation = ({
       uom: list?.uom,
       quantityOrdered: list?.quantityOrdered,
       category: list?.category,
+      companyCode: list?.companyCode,
+      companyName: list?.companyName,
+      departmentCode: list?.departmentCode,
+      departmentName: list?.departmentName,
+      locationCode: list?.locationCode,
+      locationName: list?.locationName,
+      rush: list?.rush,
     };
   });
 
@@ -241,6 +273,13 @@ const OrdersConfirmation = ({
                   uom: submit?.uom,
                   quantityOrdered: submit?.quantityOrdered,
                   category: submit?.category,
+                  companyCode: submit?.companyCode,
+                  companyName: submit?.companyName,
+                  departmentCode: submit?.departmentCode,
+                  departmentName: submit?.departmentName,
+                  locationCode: submit?.locationCode,
+                  locationName: submit?.locationName,
+                  rush: submit?.rush,
                 };
               })
             )
@@ -651,6 +690,127 @@ const OrdersConfirmation = ({
                             <Text color="white">
                               There are no duplicated item code lists on this
                               file
+                            </Text>
+                          </VStack>
+                        </Flex>
+                      )}
+                    </PageScrollImport>
+                  </AccordionPanel>
+                </AccordionItem>
+              ) : (
+                ""
+              )}
+
+              {/* ITEM DESCRIPTION EXIST */}
+              {itemDescriptionNotExist?.length > 0 ? (
+                <AccordionItem bgColor="gray.200">
+                  <Flex>
+                    <AccordionButton color="white" fontWeight="semibold">
+                      <Box
+                        flex="1"
+                        textAlign="left"
+                        color="black"
+                        fontSize="13px"
+                        fontWeight="semibold"
+                      >
+                        Item Description Does Exist{" "}
+                        <Badge color="red">
+                          {itemDescriptionNotExist?.length}
+                        </Badge>
+                      </Box>
+                      <AccordionIcon color="secondary" />
+                    </AccordionButton>
+                  </Flex>
+
+                  <AccordionPanel pb={4}>
+                    <PageScrollImport maxHeight="470px">
+                      {itemDescriptionNotExist ? (
+                        <Table variant="striped" size="sm">
+                          <Thead bgColor="gray.600">
+                            <Tr>
+                              <Th color="white" fontSize="9px">
+                                Line
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Transact ID
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Order Date
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Date Needed
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Department
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Customer Name
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Category
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Item Code
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Item Description
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                UOM
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Quantity Order
+                              </Th>
+                            </Tr>
+                          </Thead>
+
+                          <Tbody>
+                            {itemDescriptionNotExist?.map((d, i) => (
+                              <Tr key={i}>
+                                <Td color="gray.600" fontSize="11px">
+                                  {i + 1}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.trasactId}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {moment(d?.orderDate).format("yyyy-MM-DD")}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {moment(d?.dateNeeded).format("yyyy-MM-DD")}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.department}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.customerName}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.category}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.itemCode}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.itemdDescription}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.uom}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.quantityOrdered}
+                                </Td>
+                              </Tr>
+                            ))}
+                          </Tbody>
+                        </Table>
+                      ) : (
+                        <Flex justifyContent="center" mt="30px">
+                          <VStack>
+                            <RiFileList3Fill fontSize="200px" />
+                            <Text color="white">
+                              There are no duplicated item description lists on
+                              this file
                             </Text>
                           </VStack>
                         </Flex>

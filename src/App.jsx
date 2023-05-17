@@ -88,6 +88,7 @@ import ReportsPage from "./ReportsPage";
 import Reports from "./pages/reports/Reports";
 import SupplierNew from "./pages/setup/suppliers_new/SupplierNew";
 import CustomerNew from "./pages/setup/customer_new/CustomerNew";
+import TransactionType from "./pages/setup/TransactionType";
 
 const App = () => {
   const [menu, setMenu] = useState(null);
@@ -204,6 +205,10 @@ const App = () => {
               <Route path="/setup/lot-name" element={<LotManagement />} />
               <Route path="/setup/lot-section" element={<LotCategory />} />
               <Route path="/setup/reasons" element={<ReasonManagement />} />
+              <Route
+                path="/setup/transaction-type"
+                element={<TransactionType />}
+              />
               <Route
                 path="/setup/account_title-company"
                 element={<CompanyManagement />}

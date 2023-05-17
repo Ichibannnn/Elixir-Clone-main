@@ -95,22 +95,22 @@ export const ListOfOrders = ({
                     <GoArrowSmallRight fontSize="27px" />
                   </Td>
                 ) : (
-                  <Td fontSize="11px">{i + 1}</Td>
+                  <Td fontSize="xs">{i + 1}</Td>
                 )}
-                <Td fontSize="11px">
+                <Td fontSize="xs">
                   {moment(list.orderDate).format("yyyy-MM-DD")}
                 </Td>
-                <Td fontSize="11px">
+                <Td fontSize="xs">
                   {moment(list.dateNeeded).format("yyyy-MM-DD")}
                 </Td>
                 {/* <Td fontSize="11px">{list.customerCode}</Td>
                 <Td fontSize="11px">{list.customerName}</Td>
                 <Td fontSize="11px">{list.category}</Td> */}
-                <Td fontSize="11px">{list.itemCode}</Td>
-                <Td fontSize="11px">{list.itemDescription}</Td>
-                <Td fontSize="11px">{list.uom}</Td>
-                <Td fontSize="11px">{list.quantityOrder}</Td>
-                <Td fontSize="11px">{list.preparedQuantity}</Td>
+                <Td fontSize="xs">{list.itemCode}</Td>
+                <Td fontSize="xs">{list.itemDescription}</Td>
+                <Td fontSize="xs">{list.uom}</Td>
+                <Td fontSize="xs">{list.quantityOrder}</Td>
+                <Td fontSize="xs">{list.preparedQuantity}</Td>
                 <Td>
                   {list.quantityOrder <= list.preparedQuantity ? (
                     // <BsCheck2Circle fontSize="20px" title="Done" />

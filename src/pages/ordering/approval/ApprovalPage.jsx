@@ -65,6 +65,7 @@ const ApprovalPage = () => {
           orders={orders}
           orderNo={orderNo}
           setOrderNo={setOrderNo}
+          customerOrders={customerOrders}
         />
         <ListOfOrders
           customerOrders={customerOrders}

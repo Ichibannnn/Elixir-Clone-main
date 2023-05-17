@@ -76,7 +76,7 @@ export const CalendarList = ({ forMOData }) => {
 
 const ModalOfSchedules = ({ isOpen, onClose, forMOData, dateStr }) => {
   const TableHead = [
-    "Department",
+    // "Department",
     "Customer Code",
     "Customer Name",
     "Preparation Date",
@@ -112,6 +112,7 @@ const ModalOfSchedules = ({ isOpen, onClose, forMOData, dateStr }) => {
                     moment(item.preparedDate).format("yyyy-MM-DD") ===
                     dateStr ? (
                       <Tr key={i}>
+                        {/* <Td fontSize="xs">{item.department}</Td> */}
                         <Td fontSize="xs">{item.customerCode}</Td>
                         <Td fontSize="xs">{item.customerName}</Td>
                         <Td fontSize="xs">

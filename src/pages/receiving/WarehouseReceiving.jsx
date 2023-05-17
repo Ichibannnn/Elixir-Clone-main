@@ -258,7 +258,7 @@ const WarehouseReceiving = () => {
                 </Stack>
               ) : (
                 <Table
-                  size="sm"
+                  // size="sm"
                   width="full"
                   border="none"
                   boxShadow="md"
@@ -314,13 +314,13 @@ const WarehouseReceiving = () => {
                             minimumFractionDigits: 2,
                           })}
                         </Td>
-                        <Td fontSize="11px">
+                        <Td fontSize="xs">
                           {pos.actualGood.toLocaleString(undefined, {
                             maximumFractionDigits: 2,
                             minimumFractionDigits: 2,
                           })}
                         </Td>
-                        <Td fontSize="11px">
+                        <Td fontSize="xs">
                           {pos.actualRemaining.toLocaleString(undefined, {
                             maximumFractionDigits: 2,
                             minimumFractionDigits: 2,

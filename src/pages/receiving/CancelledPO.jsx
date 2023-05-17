@@ -214,20 +214,20 @@ const CancelledPO = () => {
                 variant="striped"
               >
                 <Thead bg="primary">
-                  <Tr>
-                    <Th color="white" fontSize="9px">
+                  <Tr h="40px">
+                    <Th color="white" fontSize="10px">
                       PO Number
                     </Th>
-                    <Th color="white" fontSize="9px">
+                    <Th color="white" fontSize="10px">
                       Item Code
                     </Th>
-                    <Th color="white" fontSize="9px">
+                    <Th color="white" fontSize="10px">
                       Description
                     </Th>
-                    <Th color="white" fontSize="9px">
+                    <Th color="white" fontSize="10px">
                       Supplier
                     </Th>
-                    <Th color="white" fontSize="9px">
+                    <Th color="white" fontSize="10px">
                       Qty Remaining
                     </Th>
                     {/* <Th color="white" fontSize="9px">
@@ -236,13 +236,13 @@ const CancelledPO = () => {
                     <Th color="white" fontSize="9px">
                       Qty Good
                     </Th> */}
-                    <Th color="white" fontSize="9px">
+                    <Th color="white" fontSize="10px">
                       Date Cancelled
                     </Th>
                     {/* <Th color="white" fontSize="9px">
                       Remarks
                     </Th> */}
-                    <Th color="white" fontSize="9px">
+                    <Th color="white" fontSize="10px">
                       Return
                     </Th>
                   </Tr>
@@ -250,17 +250,17 @@ const CancelledPO = () => {
                 <Tbody>
                   {pO?.cancel?.map((canc) => (
                     <Tr key={canc.id}>
-                      <Td fontSize="11px">{canc.pO_Number}</Td>
-                      <Td fontSize="11px">{canc.itemCode}</Td>
-                      <Td fontSize="11px">{canc.itemDescription}</Td>
-                      <Td fontSize="11px">{canc.supplier}</Td>
-                      <Td fontSize="11px">
+                      <Td fontSize="xs">{canc.pO_Number}</Td>
+                      <Td fontSize="xs">{canc.itemCode}</Td>
+                      <Td fontSize="xs">{canc.itemDescription}</Td>
+                      <Td fontSize="xs">{canc.supplier}</Td>
+                      <Td fontSize="xs">
                         {canc.actualRemaining.toLocaleString(undefined, {
                           maximumFractionDigits: 2,
                           minimumFractionDigits: 2,
                         })}
                       </Td>
-                      <Td fontSize="11px">
+                      <Td fontSize="xs">
                         {moment(canc.dateCancelled).format("MM/DD/YYYY")}
                       </Td>
                       {/* <Td fontSize="11px">{canc.remarks}</Td> */}

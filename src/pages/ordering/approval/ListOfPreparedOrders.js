@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
+  Badge,
   Flex,
   HStack,
   Select,
@@ -15,7 +16,12 @@ import {
 import moment from "moment";
 import PageScroll from "../../../utils/PageScroll";
 
-export const ListOfPreparedOrders = ({ orders, orderNo, setOrderNo }) => {
+export const ListOfPreparedOrders = ({
+  orders,
+  orderNo,
+  setOrderNo,
+  customerOrders,
+}) => {
   const orderNoHandler = (id) => {
     if (id) {
       setOrderNo(id);
@@ -24,6 +30,13 @@ export const ListOfPreparedOrders = ({ orders, orderNo, setOrderNo }) => {
     }
     console.log("me click ne kulet");
   };
+
+  //Auto select index 0
+  useEffect(() => {
+    setOrderNo(orders[0]?.orderNoPKey);
+  }, [orders]);
+
+  const rushBadge = customerOrders?.some((x) => (x.rush ? true : false));
 
   return (
     <Flex w="95%" h="250px" flexDirection="column">
@@ -46,9 +59,9 @@ export const ListOfPreparedOrders = ({ orders, orderNo, setOrderNo }) => {
                 <Th color="white" fontSize="10px">
                   Order ID
                 </Th>
-                <Th color="white" fontSize="10px">
+                {/* <Th color="white" fontSize="10px">
                   Department
-                </Th>
+                </Th> */}
                 <Th color="white" fontSize="10px">
                   Customer Code
                 </Th>
@@ -61,7 +74,7 @@ export const ListOfPreparedOrders = ({ orders, orderNo, setOrderNo }) => {
                 <Th color="white" fontSize="10px">
                   Total Quantity Order
                 </Th>
-                <Th color="white" fontSize="9px">
+                <Th color="white" fontSize="10px">
                   Prepared Date
                 </Th>
               </Tr>
@@ -76,9 +89,19 @@ export const ListOfPreparedOrders = ({ orders, orderNo, setOrderNo }) => {
                 >
                   <Td fontSize="xs">{i + 1}</Td>
                   <Td fontSize="xs">{item.orderNoPKey}</Td>
-                  <Td fontSize="xs">{item.department}</Td>
+                  {/* <Td fontSize="xs">{item.department}</Td> */}
                   <Td fontSize="xs">{item.customerCode}</Td>
-                  <Td fontSize="xs">{item.customerName}</Td>
+                  <Td fontSize="xs">
+                    {item.customerName}{" "}
+                    <Badge
+                      fontSize="9.5px"
+                      colorScheme="orange"
+                      variant="solid"
+                      className="inputCapital"
+                    >
+                      {rushBadge && "Rush"}
+                    </Badge>
+                  </Td>
                   <Td fontSize="xs">{item.category}</Td>
                   <Td fontSize="xs">{item.totalOrders}</Td>
                   <Td fontSize="xs">

@@ -91,6 +91,9 @@ export const ListOfOrders = ({
                 <Th color="white" fontSize="10px">
                   Quantity Order
                 </Th>
+                <Th color="white" fontSize="10px">
+                  Remarks
+                </Th>
               </Tr>
             </Thead>
             {orderNo ? (
@@ -107,6 +110,7 @@ export const ListOfOrders = ({
                     <Td fontSize="11px">{item.itemDescription}</Td>
                     <Td fontSize="11px">{item.uom}</Td>
                     <Td fontSize="11px">{item.quantityOrder}</Td>
+                    <Td fontSize="11px">{item.rush}</Td>
                     {/* <Td fontSize="11px">{item.orderDate}</Td> */}
                   </Tr>
                 ))}

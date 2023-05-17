@@ -20,7 +20,7 @@ import {
   Td,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TiArrowSync } from "react-icons/ti";
 import PageScrollImport from "../../../components/PageScrollImport";
 import { FiSearch } from "react-icons/fi";
@@ -34,7 +34,7 @@ import { ErrorCustomers } from "./ErrorCustomers";
 
 export const ListOfCustomers = ({
   genusCustomers,
-  genusLocations,
+  fistoDepartments,
   fetchingData,
   elixirCustomers,
   fetchElixirCustomers,
@@ -68,9 +68,9 @@ export const ListOfCustomers = ({
       return {
         customer_No: item.location_id,
         customerCode: item.location_code,
-        customerName: genusLocations.result.find(
+        customerName: fistoDepartments.result.departments.find(
           (customer) => customer.code === item.location_code
-        ).name,
+        )?.name,
       };
     }) // format
     ?.reduce((a, item) => {
@@ -141,6 +141,22 @@ export const ListOfCustomers = ({
       }
     });
   };
+
+  const filteredLength = elixirCustomers?.customer?.filter((val) => {
+    const newKeyword = new RegExp(`${keyword.toLowerCase()}`);
+    return val?.customerName?.toLowerCase().match(newKeyword, "*");
+  });
+
+  const [ordersCount, setOrdersCount] = useState(0);
+
+  useEffect(() => {
+    setOrdersCount(0);
+    if (elixirCustomers?.customer) {
+      elixirCustomers?.customer?.map((cust) => {
+        setOrdersCount((prevState) => prevState + 1);
+      });
+    }
+  }, [elixirCustomers]);
 
   return (
     <Flex
@@ -288,7 +304,10 @@ export const ListOfCustomers = ({
           <HStack>
             <Badge colorScheme="cyan">
               <Text color="secondary">
-                Number of Records: {elixirCustomers?.customer?.length}
+                {!keyword
+                  ? `Number of records: ${ordersCount} `
+                  : `Number of records from ${keyword}: ${filteredLength.length}`}
+                {/* Number of Records: {elixirCustomers?.customer?.length} */}
               </Text>
             </Badge>
           </HStack>

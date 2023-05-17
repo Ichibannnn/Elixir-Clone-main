@@ -20,7 +20,7 @@ import {
   Td,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TiArrowSync } from "react-icons/ti";
 import PageScrollImport from "../../../components/PageScrollImport";
 import { FiSearch } from "react-icons/fi";
@@ -42,7 +42,7 @@ export const ListOrders = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [keyword, setKeyword] = useState("");
-  // const [errorDate, setErrorDate] = useState([]);
+
   const [errorData, setErrorData] = useState([]);
 
   const toast = useToast();
@@ -65,14 +65,19 @@ export const ListOrders = ({
         category: itemsub?.category_name,
         uom: itemsub?.uom_code,
         quantityOrdered: itemsub?.quantity,
+        companyCode: item?.charge_company_code,
+        companyName: item?.charge_company_name,
+        departmentCode: item?.charge_department_code,
+        departmentName: item?.charge_department_name,
+        locationCode: item?.charge_location_code,
+        locationName: item?.charge_location_name,
+        rush: item?.rush,
       };
     })
   );
 
   const dateVar = new Date();
-  const startDate = moment(dateVar.setDate(dateVar.getDate() - 5)).format(
-    "yyyy-MM-DD"
-  );
+  const startDate = moment(dateVar).format("yyyy-MM-DD");
 
   // SYNC ORDER BUTTON
   const syncHandler = () => {
@@ -103,9 +108,15 @@ export const ListOrders = ({
           category: submit?.category,
           uom: submit?.uom,
           quantityOrdered: submit?.quantityOrdered,
+          companyCode: submit?.companyCode,
+          companyName: submit?.companyName,
+          departmentCode: submit?.departmentCode,
+          departmentName: submit?.departmentName,
+          locationCode: submit?.locationCode,
+          locationName: submit?.locationName,
+          rush: submit?.rush,
         };
       });
-      console.log(submitBody);
       if (result.isConfirmed) {
         try {
           setIsLoading(true);
@@ -130,12 +141,57 @@ export const ListOrders = ({
     });
   };
 
-  //console.log(errorData);
+  // const filteredLength = genusOrders?.result?.filter((val) => {
+  //   // const newKeyword = new RegExp(`${keyword.toLowerCase()}`);
+  //   // return val?.customer_name?.toLowerCase().match(newKeyword, "*");
+  //   // return genusOrders.result?.filter((orders) => {
+  //   //   return orders?.customer_name.toString().toLowerCase().includes(keyword);
+  //   // });
 
-  const filteredLength = genusOrders?.result?.filter((val) => {
-    const newKeyword = new RegExp(`${keyword.toLowerCase()}`);
-    return val?.customer_name?.toLowerCase().match(newKeyword, "*");
-  });
+  //   const newKeyword = new RegExp(`${keyword.toLowerCase()}`);
+
+  //   return val?.customer_name?.toLowerCase().match(newKeyword, "*");
+  // });
+  const filteredLength = genusOrders?.result
+    ?.filter((val) => {
+      // const newKeyword = new RegExp(`${keyword.toLowerCase()}`);
+      // return val?.customer_name?.toLowerCase().match(newKeyword, "*");
+      // return genusOrders.result?.filter((orders) => {
+      //   return orders?.customer_name.toString().toLowerCase().includes(keyword);
+      // });
+
+      const newKeyword = new RegExp(`${keyword.toLowerCase()}`);
+
+      return val?.customer_name?.toLowerCase().match(newKeyword, "*");
+    })
+    .reduce((a, item) => {
+      return [...a, ...item.orders];
+    }, []);
+
+  const [ordersCount, setOrdersCount] = useState(0);
+  const [filteredCount, setFilteredCount] = useState(0);
+
+  useEffect(() => {
+    if (keyword) {
+      genusOrders.result?.map((orders) => {
+        if (orders?.customer_name.toString().toLowerCase().includes(keyword)) {
+          setFilteredCount((prevState) => prevState + orders.orders.length);
+        }
+      });
+    }
+  }, [keyword]);
+
+  useEffect(() => {
+    setOrdersCount(0);
+    if (genusOrders.result) {
+      // countOrders();
+      genusOrders?.result?.map((orders) => {
+        orders?.orders?.map((order) => {
+          setOrdersCount((prevState) => prevState + 1);
+        });
+      });
+    }
+  }, [genusOrders]);
 
   return (
     <Flex
@@ -154,8 +210,8 @@ export const ListOrders = ({
             <Input
               onChange={(date) => setFromDate(date.target.value)}
               // value={fromDate}
-              defaultValue={moment(new Date()).format("yyyy-MM-DD")}
-              // min={startDate}
+              defaultValue={fromDate}
+              min={startDate}
               size="sm"
               type="date"
               fontSize="11px"
@@ -165,7 +221,7 @@ export const ListOrders = ({
               onChange={(date) => setToDate(date.target.value)}
               // value={toDate}
               defaultValue={moment(new Date()).format("yyyy-MM-DD")}
-              // min={fromDate}
+              min={fromDate}
               size="sm"
               type="date"
               fontSize="11px"
@@ -257,9 +313,9 @@ export const ListOrders = ({
                           <Th color="#D6D6D6" fontSize="10px">
                             Ordered Needed
                           </Th>
-                          <Th color="#D6D6D6" fontSize="10px">
+                          {/* <Th color="#D6D6D6" fontSize="10px">
                             Department
-                          </Th>
+                          </Th> */}
                           <Th color="#D6D6D6" fontSize="10px">
                             Customer Code
                           </Th>
@@ -289,14 +345,17 @@ export const ListOrders = ({
                             const newKeyword = new RegExp(
                               `${keyword.toLowerCase()}`
                             );
+
                             return val?.customer_name
                               ?.toLowerCase()
                               .match(newKeyword, "*");
                           })
                           ?.map((order, i) =>
-                            order.orders?.map((sub) => (
+                            order.orders?.map((sub, i) => (
                               <Tr key={i}>
-                                <Td fontSize="12px">{i + 1}</Td>
+                                {console.log(i)}
+                                {/* <Td fontSize="12px">{i + 1}</Td> */}
+                                <Td fontSize="12px">{sub.id}</Td>
                                 <Td fontSize="12px">
                                   {moment(order.date_ordered).format(
                                     "yyyy-MM-DD"
@@ -307,7 +366,7 @@ export const ListOrders = ({
                                     "yyyy-MM-DD"
                                   )}
                                 </Td>
-                                <Td fontSize="12px">{order.department_name}</Td>
+                                {/* <Td fontSize="12px">{order.department_name}</Td> */}
                                 <Td fontSize="12px">{order.customer_code}</Td>
                                 <Td fontSize="12px">{order.customer_name}</Td>
                                 <Td fontSize="12px">{sub.material_code}</Td>
@@ -334,10 +393,12 @@ export const ListOrders = ({
             <HStack>
               <Badge colorScheme="cyan">
                 <Text color="secondary">
+                  {genusOrders?.result?.length > 0 &&
+                    genusOrders?.result?.orders?.length}
                   {!keyword
-                    ? `Number of records: ${genusOrders?.result?.length}`
+                    ? `Number of records: ${ordersCount}`
                     : // : `Results for ${keyword}`}
-                      `Number of records from ${keyword}: ${filteredLength?.length}`}
+                      `Number of records from ${keyword}: ${filteredLength.length}`}
                 </Text>
               </Badge>
             </HStack>

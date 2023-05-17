@@ -50,14 +50,12 @@ const fetchGenusApi = async () => {
   );
   return res.data;
 };
-const fetchGenusLocationsApi = async () => {
-  // const fromDateFormatted = moment(fromDate).format("yyyy-MM-DD");
-  // const toDateFormatted = moment(toDate).format("yyyy-MM-DD");
+const fetchFistoDepartmentsApi = async () => {
   const res = await axios.get(
-    `https://genus.rdfmis.ph/StoreAPI/api/locations.php`,
+    `http://10.10.2.76:8000/api/dropdown/department?status=1&paginate=0&api_for=vladimir`,
     {
-      params: {
-        token: "8AFASbzK5OH0E9OuZF5LlI9qZo8fqr1X",
+      headers: {
+        Authorization: "Bearer " + process.env.REACT_APP_FISTO_TOKEN,
       },
     }
   );
@@ -77,7 +75,7 @@ const CustomerNew = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [genusCustomers, setGenusCustomers] = useState([]);
-  const [genusLocations, setGenusLocations] = useState([]);
+  const [fistoDepartments, setFistoDepartments] = useState([]);
   const [elixirCustomers, setElixirCustomers] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -88,8 +86,8 @@ const CustomerNew = () => {
       setIsLoading(false);
     });
 
-    fetchGenusLocationsApi().then((res) => {
-      setGenusLocations(res);
+    fetchFistoDepartmentsApi().then((res) => {
+      setFistoDepartments(res);
     });
   };
 
@@ -125,7 +123,7 @@ const CustomerNew = () => {
       elixirCustomers={elixirCustomers}
       setElixirCustomers={setElixirCustomers}
       genusCustomers={genusCustomers}
-      genusLocations={genusLocations}
+      fistoDepartments={fistoDepartments}
       setGenusCustomers={setGenusCustomers}
       search={search}
       fetchingData={isLoading}

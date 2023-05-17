@@ -33,7 +33,7 @@ const Sidebar = () => {
   return (
     <Flex
       h="100vh"
-      w="16%"
+      width="15rem"
       bg="primary"
       color="#D1D2D5"
       justifyContent="space-between"

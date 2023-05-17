@@ -59,6 +59,7 @@ export const PreparationListOrders = ({
   const [dateNeeded, setDateNeeded] = useState("");
   const [disableIfStock, setDisableIfStock] = useState(false);
   const dateToday = new Date();
+  const [badgeChanger, setBadgeChanger] = useState(false);
 
   const {
     isOpen: isEdit,
@@ -189,14 +190,26 @@ export const PreparationListOrders = ({
     }
   }, [checkItemsData]);
 
+  const rushBadge = orders?.some((x) => (x.rush ? true : false));
+
   return (
-    <Flex w="full" flexDirection="column">
+    <Flex w="full" p={7} flexDirection="column">
       <Flex w="full" justifyContent="space-between">
-        <HStack w="40%">
+        <HStack w="40%" spacing={1}>
           <Badge bgColor="primary" color="white" px={3}>
             Customer:{" "}
           </Badge>
-          <Text fontSize="sm">{customerName && customerName}</Text>
+          <Text p={0} fontSize="sm">
+            {customerName && customerName}
+          </Text>
+          <Badge
+            fontSize="9.5px"
+            colorScheme="orange"
+            variant="solid"
+            className="inputCapital"
+          >
+            {rushBadge && "Rush"}
+          </Badge>
         </HStack>
 
         <Flex>
@@ -234,13 +247,7 @@ export const PreparationListOrders = ({
         {pageTotal && pageTotal} Remaining Orders
       </Text>
 
-      <Flex
-        w="full"
-        spacing={0}
-        flexDirection="column"
-        justifyContent="center"
-        mt={10}
-      >
+      <VStack w="full" spacing={0} justifyContent="center" mt={5}>
         <Text
           w="full"
           fontWeight="semibold"
@@ -251,16 +258,17 @@ export const PreparationListOrders = ({
         >
           List of Orders
         </Text>
-        <PageScroll minHeight="150px" maxHeight="640px">
+        <PageScroll minHeight="150px" maxHeight="490px">
           <Table
             size="sm"
-            width="full"
-            border="none"
             boxShadow="md"
             // bg="gray.200"
-            variant="striped"
+            variant="simple"
+            // position="relative"
+            border="1px"
+            borderColor="gray.400"
           >
-            <Thead bg="secondary">
+            <Thead bg="secondary" position="sticky">
               <Tr h="40px">
                 <Th>
                   <Checkbox
@@ -282,9 +290,9 @@ export const PreparationListOrders = ({
                 <Th color="white" fontSize="10px">
                   Date Needed
                 </Th>
-                <Th color="white" fontSize="10px">
+                {/* <Th color="white" fontSize="10px">
                   Department
-                </Th>
+                </Th> */}
                 <Th color="white" fontSize="10px">
                   Customer Code
                 </Th>
@@ -309,6 +317,9 @@ export const PreparationListOrders = ({
                 <Th color="white" fontSize="10px">
                   Reserve
                 </Th>
+                <Th color="white" fontSize="10px">
+                  Remarks
+                </Th>
                 <Th color="white" fontSize="9px">
                   Edit
                 </Th>
@@ -321,7 +332,7 @@ export const PreparationListOrders = ({
               {orders?.map((item, i) => (
                 <Tr
                   bgColor={
-                    item.stockOnHand < item.quantityOrder ? "#dfdfdf5c" : "none"
+                    item.stockOnHand < item.quantityOrder ? "gray.200 " : "none"
                   }
                   color={
                     item.stockOnHand < item.quantityOrder ? "black" : "none"
@@ -342,7 +353,7 @@ export const PreparationListOrders = ({
                   {item.stockOnHand >= item.quantityOrder ? (
                     <Td>
                       <Checkbox
-                        size="sm"
+                        // size="sm"
                         onChange={childCheckHandler}
                         // isChecked={checkedItems.includes(item.id)}
                         // value={item.id}
@@ -364,7 +375,7 @@ export const PreparationListOrders = ({
                   <Td fontSize="xs">{item.id}</Td>
                   <Td fontSize="xs">{item.orderDate}</Td>
                   <Td fontSize="xs">{item.dateNeeded}</Td>
-                  <Td fontSize="xs">{item.department}</Td>
+                  {/* <Td fontSize="xs">{item.department}</Td> */}
                   <Td fontSize="xs">{item.customerCode}</Td>
                   <Td fontSize="xs">{item.customerName}</Td>
                   <Td fontSize="xs">{item.category.toUpperCase()}</Td>
@@ -378,6 +389,23 @@ export const PreparationListOrders = ({
                     })}
                   </Td>
                   <Td fontSize="xs">{item.stockOnHand}</Td>
+                  <Td fontSize="xs">
+                    {item.rush ? (
+                      <Text fontSize="xs">
+                        {item.rush}
+                        {/* <Badge
+                          ml="1"
+                          fontSize="9px"
+                          className="inputLowerCase"
+                          colorScheme="green"
+                        >
+                          Rush
+                        </Badge> */}
+                      </Text>
+                    ) : (
+                      ""
+                    )}
+                  </Td>
                   <Td fontSize="xs">
                     <Button
                       onClick={() => editHandler(item)}
@@ -429,7 +457,7 @@ export const PreparationListOrders = ({
             Schedule
           </Button>
         </Flex>
-      </Flex>
+      </VStack>
 
       {isEdit && (
         <EditModal

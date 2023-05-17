@@ -157,8 +157,8 @@ const UserAccount = () => {
         ToastComponent("Success", "Status updated", "success", toast);
         getUserHandler();
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        ToastComponent("Error", error.response.data, "warning", toast);
       });
     // console.log(routeLabel)
   };
@@ -506,6 +506,7 @@ const schema = yup.object().shape({
 
 const currentUser = decodeUser();
 
+// DRAWER FOR ADD ACCOUNTS -----------------------
 const DrawerComponent = (props) => {
   const { isOpen, onClose, getUserHandler, editData, disableEdit } = props;
 
@@ -690,8 +691,8 @@ const DrawerComponent = (props) => {
     setValue(
       "formData.password",
       data?.general_info?.first_name.charAt(0).toLowerCase() +
-        data?.general_info.last_name.toLowerCase() +
-        "1234"
+        data?.general_info.last_name.toLowerCase()
+      // + "1234"
     );
     setShowLoading(false);
   };
@@ -873,6 +874,8 @@ const DrawerComponent = (props) => {
                     </Text>
                     <InputGroup>
                       <Input
+                        readOnly
+                        // disabled={disableEdit}
                         fontSize="14px"
                         type={showPassword ? "text" : "password"}
                         {...register("formData.password")}
@@ -941,6 +944,7 @@ const DrawerComponent = (props) => {
   );
 };
 
+// DRAWER FOR EDIT ACCOUNTS
 const DrawerComponentEdit = (props) => {
   const { isEdit, onCloseEdit, getUserHandler, editData, disableEdit } = props;
 
@@ -1125,8 +1129,8 @@ const DrawerComponentEdit = (props) => {
     setValue(
       "formData.password",
       data?.general_info?.first_name.charAt(0).toLowerCase() +
-        data?.general_info.last_name.toLowerCase() +
-        "1234"
+        data?.general_info.last_name.toLowerCase()
+      // +  "1234"
     );
     setShowLoading(false);
   };
@@ -1314,6 +1318,8 @@ const DrawerComponentEdit = (props) => {
                     </Text>
                     <InputGroup>
                       <Input
+                        readOnly={disableEdit}
+                        disabled={disableEdit}
                         fontSize="14px"
                         type={showPassword ? "text" : "password"}
                         {...register("formData.password")}

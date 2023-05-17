@@ -33,15 +33,12 @@ const Orders = () => {
 
   //ORDERS
   const dateVar = new Date();
-  // const startDate = dateVar.setDate(dateVar.getDate() - 3);
-  const startDate = moment(dateVar.setDate(dateVar.getDate() - 3)).format(
-    "yyyy-MM-DD"
-  );
+  const startDate = moment(dateVar).format("yyyy-MM-DD");
 
   const [genusOrders, setGenusOrders] = useState([]);
   const [fromDate, setFromDate] = useState(startDate);
-  const [toDate, setToDate] = useState("");
-  const [search, setSearch] = useState("");
+  const [toDate, setToDate] = useState(new Date());
+  const [search, setSearch] = useState();
 
   // GET GENUS ORDERS
   const getGenusOrders = () => {

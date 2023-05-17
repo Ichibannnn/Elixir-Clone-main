@@ -68,7 +68,12 @@ const EditModalSave = ({
       const res = request
         .put(`Warehouse/ReceiveRawMaterialsById`, firstSubmit)
         .then((res) => {
-          ToastComponent("Success!", "PO Updated", "success", toast);
+          ToastComponent(
+            "Success!",
+            "Purchase order updated.",
+            "success",
+            toast
+          );
           setReceivingId(res.data.id);
           setIsLoading(false);
           getAvailablePOHandler();

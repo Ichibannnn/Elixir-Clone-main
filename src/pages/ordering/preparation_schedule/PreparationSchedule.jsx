@@ -73,31 +73,25 @@ const PrepartionSchedule = () => {
   }, [customerName]);
 
   return (
-    <Flex
-      color="fontColor"
-      h="auto"
-      w="full"
-      flexDirection="column"
-      p={4}
-      bg="form"
-      boxShadow="md"
-    >
-      <PreparationListOrders
-        setCurrentPage={setCurrentPage}
-        currentPage={currentPage}
-        pagesCount={pagesCount}
-        setCustomerName={setCustomerName}
-        customerName={customerName}
-        orders={orders}
-        pageTotal={pageTotal}
-        setTransactId={setTransactId}
-        transactId={transactId}
-        fetchCustomerOrders={fetchCustomerOrders}
-        fetchOrders={fetchOrders}
-        lengthIndicator={lengthIndicator}
-        // fetchNotification={fetchNotification}
-      />
-    </Flex>
+    <>
+      <VStack w="full" h="auto" bg="form">
+        <PreparationListOrders
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+          pagesCount={pagesCount}
+          setCustomerName={setCustomerName}
+          customerName={customerName}
+          orders={orders}
+          pageTotal={pageTotal}
+          setTransactId={setTransactId}
+          transactId={transactId}
+          fetchCustomerOrders={fetchCustomerOrders}
+          fetchOrders={fetchOrders}
+          lengthIndicator={lengthIndicator}
+          // fetchNotification={fetchNotification}
+        />
+      </VStack>
+    </>
   );
 };
 

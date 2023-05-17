@@ -29,6 +29,8 @@ export const MaterialsInformation = ({
   details,
   setDetails,
   customerRef,
+  transactions,
+  setTransaction,
   customers,
   rawMats,
   uoms,
@@ -148,8 +150,41 @@ export const MaterialsInformation = ({
               )}
             </HStack>
 
-            {/* Remarks */}
+            {/* Remarks New (Transaction Type) */}
             <HStack w="full">
+              <Text
+                minW="50%"
+                w="auto"
+                bgColor="secondary"
+                color="white"
+                pl={2}
+                py={2.5}
+                fontSize="xs"
+              >
+                Transaction Type:{" "}
+              </Text>
+              {transactions?.length > 0 ? (
+                <Select
+                  fontSize="xs"
+                  onChange={(e) => setRemarks(e.target.value)}
+                  ref={customerRef}
+                  w="full"
+                  placeholder="Select Transaction Type"
+                  bgColor="#fff8dc"
+                >
+                  {transactions?.map((tt) => (
+                    <option key={tt.id} value={tt.transactionName}>
+                      {tt.transactionName}
+                    </option>
+                  ))}
+                </Select>
+              ) : (
+                <Spinner />
+              )}
+            </HStack>
+
+            {/* Remarks */}
+            {/* <HStack w="full">
               <Text
                 minW="50%"
                 w="auto"
@@ -172,7 +207,7 @@ export const MaterialsInformation = ({
                 <option value="Transfer">Transfer</option>
                 <option value="Deal Item">Deal Item</option>
               </Select>
-            </HStack>
+            </HStack> */}
           </VStack>
 
           <VStack alignItems="start" w="40%" mx={5}>

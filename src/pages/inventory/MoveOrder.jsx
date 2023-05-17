@@ -255,6 +255,7 @@ const MoveOrder = () => {
             setButtonChanger={setButtonChanger}
             setCurrentPage={setCurrentPage}
             currentPage={currentPage}
+            moveData={moveData}
             // fetchNotification={fetchNotification}
           />
         ) : (
@@ -273,7 +274,6 @@ const MoveOrder = () => {
               preparedQty={preparedQty}
               setHighlighterId={setHighlighterId}
               setItemCode={setItemCode}
-              nearlyExpireBarcode={nearlyExpireBarcode}
             />
           )
         )}
