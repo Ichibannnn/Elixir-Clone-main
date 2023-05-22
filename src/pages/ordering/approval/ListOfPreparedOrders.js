@@ -36,6 +36,9 @@ export const ListOfPreparedOrders = ({
     setOrderNo(orders[0]?.orderNoPKey);
   }, [orders]);
 
+  console.log(customerOrders);
+  console.log(orders);
+
   const rushBadge = customerOrders?.some((x) => (x.rush ? true : false));
 
   return (
@@ -68,14 +71,17 @@ export const ListOfPreparedOrders = ({
                 <Th color="white" fontSize="10px">
                   Customer Name
                 </Th>
-                <Th color="white" fontSize="10px">
+                {/* <Th color="white" fontSize="10px">
                   Category
-                </Th>
+                </Th> */}
                 <Th color="white" fontSize="10px">
                   Total Quantity Order
                 </Th>
                 <Th color="white" fontSize="10px">
                   Prepared Date
+                </Th>
+                <Th color="white" fontSize="10px">
+                  Status
                 </Th>
               </Tr>
             </Thead>
@@ -93,19 +99,36 @@ export const ListOfPreparedOrders = ({
                   <Td fontSize="xs">{item.customerCode}</Td>
                   <Td fontSize="xs">
                     {item.customerName}{" "}
-                    <Badge
+                    {/* <Badge
                       fontSize="9.5px"
                       colorScheme="orange"
                       variant="solid"
                       className="inputCapital"
                     >
                       {rushBadge && "Rush"}
-                    </Badge>
+                    </Badge> */}
+                    {/* {!!customerOrders?.find(
+                        (order) => order.orderNo === item.orderNoPKey
+                      )?.rush && "Rush"} */}
                   </Td>
-                  <Td fontSize="xs">{item.category}</Td>
+                  {/* <Td fontSize="xs">{item.category}</Td> */}
                   <Td fontSize="xs">{item.totalOrders}</Td>
                   <Td fontSize="xs">
                     {moment(item.preparedDate).format("MM/DD/yyyy")}
+                  </Td>
+                  <Td fontSize="xs">
+                    {item.rush ? (
+                      <Badge
+                        fontSize="9.5px"
+                        colorScheme="orange"
+                        variant="solid"
+                        className="inputCapital"
+                      >
+                        Rush
+                      </Badge>
+                    ) : (
+                      ""
+                    )}
                   </Td>
                 </Tr>
               ))}

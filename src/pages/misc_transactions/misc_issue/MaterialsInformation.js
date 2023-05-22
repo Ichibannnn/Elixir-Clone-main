@@ -308,6 +308,8 @@ export const RawMatsInfoModal = ({
   onClose,
   details,
   setDetails,
+  remarks,
+  setRemarks,
   rawMatsInfo,
   setRawMatsInfo,
   customerRef,
@@ -319,8 +321,6 @@ export const RawMatsInfoModal = ({
   warehouseId,
   fetchActiveMiscIssues,
   customerData,
-  remarks,
-  setRemarks,
 }) => {
   const [availableStock, setAvailableStock] = useState("");
 
@@ -386,7 +386,7 @@ export const RawMatsInfoModal = ({
     }
   };
 
-  console.log(barcodeNo);
+  // console.log(barcodeNo);
 
   useEffect(() => {
     setAvailableStock("");

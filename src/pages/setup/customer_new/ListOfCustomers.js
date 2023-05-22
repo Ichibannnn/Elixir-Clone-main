@@ -35,6 +35,7 @@ import { ErrorCustomers } from "./ErrorCustomers";
 export const ListOfCustomers = ({
   genusCustomers,
   fistoDepartments,
+  fistoLocations,
   fetchingData,
   elixirCustomers,
   fetchElixirCustomers,
@@ -68,9 +69,10 @@ export const ListOfCustomers = ({
       return {
         customer_No: item.location_id,
         customerCode: item.location_code,
-        customerName: fistoDepartments.result.departments.find(
-          (customer) => customer.code === item.location_code
-        )?.name,
+        customerName: [
+          ...fistoDepartments.result.departments,
+          ...fistoLocations.result.locations,
+        ].find((customer) => customer.code === item.location_code)?.name,
       };
     }) // format
     ?.reduce((a, item) => {
@@ -235,7 +237,7 @@ export const ListOfCustomers = ({
                 </Stack>
               ) : (
                 <Table
-                  size="sm"
+                  // size="sm"
                   //   width="full"
                   // height="100%"
                   border="none"

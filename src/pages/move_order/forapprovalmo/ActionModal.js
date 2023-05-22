@@ -48,6 +48,7 @@ export const ViewModal = ({ isOpen, onClose, viewData }) => {
     "Item Code",
     "Item Description",
     "Quantity",
+    "Remarks",
   ];
 
   return (
@@ -82,6 +83,7 @@ export const ViewModal = ({ isOpen, onClose, viewData }) => {
                       <Td>{item.itemCode}</Td>
                       <Td>{item.itemDescription}</Td>
                       <Td>{item.quantity}</Td>
+                      <Td>{item.rush}</Td>
                       {/* <Td>{moment(item.expiration).format("MM/DD/yyyy")}</Td> */}
                     </Tr>
                   ))}

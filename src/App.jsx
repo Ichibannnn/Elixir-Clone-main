@@ -134,7 +134,7 @@ const App = () => {
     };
   }, [userId]);
 
-  //Misc Issue Data
+  //Misc Borrowed Data
   const fetchActiveBorrowed = () => {
     fetchActiveBorrowedApi(borrowedUserId).then((res) => {
       setBorrowedData(res);

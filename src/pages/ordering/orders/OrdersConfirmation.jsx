@@ -56,6 +56,7 @@ const OrdersConfirmation = ({
 
   const duplicateList = errorData?.duplicateList?.map((list) => {
     return {
+      trasactId: list?.trasactId,
       orderDate: list?.orderDate,
       dateNeeded: list?.dateNeeded,
       department: list?.department,

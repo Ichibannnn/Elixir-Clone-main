@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Badge,
   Button,
   Flex,
   HStack,
@@ -48,7 +49,8 @@ export const ForApprovalMoveOrder = ({
     "Order ID",
     "Customer Code",
     "Customer Name",
-    "Category",
+    "Status",
+    // "Category",
     "Total Quantity Order",
     "Prepared Date",
     "View",
@@ -159,9 +161,24 @@ export const ForApprovalMoveOrder = ({
                 <Tr key={i}>
                   <Td fontSize="xs">{i + 1}</Td>
                   <Td fontSize="xs">{item.orderNo}</Td>
-                  <Td fontSize="xs">{item.customerName}</Td>
                   <Td fontSize="xs">{item.customercode}</Td>
-                  <Td fontSize="xs">{item.category}</Td>
+                  <Td fontSize="xs">{item.customerName}</Td>
+                  <Td fontSize="xs">
+                    {/* {" "} */}
+                    {item.rush ? (
+                      <Badge
+                        fontSize="9.5px"
+                        colorScheme="orange"
+                        variant="solid"
+                        className="inputCapital"
+                      >
+                        Rush
+                      </Badge>
+                    ) : (
+                      ""
+                    )}
+                  </Td>
+                  {/* <Td fontSize="xs">{item.category}</Td> */}
                   <Td fontSize="xs">{item.quantity}</Td>
                   <Td fontSize="xs">
                     {moment(item.preparedDate).format("MM/DD/yyyy")}

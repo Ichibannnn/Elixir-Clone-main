@@ -99,8 +99,8 @@ export const PrintModal = ({
               </Text>
             </Flex>
 
-            <Flex justifyContent="center" my={4}>
-              <Text fontSize="lg" fontWeight="semibold">
+            <Flex justifyContent="center" my={1}>
+              <Text fontSize="md" fontWeight="semibold">
                 Move Order Slip
               </Text>
             </Flex>
@@ -113,36 +113,53 @@ export const PrintModal = ({
 
             <Flex justifyContent="space-between" mb={3}>
               <Flex flexDirection="column">
-                <Text>Order ID: {orderId && orderId}</Text>
-                <Text>Unit: {`WAREHOUSE`}</Text>
-                <Text>Customer: {printData[0]?.customerName}</Text>
+                <Text fontSize="xs">Order ID: {orderId && orderId}</Text>
+                <Text fontSize="xs">Unit: {`WAREHOUSE`}</Text>
+                {/* <Text fontSize="xs">
+                  Customer Code: {printData[0]?.customerCode}
+                </Text> */}
+                <Text fontSize="xs">
+                  Customer: {printData[0]?.customerName}
+                </Text>
                 {/* <Text>Address: {printData[0]?.address}</Text> */}
                 {/* <Text>Batch Number: {printData[0]?.batchNo}</Text> */}
               </Flex>
               <Flex flexDirection="column">
-                <Barcode width={3} height={50} value={Number(orderId)} />
-                <Text>Date: {moment(dateToday).format("MM/DD/yyyy")}</Text>
+                <Barcode width={3} height={40} value={Number(orderId)} />
+                <Text fontSize="xs">
+                  Date: {moment(dateToday).format("MM/DD/yyyy")}
+                </Text>
               </Flex>
             </Flex>
 
             <PageScroll minHeight="150px" maxHeight="300px">
-              <Table size="sm">
+              <Table size="xs">
                 <Thead bgColor="secondary">
                   <Tr>
-                    <Th color="white">ITEM CODE</Th>
-                    <Th color="white">ITEM DESCRIPTION</Th>
-                    <Th color="white">UOM</Th>
-                    <Th color="white">QUANTITY</Th>
-                    <Th color="white">ACTUAL QTY RECEIVED</Th>
+                    <Th color="white" fontSize="xs">
+                      ITEM CODE
+                    </Th>
+                    <Th color="white" fontSize="xs">
+                      ITEM DESCRIPTION
+                    </Th>
+                    <Th color="white" fontSize="xs">
+                      UOM
+                    </Th>
+                    <Th color="white" fontSize="xs">
+                      QUANTITY
+                    </Th>
+                    <Th color="white" fontSize="xs">
+                      ACTUAL QTY RECEIVED
+                    </Th>
                   </Tr>
                 </Thead>
                 <Tbody>
                   {printData?.map((item, i) => (
                     <Tr key={i}>
-                      <Td>{item.itemCode}</Td>
-                      <Td>{item.itemDescription}</Td>
-                      <Td>{item.uom}</Td>
-                      <Td>{item.quantity}</Td>
+                      <Td fontSize="xs">{item.itemCode}</Td>
+                      <Td fontSize="xs">{item.itemDescription}</Td>
+                      <Td fontSize="xs">{item.uom}</Td>
+                      <Td fontSize="xs">{item.quantity}</Td>
                       <Td></Td>
                     </Tr>
                   ))}
@@ -156,8 +173,8 @@ export const PrintModal = ({
 
             <Flex justifyContent="space-between" mb={5} mt={2}>
               <HStack>
-                <Text>Delivery Status:</Text>
-                <Text textDecoration="underline">
+                <Text fontSize="xs">Delivery Status:</Text>
+                <Text textDecoration="underline" fontSize="xs">
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   {`Pick-Up`}
@@ -168,8 +185,8 @@ export const PrintModal = ({
               </HStack>
               <VStack spacing={0}>
                 <HStack>
-                  <Text>Checked By:</Text>
-                  <Text textDecoration="underline">
+                  <Text fontSize="xs">Checked By:</Text>
+                  <Text textDecoration="underline" fontSize="xs">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -185,8 +202,8 @@ export const PrintModal = ({
             <Flex justifyContent="space-between">
               <VStack spacing={0}>
                 <HStack>
-                  <Text>Prepared By:</Text>
-                  <Text textDecoration="underline">
+                  <Text fontSize="xs">Prepared By:</Text>
+                  <Text textDecoration="underline" fontSize="xs">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -200,8 +217,8 @@ export const PrintModal = ({
               </VStack>
               <VStack spacing={0}>
                 <HStack>
-                  <Text>Received By:</Text>
-                  <Text textDecoration="underline">
+                  <Text fontSize="xs">Received By:</Text>
+                  <Text textDecoration="underline" fontSize="xs">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -480,6 +497,7 @@ export const PrintModal = ({
                     spacing={0}
                     justifyContent="start"
                     flexDirection="column"
+                    mt={5}
                   >
                     <Image src="/images/RDF Logo.png" w="13%" ml={3} />
                     <Text fontSize="8px" ml={2}>
@@ -488,8 +506,8 @@ export const PrintModal = ({
                     </Text>
                   </Flex>
 
-                  <Flex justifyContent="center" my={4}>
-                    <Text fontSize="lg" fontWeight="semibold">
+                  <Flex justifyContent="center" my={1}>
+                    <Text fontSize="md" fontWeight="semibold">
                       Move Order Slip
                     </Text>
                   </Flex>
@@ -502,15 +520,19 @@ export const PrintModal = ({
 
                   <Flex justifyContent="space-between" mb={3}>
                     <Flex flexDirection="column">
-                      <Text>Order ID: {orderId && orderId}</Text>
-                      <Text>Warehouse: {`WAREHOUSE`}</Text>
-                      <Text>Customer: {printData[0]?.customerName}</Text>
-                      <Text>Address: {printData[0]?.address}</Text>
+                      <Text fontSize="xs">Order ID: {orderId && orderId}</Text>
+                      <Text fontSize="xs">Warehouse: {`WAREHOUSE`}</Text>
+                      <Text fontSize="xs">
+                        Customer: {printData[0]?.customerName}
+                      </Text>
+                      {/* <Text fontSize="xs">
+                        Address: {printData[0]?.address}
+                      </Text> */}
                       {/* <Text>Batch Number: {printData[0]?.batchNo}</Text> */}
                     </Flex>
                     <Flex flexDirection="column">
-                      <Barcode width={3} height={50} value={Number(orderId)} />
-                      <Text>
+                      <Barcode width={3} height={40} value={Number(orderId)} />
+                      <Text fontSize="xs">
                         Date: {moment(dateToday).format("MM/DD/yyyy")}
                       </Text>
                     </Flex>
@@ -519,21 +541,31 @@ export const PrintModal = ({
                   <Table size="sm">
                     <Thead bgColor="secondary">
                       <Tr>
-                        <Th color="white">ITEM CODE</Th>
-                        <Th color="white">ITEM DESCRIPTION</Th>
-                        <Th color="white">UOM</Th>
-                        <Th color="white">QUANTITY</Th>
-                        <Th color="white">ACTUAL QTY RECEIVED</Th>
+                        <Th color="white" fontSize="xs">
+                          ITEM CODE
+                        </Th>
+                        <Th color="white" fontSize="xs">
+                          ITEM DESCRIPTION
+                        </Th>
+                        <Th color="white" fontSize="xs">
+                          UOM
+                        </Th>
+                        <Th color="white" fontSize="xs">
+                          QUANTITY
+                        </Th>
+                        <Th color="white" fontSize="xs">
+                          ACTUAL QTY RECEIVED
+                        </Th>
                         {/* <Th color="white">EXPIRATION DATE</Th> */}
                       </Tr>
                     </Thead>
                     <Tbody>
                       {printData?.map((item, i) => (
                         <Tr borderX="1px" borderBottom="1px" key={i}>
-                          <Td>{item.itemCode}</Td>
-                          <Td>{item.itemDescription}</Td>
-                          <Td>{item.uom}</Td>
-                          <Td>{item.quantity}</Td>
+                          <Td fontSize="xs">{item.itemCode}</Td>
+                          <Td fontSize="xs">{item.itemDescription}</Td>
+                          <Td fontSize="xs">{item.uom}</Td>
+                          <Td fontSize="xs">{item.quantity}</Td>
                           <Td></Td>
                           {/* <Td>
                             {moment(item.expiration).format("MM/DD/yyyy")}
@@ -551,8 +583,8 @@ export const PrintModal = ({
 
                   <Flex justifyContent="space-between" mb={5} mt={2}>
                     <HStack>
-                      <Text>Delivery Status:</Text>
-                      <Text textDecoration="underline">
+                      <Text fontSize="xs">Delivery Status:</Text>
+                      <Text textDecoration="underline" fontSize="xs">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         {`Pick-Up`}
@@ -563,8 +595,8 @@ export const PrintModal = ({
                     </HStack>
                     <VStack spacing={0}>
                       <HStack>
-                        <Text>Checked By:</Text>
-                        <Text textDecoration="underline">
+                        <Text fontSize="xs">Checked By:</Text>
+                        <Text textDecoration="underline" fontSize="xs">
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -580,8 +612,8 @@ export const PrintModal = ({
                   <Flex justifyContent="space-between">
                     <VStack spacing={0}>
                       <HStack>
-                        <Text>Prepared By:</Text>
-                        <Text textDecoration="underline">
+                        <Text fontSize="xs">Prepared By:</Text>
+                        <Text textDecoration="underline" fontSize="xs">
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -595,8 +627,8 @@ export const PrintModal = ({
                     </VStack>
                     <VStack spacing={0}>
                       <HStack>
-                        <Text>Received By:</Text>
-                        <Text textDecoration="underline">
+                        <Text fontSize="xs">Received By:</Text>
+                        <Text textDecoration="underline" fontSize="xs">
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -642,6 +674,14 @@ export const PrintModal = ({
             </Button>
           </ButtonGroup>
         </ModalFooter>
+        <style>
+          {`
+          @media print {
+            @page {
+              size: 8.5in 6.5in;
+            }
+        `}
+        </style>
       </ModalContent>
     </Modal>
   );
@@ -655,6 +695,7 @@ export const TrackModal = ({ isOpen, onClose, trackData, trackList }) => {
     "Item Code",
     "Item Description",
     "Quantity",
+    "Remarks",
   ];
 
   return (
@@ -745,6 +786,7 @@ export const TrackModal = ({ isOpen, onClose, trackData, trackList }) => {
                       <Td fontSize="11px">{item.itemCode}</Td>
                       <Td fontSize="11px">{item.itemDescription}</Td>
                       <Td fontSize="11px">{item.quantity}</Td>
+                      <Td fontSize="11px">{item.rush}</Td>
                       {/* <Td>{moment(item.expiration).format("MM/DD/yyyy")}</Td> */}
                     </Tr>
                   ))}

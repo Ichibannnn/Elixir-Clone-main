@@ -5,6 +5,7 @@ import { BorrowedInformation } from "./BorrowedInformation";
 import { ListOfBorrowed } from "./ListOfBorrowed";
 import { ViewListBorrowed } from "./viewingBorrowed/ViewListBorrowed";
 import { ActionButton } from "./ActionButton";
+import { TransactedListBorrowed } from "./transactedBorrowed/TransactedListBorrowed";
 // import { MaterialsInformation } from './MaterialsInformation';
 // import { ListOfIssue } from './ListOfIssue';
 // import { ActionButton } from './ActionButton';
@@ -130,6 +131,7 @@ const BorrowedMaterialsPage = ({
             size="sm"
             fontSize="xs"
             onClick={() => setBorrowedNav(1)}
+            borderRadius="none"
           >
             Add Borrow Materials
           </Button>
@@ -142,8 +144,22 @@ const BorrowedMaterialsPage = ({
             size="sm"
             fontSize="xs"
             onClick={() => setBorrowedNav(2)}
+            borderRadius="none"
           >
-            View Borrowed Materials
+            Pending Borrowed Materials
+          </Button>
+          <Button
+            bgColor={borrowedNav === 3 ? "primary" : ""}
+            color={borrowedNav === 3 ? "white" : ""}
+            _hover={{ bgColor: "btnColor", color: "white" }}
+            border="1px"
+            borderColor="gray.300"
+            size="sm"
+            fontSize="xs"
+            onClick={() => setBorrowedNav(3)}
+            borderRadius="none"
+          >
+            Transacted Return Materials
           </Button>
         </HStack>
       </Flex>
@@ -153,6 +169,7 @@ const BorrowedMaterialsPage = ({
         p={5}
         spacing={10}
         height={borrowedData?.length === 0 ? "87vh" : "auto"}
+        border="2px"
       >
         {borrowedNav === 1 ? (
           <>
@@ -214,8 +231,13 @@ const BorrowedMaterialsPage = ({
           </>
         ) : borrowedNav === 2 ? (
           <>
-            <ViewListBorrowed />
+            <ViewListBorrowed
+              setIsLoading={setIsLoading}
+              // isLoading={isLoading}
+            />
           </>
+        ) : borrowedNav == 3 ? (
+          <TransactedListBorrowed />
         ) : (
           ""
         )}

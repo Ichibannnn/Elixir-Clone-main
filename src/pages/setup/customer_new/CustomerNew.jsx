@@ -61,11 +61,22 @@ const fetchFistoDepartmentsApi = async () => {
   );
   return res.data;
 };
+const fetchFistoLocationsApi = async () => {
+  const res = await axios.get(
+    `http://10.10.2.76:8000/api/dropdown/location?status=1&paginate=0&api_for=vladimir`,
+    {
+      headers: {
+        Authorization: "Bearer " + process.env.REACT_APP_FISTO_TOKEN,
+      },
+    }
+  );
+  return res.data;
+};
 
 // FETCH API REASON:
 const fetchElixirApi = async () => {
   const response = await request.get(
-    `https://localhost:7151/api/Customer/GetAllCustomerWithPagination/true?PageNumber=1&PageSize=4000`
+    `https://localhost:7151/api/Customer/GetAllCustomerWithPagination/true?PageNumber=1&PageSize=10000`
   );
 
   return response.data;
@@ -76,6 +87,7 @@ const CustomerNew = () => {
 
   const [genusCustomers, setGenusCustomers] = useState([]);
   const [fistoDepartments, setFistoDepartments] = useState([]);
+  const [fistoLocations, setFistoLocations] = useState([]);
   const [elixirCustomers, setElixirCustomers] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -88,6 +100,10 @@ const CustomerNew = () => {
 
     fetchFistoDepartmentsApi().then((res) => {
       setFistoDepartments(res);
+    });
+
+    fetchFistoLocationsApi().then((res) => {
+      setFistoLocations(res);
     });
   };
 
@@ -124,6 +140,7 @@ const CustomerNew = () => {
       setElixirCustomers={setElixirCustomers}
       genusCustomers={genusCustomers}
       fistoDepartments={fistoDepartments}
+      fistoLocations={fistoLocations}
       setGenusCustomers={setGenusCustomers}
       search={search}
       fetchingData={isLoading}

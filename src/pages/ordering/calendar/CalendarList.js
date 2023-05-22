@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Badge,
   Box,
   Flex,
   Modal,
@@ -76,11 +77,12 @@ export const CalendarList = ({ forMOData }) => {
 
 const ModalOfSchedules = ({ isOpen, onClose, forMOData, dateStr }) => {
   const TableHead = [
-    // "Department",
+    "Id",
     "Customer Code",
     "Customer Name",
     "Preparation Date",
     "Total Quantity of Orders",
+    "Status",
   ];
 
   return (
@@ -113,12 +115,28 @@ const ModalOfSchedules = ({ isOpen, onClose, forMOData, dateStr }) => {
                     dateStr ? (
                       <Tr key={i}>
                         {/* <Td fontSize="xs">{item.department}</Td> */}
+                        <Td fontSize="xs">{item.id}</Td>
                         <Td fontSize="xs">{item.customerCode}</Td>
                         <Td fontSize="xs">{item.customerName}</Td>
                         <Td fontSize="xs">
                           {moment(item.preparedDate).format("yyyy/MM/DD")}
                         </Td>
                         <Td fontSize="xs">{item.totalOrders}</Td>
+                        <Td fontSize="xs">
+                          {" "}
+                          {item.rush ? (
+                            <Badge
+                              fontSize="9.5px"
+                              colorScheme="orange"
+                              variant="solid"
+                              className="inputCapital"
+                            >
+                              Rush
+                            </Badge>
+                          ) : (
+                            ""
+                          )}
+                        </Td>
                       </Tr>
                     ) : null
                   )}

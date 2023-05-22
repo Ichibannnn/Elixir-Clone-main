@@ -454,10 +454,10 @@ export const EditModal = ({
                           title={
                             !receivingDate
                               ? "Please provide a Receiving Date first"
-                              : "Select a lot category"
+                              : "Select a lot section"
                           }
                           // isInvalid={errors.rms}
-                          placeholder="Select Lot Category"
+                          // placeholder="Please provide a Receiving Date first"
                           bgColor="#ffffe0"
                         >
                           {lotCategories?.map((lot) => (

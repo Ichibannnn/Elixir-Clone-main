@@ -242,8 +242,11 @@ export const ListofApprovedDate = ({
                   Customer Name
                 </Th>
                 <Th color="white" fontSize="10px">
-                  Category
+                  Status
                 </Th>
+                {/* <Th color="white" fontSize="10px">
+                  Category
+                </Th> */}
                 <Th color="white" fontSize="10px">
                   Total Quantity Order
                 </Th>
@@ -295,7 +298,22 @@ export const ListofApprovedDate = ({
                   {/* <Td fontSize="xs">{order.department}</Td> */}
                   <Td fontSize="xs">{order.customerCode}</Td>
                   <Td fontSize="xs">{order.customerName}</Td>
-                  <Td fontSize="xs">{order.category}</Td>
+                  <Td fontSize="xs">
+                    {/* {" "} */}
+                    {order.rush ? (
+                      <Badge
+                        fontSize="9.5px"
+                        colorScheme="orange"
+                        variant="solid"
+                        className="inputCapital"
+                      >
+                        Rush
+                      </Badge>
+                    ) : (
+                      ""
+                    )}
+                  </Td>
+                  {/* <Td fontSize="xs">{order.category}</Td> */}
                   <Td fontSize="xs">{order.totalOrders}</Td>
                   <Td fontSize="xs">
                     {moment(order.preparedDate).format("MM/DD/yyyy")}
@@ -312,6 +330,7 @@ export const ListofApprovedDate = ({
                           ? "Please cancel all prepared items first"
                           : ""
                       }
+                      borderRadius="none"
                     >
                       Cancel
                     </Button>

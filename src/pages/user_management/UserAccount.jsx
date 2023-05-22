@@ -874,7 +874,7 @@ const DrawerComponent = (props) => {
                     </Text>
                     <InputGroup>
                       <Input
-                        readOnly
+                        // readOnly
                         // disabled={disableEdit}
                         fontSize="14px"
                         type={showPassword ? "text" : "password"}
@@ -1318,8 +1318,8 @@ const DrawerComponentEdit = (props) => {
                     </Text>
                     <InputGroup>
                       <Input
-                        readOnly={disableEdit}
-                        disabled={disableEdit}
+                        // readOnly={disableEdit}
+                        // disabled={disableEdit}
                         fontSize="14px"
                         type={showPassword ? "text" : "password"}
                         {...register("formData.password")}

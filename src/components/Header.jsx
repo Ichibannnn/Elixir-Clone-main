@@ -74,10 +74,13 @@ const Header = ({ setSidebarHandler }) => {
           </MenuList>
         </Menu>
         <Box>
-          <Text mt={3} fontSize="9px" fontWeight="semibold" color="white">
+          <Text fontSize="9px" fontWeight="semibold" color="white">
+            Fresh Morning!,
+          </Text>
+          <Text fontSize="9px" fontWeight="semibold" color="white">
             {`${user && user?.fullName}`}
           </Text>
-          <Badge
+          {/* <Badge
             mb={3}
             textAlign="left"
             fontSize="9px"
@@ -85,7 +88,7 @@ const Header = ({ setSidebarHandler }) => {
             className="inputLowerCase"
           >
             {`${user && user?.userName}`}
-          </Badge>
+          </Badge> */}
           {/* <Text fontSize="sm">UI Engineer</Text> */}
         </Box>
       </Flex>

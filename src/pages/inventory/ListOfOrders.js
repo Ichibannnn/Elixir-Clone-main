@@ -40,6 +40,7 @@ export const ListOfOrders = ({
     "UOM",
     "Quantity Order",
     "Prepared Qty",
+    "Remarks",
     "Status",
   ];
 
@@ -111,14 +112,19 @@ export const ListOfOrders = ({
                 <Td fontSize="xs">{list.uom}</Td>
                 <Td fontSize="xs">{list.quantityOrder}</Td>
                 <Td fontSize="xs">{list.preparedQuantity}</Td>
+                <Td fontSize="xs">{list.rush}</Td>
                 <Td>
                   {list.quantityOrder <= list.preparedQuantity ? (
                     // <BsCheck2Circle fontSize="20px" title="Done" />
-                    <Badge colorScheme="whatsapp" fontSize="0.7em">
+                    <Badge
+                      colorScheme="twitter"
+                      fontSize="0.7em"
+                      variant="solid"
+                    >
                       Done
                     </Badge>
                   ) : (
-                    <Badge colorScheme="orange" fontSize="0.7em">
+                    <Badge colorScheme="gray" variant="solid" fontSize="0.7em">
                       Pending
                     </Badge>
                   )}

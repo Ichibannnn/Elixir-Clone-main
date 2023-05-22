@@ -258,15 +258,16 @@ export const PreparationListOrders = ({
         >
           List of Orders
         </Text>
-        <PageScroll minHeight="150px" maxHeight="490px">
+        <PageScroll minHeight="130px" maxHeight="640px">
           <Table
             size="sm"
             boxShadow="md"
             // bg="gray.200"
-            variant="simple"
+            // variant="simple"
             // position="relative"
             border="1px"
             borderColor="gray.400"
+            variant="simple"
           >
             <Thead bg="secondary" position="sticky">
               <Tr h="40px">
@@ -339,12 +340,12 @@ export const PreparationListOrders = ({
                   }
                   _active={
                     transactId
-                      ? { bgColor: "accent", color: "white" }
+                      ? { bgColor: "btnColor", color: "white" }
                       : { bgColor: "none" }
                   }
                   _hover={
                     transactId
-                      ? { bgColor: "accent", color: "white" }
+                      ? { bgColor: "blue.100", color: "white" }
                       : { bgColor: "none" }
                   }
                   cursor="pointer"
@@ -388,7 +389,12 @@ export const PreparationListOrders = ({
                       minimumFractionDigits: 2,
                     })}
                   </Td>
-                  <Td fontSize="xs">{item.stockOnHand}</Td>
+                  <Td fontSize="xs">
+                    {item.stockOnHand.toLocaleString(undefined, {
+                      maximumFractionDigits: 2,
+                      minimumFractionDigits: 2,
+                    })}
+                  </Td>
                   <Td fontSize="xs">
                     {item.rush ? (
                       <Text fontSize="xs">

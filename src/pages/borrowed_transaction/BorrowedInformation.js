@@ -382,7 +382,6 @@ export const RawMatsInfoModal = ({
                   >
                     Item Code:{" "}
                   </Text>
-                  \
                   {rawMats.length > 0 ? (
                     <Select
                       fontSize="xs"
@@ -570,7 +569,7 @@ export const RawMatsInfoModal = ({
                     >
                       {availableStock
                         ? availableStock
-                        : "Select an expiration date"}
+                        : "Select an barcode number"}
                     </Text>
                   )}
                 </HStack>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Badge,
   Button,
   Flex,
   HStack,
@@ -45,7 +46,9 @@ export const ApproveMoveOrder = ({
     "Line",
     "Order ID",
     "Customer Code",
-    "Category",
+    "Customer Name",
+    "Status",
+    // "Category",
     "Total Quantity Order",
     "Prepared Date",
     "Track",
@@ -194,7 +197,22 @@ export const ApproveMoveOrder = ({
                   <Td fontSize="13px">{i + 1}</Td>
                   <Td fontSize="13px">{order.orderNo}</Td>
                   <Td fontSize="13px">{order.customerCode}</Td>
-                  <Td fontSize="13px">{order.category}</Td>
+                  <Td fontSize="13px">{order.customerName}</Td>
+                  <Td fontSize="xs">
+                    {order.rush ? (
+                      <Badge
+                        fontSize="9.5px"
+                        colorScheme="orange"
+                        variant="solid"
+                        className="inputCapital"
+                      >
+                        Rush
+                      </Badge>
+                    ) : (
+                      ""
+                    )}
+                  </Td>
+                  {/* <Td fontSize="13px">{order.category}</Td> */}
                   <Td fontSize="13px">{order.quantity}</Td>
                   <Td fontSize="13px">
                     {moment(order.preparedDate).format("MM/DD/yyyy")}

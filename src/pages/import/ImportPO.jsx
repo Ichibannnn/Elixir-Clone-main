@@ -69,6 +69,7 @@ const ImportPO = () => {
       });
     });
     setExcelData(jsonData);
+    console.log(jsonData);
   };
 
   // EXCEL DATA

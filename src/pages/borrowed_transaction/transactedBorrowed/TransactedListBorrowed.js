@@ -30,20 +30,24 @@ import {
 } from "@ajna/pagination";
 import PageScroll from "../../../utils/PageScroll";
 import request from "../../../services/ApiClient";
-import { ViewModal } from "./ActionButtonBorrowed";
-import moment from "moment/moment";
-// import { ViewModal } from './ActionButton'
-// import { StatusConfirmation, ViewModal } from './Action-Modals'
 
-const fetchBorrowedApi = async (pageNumber, pageSize, search, status) => {
+import moment from "moment/moment";
+import { ViewModal } from "./ActionButtonTransacted";
+
+const fetchTransactBorrowedApi = async (
+  pageNumber,
+  pageSize,
+  search,
+  status
+) => {
   const res = await request.get(
-    `Borrowed/GetAllBorrowedIssueWithPaginationOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}&status=${status}`
+    `Borrowed/GetAllReturnedItemOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}&status=${status}`
   );
   return res.data;
 };
 
-export const ViewListBorrowed = () => {
-  const [issueBorrowData, setBorrowIssueData] = useState([]);
+export const TransactedListBorrowed = () => {
+  const [transactedBorrowData, setTransactedBorrowData] = useState([]);
 
   const [pageTotal, setPageTotal] = useState(undefined);
   const [status, setStatus] = useState(true);
@@ -52,16 +56,10 @@ export const ViewListBorrowed = () => {
 
   const [statusBody, setStatusBody] = useState({
     id: "",
-    status: "",
   });
 
   // console.log(issueBorrowData )
 
-  const {
-    isOpen: isStatus,
-    onClose: closeStatus,
-    onOpen: openStatus,
-  } = useDisclosure();
   const {
     isOpen: isView,
     onClose: closeView,
@@ -86,15 +84,17 @@ export const ViewListBorrowed = () => {
     initialState: { currentPage: 1, pageSize: 5 },
   });
 
-  const fetchBorrowed = () => {
-    fetchBorrowedApi(currentPage, pageSize, search, status).then((res) => {
-      setBorrowIssueData(res);
-      setPageTotal(res.totalCount);
-    });
+  const fetchTransactedBorrowed = () => {
+    fetchTransactBorrowedApi(currentPage, pageSize, search, status).then(
+      (res) => {
+        setTransactedBorrowData(res);
+        setPageTotal(res.totalCount);
+      }
+    );
   };
 
   useEffect(() => {
-    fetchBorrowed();
+    fetchTransactedBorrowed();
   }, [status, pageSize, currentPage, search]);
 
   const handlePageChange = (nextPage) => {
@@ -110,19 +110,18 @@ export const ViewListBorrowed = () => {
     setSearch(inputValue);
   };
 
-  const viewHandler = (id, status) => {
+  const viewHandler = (id) => {
     if (id) {
       setStatusBody({
         id: id,
-        status: status,
       });
       openView();
     } else {
       setStatusBody({
         id: "",
-        status: "",
       });
     }
+    // console.log(id);
   };
 
   return (
@@ -157,11 +156,11 @@ export const ViewListBorrowed = () => {
                 <Th h="40px" color="white" fontSize="10px">
                   Customer Name
                 </Th>
-                <Th h="40px" color="white" fontSize="10px">
+                {/* <Th h="40px" color="white" fontSize="10px">
                   Total Quantity
-                </Th>
+                </Th> */}
                 <Th h="40px" color="white" fontSize="10px">
-                  Borrowed Date
+                  Returned Date
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
                   Transacted By
@@ -172,21 +171,19 @@ export const ViewListBorrowed = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {issueBorrowData?.issue?.map((borrow, i) => (
+              {transactedBorrowData?.issue?.map((borrow, i) => (
                 <Tr key={i}>
-                  <Td fontSize="xs">{borrow.borrowedPKey}</Td>
+                  <Td fontSize="xs">{borrow.id}</Td>
                   <Td fontSize="xs">{borrow.customerCode}</Td>
                   <Td fontSize="xs">{borrow.customerName}</Td>
-                  <Td fontSize="xs">{borrow.totalQuantity}</Td>
+                  {/* <Td fontSize="xs">{borrow.totalQuantity}</Td> */}
                   <Td fontSize="xs">
                     {moment(borrow.borrowedDate).format("yyyy-MM-DD")}
                   </Td>
                   <Td fontSize="xs">{borrow.preparedBy}</Td>
                   <Td fontSize="xs">
                     <Button
-                      onClick={() =>
-                        viewHandler(borrow.borrowedPKey, borrow.isActive)
-                      }
+                      onClick={() => viewHandler(borrow.id)}
                       colorScheme="blue"
                       size="xs"
                     >
@@ -254,7 +251,6 @@ export const ViewListBorrowed = () => {
           isOpen={isView}
           onClose={closeView}
           statusBody={statusBody}
-          fetchBorrowed={fetchBorrowed}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
         />

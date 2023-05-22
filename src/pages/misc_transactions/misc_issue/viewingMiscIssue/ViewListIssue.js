@@ -31,7 +31,8 @@ import {
 import PageScroll from "../../../../utils/PageScroll";
 import request from "../../../../services/ApiClient";
 import { ToastComponent } from "../../../../components/Toast";
-import { ViewModal } from "../../../borrowed_transaction/viewingBorrowed/ActionButtonBorrowed";
+import { ViewModal } from "./ActionButton";
+// import { ViewModal } from "../../../borrowed_transaction/viewingBorrowed/ActionButtonBorrowed";
 
 // import { StatusConfirmation, ViewModal } from './Action-Modals'
 
@@ -120,6 +121,8 @@ export const ViewListIssue = () => {
         status: "",
       });
     }
+    // console.log(id);
+    // console.log(status);
   };
 
   return (

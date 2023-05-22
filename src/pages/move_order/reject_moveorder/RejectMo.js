@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Badge,
   Button,
   Flex,
   HStack,
@@ -51,12 +52,12 @@ export const RejectMo = ({
     "Order ID",
     "Customer Code",
     "Customer Name",
-    "Category",
+    // "Category",
     "Total Quantity Order",
     "Prepared Date",
     // "Date Needed",
     // "Reject Date",
-    "Remarks",
+    "Status",
     "Reject",
   ];
 
@@ -126,16 +127,29 @@ export const RejectMo = ({
                 <Tr key={i}>
                   <Td fontSize="xs">{i + 1}</Td>
                   <Td fontSize="xs">{data.orderNo}</Td>
-                  <Td fontSize="xs">{data.customerName}</Td>
                   <Td fontSize="xs">{data.customerCode}</Td>
-                  <Td fontSize="xs">{data.category}</Td>
+                  <Td fontSize="xs">{data.customerName}</Td>
+                  {/* <Td fontSize="xs">{data.category}</Td> */}
                   <Td fontSize="xs">{data.quantity}</Td>
                   <Td fontSize="xs">
                     {moment(data.preparedDate).format("MM/DD/yyyy")}
                   </Td>
                   {/* <Td>{data.dateNeeded}</Td> */}
                   {/* <Td>{moment(data.rejectedDate).format("MM/DD/yyyy")}</Td> */}
-                  <Td fontSize="xs">{data.remarks}</Td>
+                  <Td fontSize="xs">
+                    {data.rush ? (
+                      <Badge
+                        fontSize="9.5px"
+                        colorScheme="orange"
+                        variant="solid"
+                        className="inputCapital"
+                      >
+                        Rush
+                      </Badge>
+                    ) : (
+                      ""
+                    )}
+                  </Td>
                   <Td>
                     <Button
                       borderRadius="none"

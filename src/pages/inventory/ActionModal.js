@@ -402,7 +402,7 @@ export const AccountTitleModal = ({
           <ModalContent>
             <ModalHeader>
               <Flex justifyContent="center">
-                <Text>Account Title</Text>
+                <Text>Charging of Accounts</Text>
               </Flex>
             </ModalHeader>
             <ModalCloseButton onClick={onClose} />
