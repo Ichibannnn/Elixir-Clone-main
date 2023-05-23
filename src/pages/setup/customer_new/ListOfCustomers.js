@@ -248,10 +248,10 @@ export const ListOfCustomers = ({
                   <Thead bg="secondary" position="sticky" top={0}>
                     <Tr h="30px">
                       <Th color="#D6D6D6" fontSize="10px" w="25%">
-                        ID
+                        Line
                       </Th>
                       <Th color="#D6D6D6" fontSize="10px" w="25%">
-                        Customer No.
+                        Customer Id
                       </Th>
                       {/* <Th color="#D6D6D6" fontSize="10px" pl="100px">
                                

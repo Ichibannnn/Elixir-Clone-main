@@ -906,10 +906,10 @@ const DrawerComponent = (props) => {
                     {roles.length > 0 ? (
                       <Select
                         fontSize="14px"
-                        disabled={disableEdit}
-                        readOnly={disableEdit}
-                        _disabled={{ color: "black" }}
-                        bgColor={disableEdit && "gray.400"}
+                        // disabled={disableEdit}
+                        // readOnly={disableEdit}
+                        // _disabled={{ color: "black" }}
+                        // bgColor={disableEdit && "gray.400"}
                         {...register("formData.userRoleId")}
                         placeholder="Select Role"
                       >
@@ -1350,10 +1350,10 @@ const DrawerComponentEdit = (props) => {
                     {roles.length > 0 ? (
                       <Select
                         fontSize="14px"
-                        disabled={disableEdit}
-                        readOnly={disableEdit}
-                        _disabled={{ color: "black" }}
-                        bgColor={disableEdit && "gray.400"}
+                        // disabled={disableEdit}
+                        // readOnly={disableEdit}
+                        // _disabled={{ color: "black" }}
+                        // bgColor={disableEdit && "gray.400"}
                         {...register("formData.userRoleId")}
                         placeholder="Select Role"
                       >

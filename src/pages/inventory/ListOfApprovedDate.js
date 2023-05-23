@@ -311,7 +311,7 @@ export const ListofApprovedDate = ({
                       <FaShippingFast
                         title="Rush Orders"
                         fontSize="17px"
-                        color="#E53E3E"
+                        color="orange"
                       />
                     ) : (
                       <FaShippingFast fontSize="17px" color="#A0AEC0" />

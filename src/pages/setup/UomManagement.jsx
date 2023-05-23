@@ -130,7 +130,7 @@ const UomManagement = () => {
         getUomHandler();
       })
       .catch((err) => {
-        console.log(err);
+        ToastComponent("Error", err.response.data, "error", toast);
       });
   };
 

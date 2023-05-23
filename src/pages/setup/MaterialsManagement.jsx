@@ -264,10 +264,10 @@ const MaterialsManagement = () => {
                         Item Description
                       </Th>
                       <Th h="40px" color="white" fontSize="10px">
-                        Item Sub Category
+                        Item Category
                       </Th>
                       <Th h="40px" color="white" fontSize="10px">
-                        Item Category
+                        Item Sub Category
                       </Th>
                       <Th h="40px" color="white" fontSize="10px">
                         UOM
@@ -292,8 +292,8 @@ const MaterialsManagement = () => {
                         <Td fontSize="xs">{mats.id}</Td>
                         <Td fontSize="xs">{mats.itemCode}</Td>
                         <Td fontSize="xs">{mats.itemDescription}</Td>
-                        <Td fontSize="xs">{mats.subCategoryName}</Td>
                         <Td fontSize="xs">{mats.itemCategoryName}</Td>
+                        <Td fontSize="xs">{mats.subCategoryName}</Td>
                         <Td fontSize="xs">{mats.uom}</Td>
                         <Td fontSize="xs">
                           {mats.bufferLevel.toLocaleString(undefined, {
