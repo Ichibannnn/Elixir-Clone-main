@@ -29,6 +29,7 @@ import {
 import moment from "moment";
 import { ImLocation } from "react-icons/im";
 import { PrintModal, RejectModal, TrackModal } from "./ActionModal";
+import { FaShippingFast } from "react-icons/fa";
 
 export const ApproveMoveOrder = ({
   setCurrentPage,
@@ -47,10 +48,11 @@ export const ApproveMoveOrder = ({
     "Order ID",
     "Customer Code",
     "Customer Name",
-    "Status",
+    // "Status",
     // "Category",
     "Total Quantity Order",
     "Prepared Date",
+    "Rush",
     "Track",
     "Print",
     "Reject",
@@ -198,24 +200,22 @@ export const ApproveMoveOrder = ({
                   <Td fontSize="13px">{order.orderNo}</Td>
                   <Td fontSize="13px">{order.customerCode}</Td>
                   <Td fontSize="13px">{order.customerName}</Td>
-                  <Td fontSize="xs">
-                    {order.rush ? (
-                      <Badge
-                        fontSize="9.5px"
-                        colorScheme="orange"
-                        variant="solid"
-                        className="inputCapital"
-                      >
-                        Rush
-                      </Badge>
-                    ) : (
-                      ""
-                    )}
-                  </Td>
                   {/* <Td fontSize="13px">{order.category}</Td> */}
                   <Td fontSize="13px">{order.quantity}</Td>
                   <Td fontSize="13px">
                     {moment(order.preparedDate).format("MM/DD/yyyy")}
+                  </Td>
+                  <Td fontSize="xs">
+                    {/* {" "} */}
+                    {order.rush ? (
+                      <FaShippingFast
+                        title="Rush Orders"
+                        fontSize="17px"
+                        color="#E53E3E"
+                      />
+                    ) : (
+                      <FaShippingFast fontSize="17px" color="#A0AEC0" />
+                    )}
                   </Td>
                   <Td>
                     <Button

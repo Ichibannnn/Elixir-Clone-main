@@ -28,6 +28,7 @@ import {
 } from "@ajna/pagination";
 import moment from "moment";
 import ReturnModal from "./ReturnModal";
+import { FaShippingFast } from "react-icons/fa";
 
 export const RejectMo = ({
   setCurrentPage,
@@ -57,7 +58,7 @@ export const RejectMo = ({
     "Prepared Date",
     // "Date Needed",
     // "Reject Date",
-    "Status",
+    "Rush",
     "Reject",
   ];
 
@@ -136,7 +137,7 @@ export const RejectMo = ({
                   </Td>
                   {/* <Td>{data.dateNeeded}</Td> */}
                   {/* <Td>{moment(data.rejectedDate).format("MM/DD/yyyy")}</Td> */}
-                  <Td fontSize="xs">
+                  {/* <Td fontSize="xs">
                     {data.rush ? (
                       <Badge
                         fontSize="9.5px"
@@ -148,6 +149,18 @@ export const RejectMo = ({
                       </Badge>
                     ) : (
                       ""
+                    )}
+                  </Td> */}
+                  <Td fontSize="xs">
+                    {/* {" "} */}
+                    {data.rush ? (
+                      <FaShippingFast
+                        title="Rush Orders"
+                        fontSize="17px"
+                        color="#E53E3E"
+                      />
+                    ) : (
+                      <FaShippingFast fontSize="17px" color="#A0AEC0" />
                     )}
                   </Td>
                   <Td>

@@ -144,13 +144,14 @@ const TransactMoveOrderPage = () => {
           />
         </VStack>
         {!status && (
-          <HStack justifyContent="end" mr={10} mt={1}>
+          <HStack justifyContent="end" mr={10} mb={3}>
             <Button
               onClick={() => openTransact()}
               title={!deliveryDate ? "Please select a delivery date first" : ""}
               disabled={!deliveryDate}
               size="sm"
               colorScheme="blue"
+              borderRadius="none"
             >
               Transact
             </Button>

@@ -87,9 +87,9 @@ export const ViewModal = ({ isOpen, onClose, statusBody }) => {
                     <Th color="white" fontSize="xs">
                       Item Description
                     </Th>
-                    <Th color="white" fontSize="xs">
+                    {/* <Th color="white" fontSize="xs">
                       Borrowed Qty
-                    </Th>
+                    </Th> */}
                     <Th color="white" fontSize="xs">
                       Consumed
                     </Th>
@@ -106,12 +106,12 @@ export const ViewModal = ({ isOpen, onClose, statusBody }) => {
                     <Tr key={i}>
                       <Td fontSize="xs">{borrowdetails.itemCode}</Td>
                       <Td fontSize="xs">{borrowdetails.itemDescription}</Td>
-                      <Td fontSize="xs">
+                      {/* <Td fontSize="xs">
                         {borrowdetails.quantity?.toLocaleString(undefined, {
                           maximumFractionDigits: 2,
                           minimumFractionDigits: 2,
                         })}
-                      </Td>
+                      </Td> */}
                       <Td fontSize="xs">
                         {borrowdetails.consume?.toLocaleString(undefined, {
                           maximumFractionDigits: 2,

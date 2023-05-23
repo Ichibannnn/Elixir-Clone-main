@@ -28,7 +28,7 @@ import {
 import PageScrollImport from "../../components/PageScrollImport";
 import { VscCircleLargeFilled } from "react-icons/vsc";
 import { BiRightArrow } from "react-icons/bi";
-import { FaArrowAltCircleRight, FaSort } from "react-icons/fa";
+import { FaArrowAltCircleRight, FaShippingFast, FaSort } from "react-icons/fa";
 import moment from "moment";
 import { CancelApprovedDate, CancelConfirmation } from "./ActionModal";
 import PageScroll from "../../utils/PageScroll";
@@ -241,9 +241,6 @@ export const ListofApprovedDate = ({
                 <Th color="white" fontSize="10px">
                   Customer Name
                 </Th>
-                <Th color="white" fontSize="10px">
-                  Status
-                </Th>
                 {/* <Th color="white" fontSize="10px">
                   Category
                 </Th> */}
@@ -267,6 +264,9 @@ export const ListofApprovedDate = ({
                       <FaSort />
                     </Button>
                   </HStack>
+                </Th>
+                <Th color="white" fontSize="10px">
+                  Rush
                 </Th>
                 <Th color="white" fontSize="10px">
                   Cancel
@@ -298,25 +298,24 @@ export const ListofApprovedDate = ({
                   {/* <Td fontSize="xs">{order.department}</Td> */}
                   <Td fontSize="xs">{order.customerCode}</Td>
                   <Td fontSize="xs">{order.customerName}</Td>
-                  <Td fontSize="xs">
-                    {/* {" "} */}
-                    {order.rush ? (
-                      <Badge
-                        fontSize="9.5px"
-                        colorScheme="orange"
-                        variant="solid"
-                        className="inputCapital"
-                      >
-                        Rush
-                      </Badge>
-                    ) : (
-                      ""
-                    )}
-                  </Td>
+
                   {/* <Td fontSize="xs">{order.category}</Td> */}
                   <Td fontSize="xs">{order.totalOrders}</Td>
                   <Td fontSize="xs">
                     {moment(order.preparedDate).format("MM/DD/yyyy")}
+                  </Td>
+
+                  <Td fontSize="xs">
+                    {/* {" "} */}
+                    {order.rush ? (
+                      <FaShippingFast
+                        title="Rush Orders"
+                        fontSize="17px"
+                        color="#E53E3E"
+                      />
+                    ) : (
+                      <FaShippingFast fontSize="17px" color="#A0AEC0" />
+                    )}
                   </Td>
                   <Td fontSize="11px">
                     <Button

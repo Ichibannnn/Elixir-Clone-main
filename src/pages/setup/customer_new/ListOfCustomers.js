@@ -63,7 +63,7 @@ export const ListOfCustomers = ({
   });
 
   const resultArrayNew = genusCustomers?.result
-    ?.filter((item) => item.scope_order.length) // kukunin nya yung mga customer na my scope for ordering
+    ?.filter((item) => item.scope_order?.length) // kukunin nya yung mga customer na my scope for ordering
     ?.reduce((a, item) => [...a, ...item.scope_order], []) // pagsasamahin nya sa isang array
     ?.map((item) => {
       return {

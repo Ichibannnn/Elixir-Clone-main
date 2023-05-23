@@ -29,6 +29,7 @@ import {
 import moment from "moment";
 import PageScroll from "../../../utils/PageScroll";
 import { ApproveModal, RejectModal, ViewModal } from "./ActionModal";
+import { FaShippingFast } from "react-icons/fa";
 
 export const ForApprovalMoveOrder = ({
   setCurrentPage,
@@ -49,10 +50,10 @@ export const ForApprovalMoveOrder = ({
     "Order ID",
     "Customer Code",
     "Customer Name",
-    "Status",
     // "Category",
     "Total Quantity Order",
     "Prepared Date",
+    "Rush",
     "View",
     "Approve",
     "Reject",
@@ -163,25 +164,22 @@ export const ForApprovalMoveOrder = ({
                   <Td fontSize="xs">{item.orderNo}</Td>
                   <Td fontSize="xs">{item.customercode}</Td>
                   <Td fontSize="xs">{item.customerName}</Td>
-                  <Td fontSize="xs">
-                    {/* {" "} */}
-                    {item.rush ? (
-                      <Badge
-                        fontSize="9.5px"
-                        colorScheme="orange"
-                        variant="solid"
-                        className="inputCapital"
-                      >
-                        Rush
-                      </Badge>
-                    ) : (
-                      ""
-                    )}
-                  </Td>
                   {/* <Td fontSize="xs">{item.category}</Td> */}
                   <Td fontSize="xs">{item.quantity}</Td>
                   <Td fontSize="xs">
                     {moment(item.preparedDate).format("MM/DD/yyyy")}
+                  </Td>
+                  <Td fontSize="xs">
+                    {/* {" "} */}
+                    {item.rush ? (
+                      <FaShippingFast
+                        fontSize="17px"
+                        title="Rush Orders"
+                        color="#E53E3E"
+                      />
+                    ) : (
+                      <FaShippingFast fontSize="17px" color="#A0AEC0" />
+                    )}
                   </Td>
                   {/* <Td>{item.dateNeeded}</Td> */}
                   <Td>

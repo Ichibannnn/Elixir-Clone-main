@@ -18,6 +18,7 @@ import moment from "moment";
 // import { ViewModal } from './Action-Modals-Transact'
 import { decodeUser } from "../../../services/decode-user";
 import { ViewModal } from "./ActionModalTransact";
+import { FaShippingFast } from "react-icons/fa";
 
 const currentUser = decodeUser();
 
@@ -120,10 +121,10 @@ export const ListMoveOrder = ({
           >
             List of Move Order
           </Text>
-          <PageScroll minHeight="770px " maxHeight="790px">
+          <PageScroll minHeight="600px " maxHeight="620px">
             <Table size="sm" variant="simple">
               <Thead bgColor="secondary">
-                <Tr>
+                <Tr h="40px">
                   <Th color="white" fontSize="10px">
                     <Checkbox
                       size="sm"
@@ -151,11 +152,14 @@ export const ListMoveOrder = ({
                     Total Quantity Order
                   </Th>
                   {/* <Th color='white'>Order Date</Th> */}
-                  <Th color="white" fontSize="11px">
+                  {/* <Th color="white" fontSize="11px">
                     Date Needed
-                  </Th>
+                  </Th> */}
                   <Th color="white" fontSize="11px">
                     Prepared Date
+                  </Th>
+                  <Th color="white" fontSize="11px">
+                    Rush
                   </Th>
                   <Th color="white" fontSize="11px">
                     View
@@ -181,17 +185,29 @@ export const ListMoveOrder = ({
                         {i + 1}
                       </Checkbox>
                     </Td>
-                    <Td fontSize="11px">{list.orderNo}</Td>
-                    <Td fontSize="11px">{list.customerCode}</Td>
-                    <Td fontSize="11px">{list.customerName}</Td>
+                    <Td fontSize="xs">{list.orderNo}</Td>
+                    <Td fontSize="xs">{list.customerCode}</Td>
+                    <Td fontSize="xs">{list.customerName}</Td>
                     {/* <Td fontSize="11px">{list.category}</Td> */}
-                    <Td fontSize="11px">{list.totalOrders}</Td>
+                    <Td fontSize="xs">{list.totalOrders}</Td>
                     {/* <Td>{list.orderDate}</Td> */}
-                    <Td fontSize="11px">{list.dateNeeded}</Td>
-                    <Td fontSize="11px">
+                    {/* <Td fontSize="xs">{list.dateNeeded}</Td> */}
+                    <Td fontSize="xs">
                       {moment(list.preparedDate).format("MM/DD/yyyy")}
                     </Td>
-                    <Td fontSize="11px">
+                    <Td fontSize="xs">
+                      {/* {" "} */}
+                      {list.rush ? (
+                        <FaShippingFast
+                          title="Rush Orders"
+                          fontSize="17px"
+                          color="#E53E3E"
+                        />
+                      ) : (
+                        <FaShippingFast fontSize="17px" color="#A0AEC0" />
+                      )}
+                    </Td>
+                    <Td fontSize="xs">
                       <Button
                         size="xs"
                         colorScheme="blue"
