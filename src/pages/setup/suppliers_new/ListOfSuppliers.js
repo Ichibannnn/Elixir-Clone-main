@@ -30,6 +30,7 @@ import Swal from "sweetalert2";
 import request from "../../../services/ApiClient";
 import moment from "moment";
 import { ListOfErrors } from "./ListOfErrors";
+import { decodeUser } from "../../../services/decode-user";
 // import OrdersConfirmation from "./OrdersConfirmation";
 
 export const ListOfSuppliers = ({
@@ -45,6 +46,7 @@ export const ListOfSuppliers = ({
 
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const currentUser = decodeUser();
 
   // ARRAY FOR THE LIST DATA OF SUPPLIERS
   const resultArray = genusSupplier?.result?.suppliers?.map((item) => {
@@ -52,6 +54,10 @@ export const ListOfSuppliers = ({
       supplier_No: item?.id,
       supplierCode: item?.code,
       supplierName: item?.name,
+      dateAdded: moment(new Date()).format("yyyy-MM-DD"),
+      addedBy: currentUser.fullName,
+      modifyDate: moment(new Date()).format("yyyy-MM-DD"),
+      modifyBy: currentUser.fullName,
     };
   });
 
@@ -81,6 +87,10 @@ export const ListOfSuppliers = ({
                   supplier_No: item?.supplier_No,
                   supplierCode: item?.supplierCode,
                   supplierName: item?.supplierName,
+                  dateAdded: item?.dateAdded,
+                  addedBy: item?.addedBy,
+                  modifyDate: item?.modifyDate,
+                  modifyBy: item?.modifyBy,
                 };
               })
             )
@@ -207,20 +217,32 @@ export const ListOfSuppliers = ({
                 >
                   <Thead bg="secondary" position="sticky" top={0}>
                     <Tr h="30px">
-                      <Th w="25%" color="#D6D6D6" fontSize="10px">
+                      <Th color="#D6D6D6" fontSize="10px">
                         ID
                       </Th>
-                      <Th w="25%" color="#D6D6D6" fontSize="10px">
+                      <Th color="#D6D6D6" fontSize="10px">
                         Supplier No.
                       </Th>
                       {/* <Th color="#D6D6D6" fontSize="10px" pl="100px">
                                
                               </Th> */}
-                      <Th w="25%" color="#D6D6D6" fontSize="10px">
+                      <Th color="#D6D6D6" fontSize="10px">
                         Supplier Code
                       </Th>
-                      <Th w="25%" color="#D6D6D6" fontSize="10px">
+                      <Th color="#D6D6D6" fontSize="10px">
                         Supplier Name
+                      </Th>
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Date Added
+                      </Th>
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Added By
+                      </Th>
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Date Modified
+                      </Th>
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Modified By
                       </Th>
                     </Tr>
                   </Thead>
@@ -236,19 +258,19 @@ export const ListOfSuppliers = ({
                       })
                       ?.map((supp, i) => (
                         <Tr key={i}>
-                          <Td w="25%" fontSize="12px">
-                            {i + 1}
-                          </Td>
-                          <Td w="25%" fontSize="12px">
-                            {supp.id}
-                          </Td>
+                          <Td fontSize="12px">{i + 1}</Td>
+                          <Td fontSize="12px">{supp.id}</Td>
                           {/* <Td fontSize="12px" pl="100px"></Td> */}
-                          <Td w="25%" fontSize="12px">
-                            {supp.supplierCode}
+                          <Td fontSize="12px">{supp.supplierCode}</Td>
+                          <Td fontSize="12px">{supp.supplierName}</Td>
+                          <Td fontSize="12px">
+                            {moment(supp.dateAdded).format("yyyy/MM/DD")}
                           </Td>
-                          <Td w="25%" fontSize="12px">
-                            {supp.supplierName}
+                          <Td fontSize="12px">{supp.addedBy}</Td>
+                          <Td fontSize="12px">
+                            {moment(supp.modifyDate).format("yyyy/MM/DD")}
                           </Td>
+                          <Td fontSize="12px">{supp.modifyBy}</Td>
                         </Tr>
                       ))}
                   </Tbody>

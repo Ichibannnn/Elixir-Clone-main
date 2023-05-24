@@ -30,6 +30,7 @@ import Swal from "sweetalert2";
 import request from "../../../services/ApiClient";
 import moment from "moment";
 import { ErrorCustomers } from "./ErrorCustomers";
+import { decodeUser } from "../../../services/decode-user";
 // import OrdersConfirmation from "./OrdersConfirmation";
 
 export const ListOfCustomers = ({
@@ -46,33 +47,61 @@ export const ListOfCustomers = ({
 
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const currentUser = decodeUser();
 
   // ARRAY FOR THE LIST DATA OF SUPPLIERS
-  const resultArray = genusCustomers?.result?.map((item) => {
-    return {
-      customer_No: item?.id,
-      customerCode: item?.account_code,
-      customerName: item?.account_name,
-      // companyCode: item?.company_code,
-      // companyName: item?.company,
-      // departmentCode: item?.department_code,
-      // departmentName: item?.department,
-      // locationCode: item?.location_code,
-      // locationName: item?.location,
-    };
-  });
+  // const resultArray = genusCustomers?.result?.map((item) => {
+  //   return {
+  //     customer_No: item?.id,
+  //     customerCode: item?.account_code,
+  //     customerName: item?.account_name,
+  //     customerType: item?.account_type,
+  //     companyCode: item?.company_code,
+  //     companyName: item?.company,
+  //     departmentCode: item?.department_code,
+  //     departmentName: item?.department,
+  //     locationCode: item?.location_code,
+  //     locationName: item?.location,
+  //     // companyCode: item?.company_code,
+  //     // companyName: item?.company,
+  //     // departmentCode: item?.department_code,
+  //     // departmentName: item?.department,
+  //     // locationCode: item?.location_code,
+  //     // locationName: item?.location,
+  //   };
+  // });
 
   const resultArrayNew = genusCustomers?.result
     ?.filter((item) => item.scope_order?.length) // kukunin nya yung mga customer na my scope for ordering
-    ?.reduce((a, item) => [...a, ...item.scope_order], []) // pagsasamahin nya sa isang array
+    ?.reduce(
+      (a, item) => [
+        ...a,
+        ...item.scope_order.map((customer) => {
+          return {
+            ...customer,
+            customer_type: item.account_type,
+          };
+        }),
+      ],
+      []
+    ) // pagsasamahin nya sa isang array
     ?.map((item) => {
       return {
         customer_No: item.location_id,
         customerCode: item.location_code,
-        customerName: [
-          ...fistoDepartments.result.departments,
-          ...fistoLocations.result.locations,
-        ].find((customer) => customer.code === item.location_code)?.name,
+        customerName:
+          item.customer_type === "online"
+            ? fistoDepartments.result.departments?.find(
+                (customer) => customer.code === item.location_code
+              )?.name
+            : fistoLocations.result.locations?.find(
+                (customer) => customer.code === item.location_code
+              )?.name,
+        customerType: item.customer_type,
+        dateAdded: moment(new Date()).format("yyyy-MM-DD"),
+        addedBy: currentUser.fullName,
+        modifyDate: moment(new Date()).format("yyyy-MM-DD"),
+        modifyBy: currentUser.fullName,
       };
     }) // format
     ?.reduce((a, item) => {
@@ -115,6 +144,17 @@ export const ListOfCustomers = ({
                   customer_No: item?.customer_No,
                   customerCode: item?.customerCode,
                   customerName: item?.customerName,
+                  customerType: item?.customerType,
+                  companyCode: item?.companyCode,
+                  companyName: item?.companyName,
+                  departmentCode: item?.departmentCode,
+                  departmentName: item?.departmentName,
+                  locationCode: item?.locationCode,
+                  locationName: item?.locationName,
+                  dateAdded: item?.dateAdded,
+                  addedBy: item?.addedBy,
+                  modifyDate: item?.modifyDate,
+                  modifyBy: item?.modifyBy,
                   // companyCode: item?.customerCode,
                   // companyName: item?.companyName,
                   // departmentCode: item?.departmentCode,
@@ -240,6 +280,7 @@ export const ListOfCustomers = ({
                   // size="sm"
                   //   width="full"
                   // height="100%"
+                  className="inputUpperCase"
                   border="none"
                   boxShadow="md"
                   bg="gray.200"
@@ -247,24 +288,36 @@ export const ListOfCustomers = ({
                 >
                   <Thead bg="secondary" position="sticky" top={0}>
                     <Tr h="30px">
-                      <Th color="#D6D6D6" fontSize="10px" w="25%">
+                      <Th color="#D6D6D6" fontSize="10px">
                         Line
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px" w="25%">
+                      <Th color="#D6D6D6" fontSize="10px">
                         Customer Id
                       </Th>
                       {/* <Th color="#D6D6D6" fontSize="10px" pl="100px">
                                
                               </Th> */}
-                      <Th color="#D6D6D6" fontSize="10px" w="25%">
+                      <Th color="#D6D6D6" fontSize="10px">
                         Customer Code
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px" w="25%">
+                      <Th color="#D6D6D6" fontSize="10px">
                         Customer Name
                       </Th>
-                      {/* <Th color="#D6D6D6" fontSize="10px">
-                        Company
-                      </Th> */}
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Customer Type
+                      </Th>
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Date Added
+                      </Th>
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Added By
+                      </Th>
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Modified Date
+                      </Th>
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Modified By
+                      </Th>
                     </Tr>
                   </Thead>
                   <Tbody>
@@ -279,19 +332,20 @@ export const ListOfCustomers = ({
                       })
                       ?.map((comp, i) => (
                         <Tr key={i}>
-                          <Td fontSize="12px" w="25%">
-                            {i + 1}
-                          </Td>
-                          <Td fontSize="12px" w="25%">
-                            {comp.id}
-                          </Td>
+                          <Td fontSize="12px">{i + 1}</Td>
+                          <Td fontSize="12px">{comp.id}</Td>
                           {/* <Td fontSize="12px" pl="100px"></Td> */}
-                          <Td fontSize="12px" w="25%">
-                            {comp.customerCode}
+                          <Td fontSize="12px">{comp.customerCode}</Td>
+                          <Td fontSize="12px">{comp.customerName}</Td>
+                          <Td fontSize="12px">{comp.customerType}</Td>
+                          <Td fontSize="12px">
+                            {moment(comp.dateAdded).format("yyyy/MM/DD")}
                           </Td>
-                          <Td fontSize="12px" w="25%">
-                            {comp.customerName}
+                          <Td fontSize="12px">{comp.addedBy}</Td>
+                          <Td fontSize="12px">
+                            {moment(comp.modifyDate).format("yyyy/MM/DD")}
                           </Td>
+                          <Td fontSize="12px">{comp.modifyBy}</Td>
                           {/* <Td fontSize="12px">{comp.companyName}</Td> */}
                         </Tr>
                       ))}
@@ -321,7 +375,7 @@ export const ListOfCustomers = ({
             onOpen={onOpen}
             onClose={onClose}
             resultArrayNew={resultArrayNew}
-            resultArray={resultArray}
+            // resultArray={resultArray}
             errorData={errorData}
             setErrorData={setErrorData}
             isLoading={isLoading}

@@ -23,6 +23,8 @@ export const ActionButton = ({
   remarks,
   setRemarks,
   remarksRef,
+  transactionDate,
+  setTransactionDate,
 }) => {
   const [hideButton, setHideButton] = useState(false);
 
@@ -85,6 +87,8 @@ export const ActionButton = ({
           remarks={remarks}
           setRemarks={setRemarks}
           remarksRef={remarksRef}
+          transactionDate={transactionDate}
+          setTransactionDate={setTransactionDate}
         />
       )}
 

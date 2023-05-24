@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 
 const MainContent = () => {
   return (
-    <Flex w="full" h="100vh" bg="background">
+    <Flex w="full" h="100vh" bg="form">
       <Outlet />
     </Flex>
 

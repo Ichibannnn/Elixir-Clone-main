@@ -58,34 +58,35 @@ const Login = () => {
         toast
       );
     } else {
-      if (login.username === login.password) {
-        // console.log(login.username, "", login.password);
-        onOpen();
-      } else {
-        setLoader(true);
-        var response = await request
-          .post("Login/authenticate", login)
-          .then((response) => {
-            var ciphertext = CryptoJS.AES.encrypt(
-              JSON.stringify(response?.data),
-              saltKey
-            ).toString();
-            sessionStorage.setItem("userToken", ciphertext);
-            setLoader(false);
-            navigate("/");
-            window.location.reload(false);
-            ToastComponent(
-              "Login Success",
-              `Welcome to Elixir ETD! ${response?.data.fullName}`,
-              "success",
-              toast
-            );
-          })
-          .catch((err) => {
-            ToastComponent("Login", err.response.data.message, "error", toast);
-            setLoader(false);
-          });
-      }
+      setLoader(true);
+      var response = await request
+        .post("Login/authenticate", login)
+        .then((response) => {
+          var ciphertext = CryptoJS.AES.encrypt(
+            JSON.stringify(response?.data),
+            saltKey
+          ).toString();
+          sessionStorage.setItem("userToken", ciphertext);
+          setLoader(false);
+          navigate("/");
+          window.location.reload(false);
+          ToastComponent(
+            "Login Success",
+            `Welcome to Elixir ETD! ${response?.data.fullName}`,
+            "success",
+            toast
+          );
+        })
+        .catch((err) => {
+          ToastComponent("Login", err.response.data.message, "error", toast);
+          setLoader(false);
+        });
+      // if (login.username === login.password) {
+      //   // console.log(login.username, "", login.password);
+      //   onOpen();
+      // } else {
+
+      // }
     }
   };
 

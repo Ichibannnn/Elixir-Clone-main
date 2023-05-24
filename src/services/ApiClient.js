@@ -15,7 +15,7 @@ const request = axios.create({
 export default request;
 
 // import axios from "axios";
-
+//
 // export default axios.create ({
 //     baseURL: "https://localhost:7151/api/",
 //     // headers: {
@@ -29,7 +29,7 @@ export default request;
 
 // Set config defaults when creating the instance
 // const request = axios.create({
-//   baseURL: "http://10.10.2.31:85/api/",
+//   baseURL: "http://10.10.2.31:72/api/",
 //   headers: {
 //     "Content-Type": "application/json",
 //     Authorization: "Bearer " + user?.token,

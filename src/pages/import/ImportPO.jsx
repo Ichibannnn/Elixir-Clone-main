@@ -141,43 +141,6 @@ const ImportPO = () => {
       width: "40em",
     }).then((result) => {
       if (result.isConfirmed) {
-        if (resultArray.length > 0) {
-          try {
-            setIsLoading(true);
-            const res = request
-              .post("Import/AddNewPOSummary", resultArray)
-              .then((res) => {
-                ToastComponent("Success!", "PO Imported", "success", toast);
-                setIsLoading(false);
-                setIsDisabled(true);
-                clearExcelFile.current.value = "";
-                setExcelData([]);
-              })
-              .catch((err) => {
-                setIsLoading(false);
-                // ToastComponent("Error", "Import Failed, Please check your fields.", "error", toast)
-                setErrorData(err.response.data);
-                if (err.response.data) {
-                  setErrorOpener(true);
-                  onErrorOpen();
-                }
-              });
-          } catch (err) {
-            ToastComponent(
-              "Error!",
-              "Wrong excel format imported for PO",
-              "error",
-              toast
-            );
-          }
-        } else {
-          ToastComponent(
-            "Error!",
-            "No data provided, please check your import",
-            "error",
-            toast
-          );
-        }
       }
     });
   };

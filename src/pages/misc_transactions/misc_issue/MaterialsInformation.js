@@ -44,6 +44,8 @@ export const MaterialsInformation = ({
   remarks,
   setRemarks,
   remarksRef,
+  transactionDate,
+  setTransactionDate,
 }) => {
   const {
     isOpen: isModal,
@@ -51,19 +53,7 @@ export const MaterialsInformation = ({
     onOpen: openModal,
   } = useDisclosure();
 
-  // const [transactions, setTransactions] = useState([])
-  // const fetchTransactionTypeApi = async () => {
-  //     const res = await apiClient.get(`Transaction/GetAllActiveTransactionName`)
-  //     return res.data
-  // }
-  // const fetchTransactionType = () => {
-  //     fetchTransactionTypeApi().then(res => {
-  //         setTransactions(res)
-  //     })
-  // }
-  // useEffect(() => {
-  //     fetchTransactionType()
-  // }, [])
+  console.log(transactionDate);
 
   const detailHandler = (data) => {
     if (data) {
@@ -239,6 +229,34 @@ export const MaterialsInformation = ({
                   : "Select a customer"}
               </Text>
             </HStack>
+
+            {/* Transaction Date */}
+            <HStack w="full">
+              <Text
+                minW="50%"
+                w="auto"
+                bgColor="secondary"
+                color="white"
+                pl={2}
+                pr={10}
+                py={2.5}
+                fontSize="xs"
+              >
+                Transaction Date:{" "}
+              </Text>
+              <Input
+                type="date"
+                fontSize="xs"
+                pl={2}
+                w="full"
+                border="1px"
+                onChange={(e) => setTransactionDate(e.target.value)}
+                // defaultValue={moment(new Date()).format("yyyy-MM-DD")}
+                max={moment(new Date()).format("yyyy-MM-DD")}
+                bgColor="#fff8dc"
+                py={1.5}
+              />
+            </HStack>
           </VStack>
         </Flex>
         <VStack alignItems="start" w="92%" mx={5}>
@@ -297,6 +315,8 @@ export const MaterialsInformation = ({
           onClose={closeModal}
           remarks={remarks}
           setRemarks={setRemarks}
+          transactionDate={transactionDate}
+          setTransactionDate={setTransactionDate}
         />
       )}
     </Flex>
@@ -306,6 +326,8 @@ export const MaterialsInformation = ({
 export const RawMatsInfoModal = ({
   isOpen,
   onClose,
+  transactionDate,
+  setTransactionDate,
   details,
   setDetails,
   remarks,
@@ -628,6 +650,7 @@ export const RawMatsInfoModal = ({
                   !rawMatsInfo.warehouseId ||
                   !rawMatsInfo.quantity ||
                   !details ||
+                  // !transactionDate ||
                   rawMatsInfo.quantity > availableStock
                 }
                 title={
@@ -664,6 +687,8 @@ export const RawMatsInfoModal = ({
           customerData={customerData}
           remarks={remarks}
           setRemarks={setRemarks}
+          transactionDate={transactionDate}
+          setTransactionDate={setTransactionDate}
         />
       )}
     </>

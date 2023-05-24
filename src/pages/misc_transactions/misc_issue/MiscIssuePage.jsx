@@ -61,6 +61,7 @@ const MiscIssuePage = ({
   });
   const [details, setDetails] = useState("");
   const [remarks, setRemarks] = useState("");
+  const [transactionDate, setTransactionDate] = useState("");
 
   const itemCode = rawMatsInfo.itemCode;
 
@@ -194,6 +195,8 @@ const MiscIssuePage = ({
               remarks={remarks}
               setRemarks={setRemarks}
               remarksRef={remarksRef}
+              transactionDate={transactionDate}
+              setTransactionDate={setTransactionDate}
             />
             {miscData?.length > 0 ? (
               <>
@@ -226,6 +229,8 @@ const MiscIssuePage = ({
                   remarks={remarks}
                   setRemarks={setRemarks}
                   remarksRef={remarksRef}
+                  transactionDate={transactionDate}
+                  setTransactionDate={setTransactionDate}
                 />
               </>
             ) : (

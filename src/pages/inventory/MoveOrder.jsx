@@ -241,8 +241,8 @@ const MoveOrder = () => {
         {buttonChanger ? (
           <SaveButton
             orderId={orderId}
-            // deliveryStatus={deliveryStatus}
-            // batchNumber={batchNumber}
+            deliveryStatus={deliveryStatus}
+            batchNumber={batchNumber}
             orderListData={orderListData}
             fetchMoveOrder={fetchMoveOrder}
             fetchPreparedItems={fetchPreparedItems}

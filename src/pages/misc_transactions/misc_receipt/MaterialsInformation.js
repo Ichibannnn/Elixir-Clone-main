@@ -40,6 +40,8 @@ export const MaterialsInformation = ({
   supplierRef,
   remarks,
   setRemarks,
+  transactionDate,
+  setTransactionDate,
 }) => {
   const {
     isOpen: isModal,
@@ -201,6 +203,34 @@ export const MaterialsInformation = ({
                   : "Please select a supplier"}
               </Text>
             </HStack>
+
+            {/* Transaction Date */}
+            <HStack w="full">
+              <Text
+                minW="50%"
+                w="auto"
+                bgColor="secondary"
+                color="white"
+                pl={2}
+                pr={10}
+                py={2.5}
+                fontSize="xs"
+              >
+                Transaction Date:{" "}
+              </Text>
+              <Input
+                type="date"
+                fontSize="xs"
+                pl={2}
+                w="full"
+                border="1px"
+                onChange={(e) => setTransactionDate(e.target.value)}
+                // defaultValue={moment(new Date()).format("yyyy-MM-DD")}
+                max={moment(new Date()).format("yyyy-MM-DD")}
+                bgColor="#fff8dc"
+                py={1.5}
+              />
+            </HStack>
           </VStack>
         </Flex>
         <VStack alignItems="start" w="full">
@@ -254,6 +284,8 @@ export const MaterialsInformation = ({
           isOpen={isModal}
           onClose={closeModal}
           remarks={remarks}
+          transactionDate={transactionDate}
+          setTransactionDate={setTransactionDate}
         />
       )}
     </Flex>
@@ -274,6 +306,8 @@ export const RawMatsInfoModal = ({
   uoms,
   setSelectorId,
   remarks,
+  transactionDate,
+  setTransactionDate,
 }) => {
   const { isOpen: isAdd, onClose: closeAdd, onOpen: openAdd } = useDisclosure();
   const openAddConfirmation = () => {
@@ -505,6 +539,8 @@ export const RawMatsInfoModal = ({
           supplierRef={supplierRef}
           setSelectorId={setSelectorId}
           remarks={remarks}
+          transactionDate={transactionDate}
+          setTransactionDate={setTransactionDate}
         />
       )}
     </>

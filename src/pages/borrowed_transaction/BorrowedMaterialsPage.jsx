@@ -63,6 +63,7 @@ const BorrowedMaterialsPage = ({
   const itemCode = rawMatsInfo.itemCode;
 
   const [selectorId, setSelectorId] = useState("");
+  const [transactionDate, setTransactionDate] = useState("");
 
   //Customer Fetching
   const fetchCustomers = () => {
@@ -191,6 +192,8 @@ const BorrowedMaterialsPage = ({
               remarks={remarks}
               setRemarks={setRemarks}
               remarksRef={remarksRef}
+              transactionDate={transactionDate}
+              setTransactionDate={setTransactionDate}
             />
             {borrowedData?.length > 0 ? (
               <>
@@ -223,6 +226,8 @@ const BorrowedMaterialsPage = ({
                   remarks={remarks}
                   setRemarks={setRemarks}
                   remarksRef={remarksRef}
+                  transactionDate={transactionDate}
+                  setTransactionDate={setTransactionDate}
                 />
               </>
             ) : (

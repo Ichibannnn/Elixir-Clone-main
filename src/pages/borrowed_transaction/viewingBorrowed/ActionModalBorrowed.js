@@ -79,9 +79,9 @@ export const EditModal = ({
 
           <ModalBody>
             {/* <PageScrollReusable minHeight='50px' maxHeight='350px'> */}
-            <Text textAlign="center" mb={7} fontSize="sm">
+            {/* <Text textAlign="center" mb={7} fontSize="sm">
               Are you sure you want to edit this order?
-            </Text>
+            </Text> */}
             <HStack justifyContent="center" textAlign="start">
               <VStack spacing={4}>
                 {titles.map((title) => (
@@ -133,7 +133,11 @@ export const EditModal = ({
                 px={4}
                 onClick={submitHandler}
                 isLoading={isLoading}
-                disabled={!quantitySubmit || isLoading}
+                disabled={
+                  !quantitySubmit ||
+                  isLoading ||
+                  quantitySubmit > editData?.consumes
+                }
                 // disabled={!quantitySubmit || isLoading || quantitySubmit > editData?.consumes}
                 colorScheme="blue"
               >

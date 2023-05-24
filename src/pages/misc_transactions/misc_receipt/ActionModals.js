@@ -1,57 +1,94 @@
-import React, { useState } from 'react'
-import { Button, ButtonGroup, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure, useToast } from '@chakra-ui/react'
-import { BsPatchQuestionFill } from 'react-icons/bs'
-import request from '../../../services/ApiClient'
-import { decodeUser } from '../../../services/decode-user'
-import { ToastComponent } from '../../../components/Toast'
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Flex,
+  FormLabel,
+  HStack,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Select,
+  Stack,
+  Text,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
+import { BsPatchQuestionFill } from "react-icons/bs";
+import request from "../../../services/ApiClient";
+import { decodeUser } from "../../../services/decode-user";
+import { ToastComponent } from "../../../components/Toast";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import axios from "axios";
+import { Controller, useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
+const currentUser = decodeUser();
 
-const currentUser = decodeUser()
+export const AddConfirmation = ({
+  isOpen,
+  onClose,
+  closeAddModal,
+  details,
+  setDetails,
+  rawMatsInfo,
+  setRawMatsInfo,
+  listDataTempo,
+  setListDataTempo,
+  supplierRef,
+  setSelectorId,
+  remarks,
+  transactionDate,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
 
-export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDetails, rawMatsInfo, setRawMatsInfo,
-  listDataTempo, setListDataTempo, supplierRef, setSelectorId, remarks }) => {
-
-    const [isLoading, setIsLoading] = useState(false)
-
-    const addItemHandler = () => {
-      setIsLoading(true)
-      const addToArray = {
-        "itemCode": rawMatsInfo.itemCode,
-        "itemDescription": rawMatsInfo.itemDescription,
-        "supplier": rawMatsInfo.supplier,
-        "uom": rawMatsInfo.uom,
-        "quantity": rawMatsInfo.quantity,
-        "description": details,
-        "remarks": remarks
-      }
-      setListDataTempo(current => [...current, addToArray])
-      setRawMatsInfo({
-        itemCode: '',
-        itemDescription: '',
-        supplier: rawMatsInfo.supplier,
-        uom: '',
-        quantity: ''
-      })
-      setSelectorId('')
-      setIsLoading(false)
-      onClose()
-      closeAddModal()
-    }
-
+  const addItemHandler = () => {
+    setIsLoading(true);
+    const addToArray = {
+      itemCode: rawMatsInfo.itemCode,
+      itemDescription: rawMatsInfo.itemDescription,
+      supplier: rawMatsInfo.supplier,
+      uom: rawMatsInfo.uom,
+      quantity: rawMatsInfo.quantity,
+      description: details,
+      remarks: remarks,
+      transactionDate: transactionDate,
+    };
+    setListDataTempo((current) => [...current, addToArray]);
+    setRawMatsInfo({
+      itemCode: "",
+      itemDescription: "",
+      supplier: rawMatsInfo.supplier,
+      uom: "",
+      quantity: "",
+    });
+    setSelectorId("");
+    setIsLoading(false);
+    onClose();
+    closeAddModal();
+  };
 
   return (
-    <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
+    <Modal isOpen={isOpen} onClose={() => {}} isCentered size="xl">
       <ModalOverlay />
       <ModalContent pt={10} pb={5}>
         <ModalHeader>
-          <Flex justifyContent='center'>
-            <BsPatchQuestionFill fontSize='50px' />
+          <Flex justifyContent="center">
+            <BsPatchQuestionFill fontSize="50px" />
           </Flex>
         </ModalHeader>
         <ModalCloseButton onClick={onClose} />
 
         <ModalBody mb={5}>
-          <Text textAlign='center' fontSize='lg'>Are you sure you want to add this information?</Text>
+          <Text textAlign="center" fontSize="lg">
+            Are you sure you want to add this information?
+          </Text>
         </ModalBody>
 
         <ModalFooter justifyContent="center">
@@ -59,50 +96,218 @@ export const AddConfirmation = ({ isOpen, onClose, closeAddModal, details, setDe
             <Button
               onClick={addItemHandler}
               isLoading={isLoading}
-              colorScheme='blue'
+              colorScheme="blue"
             >
               Yes
             </Button>
-            <Button onClick={onClose} isLoading={isLoading} color="black" variant="outline">No</Button>
+            <Button
+              onClick={onClose}
+              isLoading={isLoading}
+              color="black"
+              variant="outline"
+            >
+              No
+            </Button>
           </ButtonGroup>
         </ModalFooter>
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};
 
-export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTempo, supplierData, totalQuantity, supplierRef, setDetails, setRawMatsInfo,
-  remarks, setRemarks, remarksRef }) => {
+const schema = yup.object().shape({
+  formData: yup.object().shape({
+    orderId: yup.string(),
+    companyId: yup.number().required().typeError("Company Name is required"),
+    departmentId: yup
+      .number()
+      .required()
+      .typeError("Department Category is required"),
+    locationId: yup.number().required().typeError("Location Name is required"),
+    accountTitles: yup.string().required("Account Name is required"),
+  }),
+});
 
-  const [isLoading, setIsLoading] = useState(false)
-  const toast = useToast()
+export const SaveConfirmation = ({
+  isOpen,
+  onClose,
+  listDataTempo,
+  setListDataTempo,
+  supplierData,
+  totalQuantity,
+  supplierRef,
+  setDetails,
+  setRawMatsInfo,
+  remarks,
+  setRemarks,
+  remarksRef,
+  transactionDate,
+  setTransationDate,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
+  const [company, setCompany] = useState([]);
+  const [department, setDepartment] = useState([]);
+  const [location, setLocation] = useState([]);
+  const [account, setAccount] = useState([]);
 
-  const saveSubmitHandler = () => {
+  // // FETCH COMPANY API
+  const fetchCompanyApi = async () => {
+    try {
+      const res = await axios.get(
+        "http://10.10.2.76:8000/api/dropdown/company?api_for=vladimir&status=1&paginate=0",
+        {
+          headers: {
+            Authorization: "Bearer " + process.env.REACT_APP_FISTO_TOKEN,
+          },
+        }
+      );
+      setCompany(res.data.result.companies);
+      // console.log(res.data.result.companies);
+    } catch (error) {}
+  };
 
+  // // FETCH DEPT API
+  const fetchDepartmentApi = async (id = "") => {
+    try {
+      const res = await axios.get(
+        "http://10.10.2.76:8000/api/dropdown/department?status=1&paginate=0&api_for=vladimir&company_id=" +
+          id,
+        {
+          headers: {
+            Authorization: "Bearer " + process.env.REACT_APP_FISTO_TOKEN,
+          },
+        }
+      );
+      setDepartment(res.data.result.departments);
+      console.log(res.data.result.departments);
+    } catch (error) {}
+  };
+
+  // // FETCH Loc API
+  const fetchLocationApi = async (id = "") => {
+    try {
+      const res = await axios.get(
+        "http://10.10.2.76:8000/api/dropdown/location?status=1&paginate=0&api_for=vladimir&department_id=" +
+          id,
+        {
+          headers: {
+            Authorization: "Bearer " + process.env.REACT_APP_FISTO_TOKEN,
+          },
+        }
+      );
+      setLocation(res.data.result.locations);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchCompanyApi();
+  }, []);
+
+  // FETCH ACcount API
+  const fetchAccountApi = async () => {
+    try {
+      const res = await axios.get(
+        "http://10.10.2.76:8000/api/dropdown/account-title?status=1&paginate=0",
+        {
+          headers: {
+            Authorization: "Bearer " + process.env.REACT_APP_FISTO_TOKEN,
+          },
+        }
+      );
+      setAccount(res.data.result.account_titles);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchAccountApi();
+  }, []);
+
+  // useEffect(() => {
+  //   fetchCompanyApi();
+  //   fetchDepartmentApi();
+  //   fetchLocationApi();
+  //   fetchAccountApi();
+
+  //   return () => {
+  //     setCompany([]);
+  //     setDepartment([]);
+  //     setLocation([]);
+  //     setAccount([]);
+  //     // setIsCoaSet(false);
+  //   };
+  // }, []);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    setValue,
+    reset,
+    watch,
+    control,
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: "onChange",
+    defaultValues: {
+      formData: {
+        companyId: "",
+        departmentId: "",
+        locationId: "",
+        // companyId : company?.find((x) => x.name === customerData?.companyName)
+        // ?.id
+        // departmentId: department?.find(
+        //   (x) => x.name === customerData?.departmentName
+        // )?.id,
+        // locationId: location?.find((x) => x.name === customerData?.locationName)
+        //   ?.id,
+        accountTitles: "",
+        addedBy: currentUser.userName,
+      },
+    },
+  });
+
+  const saveSubmitHandler = (data) => {
     const firstSubmit = {
       supplierCode: supplierData.supplierCode,
       supplier: supplierData.supplierName,
       totalQuantity: totalQuantity,
       details: listDataTempo[0]?.description,
       remarks: listDataTempo[0]?.remarks,
-      preparedBy: currentUser?.userName
-    }
+      transactionDate: listDataTempo[0]?.transactionDate,
+      preparedBy: currentUser?.userName,
+      transactionDate: listDataTempo[0]?.transactionDate,
+      companyCode: company?.find((x) => x.id === data.formData.companyId)?.code,
+      companyName: company?.find((x) => x.id === data.formData.companyId)?.name,
+      departmentCode: department?.find(
+        (x) => x.id === data.formData.departmentId
+      )?.code,
+      departmentName: department?.find(
+        (x) => x.id === data.formData.departmentId
+      )?.name,
+      locationCode: location?.find((x) => x.id === data.formData.locationId)
+        ?.code,
+      locationName: location?.find((x) => x.id === data.formData.locationId)
+        ?.name,
+      accountTitles: data.formData.accountTitles,
+      addedBy: currentUser.fullName,
+    };
 
-    console.log(firstSubmit)
-
+    console.log(firstSubmit);
 
     if (totalQuantity > 0) {
-       setIsLoading(true)
+      setIsLoading(true);
       try {
-        const res = request.post(`Miscellaneous/AddNewMiscellaneousReceipt`, firstSubmit)
-          .then(res => {
-            const id = res.data.id
+        const res = request
+          .post(`Miscellaneous/AddNewMiscellaneousReceipt`, firstSubmit)
+          .then((res) => {
+            const id = res.data.id;
 
-            console.log(res)
+            console.log(res);
 
             //SECOND POST IF MAY ID
             if (id) {
-              const submitArray = listDataTempo.map(item => {
+              const submitArray = listDataTempo.map((item) => {
                 return {
                   miscellaneousReceiptId: id,
                   itemCode: item.itemCode,
@@ -113,124 +318,354 @@ export const SaveConfirmation = ({ isOpen, onClose, listDataTempo, setListDataTe
                   actualGood: item.quantity,
                   details: item.description,
                   remarks: item.remarks,
-                  receivedBy: currentUser.userName
-                }
-                
-              })
+                  transactionDate: item.transactionDate,
+                  receivedBy: currentUser.userName,
+                };
+              });
               try {
-                const res = request.post(`Miscellaneous/AddNewMiscellaneousReceiptInWarehouse`, submitArray)
-                ToastComponent("Success", "Information saved", "success", toast)
-                setListDataTempo([])
-                supplierRef.current.value = ''
-                remarksRef.current.value = ''
-                setDetails('')
+                const res = request.post(
+                  `Miscellaneous/AddNewMiscellaneousReceiptInWarehouse`,
+                  submitArray
+                );
+                ToastComponent(
+                  "Success",
+                  "Information saved",
+                  "success",
+                  toast
+                );
+                setListDataTempo([]);
+                supplierRef.current.value = "";
+                remarksRef.current.value = "";
+                setTransationDate("");
+                setDetails("");
+                setRemarks("");
                 setRawMatsInfo({
-                  itemCode: '',
-                  itemDescription: '',
-                  supplier: '',
-                  uom: '',
+                  itemCode: "",
+                  itemDescription: "",
+                  supplier: "",
+                  uom: "",
                   // expirationDate: '',
-                  quantity: ''
-                })
-                setIsLoading(false)
-                onClose()
+                  quantity: "",
+                });
+                setIsLoading(false);
+                onClose();
               } catch (error) {
-                console.log(error)
+                console.log(error);
               }
-              console.log(submitArray)
+              console.log(submitArray);
             }
-
           })
-          .catch(err => {
-            ToastComponent("Error", "Information was not saved", "error", toast)
-            setIsLoading(false)
-          })
-      } catch (error) {
-      }
+          .catch((err) => {
+            ToastComponent(
+              "Error",
+              "Information was not saved",
+              "error",
+              toast
+            );
+            setIsLoading(false);
+          });
+      } catch (error) {}
     }
-  }
+  };
 
   return (
-    <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
-      <ModalContent color='black' pt={10} pb={5}>
-        <ModalHeader>
-          <Flex justifyContent='center'>
-            <BsPatchQuestionFill fontSize='50px' />
-          </Flex>
-        </ModalHeader>
-        <ModalCloseButton color="black" onClick={onClose} />
+    <Modal isOpen={isOpen} onClose={() => {}} isCentered size="2xl">
+      <ModalOverlay />
+      <form onSubmit={handleSubmit(saveSubmitHandler)}>
+        <ModalContent>
+          <ModalHeader textAlign="center">Charge Of Accounts</ModalHeader>
+          <ModalCloseButton onClick={onClose} />
+          <ModalBody>
+            <Stack spacing={2} p={6}>
+              <Box>
+                <FormLabel fontSize="sm">Company</FormLabel>
 
-        <ModalBody mb={5}>
-          <Text textAlign='center' fontSize='lg'>Are you sure you want to save this information?</Text>
-        </ModalBody>
+                <HStack w="full">
+                  <Controller
+                    control={control}
+                    name="formData.companyId"
+                    defaultValue={
+                      company?.find((x) => x.name === supplierData?.companyName)
+                        ?.id
+                    }
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        value={field.value || ""}
+                        placeholder="Select Company"
+                        fontSize="sm"
+                        onChange={(e) => {
+                          field.onChange(e);
+                          setValue("formData.departmentId", "");
+                          setValue("formData.locationId", "");
+                          fetchDepartmentApi(e.target.value);
+                        }}
+                      >
+                        {company?.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.code} - {item.name}
+                          </option>
+                        ))}
+                      </Select>
+                    )}
+                  />
+                </HStack>
 
-        <ModalFooter justifyContent="center">
-          <ButtonGroup>
-            <Button onClick={saveSubmitHandler} isLoading={isLoading} disabled={isLoading} colorScheme='blue'>Yes</Button>
-            <Button onClick={onClose} isLoading={isLoading} color="black" variant="outline">No</Button>
-          </ButtonGroup>
-        </ModalFooter>
-      </ModalContent>
+                <Text color="red" fontSize="xs">
+                  {errors.formData?.companyId?.message}
+                </Text>
+              </Box>
+
+              <Box>
+                <FormLabel fontSize="sm">Department</FormLabel>
+                <Controller
+                  control={control}
+                  name="formData.departmentId"
+                  defaultValue={
+                    department?.find(
+                      (x) => x.name === supplierData?.departmentName
+                    )?.id
+                  }
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      value={field.value || ""}
+                      placeholder="Select Department"
+                      fontSize="sm"
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setValue("formData.locationId", "");
+                        fetchLocationApi(e.target.value);
+                      }}
+                    >
+                      {department?.map((dept) => (
+                        <option key={dept.id} value={dept.id}>
+                          {dept.code} - {dept.name}
+                        </option>
+                      ))}
+                    </Select>
+                  )}
+                />
+
+                <Text color="red" fontSize="xs">
+                  {errors.formData?.departmentId?.message}
+                </Text>
+              </Box>
+
+              <Box>
+                <FormLabel fontSize="sm">Location</FormLabel>
+                <Controller
+                  control={control}
+                  name="formData.locationId"
+                  defaultValue={
+                    location?.find((x) => x.name === supplierData?.locationName)
+                      ?.id
+                  }
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      value={field.value || ""}
+                      placeholder="Select Location"
+                      fontSize="sm"
+                    >
+                      {location?.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.code} - {item.name}
+                        </option>
+                      ))}
+                    </Select>
+                  )}
+                />
+
+                <Text color="red" fontSize="xs">
+                  {errors.formData?.locationId?.message}
+                </Text>
+              </Box>
+              <Box>
+                <FormLabel fontSize="sm">Account Title</FormLabel>
+                <Controller
+                  control={control}
+                  name="formData.accountTitles"
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      value={field.value || ""}
+                      placeholder="Select Account"
+                      fontSize="sm"
+                      bgColor="#fff8dc"
+                      isSearchable
+                    >
+                      {account?.map((item) => (
+                        <option key={item.id} value={item.name}>
+                          {item.name}
+                        </option>
+                      ))}
+                    </Select>
+                  )}
+                />
+                <Text color="red" fontSize="xs">
+                  {errors.formData?.accountTitles?.message}
+                </Text>
+              </Box>
+            </Stack>
+          </ModalBody>
+          <ModalFooter gap={2}>
+            <Button
+              size="sm"
+              colorScheme="blue"
+              type="submit"
+              isLoading={isLoading}
+              disabled={
+                isLoading ||
+                !isValid ||
+                !watch("formData.accountTitles") ||
+                !watch("formData.companyId") ||
+                !watch("formData.departmentId") ||
+                !watch("formData.locationId")
+              }
+            >
+              Submit
+            </Button>
+            <Button
+              size="sm"
+              // colorScheme="red"
+              onClick={onClose}
+              isLoading={isLoading}
+              disabled={isLoading}
+            >
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </form>
     </Modal>
-  )
-}
+    // <Modal isOpen={isOpen} onClose={() => {}} isCentered size="xl">
+    //   <ModalContent color="black" pt={10} pb={5}>
+    //     <ModalHeader>
+    //       <Flex justifyContent="center">
+    //         <BsPatchQuestionFill fontSize="50px" />
+    //       </Flex>
+    //     </ModalHeader>
+    //     <ModalCloseButton color="black" onClick={onClose} />
 
+    //     <ModalBody mb={5}>
+    //       <Text textAlign="center" fontSize="lg">
+    //         Are you sure you want to save this information?
+    //       </Text>
+    //     </ModalBody>
 
-export const CancelConfirmation = ({ isOpen, onClose, selectorId, rowIndex, setListDataTempo, listDataTempo }) => {
+    //     <ModalFooter justifyContent="center">
+    //       <ButtonGroup>
+    //         <Button
+    //           onClick={saveSubmitHandler}
+    //           isLoading={isLoading}
+    //           disabled={isLoading}
+    //           colorScheme="blue"
+    //         >
+    //           Yes
+    //         </Button>
+    //         <Button
+    //           onClick={onClose}
+    //           isLoading={isLoading}
+    //           color="black"
+    //           variant="outline"
+    //         >
+    //           No
+    //         </Button>
+    //       </ButtonGroup>
+    //     </ModalFooter>
+    //   </ModalContent>
+    // </Modal>
+  );
+};
 
-  const [isLoading, setIsLoading] = useState(false)
+export const CancelConfirmation = ({
+  isOpen,
+  onClose,
+  selectorId,
+  rowIndex,
+  setListDataTempo,
+  listDataTempo,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
 
   const cancelSubmitHandler = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     if (listDataTempo.length > 0) {
-      const newArray = [...listDataTempo]
+      const newArray = [...listDataTempo];
       if (rowIndex !== -1) {
-        newArray.splice(rowIndex, 1)
-        setListDataTempo(newArray)
-        onClose()
+        newArray.splice(rowIndex, 1);
+        setListDataTempo(newArray);
+        onClose();
       }
     }
-  }
+  };
 
   return (
-    <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
+    <Modal isOpen={isOpen} onClose={() => {}} isCentered size="xl">
       <ModalOverlay />
-      <ModalContent bgColor='secondary' color='white' pt={10} pb={5}>
+      <ModalContent bgColor="secondary" color="white" pt={10} pb={5}>
         <ModalHeader>
-          <Flex justifyContent='center'>
-            <BsPatchQuestionFill fontSize='50px' />
+          <Flex justifyContent="center">
+            <BsPatchQuestionFill fontSize="50px" />
           </Flex>
         </ModalHeader>
         <ModalCloseButton onClick={onClose} />
 
         <ModalBody mb={5}>
-          <Text textAlign='center' fontSize='lg'>Are you sure you want to cancel this information?</Text>
+          <Text textAlign="center" fontSize="lg">
+            Are you sure you want to cancel this information?
+          </Text>
         </ModalBody>
 
         <ModalFooter>
           <ButtonGroup>
-            <Button onClick={cancelSubmitHandler} isLoading={isLoading} disabled={isLoading} colorScheme='blue'>Yes</Button>
-            <Button onClick={onClose} isLoading={isLoading} colorScheme='blackAlpha'>No</Button>
+            <Button
+              onClick={cancelSubmitHandler}
+              isLoading={isLoading}
+              disabled={isLoading}
+              colorScheme="blue"
+            >
+              Yes
+            </Button>
+            <Button
+              onClick={onClose}
+              isLoading={isLoading}
+              colorScheme="blackAlpha"
+            >
+              No
+            </Button>
           </ButtonGroup>
         </ModalFooter>
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};
 
 // Frontend Edit Process
 
-export const EditModal = ({ isOpen, onClose, selectorId, rowIndex, setListDataTempo, listDataTempo }) => {
-
-  const [isLoading, setIsLoading] = useState(false)
-  const { isOpen: isEditConfirm, onClose: closeEditConfirm, onOpen: openEditConfirm } = useDisclosure()
+export const EditModal = ({
+  isOpen,
+  onClose,
+  selectorId,
+  rowIndex,
+  setListDataTempo,
+  listDataTempo,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const {
+    isOpen: isEditConfirm,
+    onClose: closeEditConfirm,
+    onOpen: openEditConfirm,
+  } = useDisclosure();
 
   const editHandler = () => {
-    openEditConfirm()
-  }
+    openEditConfirm();
+  };
 
   return (
-    <Modal isOpen={isOpen} onClose={() => { }} isCentered size='4xl'>
+    <Modal isOpen={isOpen} onClose={() => {}} isCentered size="4xl">
       <ModalContent>
         <ModalHeader></ModalHeader>
         <ModalCloseButton onClick={onClose} />
@@ -239,46 +674,65 @@ export const EditModal = ({ isOpen, onClose, selectorId, rowIndex, setListDataTe
 
         <ModalFooter>
           <ButtonGroup>
-            <Button onClick={editHandler} isLoading={isLoading} disabled={isLoading} colorScheme='blue'>Update</Button>
-            <Button onClick={onClose} isLoading={isLoading} colorScheme='blackAlpha'>No</Button>
+            <Button
+              onClick={editHandler}
+              isLoading={isLoading}
+              disabled={isLoading}
+              colorScheme="blue"
+            >
+              Update
+            </Button>
+            <Button
+              onClick={onClose}
+              isLoading={isLoading}
+              colorScheme="blackAlpha"
+            >
+              No
+            </Button>
           </ButtonGroup>
         </ModalFooter>
       </ModalContent>
-      {
-        isEditConfirm && (
-          <EditConfirmation
-            isOpen={isEditConfirm}
-            onClose={closeEditConfirm}
-            closeEditModal={onClose}
-            selectorId={selectorId}
-            rowIndex={rowIndex}
-            setListDataTempo={setListDataTempo}
-            listDataTempo={listDataTempo}
-          />
-        )
-      }
+      {isEditConfirm && (
+        <EditConfirmation
+          isOpen={isEditConfirm}
+          onClose={closeEditConfirm}
+          closeEditModal={onClose}
+          selectorId={selectorId}
+          rowIndex={rowIndex}
+          setListDataTempo={setListDataTempo}
+          listDataTempo={listDataTempo}
+        />
+      )}
     </Modal>
-  )
-}
+  );
+};
 
-export const EditConfirmation = ({ isOpen, onClose, selectorId, rowIndex, setListDataTempo, listDataTempo }) => {
+export const EditConfirmation = ({
+  isOpen,
+  onClose,
+  selectorId,
+  rowIndex,
+  setListDataTempo,
+  listDataTempo,
+}) => {
   return (
-    <Modal isOpen={isOpen} onClose={() => { }} isCentered size='xl'>
-      <ModalContent bgColor='secondary' color='white' pt={10} pb={5}>
+    <Modal isOpen={isOpen} onClose={() => {}} isCentered size="xl">
+      <ModalContent bgColor="secondary" color="white" pt={10} pb={5}>
         <ModalHeader>
-          <Flex justifyContent='center'>
-            <BsPatchQuestionFill fontSize='50px' />
+          <Flex justifyContent="center">
+            <BsPatchQuestionFill fontSize="50px" />
           </Flex>
         </ModalHeader>
         <ModalCloseButton onClick={onClose} />
 
         <ModalBody mb={5}>
-          <Text textAlign='center' fontSize='lg'>Are you sure you want to update this information?</Text>
+          <Text textAlign="center" fontSize="lg">
+            Are you sure you want to update this information?
+          </Text>
         </ModalBody>
 
-        <ModalFooter>
-        </ModalFooter>
+        <ModalFooter></ModalFooter>
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};

@@ -27,6 +27,7 @@ import PageScroll from "../../../utils/PageScroll";
 import moment from "moment";
 import { EditModal } from "./ActionModalBorrowed";
 import { ToastComponent } from "../../../components/Toast";
+import Swal from "sweetalert2";
 
 export const ViewModal = ({
   isOpen,
@@ -116,31 +117,47 @@ export const ViewModal = ({
   };
 
   const submitBody = () => {
-    try {
-      if (statusBody.id) {
-        const res = request
-          .put(`Borrowed/SaveReturnedQuantity`, [{ id: statusBody.id }])
-          .then((res) => {
-            fetchBorrowed();
-            ToastComponent(
-              "Success",
-              "Returned materials was saved",
-              "success",
-              toast
-            );
-            onClose();
-          })
-          .catch((err) => {
-            ToastComponent(
-              "Error",
-              "Returned materials was not saved",
-              "error",
-              toast
-            );
-            setIsLoading(false);
-          });
+    Swal.fire({
+      title: "Confirmation!",
+      text: "Are you sure you want to save this information?",
+      icon: "info",
+      color: "black",
+      background: "white",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#CBD1D8",
+      confirmButtonText: "Yes",
+      heightAuto: false,
+      width: "40em",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        try {
+          if (statusBody.id) {
+            const res = request
+              .put(`Borrowed/SaveReturnedQuantity`, [{ id: statusBody.id }])
+              .then((res) => {
+                fetchBorrowed();
+                ToastComponent(
+                  "Success",
+                  "Returned materials was saved",
+                  "success",
+                  toast
+                );
+                onClose();
+              })
+              .catch((err) => {
+                ToastComponent(
+                  "Error",
+                  "Returned materials was not saved",
+                  "error",
+                  toast
+                );
+                setIsLoading(false);
+              });
+          }
+        } catch (error) {}
       }
-    } catch (error) {}
+    });
   };
 
   return (
