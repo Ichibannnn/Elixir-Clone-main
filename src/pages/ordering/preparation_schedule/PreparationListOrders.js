@@ -45,6 +45,8 @@ export const PreparationListOrders = ({
   fetchOrders,
   fetchCustomerOrders,
   lengthIndicator,
+  setQty,
+  qty,
 }) => {
   const [editData, setEditData] = useState({
     transactId: "",
@@ -53,6 +55,7 @@ export const PreparationListOrders = ({
     itemDescription: "",
     uom: "",
     quantiyOrdered: "",
+    // stockOnHand: "",
   });
   const [cancelId, setCancelId] = useState("");
   const [checkedItems, setCheckedItems] = useState([]);
@@ -89,6 +92,7 @@ export const PreparationListOrders = ({
     itemDescription,
     uom,
     quantityOrder,
+    // stockOnHand,
   }) => {
     if (
       id &&
@@ -97,6 +101,7 @@ export const PreparationListOrders = ({
       itemDescription &&
       uom &&
       quantityOrder
+      // stockOnHand
     ) {
       setEditData({
         transactId: id,
@@ -104,9 +109,11 @@ export const PreparationListOrders = ({
         itemCode: itemCode,
         itemDescription: itemDescription,
         uom: uom,
-        quantiy: quantityOrder,
+        quantity: quantityOrder,
+        // stockOnHand: stockOnHand,
       });
       openEdit();
+      console.log(editData);
     } else {
       setEditData({
         transactId: "",
@@ -115,6 +122,7 @@ export const PreparationListOrders = ({
         itemDescription: "",
         uom: "",
         quantiy: "",
+        // stockOnHand: "",
       });
     }
   };
@@ -473,6 +481,7 @@ export const PreparationListOrders = ({
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
           fetchOrders={fetchOrders}
+          qty={qty}
         />
       )}
 

@@ -55,7 +55,7 @@ export const ViewModal = ({ isOpen, onClose, statusBody }) => {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader mt={5} fontSize="md">
-          <Flex fontSize="sm" justifyContent="center">
+          <Flex fontSize="lg" justifyContent="center" mb={5}>
             <Text>Issue Details</Text>
           </Flex>
           <Flex justifyContent="space-between">
@@ -82,6 +82,21 @@ export const ViewModal = ({ isOpen, onClose, statusBody }) => {
               </Text>
               <Text fontSize="xs">
                 Transact By: {issuesDetailsData[0]?.preparedBy}
+              </Text>
+            </VStack>
+
+            <VStack alignItems="start" spacing={-1}>
+              <Text fontSize="xs">
+                Company: {issuesDetailsData[0]?.companyName}
+              </Text>
+              <Text fontSize="xs">
+                Department: {issuesDetailsData[0]?.departmentName}
+              </Text>
+              <Text fontSize="xs">
+                Location: {issuesDetailsData[0]?.locationName}
+              </Text>
+              <Text fontSize="xs">
+                Account Title: {issuesDetailsData[0]?.accountTitles}
               </Text>
             </VStack>
           </Flex>

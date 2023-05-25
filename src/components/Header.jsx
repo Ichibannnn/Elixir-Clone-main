@@ -73,22 +73,22 @@ const Header = ({ setSidebarHandler }) => {
             </MenuItem>
           </MenuList>
         </Menu>
-        <Box>
-          <Text fontSize="9px" fontWeight="semibold" color="white">
+        <Box mt={2}>
+          {/* <Text fontSize="9px" fontWeight="semibold" color="white">
             Fresh Morning!,
-          </Text>
+          </Text> */}
           <Text fontSize="9px" fontWeight="semibold" color="white">
             {`${user && user?.fullName}`}
           </Text>
-          {/* <Badge
+          <Badge
             mb={3}
             textAlign="left"
             fontSize="9px"
             colorScheme="green"
-            className="inputLowerCase"
+            // className="inputLowerCase"
           >
-            {`${user && user?.userName}`}
-          </Badge> */}
+            {`${user && user?.roleName}`}
+          </Badge>
           {/* <Text fontSize="sm">UI Engineer</Text> */}
         </Box>
       </Flex>

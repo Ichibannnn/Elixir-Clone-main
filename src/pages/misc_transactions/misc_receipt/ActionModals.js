@@ -275,7 +275,7 @@ export const SaveConfirmation = ({
       details: listDataTempo[0]?.description,
       remarks: listDataTempo[0]?.remarks,
       transactionDate: listDataTempo[0]?.transactionDate,
-      preparedBy: currentUser?.userName,
+      preparedBy: currentUser?.fullName,
       transactionDate: listDataTempo[0]?.transactionDate,
       companyCode: company?.find((x) => x.id === data.formData.companyId)?.code,
       companyName: company?.find((x) => x.id === data.formData.companyId)?.name,

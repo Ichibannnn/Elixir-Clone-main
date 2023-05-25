@@ -161,11 +161,15 @@ export const ViewListIssue = () => {
                   Total Quantity
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
+                  Prepared Date
+                </Th>
+                <Th h="40px" color="white" fontSize="10px">
                   Transaction Date
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
                   Transacted By
                 </Th>
+
                 <Th h="40px" color="white" fontSize="10px">
                   View
                 </Th>
@@ -179,6 +183,7 @@ export const ViewListIssue = () => {
                   <Td fontSize="xs">{issue.customer}</Td>
                   <Td fontSize="xs">{issue.totalQuantity}</Td>
                   <Td fontSize="xs">{issue.preparedDate}</Td>
+                  <Td fontSize="xs">{issue.transactionDate}</Td>
                   <Td fontSize="xs">{issue.preparedBy}</Td>
                   <Td fontSize="xs">
                     <Button

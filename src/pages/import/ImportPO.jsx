@@ -33,6 +33,7 @@ import moment from "moment/moment";
 import PageScrollImport from "../../components/PageScrollImport";
 import ErrorList from "./ErrorList";
 import Swal from "sweetalert2";
+import PageScroll from "../../utils/PageScroll";
 
 const currentUser = decodeUser();
 
@@ -141,6 +142,45 @@ const ImportPO = () => {
       width: "40em",
     }).then((result) => {
       if (result.isConfirmed) {
+        if (result.isConfirmed) {
+          if (resultArray.length > 0) {
+            try {
+              setIsLoading(true);
+              const res = request
+                .post("Import/AddNewPOSummary", resultArray)
+                .then((res) => {
+                  ToastComponent("Success!", "PO Imported", "success", toast);
+                  setIsLoading(false);
+                  setIsDisabled(true);
+                  clearExcelFile.current.value = "";
+                  setExcelData([]);
+                })
+                .catch((err) => {
+                  setIsLoading(false);
+                  // ToastComponent("Error", "Import Failed, Please check your fields.", "error", toast)
+                  setErrorData(err.response.data);
+                  if (err.response.data) {
+                    setErrorOpener(true);
+                    onErrorOpen();
+                  }
+                });
+            } catch (err) {
+              ToastComponent(
+                "Error!",
+                "Wrong excel format imported for PO",
+                "error",
+                toast
+              );
+            }
+          } else {
+            ToastComponent(
+              "Error!",
+              "No data provided, please check your import",
+              "error",
+              toast
+            );
+          }
+        }
       }
     });
   };
@@ -233,10 +273,13 @@ const ImportPO = () => {
         justifyContent="space-between"
       >
         <Flex w="full" h="full">
-          <PageScrollImport maxHeight="470px">
+          <PageScroll maxHeight="670px">
             <Table variant="striped" size="sm">
               <Thead bg="primary" position="sticky" zIndex="0" top={0}>
                 <Tr>
+                  <Th h="40px" color="white" fontSize="10px">
+                    Line
+                  </Th>
                   <Th h="40px" color="white" fontSize="10px">
                     PR Number
                   </Th>
@@ -278,6 +321,7 @@ const ImportPO = () => {
               <Tbody>
                 {resultArray?.map((eData, i) => (
                   <Tr key={i}>
+                    <Td fontSize="xs">{i + 1}</Td>
                     <Td fontSize="xs">
                       {eData.pR_Number ? (
                         eData.pR_Number
@@ -419,7 +463,7 @@ const ImportPO = () => {
                 ))}
               </Tbody>
             </Table>
-          </PageScrollImport>
+          </PageScroll>
         </Flex>
         <Flex p={2} bg="primary" w="100%">
           <Input

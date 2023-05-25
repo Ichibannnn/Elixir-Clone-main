@@ -24,7 +24,7 @@ const MainContainer = () => {
       <Flex flexDirection="column" width="full">
         <Header setSidebarHandler={setSidebarHandler} />
         {/* <Navbar navBarData={navBarData} /> */}
-        <PageScroll maxHeight="105vh">
+        <PageScroll maxHeight="100vh">
           <MainContent />
         </PageScroll>
       </Flex>

@@ -117,6 +117,9 @@ export const ListViewReceipt = ({
                   Total Quantity
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
+                  Prepared Date
+                </Th>
+                <Th h="40px" color="white" fontSize="10px">
                   Transaction Date
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
@@ -136,6 +139,7 @@ export const ListViewReceipt = ({
                   <Td fontSize="xs">{receipts.supplierName}</Td>
                   <Td fontSize="xs">{receipts.totalQuantity}</Td>
                   <Td fontSize="xs">{receipts.preparedDate}</Td>
+                  <Td fontSize="xs">{receipts.transactionDate}</Td>
                   <Td fontSize="xs">{receipts.preparedBy}</Td>
                   <Td fontSize="xs">
                     <Button

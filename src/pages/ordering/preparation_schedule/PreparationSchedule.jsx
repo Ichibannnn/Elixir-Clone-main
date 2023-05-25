@@ -19,6 +19,7 @@ const PrepartionSchedule = () => {
   const [transactId, setTransactId] = useState(null);
 
   const [lengthIndicator, setLengthIndicator] = useState("");
+  const [qty, setQty] = useState("");
 
   const [pageTotal, setPageTotal] = useState(undefined);
   const outerLimit = 2;
@@ -88,6 +89,8 @@ const PrepartionSchedule = () => {
           fetchCustomerOrders={fetchCustomerOrders}
           fetchOrders={fetchOrders}
           lengthIndicator={lengthIndicator}
+          qty={qty}
+          setQty={setQty}
           // fetchNotification={fetchNotification}
         />
       </VStack>

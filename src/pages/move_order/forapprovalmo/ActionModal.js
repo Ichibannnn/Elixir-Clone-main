@@ -55,9 +55,36 @@ export const ViewModal = ({ isOpen, onClose, viewData }) => {
     <Modal isOpen={isOpen} onClose={() => {}} isCentered size="4xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>
+        {/* <ModalHeader>
           <Flex justifyContent="center">
-            <Text>View Modal</Text>
+            <Text fontSize="lg">View Modal</Text>
+          </Flex>
+        </ModalHeader> */}
+        <ModalHeader mt={5} fontSize="md">
+          <Flex fontSize="lg" justifyContent="center" mb={5}>
+            <Text>For Approval MO Details</Text>
+          </Flex>
+          <Flex justifyContent="space-between">
+            <VStack alignItems="start" spacing={-1}>
+              <Text fontSize="xs">Order ID: {viewData[0]?.orderNo}</Text>
+              <Text fontSize="xs">
+                Customer Code: {viewData[0]?.customercode}
+              </Text>
+              <Text fontSize="xs">
+                Customer Name: {viewData[0]?.customerName}
+              </Text>
+              {/* <Text fontSize="xs">Details: {viewData[0]?.remarks}</Text> */}
+            </VStack>
+            <VStack alignItems="start" spacing={-1}>
+              <Text fontSize="xs">Company: {viewData[0]?.companyName}</Text>
+              <Text fontSize="xs">
+                Department: {viewData[0]?.departmentName}
+              </Text>
+              <Text fontSize="xs">Location: {viewData[0]?.locationName}</Text>
+              <Text fontSize="xs">
+                Account Title: {viewData[0]?.accountTitles}
+              </Text>
+            </VStack>
           </Flex>
         </ModalHeader>
         <ModalCloseButton onClick={onClose} />
@@ -78,12 +105,12 @@ export const ViewModal = ({ isOpen, onClose, viewData }) => {
                 <Tbody>
                   {viewData?.map((item, i) => (
                     <Tr key={i}>
-                      <Td>{i + 1}</Td>
-                      <Td>{item.barcodeNo}</Td>
-                      <Td>{item.itemCode}</Td>
-                      <Td>{item.itemDescription}</Td>
-                      <Td>{item.quantity}</Td>
-                      <Td>{item.rush}</Td>
+                      <Td fontSize="xs">{i + 1}</Td>
+                      <Td fontSize="xs">{item.barcodeNo}</Td>
+                      <Td fontSize="xs">{item.itemCode}</Td>
+                      <Td fontSize="xs">{item.itemDescription}</Td>
+                      <Td fontSize="xs"> {item.quantity}</Td>
+                      <Td fontSize="xs">{item.rush}</Td>
                       {/* <Td>{moment(item.expiration).format("MM/DD/yyyy")}</Td> */}
                     </Tr>
                   ))}

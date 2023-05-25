@@ -17,6 +17,7 @@ import { MiscReceiptHistory } from "./report_dropdown/MiscReceiptHistory";
 import { TransactedMOHistory } from "./report_dropdown/TransactedMOHistory";
 import { CancelledOrders } from "./report_dropdown/CancelledOrders";
 import { InventoryMovement } from "./report_dropdown/InventoryMovement";
+import { BorrowedMatsHistory } from "./report_dropdown/BorrowedMatsHistory";
 
 const Reports = () => {
   const [dateFrom, setDateFrom] = useState(
@@ -66,11 +67,13 @@ const Reports = () => {
                   fontSize="xs"
                 >
                   <option value={1}>Warehouse Receiving History</option>
-                  <option value={2}>Move Order Transaction History</option>
-                  <option value={3}>Miscellaneous Issue History</option>
-                  <option value={4}>Miscellaneous Receipt History</option>
+                  <option value={2}>Move Order For Transaction History</option>
+                  <option value={3}>Move Order Transacted History</option>
+                  <option value={4}>Miscellaneous Issue History</option>
+                  <option value={5}>Miscellaneous Receipt History</option>
+                  <option value={6}>Borrowed Materials History</option>
                   {/* <option value={5}>Transacted Mover Order</option> */}
-                  <option value={5}>Cancelled Orders</option>
+                  <option value={7}>Cancelled Orders History</option>
                   {/* <option value={6}>Inventory Movement</option> */}
                 </Select>
                 <Button
@@ -145,7 +148,7 @@ const Reports = () => {
                 setSheetData={setSheetData}
               />
             ) : sample === 3 ? (
-              <MiscIssueHistory
+              <TransactedMOHistory
                 dateFrom={dateFrom}
                 dateTo={dateTo}
                 sample={sample}
@@ -159,6 +162,20 @@ const Reports = () => {
                 setSheetData={setSheetData}
               />
             ) : sample === 5 ? (
+              <MiscIssueHistory
+                dateFrom={dateFrom}
+                dateTo={dateTo}
+                sample={sample}
+                setSheetData={setSheetData}
+              />
+            ) : sample === 6 ? (
+              <BorrowedMatsHistory
+                dateFrom={dateFrom}
+                dateTo={dateTo}
+                sample={sample}
+                setSheetData={setSheetData}
+              />
+            ) : sample === 7 ? (
               <CancelledOrders
                 dateFrom={dateFrom}
                 dateTo={dateTo}

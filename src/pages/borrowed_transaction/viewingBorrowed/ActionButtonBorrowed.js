@@ -165,22 +165,22 @@ export const ViewModal = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader mt={5} fontSize="md">
-          <Flex fontSize="sm" justifyContent="center">
+          <Flex fontSize="sm" justifyContent="center" mb={5}>
             <Text>Borrowed Details</Text>
           </Flex>
           <Flex justifyContent="space-between">
-            {/* <VStack alignItems="start" spacing={-1}>
+            <VStack alignItems="start" spacing={-1}>
               <Text fontSize="xs">
                 Customer Code: {borrowedDetailsData[0]?.customerCode}
               </Text>
               <Text fontSize="xs">
                 Customer Name: {borrowedDetailsData[0]?.customer}
               </Text>
-            </VStack> */}
-            <VStack alignItems="start" spacing={-1}>
               <Text fontSize="xs">
                 Details: {borrowedDetailsData[0]?.remarks}
               </Text>
+            </VStack>
+            <VStack alignItems="start" spacing={-1}>
               <Text fontSize="xs">
                 Transaction ID: {borrowedDetailsData[0]?.borrowedPKey}
               </Text>
@@ -192,6 +192,20 @@ export const ViewModal = ({
               </Text>
               <Text fontSize="xs">
                 Transact By: {borrowedDetailsData[0]?.preparedBy}
+              </Text>
+            </VStack>
+            <VStack alignItems="start" spacing={-1}>
+              <Text fontSize="xs">
+                Company: {borrowedDetailsData[0]?.companyName}
+              </Text>
+              <Text fontSize="xs">
+                Department: {borrowedDetailsData[0]?.departmentName}
+              </Text>
+              <Text fontSize="xs">
+                Location: {borrowedDetailsData[0]?.locationName}
+              </Text>
+              <Text fontSize="xs">
+                Account Title: {borrowedDetailsData[0]?.accountTitles}
               </Text>
             </VStack>
           </Flex>

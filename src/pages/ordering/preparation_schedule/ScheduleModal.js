@@ -198,12 +198,20 @@ export const EditModal = ({
   fetchOrders,
 }) => {
   const [quantitySubmit, setQuantitySubmit] = useState("");
+
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
-  const quantityHandler = (data) => {
+  const quantityHandler = (data, editData) => {
     if (data) {
       setQuantitySubmit(parseFloat(data));
+      // ToastComponent(
+      //   "Error",
+      //   "Quantity cannot be exceed actual quantity!",
+      //   "error",
+      //   toast
+      // );
+      console.log(quantitySubmit);
     } else {
       setQuantitySubmit("");
     }
@@ -236,12 +244,14 @@ export const EditModal = ({
     "Item Description",
     "UOM",
     "Quantity Order",
+    "Edit Quantity",
   ];
   const autofilled = [
     editData?.customerName,
     editData?.itemCode,
     editData?.itemDescription,
     editData?.uom,
+    editData?.quantity,
   ];
 
   return (
@@ -311,7 +321,11 @@ export const EditModal = ({
                 px={4}
                 onClick={submitHandler}
                 isLoading={isLoading}
-                disabled={!quantitySubmit || isLoading}
+                disabled={
+                  !quantitySubmit ||
+                  isLoading ||
+                  quantitySubmit > editData.quantity
+                }
                 colorScheme="blue"
               >
                 Save
