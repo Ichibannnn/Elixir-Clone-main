@@ -12,6 +12,7 @@ export const ActionButton = ({
   setSelectorId,
   totalQuantity,
   customerData,
+  setCustomerData,
   details,
   rawMatsInfo,
   warehouseId,
@@ -117,13 +118,14 @@ export const ActionButton = ({
           totalQuantity={totalQuantity}
           setTotalQuantity={setTotalQuantity}
           customerData={customerData}
-          details={details}
+          setCustomerData={setCustomerData}
           miscData={miscData}
           fetchActiveMiscIssues={fetchActiveMiscIssues}
           warehouseId={warehouseId}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
           customerRef={customerRef}
+          details={details}
           setDetails={setDetails}
           rawMatsInfo={rawMatsInfo}
           setRawMatsInfo={setRawMatsInfo}

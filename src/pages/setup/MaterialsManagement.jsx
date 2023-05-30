@@ -180,7 +180,7 @@ const MaterialsManagement = () => {
     setDisableEdit(true);
     setEditData(mats);
     onOpen();
-    // console.log(mod.mainMenu);
+    console.log(editData);
   };
 
   //FOR DRAWER (Drawer / Drawer Tagging)
@@ -254,9 +254,9 @@ const MaterialsManagement = () => {
                 >
                   <Thead bg="primary">
                     <Tr>
-                      <Th h="40px" color="white" fontSize="10px">
+                      {/* <Th h="40px" color="white" fontSize="10px">
                         ID
-                      </Th>
+                      </Th> */}
                       <Th h="40px" color="white" fontSize="10px">
                         Item Code
                       </Th>
@@ -289,7 +289,7 @@ const MaterialsManagement = () => {
                   <Tbody>
                     {materials?.materials?.map((mats, i) => (
                       <Tr key={i}>
-                        <Td fontSize="xs">{mats.id}</Td>
+                        {/* <Td fontSize="xs">{mats.id}</Td> */}
                         <Td fontSize="xs">{mats.itemCode}</Td>
                         <Td fontSize="xs">{mats.itemDescription}</Td>
                         <Td fontSize="xs">{mats.itemCategoryName}</Td>
@@ -488,13 +488,8 @@ const schema = yup.object().shape({
       .string()
       .uppercase()
       .required("Description is required"),
-    // itemCategoryId: yup.number().required("Item Category is required"),
-    // itemCategoryId: yup.number().required("Sub Category is required"),
+    itemCategoryId: yup.number().required(),
     subCategoryId: yup.number().required(),
-    itemCategoryName: yup
-      .string()
-      .uppercase()
-      .required("Item Category Name is required"),
     uomId: yup.number().required("UOM is required"),
     bufferLevel: yup
       .number()
@@ -504,6 +499,10 @@ const schema = yup.object().shape({
       .integer()
       .min(1, "Bufffer level must be greater than or equal to 1"),
     addedBy: yup.string().uppercase(),
+    // itemCategoryName: yup
+    //   .string()
+    //   .uppercase()
+    //   .required("Item Category Name is required"),
   }),
 });
 
@@ -522,6 +521,7 @@ const DrawerComponent = (props) => {
   const [subCategory, setSubCategory] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [itemCategoryName, setItemCategory] = useState("");
+  const [allActiveCategory, setAllActiveCategory] = useState([]);
   const [uom, setUom] = useState([]);
   const toast = useToast();
 
@@ -536,22 +536,45 @@ const DrawerComponent = (props) => {
     mode: "onChange",
     defaultValues: {
       formData: {
-        id: "",
-        itemCode: "",
-        itemDescription: "",
+        // id: "",
+        // itemCode: "",
+        // itemDescription: "",
         // itemCategoryId: "",
         // itemCategoryName: "",
         // subCategoryId: "",
         // subcategoryName: "",
+        // subCategoryId: "",
+        // itemCategoryId: "",
+        // itemCategoryName: "",
+        // uomId: "",
+        // bufferLevel: "",
+        // addedBy: currentUser?.userName,
+        // modifiedBy: "",
+        id: "",
+        itemCode: "",
+        itemDescription: "",
+        itemCategoryId: "",
         subCategoryId: "",
-        itemCategoryName: "",
         uomId: "",
         bufferLevel: "",
         addedBy: currentUser?.userName,
-        modifiedBy: "",
       },
     },
   });
+
+  // FETCHING ITEM CATEGORY --------------------------------------------------
+  const fetchAllActiveCategory = async () => {
+    try {
+      const res = await request.get(`Material/GetAllActiveItemCategories`);
+      setAllActiveCategory(res.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    // try {
+    fetchAllActiveCategory();
+    // } catch (error) {}
+  }, []);
 
   // FETCHING ITEM CATEGORY --------------------------------------------------
   const fetchItemCat = async () => {
@@ -568,11 +591,14 @@ const DrawerComponent = (props) => {
   }, []);
 
   // FETCHING SUB CATEGORY ---------------------
+  const itemCategoryNameParameter = categoryData?.find(
+    (x) => x.itemCategoryId === Number(itemCategoryName)
+  )?.itemCategoryName;
   const fetchSubCat = async () => {
     try {
       const res = await request.get(`Material/GetAllItemcategoriesmaterial`, {
         params: {
-          category: itemCategoryName,
+          category: itemCategoryNameParameter,
         },
       });
       setSubCategory(res.data);
@@ -598,30 +624,30 @@ const DrawerComponent = (props) => {
     } catch (error) {}
   }, []);
 
-  const categoryStatusHandler = (data) => {
-    const newData = JSON.parse(data);
-    // x`console.log(newData);
-    if (data) {
-      setItemCategory(newData.itemCategoryName);
-      setValue("formData.itemCategoryName", newData.itemCategoryName);
-    } else {
-      setItemCategory("");
-      setValue("formData.itemCategoryName", "");
-    }
-    // console.log(newData);
-  };
-  console.log(watch("formData"));
-  const subCategoryStatusHandler = (data) => {
-    const newData = JSON.parse(data);
-    // console.log(newData);
-    if (data) {
-      setValue("formData.subCategoryId", newData.subcategoryId);
-    } else {
-      // setValue("formData.itemCategoryId", "");
-      setValue("formData.subCategoryId", "");
-    }
-    // console.log(newData);
-  };
+  // const categoryStatusHandler = (data) => {
+  //   const newData = JSON.parse(data);
+  //   // x`console.log(newData);
+  //   if (data) {
+  //     setItemCategory(newData.itemCategoryName);
+  //     setValue("formData.itemCategoryName", newData.itemCategoryName);
+  //   } else {
+  //     setItemCategory("");
+  //     setValue("formData.itemCategoryName", "");
+  //   }
+  //   // console.log(newData);
+  // };
+
+  // const subCategoryStatusHandler = (data) => {
+  //   const newData = JSON.parse(data);
+  //   // console.log(newData);
+  //   if (data) {
+  //     setValue("formData.subCategoryId", newData.subcategoryId);
+  //   } else {
+  //     // setValue("formData.itemCategoryId", "");
+  //     setValue("formData.subCategoryId", "");
+  //   }
+  //   // console.log(newData);
+  // };
 
   // useEffect(() => {
   //   console.log(subCategoryRef);
@@ -633,7 +659,17 @@ const DrawerComponent = (props) => {
       if (data.formData.id === "") {
         delete data.formData["id"];
         const res = await request
-          .post(`Material/AddNewMaterial`, data.formData)
+          .post(`Material/AddNewMaterial`, {
+            itemCode: data.formData.itemCode,
+            itemDescription: data.formData.itemDescription,
+            subCategoryId: data.formData.subCategoryId,
+            itemCategoryName: allActiveCategory?.find(
+              (x) => x.itemCategoryId === data.formData.itemCategoryId
+            )?.itemCategoryName,
+            uomId: data.formData.uomId,
+            bufferLevel: data.formData.bufferLevel,
+            addedBy: data.formData.addedBy,
+          })
           .then((res) => {
             ToastComponent(
               "Success",
@@ -650,7 +686,18 @@ const DrawerComponent = (props) => {
           });
       } else {
         const res = await request
-          .put(`Material/UpdateMaterials`, data.formData)
+          .put(`Material/UpdateMaterials`, {
+            id: data.formData.id,
+            itemCode: data.formData.itemCode,
+            itemDescription: data.formData.itemDescription,
+            subCategoryId: data.formData.subCategoryId,
+            itemCategoryName: allActiveCategory?.find(
+              (x) => x.itemCategoryId === data.formData.itemCategoryId
+            )?.itemCategoryName,
+            uomId: data.formData.uomId,
+            bufferLevel: data.formData.bufferLevel,
+            addedBy: data.formData.addedBy,
+          })
           .then((res) => {
             ToastComponent("Success", "Material Updated", "success", toast);
             getMaterialHandler();
@@ -668,18 +715,29 @@ const DrawerComponent = (props) => {
     } catch (err) {}
   };
 
+  const handleSubCategoryDropdown = watch("formData.itemCategoryId")
+    ? subCategory
+    : allActiveCategory;
+
   useEffect(() => {
     if (editData.id) {
       setValue(
         "formData",
         {
+          // id: editData.id,
+          // itemCode: editData?.itemCode,
+          // itemDescription: editData?.itemDescription,
+          // itemCategoryName: editData?.itemCategoryName,
+          // subCategoryId: editData?.subCategoryId,
+          // subCategoryName: editData?.subCategoryName,
+          // uomId: editData?.uomId,
+          // bufferLevel: editData?.bufferLevel,
+          // modifiedBy: currentUser.userName,
           id: editData.id,
           itemCode: editData?.itemCode,
           itemDescription: editData?.itemDescription,
-          itemCategoryName: editData?.itemCategoryName,
-          // itemCategoryId: editData?.itemCategoryId,
+          itemCategoryId: editData?.itemCategoryId,
           subCategoryId: editData?.subCategoryId,
-          // subCategoryName: editData?.subCategoryName,
           uomId: editData?.uomId,
           bufferLevel: editData?.bufferLevel,
           modifiedBy: currentUser.userName,
@@ -688,6 +746,8 @@ const DrawerComponent = (props) => {
       );
     }
   }, [editData]);
+
+  console.log(allActiveCategory);
 
   return (
     <>
@@ -734,13 +794,12 @@ const DrawerComponent = (props) => {
                   <FormLabel>Item Category:</FormLabel>
                   {categoryData.length > 0 ? (
                     <Select
-                      // ref={subCategoryRef}
-                      // {...register("formData.itemCategoryId")}
+                      {...register("formData.itemCategoryId")}
+                      onChange={(e) => setItemCategory(e.target.value)}
                       placeholder="Select Item Category"
-                      onChange={(e) => categoryStatusHandler(e.target.value)}
                     >
-                      {categoryData.map((itemCat, i) => (
-                        <option key={i} value={JSON.stringify(itemCat)}>
+                      {categoryData?.map((itemCat, i) => (
+                        <option key={i} value={itemCat.itemCategoryId}>
                           {itemCat.itemCategoryName}
                         </option>
                       ))}
@@ -755,19 +814,21 @@ const DrawerComponent = (props) => {
 
                 <Box>
                   <FormLabel>Item Sub Category:</FormLabel>
-                  {subCategory.length > 0 ? (
+                  {allActiveCategory?.length > 0 ? (
                     <Select
+                      {...register("formData.subCategoryId")}
                       className="inputUpperCase"
-                      ref={subCategoryRef}
-                      // {...register("formData.subCategoryId")}
-                      placeholder="Select Sub Category"
-                      // onChange={(e) =>
-                      //   subCategoryStatusHandler(e.target.value)
+                      // defaultValue={
+                      //   allActiveCategory?.find(
+                      //     (x) => x.subcategoryId === editData?.subCategoryId
+                      //   )?.subcategoryId
                       // }
-                      onChange={(e) => subCategoryStatusHandler(e.target.value)}
+                      // ref={subCategoryRef}
+                      placeholder="Select Sub Category"
+                      // onChange={(e) => subCategoryStatusHandler(e.target.value)}
                     >
-                      {subCategory.map((subCat, i) => (
-                        <option key={i} value={JSON.stringify(subCat)}>
+                      {allActiveCategory?.map((subCat, i) => (
+                        <option key={i} value={subCat.subcategoryId}>
                           {subCat.subcategoryName}
                         </option>
                       ))}

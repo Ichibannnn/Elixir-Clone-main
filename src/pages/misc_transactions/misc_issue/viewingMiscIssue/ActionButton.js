@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   ButtonGroup,
@@ -26,8 +26,15 @@ import request from "../../../../services/ApiClient";
 import { ToastComponent } from "../../../../components/Toast";
 import PageScroll from "../../../../utils/PageScroll";
 import moment from "moment";
+import { useReactToPrint } from "react-to-print";
 
 export const ViewModal = ({ isOpen, onClose, statusBody }) => {
+  const componentRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   // console.log(statusBody)
 
   const [issuesDetailsData, setIssuesDetailsData] = useState([]);
@@ -54,57 +61,85 @@ export const ViewModal = ({ isOpen, onClose, statusBody }) => {
     <Modal isOpen={isOpen} onClose={() => {}} size="5xl" isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader mt={5} fontSize="md">
+        <ModalHeader mt={5} fontSize="md"></ModalHeader>
+        <ModalCloseButton onClick={onClose} />
+
+        <ModalBody mb={5} ref={componentRef}>
           <Flex fontSize="lg" justifyContent="center" mb={5}>
             <Text>Issue Details</Text>
           </Flex>
           <Flex justifyContent="space-between">
             <VStack alignItems="start" spacing={-1}>
-              <Text fontSize="xs">
-                Customer Code: {issuesDetailsData[0]?.customerCode}
-              </Text>
-              <Text fontSize="xs">
-                Customer Name: {issuesDetailsData[0]?.customer}
-              </Text>
-              <Text fontSize="xs">
-                Details: {issuesDetailsData[0]?.remarks}
-              </Text>
-            </VStack>
-            <VStack alignItems="start" spacing={-1}>
-              <Text fontSize="xs">
-                Transaction ID: {issuesDetailsData[0]?.issuePKey}
-              </Text>
-              <Text fontSize="xs">
-                Transaction Date:{" "}
-                {moment(issuesDetailsData[0]?.preparedDate).format(
-                  "yyyy-MM-DD"
-                )}
-              </Text>
-              <Text fontSize="xs">
-                Transact By: {issuesDetailsData[0]?.preparedBy}
-              </Text>
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Transaction ID:
+                </Text>
+                <Text fontSize="xs">{issuesDetailsData[0]?.id}</Text>
+              </HStack>
+
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Transaction Date:
+                </Text>
+                <Text fontSize="xs">
+                  {" "}
+                  {moment(issuesDetailsData[0]?.preparedDate).format(
+                    "yyyy-MM-DD"
+                  )}
+                </Text>
+              </HStack>
+
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Customer Code:
+                </Text>
+                <Text fontSize="xs">{issuesDetailsData[0]?.customerCode}</Text>
+              </HStack>
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Customer Name:
+                </Text>
+                <Text fontSize="xs">{issuesDetailsData[0]?.customer}</Text>
+              </HStack>
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Details:
+                </Text>
+                <Text fontSize="xs">{issuesDetailsData[0]?.remarks}</Text>
+              </HStack>
             </VStack>
 
             <VStack alignItems="start" spacing={-1}>
-              <Text fontSize="xs">
-                Company: {issuesDetailsData[0]?.companyName}
-              </Text>
-              <Text fontSize="xs">
-                Department: {issuesDetailsData[0]?.departmentName}
-              </Text>
-              <Text fontSize="xs">
-                Location: {issuesDetailsData[0]?.locationName}
-              </Text>
-              <Text fontSize="xs">
-                Account Title: {issuesDetailsData[0]?.accountTitles}
-              </Text>
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Company:
+                </Text>
+                <Text fontSize="xs">{issuesDetailsData[0]?.companyName}</Text>
+              </HStack>
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Department:
+                </Text>
+                <Text fontSize="xs">
+                  {issuesDetailsData[0]?.departmentName}
+                </Text>
+              </HStack>
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Location:
+                </Text>
+                <Text fontSize="xs">{issuesDetailsData[0]?.locationName}</Text>
+              </HStack>
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Account Title:
+                </Text>
+                <Text fontSize="xs">{issuesDetailsData[0]?.accountTitles}</Text>
+              </HStack>
             </VStack>
           </Flex>
-        </ModalHeader>
-        <ModalCloseButton onClick={onClose} />
-        <ModalBody mb={5}>
-          <Flex justifyContent="center">
-            <PageScroll minHeight="350px" maxHeight="351px">
+          <VStack justifyContent="center" mt={2}>
+            <PageScroll minHeight="320px" maxHeight="321px">
               <Table size="sm">
                 <Thead bgColor="secondary">
                   <Tr>
@@ -120,20 +155,37 @@ export const ViewModal = ({ isOpen, onClose, statusBody }) => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {issuesDetailsData?.map((receiptdetails, i) => (
+                  {issuesDetailsData?.map((issuedetails, i) => (
                     <Tr key={i}>
-                      <Td fontSize="xs">{receiptdetails.itemCode}</Td>
-                      <Td fontSize="xs">{receiptdetails.itemDescription}</Td>
-                      <Td fontSize="xs">{receiptdetails.totalQuantity}</Td>
+                      <Td fontSize="xs">{issuedetails.itemCode}</Td>
+                      <Td fontSize="xs">{issuedetails.itemDescription}</Td>
+                      <Td fontSize="xs">{issuedetails.totalQuantity}</Td>
                     </Tr>
                   ))}
                 </Tbody>
               </Table>
             </PageScroll>
-          </Flex>
+
+            <Flex justifyContent="space-between" mt={5} w="full">
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Transacted By:
+                </Text>
+                <Text textDecoration="underline" fontSize="xs">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  {issuesDetailsData[0]?.preparedBy}
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </Text>
+              </HStack>
+            </Flex>
+          </VStack>
         </ModalBody>
         <ModalFooter>
           <ButtonGroup size="sm">
+            <Button colorScheme="blue" onClick={handlePrint}>
+              Print
+            </Button>
             <Button colorScheme="gray" onClick={onClose}>
               Close
             </Button>

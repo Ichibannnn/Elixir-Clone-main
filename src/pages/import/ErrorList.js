@@ -108,6 +108,25 @@ const ErrorList = ({
     };
   });
 
+  const itemdescriptionNotExist = errorData?.itemdescriptionNotExist?.map(
+    (list) => {
+      return {
+        pR_Number: list.pR_Number,
+        pR_Date: moment(list.pR_Date).format("YYYY-MM-DD"),
+        pO_Number: list.pO_Number,
+        pO_Date: moment(list.pO_Date).format("YYYY-MM-DD"),
+        item_Code: list.itemCode,
+        item_Description: list.itemDescription,
+        ordered: list.ordered,
+        delivered: list.delivered,
+        billed: list.billed,
+        uom: list.uom,
+        unit_Price: list.unitPrice,
+        vendor_Name: list.vendorName,
+      };
+    }
+  );
+
   const supplierNotExistData = errorData?.supplierNotExist?.map((list) => {
     return {
       pR_Number: list.pR_Number,
@@ -145,6 +164,7 @@ const ErrorList = ({
   const available = availableImportData;
   const duplicate = duplicateListData;
   const itemCodes = itemcodeNotExistData;
+  const itemDescription = itemdescriptionNotExist;
   const supplier = supplierNotExistData;
   const uom = uomCodeNotExistData;
 
@@ -197,10 +217,18 @@ const ErrorList = ({
                 setIsDisabled(false);
                 clearExcelFile.current.value = "";
                 setExcelData([]);
+                setErrorOpener(false);
               })
               .catch((err) => {
                 setIsLoading(false);
-                // ToastComponent("Error", "Import Failed, Please check your fields.", "error", toast)
+                setErrorOpener(false);
+                clearExcelFile.current.value = "";
+                // ToastComponent(
+                //   "Error",
+                //   "Import Failed, Please check your fields.",
+                //   "error",
+                //   toast
+                // );
                 // setErrorData(err.response.data);
                 // if (err.response.data) {
                 //   setErrorOpener(true);
@@ -247,7 +275,7 @@ const ErrorList = ({
               {available?.length > 0 ? (
                 <AccordionItem bgColor="gray.200">
                   <Flex>
-                    <AccordionButton fontWeight="semibold">
+                    <AccordionButton fontWeight="semibold" border="1px">
                       <Box
                         flex="1"
                         textAlign="left"
@@ -386,7 +414,11 @@ const ErrorList = ({
               {duplicate?.length > 0 ? (
                 <AccordionItem bgColor="gray.200">
                   <Flex>
-                    <AccordionButton color="white" fontWeight="semibold">
+                    <AccordionButton
+                      color="white"
+                      fontWeight="semibold"
+                      border="1px"
+                    >
                       <Box
                         flex="1"
                         textAlign="left"
@@ -538,7 +570,11 @@ const ErrorList = ({
               {itemCodes?.length > 0 ? (
                 <AccordionItem bgColor="gray.200">
                   <Flex>
-                    <AccordionButton color="white" fontWeight="semibold">
+                    <AccordionButton
+                      color="white"
+                      fontWeight="semibold"
+                      border="1px"
+                    >
                       <Box
                         flex="1"
                         textAlign="left"
@@ -666,7 +702,11 @@ const ErrorList = ({
               {supplier?.length > 0 ? (
                 <AccordionItem bgColor="gray.200">
                   <Flex>
-                    <AccordionButton color="white" fontWeight="semibold">
+                    <AccordionButton
+                      color="white"
+                      fontWeight="semibold"
+                      border="1px"
+                    >
                       <Box
                         flex="1"
                         textAlign="left"
@@ -674,10 +714,10 @@ const ErrorList = ({
                         fontWeight="semibold"
                         fontSize="13px"
                       >
+                        Supplier does not exist
                         <Badge color="red" fontSize="10px">
                           {supplier?.length}
                         </Badge>{" "}
-                        Supplier does not exist
                       </Box>
                       <AccordionIcon color="secondary" />
                     </AccordionButton>
@@ -794,12 +834,17 @@ const ErrorList = ({
               {uom?.length > 0 ? (
                 <AccordionItem bgColor="gray.200">
                   <Flex>
-                    <AccordionButton color="white" fontWeight="semibold">
+                    <AccordionButton
+                      color="white"
+                      fontWeight="semibold"
+                      border="1px"
+                    >
                       <Box
                         flex="1"
-                        textAlign="center"
+                        textAlign="left"
                         color="#dc2f02"
                         fontWeight="semibold"
+                        fontSize="13px"
                       >
                         UOM does not exist{" "}
                         <Badge color="danger">{uom?.length}</Badge>
@@ -811,44 +856,90 @@ const ErrorList = ({
                   <AccordionPanel pb={4}>
                     <PageScrollModalErrorList>
                       {uom?.length > 0 ? (
-                        <Table variant="striped" size="sm">
-                          <Thead bgColor="secondary">
+                        <Table variant="striped" size="sm" bg="white">
+                          <Thead bgColor="gray.600">
                             <Tr>
                               {/* <Th color='white'>ID</Th> */}
-                              <Th color="white">PR Number</Th>
-                              <Th color="white">PR Date</Th>
-                              <Th color="white">PO Number</Th>
-                              <Th color="white">PO Date</Th>
-                              <Th color="white">Item Code</Th>
-                              <Th color="white">Item Description</Th>
-                              <Th color="white">Ordered</Th>
-                              <Th color="white">Delivered</Th>
-                              <Th color="white">Billed</Th>
-                              <Th color="white">UOM</Th>
-                              <Th color="white">Unit Price</Th>
-                              <Th color="white">Supplier Name</Th>
+                              <Th color="white" fontSize="9px">
+                                PR Number
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                PR Date
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                PO Number
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                PO Date
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Item Code
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Item Description
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Ordered
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Delivered
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Billed
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                UOM
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Unit Price
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Supplier Name
+                              </Th>
                             </Tr>
                           </Thead>
 
-                          <Tbody>
-                            {uom?.map((ne, i) => (
-                              <Tr key={i}>
-                                {/* <Td>{ }</Td> */}
-                                <Td>{ne?.pR_Number}</Td>
-                                <Td>{ne?.pR_Date}</Td>
-                                <Td>{ne?.pO_Number}</Td>
-                                <Td>{ne?.pO_Date}</Td>
-                                <Td>{ne?.item_Code}</Td>
-                                <Td>{ne?.item_Description}</Td>
-                                <Td>{ne?.ordered}</Td>
-                                <Td>{ne?.delivered}</Td>
-                                <Td>{ne?.billed}</Td>
-                                <Td>{ne?.uom}</Td>
-                                <Td>{ne?.unit_Price}</Td>
-                                <Td>{ne?.vendor_Name}</Td>
-                              </Tr>
-                            ))}
-                          </Tbody>
+                          {uom?.map((ne, i) => (
+                            <Tr key={i}>
+                              {/* <Td>{ }</Td> */}
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.pR_Number}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.pR_Date}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.pO_Number}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.pO_Date}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.item_Code}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.item_Description}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.ordered}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.delivered}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.billed}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.uom}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.unit_Price}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.vendor_Name}
+                              </Td>
+                            </Tr>
+                          ))}
                         </Table>
                       ) : (
                         <Flex justifyContent="center" mt="30px">
@@ -856,6 +947,135 @@ const ErrorList = ({
                             <RiFileList3Fill fontSize="200px" />
                             <Text color="white">
                               There are no lists with unregistered UOM.
+                            </Text>
+                          </VStack>
+                        </Flex>
+                      )}
+                    </PageScrollModalErrorList>
+                  </AccordionPanel>
+                </AccordionItem>
+              ) : (
+                ""
+              )}
+
+              {/* ITEM DESCRIPTION DOES NOT EXIST */}
+              {itemDescription?.length > 0 ? (
+                <AccordionItem bgColor="gray.200">
+                  <Flex>
+                    <AccordionButton
+                      color="white"
+                      fontWeight="semibold"
+                      border="1px"
+                    >
+                      <Box
+                        flex="1"
+                        textAlign="left"
+                        color="#dc2f02"
+                        fontWeight="semibold"
+                        fontSize="13px"
+                      >
+                        Item description does not exist{" "}
+                        <Badge color="danger">{itemDescription?.length}</Badge>
+                      </Box>
+                      <AccordionIcon color="secondary" />
+                    </AccordionButton>
+                  </Flex>
+
+                  <AccordionPanel pb={4}>
+                    <PageScrollModalErrorList>
+                      {itemDescription?.length > 0 ? (
+                        <Table variant="striped" size="sm" bg="white">
+                          <Thead bgColor="gray.600">
+                            <Tr>
+                              {/* <Th color='white'>ID</Th> */}
+                              <Th color="white" fontSize="9px">
+                                PR Number
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                PR Date
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                PO Number
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                PO Date
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Item Code
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Item Description
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Ordered
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Delivered
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Billed
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                UOM
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Unit Price
+                              </Th>
+                              <Th color="white" fontSize="9px">
+                                Supplier Name
+                              </Th>
+                            </Tr>
+                          </Thead>
+
+                          {itemDescription?.map((ne, i) => (
+                            <Tr key={i}>
+                              {/* <Td>{ }</Td> */}
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.pR_Number}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.pR_Date}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.pO_Number}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.pO_Date}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.item_Code}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.item_Description}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.ordered}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.delivered}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.billed}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.uom}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.unit_Price}
+                              </Td>
+                              <Td color="gray.600" fontSize="11px">
+                                {ne?.vendor_Name}
+                              </Td>
+                            </Tr>
+                          ))}
+                        </Table>
+                      ) : (
+                        <Flex justifyContent="center" mt="30px">
+                          <VStack>
+                            <RiFileList3Fill fontSize="200px" />
+                            <Text color="white">
+                              There are no lists with unregistered item
+                              description.
                             </Text>
                           </VStack>
                         </Flex>

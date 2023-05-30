@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   ButtonGroup,
@@ -19,14 +19,22 @@ import {
   useToast,
   VStack,
   ModalOverlay,
+  HStack,
 } from "@chakra-ui/react";
 import { BsQuestionOctagonFill } from "react-icons/bs";
 import request from "../../../../services/ApiClient";
 import { ToastComponent } from "../../../../components/Toast";
 import PageScroll from "../../../../utils/PageScroll";
 import moment from "moment";
+import { useReactToPrint } from "react-to-print";
 
 export const ViewModal = ({ isOpen, onClose, statusBody }) => {
+  const componentRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   const [receiptDetailsData, setReceiptDetailsData] = useState([]);
 
   const id = statusBody.id;
@@ -53,79 +61,158 @@ export const ViewModal = ({ isOpen, onClose, statusBody }) => {
     <Modal isOpen={isOpen} onClose={() => {}} size="5xl" isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader mt={5} fontSize="md">
+        <ModalHeader mt={5} fontSize="md"></ModalHeader>
+        <ModalCloseButton onClick={onClose} />
+        <ModalBody mb={5} ref={componentRef}>
           <Flex fontSize="lg" justifyContent="center" mb={5}>
             <Text>Receipt Details</Text>
           </Flex>
           <Flex justifyContent="space-between">
             <VStack alignItems="start" spacing={-1}>
-              <Text fontSize="xs">
-                Customer Code: {receiptDetailsData[0]?.supplierCode}
-              </Text>
-              <Text fontSize="xs">
-                Customer Name: {receiptDetailsData[0]?.supplierName}
-              </Text>
-              <Text fontSize="xs">
-                Details: {receiptDetailsData[0]?.remarks}
-              </Text>
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Transaction ID:
+                </Text>
+                <Text fontSize="xs">{receiptDetailsData[0]?.id}</Text>
+              </HStack>
+
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Transaction Date:
+                </Text>
+                <Text fontSize="xs">
+                  {" "}
+                  {moment(receiptDetailsData[0]?.preparedDate).format(
+                    "yyyy-MM-DD"
+                  )}
+                </Text>
+              </HStack>
+
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Supplier Code:
+                </Text>
+                <Text fontSize="xs">{receiptDetailsData[0]?.supplierCode}</Text>
+              </HStack>
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Supplier Name:
+                </Text>
+                <Text fontSize="xs">{receiptDetailsData[0]?.supplierName}</Text>
+              </HStack>
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Details:
+                </Text>
+                <Text fontSize="xs">{receiptDetailsData[0]?.remarks}</Text>
+              </HStack>
             </VStack>
+
             <VStack alignItems="start" spacing={-1}>
-              <Text fontSize="xs">
-                Transaction ID: {receiptDetailsData[0]?.id}
-              </Text>
-              <Text fontSize="xs">
-                Transaction Date:{" "}
-                {moment(receiptDetailsData[0]?.transactionDate).format(
-                  "yyyy-MM-DD"
-                )}
-              </Text>
-              <Text fontSize="xs">
-                Transact By: {receiptDetailsData[0]?.preparedBy}
-              </Text>
-            </VStack>
-            <VStack alignItems="start" spacing={-1}>
-              <Text fontSize="xs">
-                Company: {receiptDetailsData[0]?.companyName}
-              </Text>
-              <Text fontSize="xs">
-                Department: {receiptDetailsData[0]?.departmentName}
-              </Text>
-              <Text fontSize="xs">
-                Location: {receiptDetailsData[0]?.locationName}
-              </Text>
-              <Text fontSize="xs">
-                Account Title: {receiptDetailsData[0]?.accountTitles}
-              </Text>
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Company:
+                </Text>
+                <Text fontSize="xs">{receiptDetailsData[0]?.companyName}</Text>
+              </HStack>
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Department:
+                </Text>
+                <Text fontSize="xs">
+                  {receiptDetailsData[0]?.departmentName}
+                </Text>
+              </HStack>
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Location:
+                </Text>
+                <Text fontSize="xs">{receiptDetailsData[0]?.locationName}</Text>
+              </HStack>
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Account Title:
+                </Text>
+                <Text fontSize="xs">
+                  {receiptDetailsData[0]?.accountTitles}
+                </Text>
+              </HStack>
             </VStack>
           </Flex>
-        </ModalHeader>
-        <ModalCloseButton onClick={onClose} />
-        <ModalBody mb={5}>
-          <Flex justifyContent="center">
-            <PageScroll minHeight="350px" maxHeight="351px">
+          <VStack justifyContent="center">
+            <PageScroll minHeight="320px" maxHeight="321px">
               <Table size="sm">
                 <Thead bgColor="secondary">
                   <Tr>
-                    <Th color="white">Item Code</Th>
-                    <Th color="white">Item Description</Th>
-                    <Th color="white">Quantity</Th>
+                    <Th color="white" fontSize="xs">
+                      Item Code
+                    </Th>
+                    <Th color="white" fontSize="xs">
+                      Item Description
+                    </Th>
+                    <Th color="white" fontSize="xs">
+                      Quantity
+                    </Th>
                   </Tr>
                 </Thead>
                 <Tbody>
                   {receiptDetailsData?.map((receiptdetails, i) => (
                     <Tr key={i}>
-                      <Td>{receiptdetails.itemcode}</Td>
-                      <Td>{receiptdetails.itemDescription}</Td>
-                      <Td>{receiptdetails.totalQuantity}</Td>
+                      <Td fontSize="xs">{receiptdetails.itemcode}</Td>
+                      <Td fontSize="xs">{receiptdetails.itemDescription}</Td>
+                      <Td fontSize="xs">{receiptdetails.totalQuantity}</Td>
                     </Tr>
                   ))}
                 </Tbody>
               </Table>
             </PageScroll>
-          </Flex>
+
+            <Flex justifyContent="space-between" mt={5} w="full">
+              {/* <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Transaction ID:
+                </Text>
+                <Text textDecoration="underline" fontSize="xs">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  {receiptDetailsData[0]?.id}
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </Text>
+              </HStack> */}
+
+              {/* <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Transaction Date:
+                </Text>
+                <Text textDecoration="underline" fontSize="xs">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  {moment(receiptDetailsData[0]?.preparedDate).format(
+                    "yyyy-MM-DD"
+                  )}
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </Text>
+              </HStack> */}
+
+              <HStack>
+                <Text fontSize="xs" fontWeight="semibold">
+                  Transacted By:
+                </Text>
+                <Text textDecoration="underline" fontSize="xs">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  {receiptDetailsData[0]?.preparedBy}
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </Text>
+              </HStack>
+            </Flex>
+          </VStack>
         </ModalBody>
         <ModalFooter>
           <ButtonGroup size="sm">
+            <Button colorScheme="blue" onClick={handlePrint}>
+              Print
+            </Button>
             <Button colorScheme="gray" onClick={onClose}>
               Close
             </Button>

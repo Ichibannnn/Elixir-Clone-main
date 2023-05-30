@@ -151,7 +151,7 @@ const ImportPO = () => {
                 .then((res) => {
                   ToastComponent("Success!", "PO Imported", "success", toast);
                   setIsLoading(false);
-                  setIsDisabled(true);
+                  setIsDisabled(false);
                   clearExcelFile.current.value = "";
                   setExcelData([]);
                 })

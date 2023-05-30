@@ -49,6 +49,7 @@ export const AddConfirmation = ({
   setWarehouseId,
   fetchActiveMiscIssues,
   customerData,
+  setCustomerData,
   remarks,
   setRemarks,
   remarksRef,
@@ -81,7 +82,7 @@ export const AddConfirmation = ({
           setRawMatsInfo({
             itemCode: "",
             itemDescription: "",
-            customer: rawMatsInfo.customerName,
+            customerName: rawMatsInfo.customerName,
             uom: "",
             warehouseId: "",
             quantity: "",
@@ -246,14 +247,15 @@ export const SaveConfirmation = ({
   onClose,
   totalQuantity,
   details,
+  setDetails,
   customerData,
+  setCustomerData,
   setTotalQuantity,
   miscData,
   fetchActiveMiscIssues,
   isLoading,
   setIsLoading,
   customerRef,
-  setDetails,
   setRawMatsInfo,
   setHideButton,
   remarks,
@@ -297,7 +299,7 @@ export const SaveConfirmation = ({
         }
       );
       setDepartment(res.data.result.departments);
-      console.log(res.data.result.departments);
+      // console.log(res.data.result.departments);
     } catch (error) {}
   };
 
@@ -385,7 +387,7 @@ export const SaveConfirmation = ({
   });
 
   const saveSubmitHandler = (data) => {
-    console.log(data);
+    // console.log(data);
     Swal.fire({
       title: "Confirmation!",
       text: "Are you sure you want to save this information?",
@@ -459,15 +461,21 @@ export const SaveConfirmation = ({
                           toast
                         );
                         onClose();
+                        console.log("done");
                         setTotalQuantity("");
                         customerRef.current.value = "";
+                        setCustomerData({
+                          customerName: "",
+                        });
                         remarksRef.current.value = "";
                         setDetails("");
+                        // setCustomerData("");
                         setRawMatsInfo({
                           itemCode: "",
                           itemDescription: "",
                           supplier: "",
                           uom: "",
+                          // customerName: "",
                           // expirationDate: '',
                           quantity: "",
                         });

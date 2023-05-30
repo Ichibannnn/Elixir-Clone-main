@@ -100,15 +100,35 @@ export const MiscIssueHistory = ({
                     <Th color="white" fontSize="10px" fontWeight="semibold">
                       Quantity
                     </Th>
-                  </>
-                ) : (
-                  <>
-                    {/* <Th color='white'>Expiration Date</Th> */}
                     <Th color="white" fontSize="10px" fontWeight="semibold">
                       Transact By
                     </Th>
                     <Th color="white" fontSize="10px" fontWeight="semibold">
                       Transaction Date
+                    </Th>
+                  </>
+                ) : (
+                  <>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Company Code
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Company Name
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Department Code
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Department Name
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Location Code
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Location Name
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Account Title
                     </Th>
                   </>
                 )}
@@ -128,14 +148,21 @@ export const MiscIssueHistory = ({
                       <Td fontSize="xs">{item.uom}</Td>
                       {/* <Td>Body</Td> */}
                       <Td fontSize="xs">{item.quantity}</Td>
-                    </>
-                  ) : (
-                    <>
-                      {/* <Td>{item.expirationDate}</Td> */}
                       <Td fontSize="xs">{item.transactBy}</Td>
                       <Td fontSize="xs">
                         {moment(item.transactDate).format("yyyy-MM-DD")}
                       </Td>
+                    </>
+                  ) : (
+                    <>
+                      {/* <Td>{item.expirationDate}</Td> */}
+                      <Td fontSize="xs">{item.companyCode}</Td>
+                      <Td fontSize="xs">{item.companyName}</Td>
+                      <Td fontSize="xs">{item.departmentCode}</Td>
+                      <Td fontSize="xs">{item.departmentName}</Td>
+                      <Td fontSize="xs">{item.locationCode}</Td>
+                      <Td fontSize="xs">{item.locationName}</Td>
+                      <Td fontSize="xs">{item.accountTitles}</Td>
                     </>
                   )}
                 </Tr>

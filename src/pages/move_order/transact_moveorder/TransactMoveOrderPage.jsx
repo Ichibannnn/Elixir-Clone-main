@@ -113,7 +113,7 @@ const TransactMoveOrderPage = () => {
           </HStack>
           {!status && (
             <HStack justifyContent="space-between" mt={5} pr={5}>
-              <Text fontSize="xs">Delivery Date:</Text>
+              <Text fontSize="xs">Pick-Up Date:</Text>
               <Input
                 fontSize="xs"
                 onChange={(e) => setDeliveryDate(e.target.value)}

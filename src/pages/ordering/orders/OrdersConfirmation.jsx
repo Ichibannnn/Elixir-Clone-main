@@ -61,12 +61,13 @@ const OrdersConfirmation = ({
       dateNeeded: list?.dateNeeded,
       department: list?.department,
       customercode: list?.customercode,
-      customerName: list.customerName,
-      category: list.category,
-      itemCode: list.itemCode,
-      itemdDescription: list.itemdDescription,
-      uom: list.uom,
-      quantityOrdered: list.quantityOrdered,
+      customerName: list?.customerName,
+      customerType: list?.customerType,
+      category: list?.category,
+      itemCode: list?.itemCode,
+      itemdDescription: list?.itemdDescription,
+      uom: list?.uom,
+      quantityOrdered: list?.quantityOrdered,
     };
   });
   // console.log(duplicateList);
@@ -77,6 +78,7 @@ const OrdersConfirmation = ({
       department: list?.department,
       customercode: list?.customercode,
       customerName: list?.customerName,
+      customerType: list?.customerType,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
       dateNeeded: moment(list?.dateNeeded).format("yyyy-MM-DD"),
@@ -101,6 +103,7 @@ const OrdersConfirmation = ({
       department: list?.department,
       customercode: list?.customercode,
       customerName: list?.customerName,
+      customerType: list?.customerType,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
       dateNeeded: moment(list?.dateNeeded).format("yyyy-MM-DD"),
@@ -119,6 +122,7 @@ const OrdersConfirmation = ({
         department: list?.department,
         customercode: list?.customercode,
         customerName: list?.customerName,
+        customerType: list?.customerType,
         orderNo: list?.orderNo,
         orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
         dateNeeded: moment(list?.dateNeeded).format("yyyy-MM-DD"),
@@ -137,6 +141,7 @@ const OrdersConfirmation = ({
       department: list?.department,
       customercode: list?.customercode,
       customerName: list?.customerName,
+      customerType: list?.customerType,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
       dateNeeded: moment(list?.dateNeeded).format("yyyy-MM-DD"),
@@ -154,6 +159,7 @@ const OrdersConfirmation = ({
       department: list?.department,
       customercode: list?.customercode,
       customerName: list?.customerName,
+      customerType: list?.customerType,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
       dateNeeded: moment(list?.dateNeeded).format("yyyy-MM-DD"),
@@ -171,6 +177,7 @@ const OrdersConfirmation = ({
       department: list?.department,
       customercode: list?.customercode,
       customerName: list?.customerName,
+      customerType: list?.customerType,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
       dateNeeded: moment(list?.dateNeeded).format("yyyy-MM-DD"),
@@ -188,6 +195,7 @@ const OrdersConfirmation = ({
       department: list?.department,
       customercode: list?.customercode,
       customerName: list?.customerName,
+      customerType: list?.customerType,
       orderNo: list?.orderNo,
       orderDate: moment(list?.orderDate).format("yyyy-MM-DD"),
       dateNeeded: moment(list?.dateNeeded).format("yyyy-MM-DD"),
@@ -222,6 +230,7 @@ const OrdersConfirmation = ({
       department: list?.department,
       customercode: list?.customercode,
       customerName: list?.customerName,
+      customerType: list?.customerType,
       orderNo: list?.orderNo,
       batchNo: list?.batchNo,
       orderDate: list?.orderDate,
@@ -266,6 +275,7 @@ const OrdersConfirmation = ({
                   department: submit?.department,
                   customercode: submit?.customercode,
                   customerName: submit?.customerName,
+                  customerType: submit?.customerType,
                   orderNo: submit?.orderNo,
                   orderDate: moment(submit?.orderDate).format("yyyy-MM-DD"),
                   dateNeeded: moment(submit?.dateNeeded).format("yyyy-MM-DD"),
@@ -367,6 +377,9 @@ const OrdersConfirmation = ({
                                 Customer Name
                               </Th>
                               <Th color="white" fontSize="9px">
+                                Customer Type
+                              </Th>
+                              <Th color="white" fontSize="9px">
                                 Category
                               </Th>
                               <Th color="white" fontSize="9px">
@@ -407,6 +420,9 @@ const OrdersConfirmation = ({
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.customerType}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.category}
@@ -491,6 +507,9 @@ const OrdersConfirmation = ({
                                 Customer Name
                               </Th>
                               <Th color="white" fontSize="9px">
+                                Customer Type
+                              </Th>
+                              <Th color="white" fontSize="9px">
                                 Category
                               </Th>
                               <Th color="white" fontSize="9px">
@@ -531,6 +550,9 @@ const OrdersConfirmation = ({
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.customerName}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.customerType}
                                 </Td>
                                 <Td color="gray.600" fontSize="11px">
                                   {d?.category}

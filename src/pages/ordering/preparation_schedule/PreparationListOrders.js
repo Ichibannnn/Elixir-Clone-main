@@ -55,6 +55,8 @@ export const PreparationListOrders = ({
     itemDescription: "",
     uom: "",
     quantiyOrdered: "",
+    standardQuantity: "",
+
     // stockOnHand: "",
   });
   const [cancelId, setCancelId] = useState("");
@@ -92,6 +94,7 @@ export const PreparationListOrders = ({
     itemDescription,
     uom,
     quantityOrder,
+    standardQuantity,
     // stockOnHand,
   }) => {
     if (
@@ -100,7 +103,7 @@ export const PreparationListOrders = ({
       itemCode &&
       itemDescription &&
       uom &&
-      quantityOrder
+      standardQuantity
       // stockOnHand
     ) {
       setEditData({
@@ -110,6 +113,7 @@ export const PreparationListOrders = ({
         itemDescription: itemDescription,
         uom: uom,
         quantity: quantityOrder,
+        standardQuantity: standardQuantity,
         // stockOnHand: stockOnHand,
       });
       openEdit();
@@ -122,6 +126,7 @@ export const PreparationListOrders = ({
         itemDescription: "",
         uom: "",
         quantiy: "",
+        standardQuantity: "",
         // stockOnHand: "",
       });
     }
@@ -323,6 +328,9 @@ export const PreparationListOrders = ({
                 <Th color="white" fontSize="10px">
                   Quantity Order
                 </Th>
+                {/* <Th color="white" fontSize="10px">
+                  Edited Qty Order
+                </Th> */}
                 <Th color="white" fontSize="10px">
                   Reserve
                 </Th>
@@ -359,7 +367,8 @@ export const PreparationListOrders = ({
                   cursor="pointer"
                   key={i}
                 >
-                  {item.stockOnHand >= item.quantityOrder ? (
+                  {item.stockOnHand >= item.quantityOrder &&
+                  item.standardQuantity ? (
                     <Td>
                       <Checkbox
                         // size="sm"
@@ -391,6 +400,12 @@ export const PreparationListOrders = ({
                   <Td fontSize="xs">{item.itemCode}</Td>
                   <Td fontSize="xs">{item.itemDescription}</Td>
                   <Td fontSize="xs">{item.uom}</Td>
+                  {/* <Td fontSize="xs">
+                    {item.standardQuantity.toLocaleString(undefined, {
+                      maximumFractionDigits: 2,
+                      minimumFractionDigits: 2,
+                    })}
+                  </Td> */}
                   <Td fontSize="xs">
                     {item.quantityOrder.toLocaleString(undefined, {
                       maximumFractionDigits: 2,

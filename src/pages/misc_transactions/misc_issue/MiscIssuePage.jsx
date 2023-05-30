@@ -37,6 +37,7 @@ const MiscIssuePage = ({
 
   const customerRef = useRef();
   const remarksRef = useRef();
+  const transDate = useRef();
 
   const [customers, setCustomers] = useState([]);
   const [transactions, setTransactions] = useState([]);
@@ -186,15 +187,16 @@ const MiscIssuePage = ({
               rawMats={rawMats}
               barcodeNo={barcodeNo}
               setSelectorId={setSelectorId}
-              setCustomerData={setCustomerData}
               warehouseId={warehouseId}
               setWarehouseId={setWarehouseId}
               fetchActiveMiscIssues={fetchActiveMiscIssues}
+              setCustomerData={setCustomerData}
               customerData={customerData}
               customerRef={customerRef}
               remarks={remarks}
               setRemarks={setRemarks}
               remarksRef={remarksRef}
+              transDate={transDate}
               transactionDate={transactionDate}
               setTransactionDate={setTransactionDate}
             />
@@ -215,13 +217,14 @@ const MiscIssuePage = ({
                   totalQuantity={totalQuantity}
                   setTotalQuantity={setTotalQuantity}
                   customerData={customerData}
+                  setCustomerData={setCustomerData}
                   details={details}
+                  setDetails={setDetails}
                   selectorId={selectorId}
                   setSelectorId={setSelectorId}
                   miscData={miscData}
                   fetchActiveMiscIssues={fetchActiveMiscIssues}
                   customerRef={customerRef}
-                  setDetails={setDetails}
                   setRawMatsInfo={setRawMatsInfo}
                   //warehouse Id
                   warehouseId={warehouseId}
@@ -229,6 +232,7 @@ const MiscIssuePage = ({
                   remarks={remarks}
                   setRemarks={setRemarks}
                   remarksRef={remarksRef}
+                  transDate={transDate}
                   transactionDate={transactionDate}
                   setTransactionDate={setTransactionDate}
                 />

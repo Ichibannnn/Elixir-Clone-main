@@ -83,7 +83,7 @@ export const AddConfirmation = ({
           setRawMatsInfo({
             itemCode: "",
             itemDescription: "",
-            customer: rawMatsInfo.customerName,
+            customerName: rawMatsInfo.customerName,
             // customer: rawMatsInfo.customerName,
             uom: "",
             warehouseId: "",

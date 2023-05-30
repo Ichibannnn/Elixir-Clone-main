@@ -252,7 +252,10 @@ export const EditModal = ({
     editData?.itemDescription,
     editData?.uom,
     editData?.quantity,
+    // editData?.standardQuantity,
   ];
+
+  // console.log(editData.standardQuantity);
 
   return (
     <>
@@ -324,7 +327,7 @@ export const EditModal = ({
                 disabled={
                   !quantitySubmit ||
                   isLoading ||
-                  quantitySubmit > editData.quantity
+                  quantitySubmit > editData.standardQuantity
                 }
                 colorScheme="blue"
               >

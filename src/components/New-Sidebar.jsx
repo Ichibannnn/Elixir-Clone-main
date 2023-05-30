@@ -190,7 +190,7 @@ const SidebarHeader = () => {
 const SidebarFooter = () => {
   return (
     <Flex h="40px" fontSize="10px" textAlign="center" p={2}>
-      © 2022, Elixir ETD Powered by Process Automation (MIS)
+      © 2023, Elixir ETD Powered by Process Automation (MIS)
     </Flex>
   );
 };

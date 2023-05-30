@@ -312,12 +312,12 @@ export const ListOfCustomers = ({
                       <Th color="#D6D6D6" fontSize="10px">
                         Added By
                       </Th>
-                      <Th color="#D6D6D6" fontSize="10px">
+                      {/* <Th color="#D6D6D6" fontSize="10px">
                         Modified Date
                       </Th>
                       <Th color="#D6D6D6" fontSize="10px">
                         Modified By
-                      </Th>
+                      </Th> */}
                     </Tr>
                   </Thead>
                   <Tbody>
@@ -342,10 +342,10 @@ export const ListOfCustomers = ({
                             {moment(comp.dateAdded).format("yyyy/MM/DD")}
                           </Td>
                           <Td fontSize="12px">{comp.addedBy}</Td>
-                          <Td fontSize="12px">
+                          {/* <Td fontSize="12px">
                             {moment(comp.modifyDate).format("yyyy/MM/DD")}
                           </Td>
-                          <Td fontSize="12px">{comp.modifyBy}</Td>
+                          <Td fontSize="12px">{comp.modifyBy}</Td> */}
                           {/* <Td fontSize="12px">{comp.companyName}</Td> */}
                         </Tr>
                       ))}

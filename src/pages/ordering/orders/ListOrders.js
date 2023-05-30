@@ -60,6 +60,7 @@ export const ListOrders = ({
         department: item?.department_name,
         customerCode: item?.customer_code,
         customerName: item?.customer_name,
+        customerType: item?.order_type,
         itemCode: itemsub?.material_code,
         itemdDescription: itemsub?.material_name,
         category: itemsub?.category_name,
@@ -75,6 +76,8 @@ export const ListOrders = ({
       };
     })
   );
+
+  console.log(genusOrders);
 
   const dateVar = new Date();
   const startDate = moment(dateVar).format("yyyy-MM-DD");
@@ -103,6 +106,7 @@ export const ListOrders = ({
           department: submit?.department,
           customerCode: submit?.customerCode,
           customerName: submit?.customerName,
+          customerType: submit?.customerType,
           itemCode: submit?.itemCode,
           itemdDescription: submit?.itemdDescription,
           category: submit?.category,
@@ -323,6 +327,9 @@ export const ListOrders = ({
                             Customer
                           </Th>
                           <Th color="#D6D6D6" fontSize="10px">
+                            Customer Type
+                          </Th>
+                          <Th color="#D6D6D6" fontSize="10px">
                             Item Code
                           </Th>
                           <Th color="#D6D6D6" fontSize="10px">
@@ -369,6 +376,7 @@ export const ListOrders = ({
                                 {/* <Td fontSize="12px">{order.department_name}</Td> */}
                                 <Td fontSize="12px">{order.customer_code}</Td>
                                 <Td fontSize="12px">{order.customer_name}</Td>
+                                <Td fontSize="12px">{order.order_type}</Td>
                                 <Td fontSize="12px">{sub.material_code}</Td>
                                 <Td fontSize="12px">{sub.material_name}</Td>
                                 <Td fontSize="12px">{sub.category_name}</Td>

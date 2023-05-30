@@ -29,6 +29,7 @@ export const MaterialsInformation = ({
   details,
   setDetails,
   customerRef,
+  transDate,
   transactions,
   setTransaction,
   customers,
@@ -36,11 +37,11 @@ export const MaterialsInformation = ({
   uoms,
   barcodeNo,
   setSelectorId,
-  setCustomerData,
   setWarehouseId,
   warehouseId,
   fetchActiveMiscIssues,
   customerData,
+  setCustomerData,
   remarks,
   setRemarks,
   remarksRef,
@@ -53,7 +54,7 @@ export const MaterialsInformation = ({
     onOpen: openModal,
   } = useDisclosure();
 
-  console.log(transactionDate);
+  // console.log(transactionDate);
 
   const detailHandler = (data) => {
     if (data) {
@@ -61,7 +62,11 @@ export const MaterialsInformation = ({
     } else {
       setDetails("");
     }
+
+    // console.log(details);
   };
+
+  console.log(remarks);
 
   const customerHandler = (data) => {
     if (data) {
@@ -123,9 +128,9 @@ export const MaterialsInformation = ({
                 <Select
                   fontSize="xs"
                   onChange={(e) => customerHandler(e.target.value)}
+                  // placeholder="Select Customer"
                   ref={customerRef}
                   w="full"
-                  placeholder=" "
                   bgColor="#fff8dc"
                 >
                   {customers?.map((item, i) => (
@@ -157,7 +162,7 @@ export const MaterialsInformation = ({
                 <Select
                   fontSize="xs"
                   onChange={(e) => setRemarks(e.target.value)}
-                  ref={customerRef}
+                  ref={remarksRef}
                   w="full"
                   placeholder="Select Transaction Type"
                   bgColor="#fff8dc"
@@ -224,8 +229,8 @@ export const MaterialsInformation = ({
                 borderColor="gray.200"
                 py={1.5}
               >
-                {rawMatsInfo.customerName
-                  ? rawMatsInfo.customerName
+                {customerData.customerName
+                  ? customerData.customerName
                   : "Select a customer"}
               </Text>
             </HStack>
@@ -247,6 +252,7 @@ export const MaterialsInformation = ({
               <Input
                 type="date"
                 fontSize="xs"
+                ref={transDate}
                 pl={2}
                 w="full"
                 border="1px"
@@ -286,7 +292,12 @@ export const MaterialsInformation = ({
         <Flex w="full" justifyContent="end" mt={4}>
           <Button
             onClick={() => openModal()}
-            disabled={!rawMatsInfo.customerName || !details || !remarks}
+            disabled={
+              !rawMatsInfo.customerName ||
+              !details ||
+              !remarks ||
+              !transactionDate
+            }
             size="sm"
             colorScheme="blue"
           >

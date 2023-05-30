@@ -15,12 +15,12 @@ import PageScroll from "../../../utils/PageScroll";
 import moment from "moment";
 
 const fetchMiscellaenouseReceiptApi = async (dateFrom, dateTo) => {
-  const toAdd = new Date(dateTo);
-  const plus1 = toAdd?.setDate(toAdd?.getDate() + 1);
-  const formmattedDateFrom = moment(dateFrom).format("DD/MM/yyyy");
-  const formmattedDateTo = moment(plus1).format("DD/MM/yyyy");
+  // const toAdd = new Date(dateTo);
+  // const plus1 = toAdd?.setDate(toAdd?.getDate() + 1);
+  // const formmattedDateFrom = moment(dateFrom).format("DD/MM/yyyy");
+  // const formmattedDateTo = moment(plus1).format("DD/MM/yyyy");
   const res = await request.get(
-    `Reports/MiscellaneousReceiptReport?dateFrom=${formmattedDateFrom}&dateTo=${formmattedDateTo}`
+    `Reports/MiscellaneousReceiptReport?dateFrom=${dateFrom}&dateTo=${dateTo}`
   );
   return res.data;
 };
@@ -77,6 +77,9 @@ export const MiscReceiptHistory = ({
                   Receipt ID
                 </Th>
                 <Th color="white" fontSize="10px" fontWeight="semibold">
+                  Receipt Date
+                </Th>
+                <Th color="white" fontSize="10px" fontWeight="semibold">
                   Supplier Code
                 </Th>
                 <Th color="white" fontSize="10px" fontWeight="semibold">
@@ -100,15 +103,36 @@ export const MiscReceiptHistory = ({
                     <Th color="white" fontSize="10px" fontWeight="semibold">
                       Quantity
                     </Th>
-                  </>
-                ) : (
-                  <>
-                    {/* <Th color='white'>Expiration Date</Th> */}
                     <Th color="white" fontSize="10px" fontWeight="semibold">
                       Transact By
                     </Th>
                     <Th color="white" fontSize="10px" fontWeight="semibold">
                       Transaction Date
+                    </Th>
+                  </>
+                ) : (
+                  <>
+                    {/* <Th color='white'>Expiration Date</Th> */}
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Company Code
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Company Name
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Department Code
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Department Name
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Location Code
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Location Name
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Account Title
                     </Th>
                   </>
                 )}
@@ -118,6 +142,7 @@ export const MiscReceiptHistory = ({
               {miscReceiptData?.inventory?.map((item, i) => (
                 <Tr key={i}>
                   <Td fontSize="xs">{item.receiptId}</Td>
+                  <Td fontSize="xs">{item.receivingDate}</Td>
                   <Td fontSize="xs">{item.supplierCode}</Td>
                   <Td fontSize="xs">{item.supplierName}</Td>
                   {buttonChanger ? (
@@ -128,14 +153,21 @@ export const MiscReceiptHistory = ({
                       <Td fontSize="xs">{item.uom}</Td>
                       {/* <Td>{item.category}</Td> */}
                       <Td>{item.quantity}</Td>
-                    </>
-                  ) : (
-                    <>
-                      {/* <Td>{item.expirationDate}</Td> */}
                       <Td fontSize="xs">{item.transactBy}</Td>
                       <Td fontSize="xs">
                         {moment(item.transactDate).format("yyyy-MM-DD")}
                       </Td>
+                    </>
+                  ) : (
+                    <>
+                      {/* <Td>{item.expirationDate}</Td> */}
+                      <Td fontSize="xs">{item.companyCode}</Td>
+                      <Td fontSize="xs">{item.companyName}</Td>
+                      <Td fontSize="xs">{item.departmentCode}</Td>
+                      <Td fontSize="xs">{item.departmentName}</Td>
+                      <Td fontSize="xs">{item.locationCode}</Td>
+                      <Td fontSize="xs">{item.locationName}</Td>
+                      <Td fontSize="xs">{item.accountTitles}</Td>
                     </>
                   )}
                 </Tr>

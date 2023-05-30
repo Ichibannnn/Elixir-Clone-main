@@ -259,7 +259,9 @@ export const MaterialsInformation = ({
         <Flex w="full" justifyContent="end" mt={4} p={2}>
           <Button
             onClick={() => openModal()}
-            disabled={!rawMatsInfo.supplier || !details || !remarks}
+            disabled={
+              !rawMatsInfo.supplier || !details || !remarks || !transactionDate
+            }
             size="sm"
             colorScheme="blue"
             borderRadius="none"

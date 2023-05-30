@@ -69,8 +69,8 @@ const Reports = () => {
                   <option value={1}>Warehouse Receiving History</option>
                   <option value={2}>Move Order For Transaction History</option>
                   <option value={3}>Move Order Transacted History</option>
-                  <option value={4}>Miscellaneous Issue History</option>
-                  <option value={5}>Miscellaneous Receipt History</option>
+                  <option value={4}>Miscellaneous Receipt History</option>
+                  <option value={5}>Miscellaneous Issue History</option>
                   <option value={6}>Borrowed Materials History</option>
                   {/* <option value={5}>Transacted Mover Order</option> */}
                   <option value={7}>Cancelled Orders History</option>

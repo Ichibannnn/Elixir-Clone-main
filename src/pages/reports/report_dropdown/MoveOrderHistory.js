@@ -89,6 +89,9 @@ export const MoveOrderHistory = ({
                 <Th color="white" fontSize="10px" fontWeight="semibold">
                   Customer Name
                 </Th>
+                <Th color="white" fontSize="10px" fontWeight="semibold">
+                  Customer Type
+                </Th>
                 {buttonChanger ? (
                   <>
                     <Th color="white" fontSize="10px" fontWeight="semibold">
@@ -107,16 +110,6 @@ export const MoveOrderHistory = ({
                       Quantity
                     </Th>
                     <Th color="white" fontSize="10px" fontWeight="semibold">
-                      Batch Number
-                    </Th>
-                  </>
-                ) : (
-                  <>
-                    {/* <Th color='white'>Expiration Date</Th> */}
-                    <Th color="white" fontSize="10px" fontWeight="semibold">
-                      Transaction Type
-                    </Th>
-                    <Th color="white" fontSize="10px" fontWeight="semibold">
                       Move Order Date
                     </Th>
                     <Th color="white" fontSize="10px" fontWeight="semibold">
@@ -125,11 +118,41 @@ export const MoveOrderHistory = ({
                     <Th color="white" fontSize="10px" fontWeight="semibold">
                       Status
                     </Th>
-                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                    {/* <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Batch Number
+                    </Th> */}
+                  </>
+                ) : (
+                  <>
+                    {/* <Th color='white'>Expiration Date</Th> */}
+                    {/* <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Transaction Type
+                    {/* <Th color="white" fontSize="10px" fontWeight="semibold">
                       Transacted Date
                     </Th>
                     <Th color="white" fontSize="10px" fontWeight="semibold">
                       Transacted By
+                    </Th> */}
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Company Code
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Company Name
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Department Code
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Department Name
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Location Code
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Location Name
+                    </Th>
+                    <Th color="white" fontSize="10px" fontWeight="semibold">
+                      Account Title
                     </Th>
                   </>
                 )}
@@ -141,6 +164,7 @@ export const MoveOrderHistory = ({
                   <Td fontSize="xs">{item.moveOrderId}</Td>
                   <Td fontSize="xs">{item.customerCode}</Td>
                   <Td fontSize="xs">{item.customerName}</Td>
+                  <Td fontSize="xs">{item.customerType}</Td>
                   {buttonChanger ? (
                     <>
                       <Td fontSize="xs">{item.itemCode}</Td>
@@ -148,12 +172,6 @@ export const MoveOrderHistory = ({
                       <Td fontSize="xs">{item.uom}</Td>
                       <Td fontSize="xs">{item.category}</Td>
                       <Td fontSize="xs">{item.quantity}</Td>
-                      <Td fontSize="xs">{item.batchNo}</Td>
-                    </>
-                  ) : (
-                    <>
-                      {/* <Td>{item.expirationDate ? moment(item.expirationDate).format('yyyy-MM-DD') : ''}</Td> */}
-                      <Td fontSize="xs">{item.transactionType}</Td>
                       <Td fontSize="xs">
                         {item.moveOrderDate
                           ? moment(item.moveOrderDate).format("yyyy-MM-DD")
@@ -163,14 +181,28 @@ export const MoveOrderHistory = ({
                       <Td fontSize="xs">
                         {item.transactedDate ? "Transacted" : "For Transaction"}
                       </Td>
-                      <Td fontSize="xs">
+                      {/* <Td fontSize="xs">{item.batchNo}</Td> */}
+                    </>
+                  ) : (
+                    <>
+                      {/* <Td>{item.expirationDate ? moment(item.expirationDate).format('yyyy-MM-DD') : ''}</Td> */}
+                      {/* <Td fontSize="xs">{item.transactionType}</Td> */}
+
+                      {/* <Td fontSize="xs">
                         {item.transactedDate
                           ? moment(item.transactedDate).format("yyyy-MM-DD")
                           : ""}
                       </Td>
                       <Td fontSize="xs">
                         {item.transactedBy ? item.transactedBy : ""}
-                      </Td>
+                      </Td> */}
+                      <Td fontSize="xs">{item.companyCode}</Td>
+                      <Td fontSize="xs">{item.companyName}</Td>
+                      <Td fontSize="xs">{item.departmentCode}</Td>
+                      <Td fontSize="xs">{item.departmentName}</Td>
+                      <Td fontSize="xs">{item.locationCode}</Td>
+                      <Td fontSize="xs">{item.locationName}</Td>
+                      <Td fontSize="xs">{item.accountTitles}</Td>
                     </>
                   )}
                 </Tr>

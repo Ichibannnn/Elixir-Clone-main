@@ -414,7 +414,8 @@ export const EditModal = ({
                         fontSize="11px"
                         size="sm"
                         placeholder="Please provide batch number (Required)"
-                        bgColor="#ffffe0"
+                        bgColor="white"
+                        // bgColor="#ffffe0"
                         onChange={(e) => batchNoProvider(e.target.value)}
                       />
                     </FormLabel>
@@ -451,6 +452,7 @@ export const EditModal = ({
                           fontSize="11px"
                           onChange={(e) => lotSectionProvider(e.target.value)}
                           disabled={!receivingDate}
+                          placeholder="Select a lot section"
                           title={
                             !receivingDate
                               ? "Please provide a Receiving Date first"

@@ -192,6 +192,7 @@ export const ViewListIssue = () => {
                       }
                       colorScheme="blue"
                       size="xs"
+                      borderRadius="none"
                     >
                       View
                     </Button>
