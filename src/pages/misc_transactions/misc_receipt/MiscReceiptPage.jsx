@@ -28,6 +28,11 @@ const fetchReceiptsApi = async (pageNumber, pageSize, search, status) => {
   return res.data;
 };
 
+const fetchTransactApi = async () => {
+  const res = await request.get(`TransactionType/GetAllActiveTransactionType`);
+  return res.data;
+};
+
 const MiscReceiptPage = () => {
   const supplierRef = useRef();
   const remarksRef = useRef();
@@ -35,6 +40,7 @@ const MiscReceiptPage = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [materials, setMaterials] = useState([]);
   const [uoms, setUoms] = useState([]);
+  const [transactionType, setTransactionType] = useState([]);
 
   const [totalQuantity, setTotalQuantity] = useState("");
   const [supplierData, setSupplierData] = useState({
@@ -47,13 +53,11 @@ const MiscReceiptPage = () => {
   const [rawMatsInfo, setRawMatsInfo] = useState({
     itemCode: "",
     itemDescription: "",
-    supplier: "",
+    supplierName: "",
     uom: "",
     //   expirationDate: '',
     quantity: "",
   });
-  const [details, setDetails] = useState("");
-  const [remarks, setRemarks] = useState("");
 
   const [listDataTempo, setListDataTempo] = useState([]);
   const [selectorId, setSelectorId] = useState("");
@@ -61,6 +65,8 @@ const MiscReceiptPage = () => {
 
   const [editableData, setEditableData] = useState({});
   const [transactionDate, setTransactionDate] = useState("");
+  const [details, setDetails] = useState("");
+  const [remarks, setRemarks] = useState("");
 
   //Supplier Fetching
   const fetchSuppliers = () => {
@@ -104,6 +110,21 @@ const MiscReceiptPage = () => {
 
     return () => {
       setUoms([]);
+    };
+  }, []);
+
+  // Fetch Transaction Type
+  const fetchTransaction = () => {
+    fetchTransactApi().then((res) => {
+      setTransactionType(res);
+    });
+  };
+
+  useEffect(() => {
+    fetchTransaction();
+
+    return () => {
+      setTransactionType([]);
     };
   }, []);
 
@@ -200,11 +221,14 @@ const MiscReceiptPage = () => {
               materials={materials}
               uoms={uoms}
               setSelectorId={setSelectorId}
+              supplierData={supplierData}
               setSupplierData={setSupplierData}
               supplierRef={supplierRef}
               remarks={remarks}
               setRemarks={setRemarks}
               remarksRef={remarksRef}
+              transactionType={transactionType}
+              setTransactionType={setTransactionType}
               transactionDate={transactionDate}
               setTransactionDate={setTransactionDate}
             />
@@ -224,6 +248,7 @@ const MiscReceiptPage = () => {
                   setListDataTempo={setListDataTempo}
                   totalQuantity={totalQuantity}
                   supplierData={supplierData}
+                  setSupplierData={setSupplierData}
                   editableData={editableData}
                   selectorId={selectorId}
                   supplierRef={supplierRef}

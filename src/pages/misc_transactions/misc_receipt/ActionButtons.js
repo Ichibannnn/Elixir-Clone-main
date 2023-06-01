@@ -11,12 +11,15 @@ export const ActionButtons = ({
   rowIndex,
   totalQuantity,
   supplierData,
+  setSupplierData,
   supplierRef,
   setDetails,
   setRawMatsInfo,
   remarks,
   setRemarks,
   remarksRef,
+  transactionDate,
+  setTransactionDate,
 }) => {
   const {
     isOpen: isEdit,
@@ -89,12 +92,15 @@ export const ActionButtons = ({
           setListDataTempo={setListDataTempo}
           totalQuantity={totalQuantity}
           supplierData={supplierData}
+          setSupplierData={setSupplierData}
           supplierRef={supplierRef}
           setDetails={setDetails}
           setRawMatsInfo={setRawMatsInfo}
           remarks={remarks}
           setRemarks={setRemarks}
           remarksRef={remarksRef}
+          transactionDate={transactionDate}
+          setTransactionDate={setTransactionDate}
         />
       )}
 

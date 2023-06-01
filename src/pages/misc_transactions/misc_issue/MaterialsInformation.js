@@ -63,10 +63,10 @@ export const MaterialsInformation = ({
       setDetails("");
     }
 
-    // console.log(details);
+    console.log(details);
   };
 
-  console.log(remarks);
+  // console.log(transactionDate);
 
   const customerHandler = (data) => {
     if (data) {
@@ -122,13 +122,13 @@ export const MaterialsInformation = ({
                 py={2.5}
                 fontSize="xs"
               >
-                Customer:{" "}
+                Customer Code:{" "}
               </Text>
               {customers.length > 0 ? (
                 <Select
                   fontSize="xs"
                   onChange={(e) => customerHandler(e.target.value)}
-                  // placeholder="Select Customer"
+                  placeholder="Select Customer Code"
                   ref={customerRef}
                   w="full"
                   bgColor="#fff8dc"
@@ -231,7 +231,7 @@ export const MaterialsInformation = ({
               >
                 {customerData.customerName
                   ? customerData.customerName
-                  : "Select a customer"}
+                  : "Please select a customer code"}
               </Text>
             </HStack>
 
@@ -252,11 +252,12 @@ export const MaterialsInformation = ({
               <Input
                 type="date"
                 fontSize="xs"
-                ref={transDate}
+                onChange={(e) => setTransactionDate(e.target.value)}
+                // ref={transDate}
+                value={transactionDate}
                 pl={2}
                 w="full"
                 border="1px"
-                onChange={(e) => setTransactionDate(e.target.value)}
                 // defaultValue={moment(new Date()).format("yyyy-MM-DD")}
                 max={moment(new Date()).format("yyyy-MM-DD")}
                 bgColor="#fff8dc"
@@ -317,11 +318,11 @@ export const MaterialsInformation = ({
           uoms={uoms}
           barcodeNo={barcodeNo}
           setSelectorId={setSelectorId}
-          setCustomerData={setCustomerData}
           warehouseId={warehouseId}
           setWarehouseId={setWarehouseId}
           fetchActiveMiscIssues={fetchActiveMiscIssues}
           customerData={customerData}
+          setCustomerData={setCustomerData}
           isOpen={isModal}
           onClose={closeModal}
           remarks={remarks}

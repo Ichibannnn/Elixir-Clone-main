@@ -134,6 +134,7 @@ const MiscIssuePage = ({
       fetchCustomers();
       fetchRawMats();
       fetchBarcodeNo();
+      fetchTransaction();
     }
   }, [navigation]);
 

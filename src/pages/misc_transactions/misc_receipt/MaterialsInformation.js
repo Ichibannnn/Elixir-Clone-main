@@ -36,12 +36,16 @@ export const MaterialsInformation = ({
   materials,
   uoms,
   setSelectorId,
+  supplierData,
   setSupplierData,
   supplierRef,
   remarks,
   setRemarks,
+  remarksRef,
   transactionDate,
   setTransactionDate,
+  transactionType,
+  setTransactionType,
 }) => {
   const {
     isOpen: isModal,
@@ -70,6 +74,9 @@ export const MaterialsInformation = ({
     }
   };
 
+  // console.log(supplierData?.supplierName);
+  console.log(transactionDate);
+
   const supplierHandler = (data) => {
     if (data) {
       const newData = JSON.parse(data);
@@ -78,7 +85,7 @@ export const MaterialsInformation = ({
       setRawMatsInfo({
         itemCode: rawMatsInfo.itemCode,
         itemDescription: rawMatsInfo.itemDescription,
-        supplier: supplierName,
+        supplierName: supplierName,
         uom: rawMatsInfo.uom,
         // expirationDate: rawMatsInfo.expirationDate,
         quantity: rawMatsInfo.quantity,
@@ -91,7 +98,7 @@ export const MaterialsInformation = ({
       setRawMatsInfo({
         itemCode: rawMatsInfo.itemCode,
         itemDescription: rawMatsInfo.itemDescription,
-        supplier: "",
+        supplierName: "",
         uom: rawMatsInfo.uom,
         // expirationDate: rawMatsInfo.expirationDate,
         quantity: rawMatsInfo.quantity,
@@ -125,7 +132,7 @@ export const MaterialsInformation = ({
                 py={2.5}
                 fontSize="xs"
               >
-                Supplier:{" "}
+                Supplier Code:{" "}
               </Text>
               {suppliers.length > 0 ? (
                 <Select
@@ -153,7 +160,7 @@ export const MaterialsInformation = ({
               <Text
                 minW="50%"
                 w="auto"
-                bgColor="primary"
+                bgColor="secondary"
                 color="white"
                 pl={2}
                 py={2.5}
@@ -161,16 +168,24 @@ export const MaterialsInformation = ({
               >
                 Transaction Type:{" "}
               </Text>
-              <Select
-                fontSize="xs"
-                onChange={(e) => setRemarks(e.target.value)}
-                placeholder="Select Transact Type"
-                bgColor="#ffffe0"
-              >
-                <option value="Adjustment">Adjustment</option>
-                <option value="Transfer">Transfer</option>
-                <option value="Deal Item">Deal Item</option>
-              </Select>
+              {transactionType?.length > 0 ? (
+                <Select
+                  fontSize="xs"
+                  onChange={(e) => setRemarks(e.target.value)}
+                  ref={remarksRef}
+                  w="full"
+                  placeholder="Select Transaction Type"
+                  bgColor="#fff8dc"
+                >
+                  {transactionType?.map((tt) => (
+                    <option key={tt.id} value={tt.transactionName}>
+                      {tt.transactionName}
+                    </option>
+                  ))}
+                </Select>
+              ) : (
+                <Spinner />
+              )}
             </HStack>
           </VStack>
 
@@ -198,9 +213,9 @@ export const MaterialsInformation = ({
                 pl={2}
                 py={1.5}
               >
-                {rawMatsInfo.supplier
-                  ? rawMatsInfo.supplier
-                  : "Please select a supplier"}
+                {supplierData.supplierName
+                  ? supplierData.supplierName
+                  : "Please select a supplier code"}
               </Text>
             </HStack>
 
@@ -225,6 +240,7 @@ export const MaterialsInformation = ({
                 w="full"
                 border="1px"
                 onChange={(e) => setTransactionDate(e.target.value)}
+                value={transactionDate}
                 // defaultValue={moment(new Date()).format("yyyy-MM-DD")}
                 max={moment(new Date()).format("yyyy-MM-DD")}
                 bgColor="#fff8dc"
@@ -260,7 +276,10 @@ export const MaterialsInformation = ({
           <Button
             onClick={() => openModal()}
             disabled={
-              !rawMatsInfo.supplier || !details || !remarks || !transactionDate
+              !supplierData.supplierName ||
+              !details ||
+              !remarks ||
+              !transactionDate
             }
             size="sm"
             colorScheme="blue"
@@ -288,6 +307,7 @@ export const MaterialsInformation = ({
           remarks={remarks}
           transactionDate={transactionDate}
           setTransactionDate={setTransactionDate}
+          supplierData={supplierData}
         />
       )}
     </Flex>
@@ -310,6 +330,7 @@ export const RawMatsInfoModal = ({
   remarks,
   transactionDate,
   setTransactionDate,
+  supplierData,
 }) => {
   const { isOpen: isAdd, onClose: closeAdd, onOpen: openAdd } = useDisclosure();
   const openAddConfirmation = () => {
@@ -325,7 +346,7 @@ export const RawMatsInfoModal = ({
       setRawMatsInfo({
         itemCode: itemCode,
         itemDescription: itemDescription,
-        supplier: rawMatsInfo.supplier,
+        supplierName: rawMatsInfo.supplierName,
         uom: uom,
         // expirationDate: rawMatsInfo.expirationDate,
         quantity: rawMatsInfo.quantity,
@@ -334,7 +355,7 @@ export const RawMatsInfoModal = ({
       setRawMatsInfo({
         itemCode: "",
         itemDescription: "",
-        supplier: rawMatsInfo.supplier,
+        supplierName: rawMatsInfo.supplierName,
         uom: "",
         // expirationDate: rawMatsInfo.expirationDate,
         quantity: rawMatsInfo.quantity,
@@ -374,7 +395,6 @@ export const RawMatsInfoModal = ({
                   >
                     Item Code:{" "}
                   </Text>
-                  \
                   {materials.length > 0 ? (
                     <Select
                       onChange={(e) => itemCodeHandler(e.target.value)}
@@ -429,9 +449,9 @@ export const RawMatsInfoModal = ({
                       setRawMatsInfo({
                         itemCode: rawMatsInfo.itemCode,
                         itemDescription: rawMatsInfo.itemDescription,
-                        supplier: rawMatsInfo.supplier,
+                        supplierName: rawMatsInfo.supplierName,
                         uom: rawMatsInfo.uom,
-                        expirationDate: rawMatsInfo.expirationDate,
+                        // expirationDate: rawMatsInfo.expirationDate,
                         quantity: Number(e.target.value),
                       })
                     }
@@ -510,7 +530,7 @@ export const RawMatsInfoModal = ({
                 onClick={openAddConfirmation}
                 disabled={
                   !rawMatsInfo.itemCode ||
-                  !rawMatsInfo.supplier ||
+                  !rawMatsInfo.supplierName ||
                   !rawMatsInfo.uom ||
                   !rawMatsInfo.quantity ||
                   !details
@@ -543,6 +563,7 @@ export const RawMatsInfoModal = ({
           remarks={remarks}
           transactionDate={transactionDate}
           setTransactionDate={setTransactionDate}
+          supplierData={supplierData}
         />
       )}
     </>

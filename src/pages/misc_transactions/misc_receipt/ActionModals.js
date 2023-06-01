@@ -45,6 +45,7 @@ export const AddConfirmation = ({
   setSelectorId,
   remarks,
   transactionDate,
+  supplierData,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -53,7 +54,8 @@ export const AddConfirmation = ({
     const addToArray = {
       itemCode: rawMatsInfo.itemCode,
       itemDescription: rawMatsInfo.itemDescription,
-      supplier: rawMatsInfo.supplier,
+      supplierName: rawMatsInfo.supplierName,
+      supplierCode: supplierData.supplierCode,
       uom: rawMatsInfo.uom,
       quantity: rawMatsInfo.quantity,
       description: details,
@@ -64,7 +66,7 @@ export const AddConfirmation = ({
     setRawMatsInfo({
       itemCode: "",
       itemDescription: "",
-      supplier: rawMatsInfo.supplier,
+      supplierName: rawMatsInfo.supplierName,
       uom: "",
       quantity: "",
     });
@@ -134,6 +136,7 @@ export const SaveConfirmation = ({
   listDataTempo,
   setListDataTempo,
   supplierData,
+  setSupplierData,
   totalQuantity,
   supplierRef,
   setDetails,
@@ -142,7 +145,7 @@ export const SaveConfirmation = ({
   setRemarks,
   remarksRef,
   transactionDate,
-  setTransationDate,
+  setTransactionDate,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
@@ -273,10 +276,9 @@ export const SaveConfirmation = ({
       supplier: supplierData.supplierName,
       totalQuantity: totalQuantity,
       details: listDataTempo[0]?.description,
-      remarks: listDataTempo[0]?.remarks,
-      transactionDate: listDataTempo[0]?.transactionDate,
+      remarks: remarks,
       preparedBy: currentUser?.fullName,
-      transactionDate: listDataTempo[0]?.transactionDate,
+      transactionDate: transactionDate,
       companyCode: company?.find((x) => x.id === data.formData.companyId)?.code,
       companyName: company?.find((x) => x.id === data.formData.companyId)?.name,
       departmentCode: department?.find(
@@ -313,7 +315,7 @@ export const SaveConfirmation = ({
                   itemCode: item.itemCode,
                   itemDescription: item.itemDescription,
                   uom: item.uom,
-                  supplier: item.supplier,
+                  supplier: item.supplierName,
                   // expiration: item.expirationDate,
                   actualGood: item.quantity,
                   details: item.description,
@@ -336,9 +338,13 @@ export const SaveConfirmation = ({
                 setListDataTempo([]);
                 supplierRef.current.value = "";
                 remarksRef.current.value = "";
-                setTransationDate("");
+                console.log("done");
+                setTransactionDate("");
                 setDetails("");
                 setRemarks("");
+                setSupplierData({
+                  supplierName: "",
+                });
                 setRawMatsInfo({
                   itemCode: "",
                   itemDescription: "",

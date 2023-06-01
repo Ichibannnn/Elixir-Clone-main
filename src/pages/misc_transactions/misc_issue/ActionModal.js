@@ -262,6 +262,8 @@ export const SaveConfirmation = ({
   setRemarks,
   remarksRef,
   transactionDate,
+  setTransactionDate,
+  // transDate,
 }) => {
   const toast = useToast();
   // const [isLoading, setIsLoading] = useState(false);
@@ -463,7 +465,9 @@ export const SaveConfirmation = ({
                         onClose();
                         console.log("done");
                         setTotalQuantity("");
+                        setTransactionDate("");
                         customerRef.current.value = "";
+                        // transDate.current.value = "";
                         setCustomerData({
                           customerName: "",
                         });
