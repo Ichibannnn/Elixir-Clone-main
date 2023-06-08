@@ -19,6 +19,12 @@ const fetchRawMatsApi = async () => {
   const res = await request.get(`Material/GetAllActiveMaterials`);
   return res.data;
 };
+
+const fetchTransactApi = async () => {
+  const res = await request.get(`TransactionType/GetAllActiveTransactionType`);
+  return res.data;
+};
+
 const fetchBarcodeNoApi = async (itemCode) => {
   const res = await request.get(
     `Miscellaneous/GetAllAvailableStocksForMIsssue?itemcode=${itemCode}`
@@ -38,6 +44,7 @@ const BorrowedMaterialsPage = ({
   const remarksRef = useRef();
 
   const [customers, setCustomers] = useState([]);
+  const [transactions, setTransactions] = useState([]);
   const [rawMats, setRawMats] = useState([]);
 
   const [barcodeNo, setBarcodeNo] = useState([]);
@@ -59,11 +66,11 @@ const BorrowedMaterialsPage = ({
   });
   const [details, setDetails] = useState("");
   const [remarks, setRemarks] = useState("");
+  const [transactionDate, setTransactionDate] = useState("");
 
   const itemCode = rawMatsInfo.itemCode;
 
   const [selectorId, setSelectorId] = useState("");
-  const [transactionDate, setTransactionDate] = useState("");
 
   //Customer Fetching
   const fetchCustomers = () => {
@@ -95,6 +102,23 @@ const BorrowedMaterialsPage = ({
     };
   }, []);
 
+  //Transaction Type Fetching
+  const fetchTransaction = () => {
+    fetchTransactApi().then((res) => {
+      setTransactions(res);
+    });
+  };
+
+  useEffect(() => {
+    fetchTransaction();
+
+    return () => {
+      setTransactions([]);
+    };
+  }, []);
+
+  // console.log(transactions);
+
   //Barcode (Warehouse ID)
   const fetchBarcodeNo = () => {
     fetchBarcodeNoApi(itemCode).then((res) => {
@@ -116,6 +140,7 @@ const BorrowedMaterialsPage = ({
       fetchCustomers();
       fetchRawMats();
       fetchBarcodeNo();
+      fetchTransaction();
     }
   }, [borrowedNav]);
 
@@ -180,13 +205,15 @@ const BorrowedMaterialsPage = ({
               details={details}
               setDetails={setDetails}
               customers={customers}
+              transactions={transactions}
+              setTransactions={setTransactions}
               rawMats={rawMats}
               barcodeNo={barcodeNo}
               setSelectorId={setSelectorId}
-              setCustomerData={setCustomerData}
               warehouseId={warehouseId}
               setWarehouseId={setWarehouseId}
               fetchActiveBorrowed={fetchActiveBorrowed}
+              setCustomerData={setCustomerData}
               customerData={customerData}
               customerRef={customerRef}
               remarks={remarks}
@@ -212,13 +239,14 @@ const BorrowedMaterialsPage = ({
                   totalQuantity={totalQuantity}
                   setTotalQuantity={setTotalQuantity}
                   customerData={customerData}
+                  setCustomerData={setCustomerData}
                   details={details}
+                  setDetails={setDetails}
                   selectorId={selectorId}
                   setSelectorId={setSelectorId}
                   borrowedData={borrowedData}
                   fetchActiveBorrowed={fetchActiveBorrowed}
                   customerRef={customerRef}
-                  setDetails={setDetails}
                   setRawMatsInfo={setRawMatsInfo}
                   //warehouse Id
                   warehouseId={warehouseId}

@@ -95,6 +95,7 @@ const ImportOrder = () => {
       trasactId: item?.transaction_id,
       customercode: item?.customer_code,
       customerName: item?.customer_name,
+      customerType: item?.customer_type,
       department: item?.department,
       orderNo: item?.order_no,
       orderDate: moment(newOrderDate).format("yyyy-MM-DD"),
@@ -107,7 +108,7 @@ const ImportOrder = () => {
     };
   });
 
-  console.log(resultArray);
+  // console.log(resultArray);
 
   const submitFile = (resultArray) => {
     Swal.fire({
@@ -135,6 +136,7 @@ const ImportOrder = () => {
                   department: item?.department,
                   customercode: item?.customercode,
                   customerName: item?.customerName,
+                  customerType: item?.customerType,
                   orderNo: item?.orderNo,
                   orderDate: moment(item?.orderDate).format("yyyy-MM-DD"),
                   dateNeeded: moment(item?.dateNeeded).format("yyyy-MM-DD"),
@@ -225,6 +227,9 @@ const ImportOrder = () => {
                     Customer Name
                   </Th>
                   <Th h="40px" color="white" fontSize="10px">
+                    Customer Type
+                  </Th>
+                  <Th h="40px" color="white" fontSize="10px">
                     Category
                   </Th>
                   <Th h="40px" color="white" fontSize="10px">
@@ -297,6 +302,16 @@ const ImportOrder = () => {
                     <Td fontSize="xs">
                       {ed.customerName ? (
                         ed.customerName
+                      ) : (
+                        <Text fontWeight="semibold" color="danger">
+                          Data missing. Please make sure correct excel file for
+                          Import Order is uploaded.
+                        </Text>
+                      )}
+                    </Td>
+                    <Td fontSize="xs">
+                      {ed.customerType ? (
+                        ed.customerType
                       ) : (
                         <Text fontWeight="semibold" color="danger">
                           Data missing. Please make sure correct excel file for

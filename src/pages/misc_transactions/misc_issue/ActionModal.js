@@ -467,20 +467,16 @@ export const SaveConfirmation = ({
                         setTotalQuantity("");
                         setTransactionDate("");
                         customerRef.current.value = "";
-                        // transDate.current.value = "";
                         setCustomerData({
                           customerName: "",
                         });
                         remarksRef.current.value = "";
                         setDetails("");
-                        // setCustomerData("");
                         setRawMatsInfo({
                           itemCode: "",
                           itemDescription: "",
                           supplier: "",
                           uom: "",
-                          // customerName: "",
-                          // expirationDate: '',
                           quantity: "",
                         });
                         setIsLoading(false);

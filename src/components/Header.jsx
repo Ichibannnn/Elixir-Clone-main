@@ -17,7 +17,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { decodeUser } from "../services/decode-user";
 
-const Header = ({ setSidebarHandler }) => {
+const Header = ({ toggleSidebar }) => {
   const user = decodeUser();
   var navigate = useNavigate();
 
@@ -40,8 +40,9 @@ const Header = ({ setSidebarHandler }) => {
       <Flex>
         <GiHamburgerMenu
           color="#D1D2D5"
+          cursor="pointer"
           w="40%"
-          onClick={() => setSidebarHandler((x) => !x)}
+          onClick={() => toggleSidebar()}
         />
       </Flex>
 

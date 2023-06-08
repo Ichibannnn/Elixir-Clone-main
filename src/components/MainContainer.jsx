@@ -11,8 +11,12 @@ import PageScroll from "../utils/PageScroll";
 
 const MainContainer = () => {
   const [navBarData, setNavbarData] = useState([]);
-  const [isMobile] = useMediaQuery("(max-width: 1290px)");
+  const [isMobile] = useMediaQuery("(max-width: 1100px)");
   const [sidebarHandler, setSidebarHandler] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarHandler((prev) => !prev);
+  };
 
   useEffect(() => {
     setSidebarHandler(isMobile);
@@ -20,9 +24,9 @@ const MainContainer = () => {
 
   return (
     <Flex bgColor="form" maxHeight="100vh">
-      {isMobile || sidebarHandler || <Sidebar setNavbarData={setNavbarData} />}
+      {!sidebarHandler && <Sidebar setNavbarData={setNavbarData} />}
       <Flex flexDirection="column" width="full">
-        <Header setSidebarHandler={setSidebarHandler} />
+        <Header toggleSidebar={toggleSidebar} />
         {/* <Navbar navBarData={navBarData} /> */}
         <PageScroll maxHeight="100vh">
           <MainContent />

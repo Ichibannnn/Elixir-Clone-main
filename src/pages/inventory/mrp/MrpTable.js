@@ -194,6 +194,8 @@ export const MrpTable = ({
                   <Th color="white">{`Receipt (IN)`}</Th>
                   <Th color="white">{`Move Order (OUT)`}</Th>
                   <Th color="white">{`Issue (OUT)`}</Th>
+                  <Th color="white">{`Borrowed Qty`}</Th>
+                  <Th color="white">{`Returned Qty`}</Th>
                   <Th color="white">Average Issuance</Th>
                   <Th color="white">Days Level</Th>
                 </>
@@ -288,6 +290,18 @@ export const MrpTable = ({
                     </Td>
                     <Td fontSize="xs">
                       {item.issueOut?.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                        minimumFractionDigits: 2,
+                      })}
+                    </Td>
+                    <Td fontSize="xs">
+                      {item.borrowedDepartment?.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                        minimumFractionDigits: 2,
+                      })}
+                    </Td>
+                    <Td fontSize="xs">
+                      {item.returnedBorrowed?.toLocaleString(undefined, {
                         maximumFractionDigits: 2,
                         minimumFractionDigits: 2,
                       })}

@@ -113,6 +113,8 @@ const MiscIssuePage = ({
     };
   }, []);
 
+  // console.log(transactions);
+
   //Barcode (Warehouse ID)
   const fetchBarcodeNo = () => {
     fetchBarcodeNoApi(itemCode).then((res) => {

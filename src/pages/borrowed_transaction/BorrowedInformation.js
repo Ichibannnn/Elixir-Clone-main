@@ -30,6 +30,7 @@ export const BorrowedInformation = ({
   setDetails,
   customerRef,
   customers,
+  transactions,
   rawMats,
   uoms,
   barcodeNo,
@@ -91,6 +92,8 @@ export const BorrowedInformation = ({
       });
     }
   };
+
+  // console.log(transactions);
 
   return (
     <Flex justifyContent="center" flexDirection="column" w="full">
@@ -155,7 +158,25 @@ export const BorrowedInformation = ({
               >
                 Transaction Type:{" "}
               </Text>
-
+              {/* 
+              {transactions?.length > 0 ? (
+                <Select
+                  fontSize="xs"
+                  onChange={(e) => setRemarks(e.target.value)}
+                  ref={remarksRef}
+                  w="full"
+                  placeholder="Select Transaction Type"
+                  bgColor="#fff8dc"
+                >
+                  {transactions?.map((tt) => (
+                    <option key={tt.id} value={tt.transactionName}>
+                      {tt.transactionName}
+                    </option>
+                  ))}
+                </Select>
+              ) : (
+                <Spinner />
+              )} */}
               <Select
                 fontSize="xs"
                 onChange={(e) => setRemarks(e.target.value)}
@@ -193,8 +214,8 @@ export const BorrowedInformation = ({
                 borderColor="gray.200"
                 py={1.5}
               >
-                {rawMatsInfo.customerName
-                  ? rawMatsInfo.customerName
+                {customerData.customerName
+                  ? customerData.customerName
                   : "Select a customer"}
               </Text>
             </HStack>

@@ -21,146 +21,47 @@ import {
   HStack,
   ModalOverlay,
   useDisclosure,
+  Select,
 } from "@chakra-ui/react";
-import request from "../../../services/ApiClient";
-import PageScroll from "../../../utils/PageScroll";
+import request from "../../../../services/ApiClient";
+import PageScroll from "../../../../utils/PageScroll";
 import moment from "moment";
-import { EditModal } from "./ActionModalBorrowed";
-import { ToastComponent } from "../../../components/Toast";
 import Swal from "sweetalert2";
+import { ToastComponent } from "../../../../components/Toast";
+import { decodeUser } from "../../../../services/decode-user";
 
-export const ViewModal = ({
+const currentUser = decodeUser();
+
+export const ViewModalApproval = ({
   isOpen,
   onClose,
   statusBody,
   fetchBorrowed,
   setIsLoading,
 }) => {
-  // console.log(statusBody)
-  const {
-    isOpen: isEdit,
-    onOpen: openEdit,
-    onClose: closeEdit,
-  } = useDisclosure();
-
   const [borrowedDetailsData, setBorrowedDetailsData] = useState([]);
-  const [editData, setEditData] = useState({
-    id: "",
-    itemCode: "",
-    itemDescription: "",
-    returnQuantity: "",
-    consumes: "",
-    quantity: "",
-  });
-
   const toast = useToast();
 
-  // console.log(statusBody.id);
+  console.log(statusBody);
 
-  const id = statusBody.id;
-  const fetchBorrowedDetailsApi = async (id) => {
+  const idparams = statusBody?.id;
+  const fetchBorrowedDetailsApi = async (idparams) => {
     const res = await request.get(
-      `Borrowed/GetAllDetailsInBorrowedIssue?id=${id}`
+      `Borrowed/ViewBorrowedReturnDetails?id=${idparams}`
     );
     return res.data;
   };
 
   const fetchBorrowedDetails = () => {
-    fetchBorrowedDetailsApi(id).then((res) => {
+    fetchBorrowedDetailsApi(idparams).then((res) => {
       setBorrowedDetailsData(res);
     });
   };
+  //   console.log(borrowedDetailsData);
 
   useEffect(() => {
     fetchBorrowedDetails();
-  }, [id]);
-
-  const editHandler = ({
-    id,
-    itemCode,
-    itemDescription,
-    returnQuantity,
-    consumes,
-    quantity,
-  }) => {
-    if (
-      id &&
-      itemCode &&
-      itemDescription &&
-      returnQuantity >= 0 &&
-      consumes >= 0 &&
-      quantity
-      //   id &&
-      //   itemCode &&
-      //   itemDescription &&
-      //   returnQuantity > 0 &&
-      //   consumes > 0 &&
-      //   quantity
-    ) {
-      setEditData({
-        id: id,
-        itemCode: itemCode,
-        itemDescription: itemDescription,
-        returnQuantity: returnQuantity,
-        consumes: consumes,
-        quantity: quantity,
-      });
-      openEdit();
-    } else {
-      setEditData({
-        id: "",
-        itemCode: "",
-        itemDescription: "",
-        returnQuantity: "",
-        consumes: "",
-        quantity: "",
-      });
-    }
-  };
-
-  const submitBody = () => {
-    Swal.fire({
-      title: "Confirmation!",
-      text: "Are you sure you want to save this information?",
-      icon: "info",
-      color: "black",
-      background: "white",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#CBD1D8",
-      confirmButtonText: "Yes",
-      heightAuto: false,
-      width: "40em",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        try {
-          if (statusBody.id) {
-            const res = request
-              .put(`Borrowed/SaveReturnedQuantity`, [{ id: statusBody.id }])
-              .then((res) => {
-                fetchBorrowed();
-                ToastComponent(
-                  "Success",
-                  "Returned materials was saved",
-                  "success",
-                  toast
-                );
-                onClose();
-              })
-              .catch((err) => {
-                ToastComponent(
-                  "Error",
-                  "Returned materials was not saved",
-                  "error",
-                  toast
-                );
-                setIsLoading(false);
-              });
-          }
-        } catch (error) {}
-      }
-    });
-  };
+  }, [idparams]);
 
   return (
     <Modal isOpen={isOpen} onClose={() => {}} size="5xl" isCentered>
@@ -215,7 +116,10 @@ export const ViewModal = ({
         <ModalCloseButton onClick={onClose} />
         <ModalBody mb={5}>
           <Flex fontSize="sm" justifyContent="center" mb={5}>
-            <Text fontWeight="semibold"> Pending Borrowed Details</Text>
+            <Text fontWeight="semibold">
+              {" "}
+              Returned Borrowed Approval Details
+            </Text>
           </Flex>
           <Flex justifyContent="space-between">
             <VStack alignItems="start" spacing={-1}>
@@ -262,7 +166,6 @@ export const ViewModal = ({
               </HStack>
             </VStack>
 
-            <VStack alignItems="start" spacing={-1}></VStack>
             <VStack alignItems="start" spacing={-1}>
               <HStack>
                 <Text fontSize="xs" fontWeight="semibold">
@@ -296,6 +199,7 @@ export const ViewModal = ({
               </HStack>
             </VStack>
           </Flex>
+
           <VStack justifyContent="center">
             <PageScroll minHeight="320px" maxHeight="321px">
               <Table size="sm">
@@ -311,7 +215,7 @@ export const ViewModal = ({
                       Item Description
                     </Th>
                     <Th color="white" fontSize="xs">
-                      Borrowed Qty
+                      Returned Qty
                     </Th>
                   </Tr>
                 </Thead>
@@ -322,10 +226,13 @@ export const ViewModal = ({
                       <Td fontSize="xs">{borrowdetails.itemCode}</Td>
                       <Td fontSize="xs">{borrowdetails.itemDescription}</Td>
                       <Td fontSize="xs">
-                        {borrowdetails.quantity.toLocaleString(undefined, {
-                          maximumFractionDigits: 2,
-                          minimumFractionDigits: 2,
-                        })}
+                        {borrowdetails.returnQuantity.toLocaleString(
+                          undefined,
+                          {
+                            maximumFractionDigits: 2,
+                            minimumFractionDigits: 2,
+                          }
+                        )}
                       </Td>
                     </Tr>
                   ))}
@@ -355,6 +262,234 @@ export const ViewModal = ({
           </ButtonGroup>
         </ModalFooter>
       </ModalContent>
+
+      {/* {isEdit && (
+        <EditModal
+          isOpen={isEdit}
+          onClose={closeEdit}
+          editData={editData}
+          fetchBorrowedDetails={fetchBorrowedDetails}
+        />
+      )} */}
     </Modal>
+  );
+};
+
+export const CancelModalApproval = ({
+  isOpen,
+  onClose,
+  fetchBorrowed,
+  statusBody,
+  setIsLoading,
+  isLoading,
+}) => {
+  const [reasonSubmit, setReasonSubmit] = useState("");
+  const [reasons, setReasons] = useState([]);
+  const toast = useToast();
+
+  const fetchReasonApi = async () => {
+    const res = await request.get(`Reason/GetAllActiveReasons`);
+    return res.data;
+  };
+
+  const fetchReasons = () => {
+    fetchReasonApi().then((res) => {
+      setReasons(res);
+    });
+  };
+
+  useEffect(() => {
+    fetchReasons();
+
+    return () => {
+      setReasons([]);
+    };
+  }, []);
+
+  const id = statusBody?.id;
+
+  const submitHandler = () => {
+    setIsLoading(true);
+    try {
+      const res = request
+        .put(`Borrowed/CancelForReturned`, [
+          {
+            id: id,
+            reason: reasonSubmit,
+            rejectBy: currentUser?.fullName,
+          },
+        ])
+        .then((res) => {
+          ToastComponent(
+            "Success",
+            "Returned Materials has been rejected",
+            "success",
+            toast
+          );
+          //   fetchNotification();
+          fetchBorrowed();
+          setIsLoading(false);
+          onClose();
+        })
+        .catch((err) => {
+          ToastComponent(
+            "Error",
+            "Returned materials was not rejected",
+            "error",
+            toast
+          );
+          setIsLoading(false);
+        });
+    } catch (error) {}
+  };
+
+  return (
+    <Modal isOpen={isOpen} onClose={() => {}} isCentered size="xl">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>
+          <Flex justifyContent="center">
+            <Text>Cancel Returned Confirmation</Text>
+          </Flex>
+        </ModalHeader>
+        <ModalCloseButton onClick={onClose} />
+
+        <ModalBody>
+          <VStack justifyContent="center">
+            <Text>
+              Are you sure you want to cancel this returned materials?
+            </Text>
+            {reasons?.length > 0 ? (
+              <Select
+                onChange={(e) => setReasonSubmit(e.target.value)}
+                w="70%"
+                placeholder="Please select a reason"
+                bg="#fff8dc"
+              >
+                {reasons?.map((reason, i) => (
+                  <option key={i} value={reason.reasonName}>
+                    {reason.reasonName}
+                  </option>
+                ))}
+              </Select>
+            ) : (
+              "loading"
+            )}
+          </VStack>
+        </ModalBody>
+
+        <ModalFooter justifyContent="center">
+          <ButtonGroup size="sm" mt={7}>
+            <Button
+              onClick={submitHandler}
+              disabled={isLoading}
+              isLoading={isLoading}
+              colorScheme="blue"
+            >
+              Yes
+            </Button>
+            <Button
+              onClick={onClose}
+              disabled={isLoading}
+              isLoading={isLoading}
+              color="black"
+              variant="outline"
+            >
+              No
+            </Button>
+          </ButtonGroup>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};
+
+export const ApproveReturnedModal = ({
+  isOpen,
+  onClose,
+  fetchBorrowed,
+  statusBody,
+  isLoading,
+  setIsLoading,
+}) => {
+  const toast = useToast();
+  const id = statusBody?.id;
+
+  const submitHandler = () => {
+    setIsLoading(true);
+    try {
+      const res = request
+        .put(`Borrowed/ApproveForReturned`, [
+          { id: id, approveBy: currentUser?.fullName },
+        ])
+        .then((res) => {
+          ToastComponent(
+            "Success",
+            "Returned Materials has been approved",
+            "success",
+            toast
+          );
+          //   fetchNotification()
+          fetchBorrowed();
+          onClose();
+        })
+        .catch((item) => {
+          ToastComponent(
+            "Error",
+            "Returned materials was not approved",
+            "error",
+            toast
+          );
+          setIsLoading(false);
+        });
+    } catch (error) {}
+  };
+
+  return (
+    <>
+      <Modal isOpen={isOpen} onClose={() => {}} isCentered size="xl">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>
+            <Flex justifyContent="center">
+              <Text>Approval Confirmation </Text>
+            </Flex>
+          </ModalHeader>
+          <ModalCloseButton onClick={onClose} />
+
+          <ModalBody>
+            <VStack justifyContent="center">
+              <Text>
+                Are you sure you want to approve this returned materials?
+              </Text>
+            </VStack>
+          </ModalBody>
+
+          <ModalFooter justifyContent="center">
+            <ButtonGroup size="sm" mt={7}>
+              <Button
+                onClick={submitHandler}
+                isLoading={isLoading}
+                disabled={isLoading}
+                colorScheme="blue"
+                fontSize="13px"
+              >
+                Yes
+              </Button>
+              <Button
+                onClick={onClose}
+                isLoading={isLoading}
+                disabled={isLoading}
+                fontSize="13px"
+                color="black"
+                variant="outline"
+              >
+                No
+              </Button>
+            </ButtonGroup>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };

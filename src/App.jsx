@@ -89,6 +89,14 @@ import Reports from "./pages/reports/Reports";
 import SupplierNew from "./pages/setup/suppliers_new/SupplierNew";
 import CustomerNew from "./pages/setup/customer_new/CustomerNew";
 import TransactionType from "./pages/setup/TransactionType";
+import AddBorrowedMaterials from "./pages/borrowed_transaction/borrowed_new/addborrowed_materials/AddBorrowedMaterials";
+import { PendingBorrowedMaterials } from "./pages/borrowed_transaction/borrowed_new/pending_borrowed/PendingBorrowedMaterials";
+import ForApprovalBorrowedMaterials from "./pages/borrowed_transaction/borrowed_new/forapproval_borrowed/ForApprovalBorrowedMaterials";
+import { ApprovedBorrowedMaterials } from "./pages/borrowed_transaction/borrowed_new/approved_borrowed/ApprovedBorrowedMaterials";
+import ReturnedApproval from "./pages/borrowed_transaction/borrowed_new/return_approval/ReturnedApproval";
+import ApprovedReturned from "./pages/borrowed_transaction/borrowed_new/approved_returned/ApprovedReturned";
+import HistoryReturned from "./pages/borrowed_transaction/borrowed_new/history_returned/HistoryReturned";
+import RejectBorrowed from "./pages/borrowed_transaction/reject_borrowed/RejectBorrowed";
 
 const App = () => {
   const [menu, setMenu] = useState(null);
@@ -348,15 +356,78 @@ const App = () => {
                   )
                 }
               />
+              <Route
+                path="/borrowed/addborrowed-materials"
+                element={
+                  user ? (
+                    <AddBorrowedMaterials
+                      borrowedData={borrowedData}
+                      fetchActiveBorrowed={fetchActiveBorrowed}
+                      borrowedNav={borrowedNav}
+                      setBorrowedNav={setBorrowedNav}
+                    />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
+              />
+
+              <Route
+                path="/borrowed/pending-materials"
+                element={
+                  user ? <PendingBorrowedMaterials /> : <Navigate to="/login" />
+                }
+              />
+
+              <Route
+                path="/borrowed/approval"
+                element={
+                  user ? (
+                    <ForApprovalBorrowedMaterials />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
+              />
+
+              <Route
+                path="/borrowed/approved-borrowed"
+                element={
+                  user ? (
+                    <ApprovedBorrowedMaterials />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
+              />
+
+              <Route
+                path="/borrowed/return-approval"
+                element={user ? <ReturnedApproval /> : <Navigate to="/login" />}
+              />
+
+              <Route
+                path="/borrowed/approved-returned"
+                element={user ? <ApprovedReturned /> : <Navigate to="/login" />}
+              />
+
+              <Route
+                path="/borrowed/borrowed-history"
+                element={user ? <HistoryReturned /> : <Navigate to="/login" />}
+              />
+
+              <Route
+                path="/borrowed/reject-borrowed"
+                element={user ? <RejectBorrowed /> : <Navigate to="/login" />}
+              />
             </Route>
 
             {/* REPORTS */}
             <Route path="/reports" element={<ReportsPage />}>
               <Route path="/reports/report-details" element={<Reports />} />
             </Route>
-
-            <Route path="*" element={<ErrorPage />} />
           </Route>
+          <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>
 
@@ -489,7 +560,7 @@ const CancelBorrowedArrayModalConfirmation = ({
   onClose,
   borrowedData,
   fetchActiveBorrowed,
-  setBorrowedNav,
+  // setBorrowedNav,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
@@ -522,7 +593,7 @@ const CancelBorrowedArrayModalConfirmation = ({
   };
 
   const noHandler = () => {
-    setBorrowedNav(1);
+    // setBorrowedNav(1);
     navigateBorrowed("/borrowed/borrowed-materials");
     onClose();
   };

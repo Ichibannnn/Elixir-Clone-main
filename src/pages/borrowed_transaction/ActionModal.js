@@ -247,6 +247,7 @@ export const SaveConfirmation = ({
   totalQuantity,
   details,
   customerData,
+  setCustomerData,
   setTotalQuantity,
   rawMatsInfo,
   borrowedData,
@@ -467,12 +468,14 @@ export const SaveConfirmation = ({
                         remarksRef.current.value = "";
                         setTransactionDate("");
                         setDetails("");
+                        setCustomerData({
+                          customerName: "",
+                        });
                         setRawMatsInfo({
                           itemCode: "",
                           itemDescription: "",
                           supplier: "",
                           uom: "",
-                          // expirationDate: '',
                           quantity: "",
                         });
                         setIsLoading(false);

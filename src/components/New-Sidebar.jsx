@@ -18,6 +18,10 @@ import {
 import PageScroll from "../utils/PageScroll";
 
 const currentUser = decodeUser();
+// const userId = decodeUser();
+
+// const currentUserId = decodeUser()
+// const userId = currentUser?.id;
 
 const fetchTagModuleApi = async () => {
   const currentSelectedRole = currentUser?.role;
@@ -30,6 +34,8 @@ const fetchTagModuleApi = async () => {
 
 //Main
 const Sidebar = () => {
+  // console.log(currentUser);
+  // console.log(userId);
   return (
     <Flex
       h="100vh"
@@ -99,9 +105,9 @@ const SidebarList = () => {
   return (
     <Flex w="full">
       <Accordion allowToggle w="full">
-        {tagModules?.map((sidebarMenu) => (
+        {tagModules?.map((sidebarMenu, i) => (
           <AccordionItem
-            key={sidebarMenu.path}
+            key={i}
             border="none"
             // boxShadow={
             //   pathname.includes(sidebarMenu.path)

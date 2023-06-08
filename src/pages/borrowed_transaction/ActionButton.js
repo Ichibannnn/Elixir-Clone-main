@@ -8,6 +8,7 @@ export const ActionButton = ({
   setSelectorId,
   totalQuantity,
   customerData,
+  setCustomerData,
   details,
   rawMatsInfo,
   warehouseId,
@@ -73,6 +74,7 @@ export const ActionButton = ({
           totalQuantity={totalQuantity}
           setTotalQuantity={setTotalQuantity}
           customerData={customerData}
+          setCustomerData={setCustomerData}
           details={details}
           borrowedData={borrowedData}
           fetchActiveBorrowed={fetchActiveBorrowed}
