@@ -113,7 +113,7 @@ const MiscIssuePage = ({
     };
   }, []);
 
-  // console.log(transactions);
+  console.log(transactions);
 
   //Barcode (Warehouse ID)
   const fetchBarcodeNo = () => {

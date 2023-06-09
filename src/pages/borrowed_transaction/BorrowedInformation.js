@@ -35,11 +35,11 @@ export const BorrowedInformation = ({
   uoms,
   barcodeNo,
   setSelectorId,
-  setCustomerData,
   setWarehouseId,
   warehouseId,
   fetchActiveBorrowed,
   customerData,
+  setCustomerData,
   remarks,
   setRemarks,
   remarksRef,
@@ -158,7 +158,6 @@ export const BorrowedInformation = ({
               >
                 Transaction Type:{" "}
               </Text>
-              {/* 
               {transactions?.length > 0 ? (
                 <Select
                   fontSize="xs"
@@ -176,8 +175,8 @@ export const BorrowedInformation = ({
                 </Select>
               ) : (
                 <Spinner />
-              )} */}
-              <Select
+              )}
+              {/* <Select
                 fontSize="xs"
                 onChange={(e) => setRemarks(e.target.value)}
                 placeholder="Select Transact Type"
@@ -186,7 +185,7 @@ export const BorrowedInformation = ({
                 <option value="Adjustment">Adjustment</option>
                 <option value="Transfer">Transfer</option>
                 <option value="Deal Item">Deal Item</option>
-              </Select>
+              </Select> */}
             </HStack>
           </VStack>
 
@@ -240,6 +239,7 @@ export const BorrowedInformation = ({
                 pl={2}
                 w="full"
                 border="1px"
+                value={transactionDate}
                 onChange={(e) => setTransactionDate(e.target.value)}
                 // defaultValue={moment(new Date()).format("yyyy-MM-DD")}
                 max={moment(new Date()).format("yyyy-MM-DD")}
@@ -276,7 +276,12 @@ export const BorrowedInformation = ({
         <Flex w="full" justifyContent="end" mt={4}>
           <Button
             onClick={() => openModal()}
-            disabled={!rawMatsInfo.customerName || !details || !remarks}
+            disabled={
+              !rawMatsInfo.customerName ||
+              !details ||
+              !remarks ||
+              !transactionDate
+            }
             size="sm"
             colorScheme="blue"
             leftIcon={<RiAddFill fontSize="17px" />}
@@ -297,11 +302,11 @@ export const BorrowedInformation = ({
           uoms={uoms}
           barcodeNo={barcodeNo}
           setSelectorId={setSelectorId}
+          customerData={customerData}
           setCustomerData={setCustomerData}
           warehouseId={warehouseId}
           setWarehouseId={setWarehouseId}
           fetchActiveBorrowed={fetchActiveBorrowed}
-          customerData={customerData}
           isOpen={isModal}
           onClose={closeModal}
           remarks={remarks}

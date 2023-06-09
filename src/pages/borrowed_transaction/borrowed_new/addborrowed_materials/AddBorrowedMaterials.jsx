@@ -19,6 +19,12 @@ const fetchRawMatsApi = async () => {
   const res = await request.get(`Material/GetAllActiveMaterials`);
   return res.data;
 };
+
+const fetchTransactApi = async () => {
+  const res = await request.get(`TransactionType/GetAllActiveTransactionType`);
+  return res.data;
+};
+
 const fetchBarcodeNoApi = async (itemCode) => {
   const res = await request.get(
     `Miscellaneous/GetAllAvailableStocksForMIsssue?itemcode=${itemCode}`
@@ -39,6 +45,7 @@ const AddBorrowedMaterials = ({
 
   const [customers, setCustomers] = useState([]);
   const [rawMats, setRawMats] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
   const [barcodeNo, setBarcodeNo] = useState([]);
 
@@ -95,6 +102,23 @@ const AddBorrowedMaterials = ({
     };
   }, []);
 
+  //Transaction Type Fetching
+  const fetchTransaction = () => {
+    fetchTransactApi().then((res) => {
+      setTransactions(res);
+    });
+  };
+
+  useEffect(() => {
+    fetchTransaction();
+
+    return () => {
+      setTransactions([]);
+    };
+  }, []);
+
+  // console.log(transactions);
+
   //Barcode (Warehouse ID)
   const fetchBarcodeNo = () => {
     fetchBarcodeNoApi(itemCode).then((res) => {
@@ -116,6 +140,7 @@ const AddBorrowedMaterials = ({
       fetchCustomers();
       fetchRawMats();
       fetchBarcodeNo();
+      fetchTransaction();
     }
   }, [borrowedNav]);
 
@@ -178,15 +203,16 @@ const AddBorrowedMaterials = ({
             setRawMatsInfo={setRawMatsInfo}
             details={details}
             setDetails={setDetails}
+            transactions={transactions}
             customers={customers}
             rawMats={rawMats}
             barcodeNo={barcodeNo}
             setSelectorId={setSelectorId}
-            setCustomerData={setCustomerData}
             warehouseId={warehouseId}
             setWarehouseId={setWarehouseId}
             fetchActiveBorrowed={fetchActiveBorrowed}
             customerData={customerData}
+            setCustomerData={setCustomerData}
             customerRef={customerRef}
             remarks={remarks}
             setRemarks={setRemarks}
@@ -211,6 +237,7 @@ const AddBorrowedMaterials = ({
                 totalQuantity={totalQuantity}
                 setTotalQuantity={setTotalQuantity}
                 customerData={customerData}
+                setCustomerData={setCustomerData}
                 details={details}
                 selectorId={selectorId}
                 setSelectorId={setSelectorId}

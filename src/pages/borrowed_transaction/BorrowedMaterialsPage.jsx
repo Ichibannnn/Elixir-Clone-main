@@ -6,10 +6,6 @@ import { ListOfBorrowed } from "./ListOfBorrowed";
 import { ViewListBorrowed } from "./viewingBorrowed/ViewListBorrowed";
 import { ActionButton } from "./ActionButton";
 import { TransactedListBorrowed } from "./transactedBorrowed/TransactedListBorrowed";
-// import { MaterialsInformation } from './MaterialsInformation';
-// import { ListOfIssue } from './ListOfIssue';
-// import { ActionButton } from './ActionButton';
-// import { ViewListIssue } from './viewingMiscIssue/ViewListIssue';
 
 const fetchCustomersApi = async () => {
   const res = await request.get(`Customer/GetAllActiveCustomers`);
@@ -17,11 +13,6 @@ const fetchCustomersApi = async () => {
 };
 const fetchRawMatsApi = async () => {
   const res = await request.get(`Material/GetAllActiveMaterials`);
-  return res.data;
-};
-
-const fetchTransactApi = async () => {
-  const res = await request.get(`TransactionType/GetAllActiveTransactionType`);
   return res.data;
 };
 
@@ -44,7 +35,7 @@ const BorrowedMaterialsPage = ({
   const remarksRef = useRef();
 
   const [customers, setCustomers] = useState([]);
-  const [transactions, setTransactions] = useState([]);
+
   const [rawMats, setRawMats] = useState([]);
 
   const [barcodeNo, setBarcodeNo] = useState([]);
@@ -102,23 +93,6 @@ const BorrowedMaterialsPage = ({
     };
   }, []);
 
-  //Transaction Type Fetching
-  const fetchTransaction = () => {
-    fetchTransactApi().then((res) => {
-      setTransactions(res);
-    });
-  };
-
-  useEffect(() => {
-    fetchTransaction();
-
-    return () => {
-      setTransactions([]);
-    };
-  }, []);
-
-  // console.log(transactions);
-
   //Barcode (Warehouse ID)
   const fetchBarcodeNo = () => {
     fetchBarcodeNoApi(itemCode).then((res) => {
@@ -140,7 +114,7 @@ const BorrowedMaterialsPage = ({
       fetchCustomers();
       fetchRawMats();
       fetchBarcodeNo();
-      fetchTransaction();
+      // fetchTransaction();
     }
   }, [borrowedNav]);
 
@@ -205,8 +179,6 @@ const BorrowedMaterialsPage = ({
               details={details}
               setDetails={setDetails}
               customers={customers}
-              transactions={transactions}
-              setTransactions={setTransactions}
               rawMats={rawMats}
               barcodeNo={barcodeNo}
               setSelectorId={setSelectorId}
