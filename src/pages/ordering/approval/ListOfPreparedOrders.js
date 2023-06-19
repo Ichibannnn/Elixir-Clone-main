@@ -28,7 +28,7 @@ export const ListOfPreparedOrders = ({
     } else {
       setOrderNo("");
     }
-    console.log("me click ne kulet");
+    console.log(orderNo);
   };
 
   //Auto select index 0
@@ -36,10 +36,10 @@ export const ListOfPreparedOrders = ({
     setOrderNo(orders[0]?.orderNoPKey);
   }, [orders]);
 
-  console.log(customerOrders);
-  console.log(orders);
+  // console.log(customerOrders);
+  // console.log(orders);
 
-  const rushBadge = customerOrders?.some((x) => (x.rush ? true : false));
+  // const rushBadge = customerOrders?.some((x) => (x.rush ? true : false));
 
   return (
     <Flex w="95%" h="250px" flexDirection="column">
@@ -62,18 +62,12 @@ export const ListOfPreparedOrders = ({
                 <Th color="white" fontSize="10px">
                   Order ID
                 </Th>
-                {/* <Th color="white" fontSize="10px">
-                  Department
-                </Th> */}
                 <Th color="white" fontSize="10px">
                   Customer Code
                 </Th>
                 <Th color="white" fontSize="10px">
                   Customer Name
                 </Th>
-                {/* <Th color="white" fontSize="10px">
-                  Category
-                </Th> */}
                 <Th color="white" fontSize="10px">
                   Total Quantity Order
                 </Th>

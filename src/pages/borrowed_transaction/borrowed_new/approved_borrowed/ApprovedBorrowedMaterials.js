@@ -208,7 +208,7 @@ export const ApprovedBorrowedMaterials = () => {
                         colorScheme="green"
                         variant="solid"
                       >
-                        Approved
+                        Approved Borrowed
                       </Badge>
                     ) : (
                       ""

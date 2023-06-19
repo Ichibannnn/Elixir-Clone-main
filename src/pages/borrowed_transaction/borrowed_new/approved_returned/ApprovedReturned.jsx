@@ -163,7 +163,7 @@ const ApprovedReturned = () => {
                   Customer Name
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
-                  Total Borrowed
+                  Total Returned
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
                   Borrowed Date

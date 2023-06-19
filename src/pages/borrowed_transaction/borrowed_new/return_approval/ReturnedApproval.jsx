@@ -211,7 +211,7 @@ const ReturnedApproval = () => {
                   Customer Name
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
-                  Total Quantity
+                  Returned Qty
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
                   Borrowed Date
@@ -250,9 +250,6 @@ const ReturnedApproval = () => {
                     {moment(borrow.borrowedDate).format("yyyy-MM-DD")}
                   </Td>
                   <Td fontSize="xs">{borrow.preparedBy}</Td>
-                  {/* <Td fontSize="xs">
-                        {borrow.isApproved === false ? "For Approval" : ""}
-                      </Td> */}
                   <Td fontSize="xs">
                     <Button
                       onClick={() => viewHandler(borrow.id)}

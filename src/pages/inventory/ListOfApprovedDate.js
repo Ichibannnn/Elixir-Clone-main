@@ -51,6 +51,7 @@ export const ListofApprovedDate = ({
   setBatchNumber,
   buttonChanger,
   preparedLength,
+  orderListData,
 }) => {
   const handlePageChange = (nextPage) => {
     setCurrentPage(nextPage);
@@ -69,6 +70,8 @@ export const ListofApprovedDate = ({
     } else {
       setOrderId("");
     }
+    console.log(orderId);
+    console.log(orderListData);
   };
 
   // Return to Page 1 once length === 0

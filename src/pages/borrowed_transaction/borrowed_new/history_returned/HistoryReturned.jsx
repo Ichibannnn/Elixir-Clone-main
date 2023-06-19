@@ -121,6 +121,13 @@ const HistoryReturned = () => {
     }
   };
 
+  const date1 = moment("2023-06-09");
+  const date2 = moment("2023-06-20");
+
+  const noOfDays = date2.diff(date1, "days");
+
+  console.log(noOfDays);
+
   return (
     <Flex
       justifyContent="center"

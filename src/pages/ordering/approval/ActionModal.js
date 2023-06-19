@@ -73,7 +73,7 @@ export const ApproveModal = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-         <Flex justifyContent="center">
+          <Flex justifyContent="center">
             <FcAbout fontSize="50px" />
           </Flex>
           <Text textAlign="center" fontSize="15px">
@@ -180,7 +180,7 @@ export const RejectModal = ({
     <Modal isOpen={isOpen} onClose={() => {}} isCentered size="md">
       <ModalOverlay />
       <ModalContent color="black">
-        <ModalHeader>   
+        <ModalHeader>
           <Flex justifyContent="center">
             <FcAbout fontSize="50px" />
           </Flex>

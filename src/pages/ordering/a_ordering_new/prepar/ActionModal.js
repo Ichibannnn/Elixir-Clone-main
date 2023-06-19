@@ -21,181 +21,23 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { BsFillQuestionOctagonFill } from "react-icons/bs";
-import request from "../../../services/ApiClient";
-import { ToastComponent } from "../../../components/Toast";
-import { decodeUser } from "../../../services/decode-user";
+import request from "../../../../services/ApiClient";
+import { ToastComponent } from "../../../../components/Toast";
+import { decodeUser } from "../../../../services/decode-user";
 import { BsQuestionOctagonFill } from "react-icons/bs";
 import swal from "sweetalert";
-import DateConverter from "../../../components/DateConverter";
+import DateConverter from "../../../../components/DateConverter";
 import Swal from "sweetalert2";
 import moment from "moment";
 
 const currentUser = decodeUser();
 
-// SCHEDULE OF ORDERS
-export const ScheduleModal = ({
-  isOpen,
-  onClose,
-  checkedItems,
-  setCheckedItems,
-  customerName,
-  fetchOrders,
-  setCurrentPage,
-  currentPage,
-}) => {
-  const [preparationDate, setPreparationDate] = useState();
-  const date = new Date();
-  const maxDate = moment(new Date(date.setMonth(date.getMonth() + 6))).format(
-    "yyyy-MM-DD"
-  );
-  const [isLoading, setIsLoading] = useState(false);
-  const currentUser = decodeUser();
-  const toast = useToast();
-
-  const {
-    isOpen: isSchedValidate,
-    onOpen: openSchedValidate,
-    onClose: closeSchedValidate,
-  } = useDisclosure();
-
-  const dateProvider = (date) => {
-    console.log(date);
-    if (date) {
-      setPreparationDate(date);
-    } else {
-      setPreparationDate("");
-    }
-  };
-  // SCHEDULE BUTTON FUNCTION
-  const submitValidate = () => {
-    Swal.fire({
-      title: "Confirmation!",
-      text: "Are you sure you want to schedule these (1) orders?",
-      icon: "info",
-      color: "white",
-      background: "#1B1C1D",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#CBD1D8",
-      confirmButtonText: "Yes",
-      heightAuto: false,
-      width: "40em",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const submitArray = checkedItems?.map((item) => {
-          console.log(item);
-          return {
-            id: item,
-            preparedDate: preparationDate,
-            preparedBy: currentUser.userName,
-          };
-        });
-        console.log(submitArray);
-        setIsLoading(true);
-        try {
-          const res = request
-            .put(`Ordering/SchedulePreparedOrderedDate`, submitArray)
-            .then((res) => {
-              ToastComponent(
-                "Success",
-                "Orders were successfully scheduled",
-                "success",
-                toast
-              );
-              // fetchNotification()
-              // closeSchedule();
-              setCurrentPage(currentPage);
-              setCheckedItems([]);
-              fetchOrders();
-              setIsLoading(false);
-              onClose();
-            })
-            .catch((err) => {
-              console.log(err);
-              ToastComponent("Error", "Schedule failed", "error", toast);
-              setIsLoading(false);
-            });
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    });
-  };
-
-  return (
-    <Modal isOpen={isOpen} onClose={() => {}} isCentered size="sm">
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader bg="primary" color="white">
-          <Flex justifyContent="left">
-            <Text fontSize="15px">Schedule Order</Text>
-          </Flex>
-        </ModalHeader>
-
-        <ModalBody>
-          <VStack textAlign="start">
-            <HStack spacing={4} w="full" justifyContent="center">
-              <Text w="38%" pl={2} fontSize="sm">
-                Customer:
-              </Text>
-              <Text
-                w="97%"
-                pl={2}
-                py={2}
-                bgColor="gray.200"
-                border="1px"
-                color="fontColor"
-                fontSize="sm"
-              >
-                {customerName && customerName}
-              </Text>
-            </HStack>
-            <HStack spacing={4} w="full" justifyContent="center">
-              <Text w="40%" pl={2} fontSize="sm">
-                Preparation Date:
-              </Text>
-              <Input
-                borderRadius="none"
-                bg="#E2E8F0"
-                color="fontColor"
-                fontSize="sm"
-                type="date"
-                onChange={(date) => dateProvider(date.target.value)}
-                min={moment(new Date()).format("yyyy-MM-DD")}
-                max={maxDate}
-              />
-            </HStack>
-          </VStack>
-        </ModalBody>
-
-        <ModalFooter justifyContent="center">
-          <ButtonGroup size="xs" mt={8}>
-            <Button
-              borderRadius="none"
-              px={5}
-              colorScheme="blue"
-              disabled={!preparationDate}
-              onClick={submitValidate}
-            >
-              Yes
-            </Button>
-            <Button colorScheme="red" borderRadius="none" onClick={onClose}>
-              Cancel
-            </Button>
-          </ButtonGroup>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
-  );
-};
-
 export const EditModal = ({
   isOpen,
   onClose,
   editData,
-  setCurrentPage,
-  currentPage,
-  fetchOrders,
+  fetchOrderList,
+  fetchCustomerList,
 }) => {
   const [quantitySubmit, setQuantitySubmit] = useState("");
 
@@ -205,12 +47,6 @@ export const EditModal = ({
   const quantityHandler = (data, editData) => {
     if (data) {
       setQuantitySubmit(parseFloat(data));
-      // ToastComponent(
-      //   "Error",
-      //   "Quantity cannot be exceed actual quantity!",
-      //   "error",
-      //   toast
-      // );
       console.log(quantitySubmit);
     } else {
       setQuantitySubmit("");
@@ -222,14 +58,13 @@ export const EditModal = ({
     try {
       const res = request
         .put(`Ordering/EditOrderQuantity`, {
-          id: editData.transactId,
+          id: editData.id,
           quantityOrdered: quantitySubmit,
         })
         .then((res) => {
           ToastComponent("Success", "Order has been edited!", "success", toast);
           onClose();
-          fetchOrders();
-          setCurrentPage(currentPage);
+          fetchOrderList();
         })
         .catch((err) => {
           ToastComponent("Error", err.response.data, "error", toast);
@@ -239,7 +74,8 @@ export const EditModal = ({
   };
 
   const titles = [
-    "Customer",
+    "MIR ID",
+    "Order Id",
     "Item Code",
     "Item Description",
     "UOM",
@@ -247,15 +83,14 @@ export const EditModal = ({
     "Edit Quantity",
   ];
   const autofilled = [
-    editData?.customerName,
+    editData?.mirId,
+    editData?.id,
     editData?.itemCode,
     editData?.itemDescription,
     editData?.uom,
     editData?.quantity,
     // editData?.standardQuantity,
   ];
-
-  // console.log(editData.standardQuantity);
 
   return (
     <>
@@ -354,18 +189,14 @@ export const CancelModalConfirmation = ({
   isOpen,
   onClose,
   cancelId,
-  setCurrentPage,
-  currentPage,
-  fetchOrders,
-  orders,
+  fetchOrderList,
+  fetchMirList,
 }) => {
   const [cancelRemarks, setCancelRemarks] = useState("");
   const [reasons, setReasons] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const toast = useToast();
-
-  const currentUser = decodeUser();
 
   const fetchReasonsApi = async () => {
     const res = await request.get(`Reason/GetAllActiveReasons`);
@@ -404,7 +235,7 @@ export const CancelModalConfirmation = ({
           isCancelBy: currentUser.userName,
         })
         .then((res) => {
-          setCurrentPage(currentPage);
+          // setCurrentPage(currentPage);
           ToastComponent(
             "Success",
             "Order has been cancelled!",
@@ -414,7 +245,8 @@ export const CancelModalConfirmation = ({
           // fetchNotification()
           setIsLoading(false);
           onClose();
-          fetchOrders();
+          fetchOrderList();
+          fetchMirList();
         })
         .catch((err) => {
           ToastComponent("Error", "Cancel failed!", "error", toast);
@@ -432,7 +264,7 @@ export const CancelModalConfirmation = ({
             <Text fontSize="15px">Cancel Order</Text>
           </Flex>
         </ModalHeader>
-        <ModalCloseButton onClick={onClose} />
+        <ModalCloseButton onClick={onClose} color="white" />
         <ModalBody>
           <VStack justifyContent="center" mt={4} mb={7}>
             <Text>Are you sure you want to cancel this order?</Text>
@@ -475,6 +307,162 @@ export const CancelModalConfirmation = ({
           >
             No
           </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};
+
+export const ScheduleModal = ({
+  isOpen,
+  onClose,
+  checkedItems,
+  setCheckedItems,
+  customerName,
+  fetchOrders,
+  // setCurrentPage,
+  // currentPage,
+}) => {
+  const [preparationDate, setPreparationDate] = useState();
+  const date = new Date();
+  const maxDate = moment(new Date(date.setMonth(date.getMonth() + 6))).format(
+    "yyyy-MM-DD"
+  );
+  const [isLoading, setIsLoading] = useState(false);
+  const currentUser = decodeUser();
+  const toast = useToast();
+
+  const {
+    isOpen: isSchedValidate,
+    onOpen: openSchedValidate,
+    onClose: closeSchedValidate,
+  } = useDisclosure();
+
+  const dateProvider = (date) => {
+    console.log(date);
+    if (date) {
+      setPreparationDate(date);
+    } else {
+      setPreparationDate("");
+    }
+  };
+  // SCHEDULE BUTTON FUNCTION
+  const submitValidate = () => {
+    Swal.fire({
+      title: "Confirmation!",
+      text: "Are you sure you want to schedule these (1) orders?",
+      icon: "info",
+      color: "white",
+      background: "#1B1C1D",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#CBD1D8",
+      confirmButtonText: "Yes",
+      heightAuto: false,
+      width: "40em",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const submitArray = checkedItems?.map((item) => {
+          console.log(item);
+          return {
+            id: item,
+            preparedDate: preparationDate,
+            preparedBy: currentUser.userName,
+          };
+        });
+        console.log(submitArray);
+        setIsLoading(true);
+        try {
+          const res = request
+            .put(`Ordering/SchedulePreparedOrderedDate`, submitArray)
+            .then((res) => {
+              ToastComponent(
+                "Success",
+                "Orders were successfully scheduled",
+                "success",
+                toast
+              );
+              // fetchNotification()
+              // closeSchedule();
+              // setCurrentPage(currentPage);
+              setCheckedItems([]);
+              fetchOrders();
+              setIsLoading(false);
+              onClose();
+            })
+            .catch((err) => {
+              console.log(err);
+              ToastComponent("Error", "Schedule failed", "error", toast);
+              setIsLoading(false);
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
+  };
+
+  return (
+    <Modal isOpen={isOpen} onClose={() => {}} isCentered size="sm">
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader bg="primary" color="white">
+          <Flex justifyContent="left">
+            <Text fontSize="15px">Schedule Order</Text>
+          </Flex>
+        </ModalHeader>
+
+        <ModalBody>
+          <VStack textAlign="start">
+            <HStack spacing={4} w="full" justifyContent="center">
+              <Text w="38%" pl={2} fontSize="sm">
+                Customer:
+              </Text>
+              <Text
+                w="97%"
+                pl={2}
+                py={2}
+                bgColor="gray.200"
+                border="1px"
+                color="fontColor"
+                fontSize="sm"
+              >
+                {customerName && customerName}
+              </Text>
+            </HStack>
+            <HStack spacing={4} w="full" justifyContent="center">
+              <Text w="40%" pl={2} fontSize="sm">
+                Preparation Date:
+              </Text>
+              <Input
+                borderRadius="none"
+                bg="#E2E8F0"
+                color="fontColor"
+                fontSize="sm"
+                type="date"
+                onChange={(date) => dateProvider(date.target.value)}
+                min={moment(new Date()).format("yyyy-MM-DD")}
+                max={maxDate}
+              />
+            </HStack>
+          </VStack>
+        </ModalBody>
+
+        <ModalFooter justifyContent="center">
+          <ButtonGroup size="xs" mt={8}>
+            <Button
+              borderRadius="none"
+              px={5}
+              colorScheme="blue"
+              disabled={!preparationDate}
+              onClick={submitValidate}
+            >
+              Yes
+            </Button>
+            <Button colorScheme="red" borderRadius="none" onClick={onClose}>
+              Cancel
+            </Button>
+          </ButtonGroup>
         </ModalFooter>
       </ModalContent>
     </Modal>

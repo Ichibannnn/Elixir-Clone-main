@@ -97,6 +97,7 @@ import ReturnedApproval from "./pages/borrowed_transaction/borrowed_new/return_a
 import ApprovedReturned from "./pages/borrowed_transaction/borrowed_new/approved_returned/ApprovedReturned";
 import HistoryReturned from "./pages/borrowed_transaction/borrowed_new/history_returned/HistoryReturned";
 import RejectBorrowed from "./pages/borrowed_transaction/reject_borrowed/RejectBorrowed";
+import NewPrepSched from "./pages/ordering/a_ordering_new/prepar/NewPrepSched";
 
 const App = () => {
   const [menu, setMenu] = useState(null);
@@ -279,10 +280,11 @@ const App = () => {
             {/* ORDERING */}
             <Route path="/ordering" element={<OrderingPage />}>
               <Route path="/ordering/orders" element={<Orders />} />
-              <Route
+              <Route path="/ordering/preparation" element={<NewPrepSched />} />
+              {/* <Route
                 path="/ordering/preparation"
                 element={<PreparationSchedule />}
-              />{" "}
+              />{" "} */}
               <Route path="/ordering/approval" element={<ApprovalPage />} />
               <Route path="/ordering/calendar" element={<CalendarPage />} />
             </Route>

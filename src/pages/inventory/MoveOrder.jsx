@@ -125,6 +125,8 @@ const MoveOrder = () => {
     });
   };
 
+  // console.log(orderId)
+
   useEffect(() => {
     if (customerName) {
       fetchApprovedMoveOrders();
@@ -224,6 +226,7 @@ const MoveOrder = () => {
           fetchApprovedMoveOrders={fetchApprovedMoveOrders}
           lengthIndicator={lengthIndicator}
           preparedLength={preparedData?.length}
+          orderListData={orderListData}
         />
         {orderId ? (
           <ListOfOrders

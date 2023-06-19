@@ -25,7 +25,7 @@ export const ListOfOrders = ({
   fetchOrderList,
   fetchOrdersByOrderNo,
 }) => {
-  const [stockIdentifier, setStockIdentifier] = useState("false");
+  // const [stockIdentifier, setStockIdentifier] = useState("false");
 
   const {
     isOpen: isApprove,
