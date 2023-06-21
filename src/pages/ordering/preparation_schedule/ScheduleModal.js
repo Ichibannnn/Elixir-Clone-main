@@ -52,12 +52,6 @@ export const ScheduleModal = ({
   const currentUser = decodeUser();
   const toast = useToast();
 
-  const {
-    isOpen: isSchedValidate,
-    onOpen: openSchedValidate,
-    onClose: closeSchedValidate,
-  } = useDisclosure();
-
   const dateProvider = (date) => {
     console.log(date);
     if (date) {
@@ -364,8 +358,6 @@ export const CancelModalConfirmation = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const toast = useToast();
-
-  const currentUser = decodeUser();
 
   const fetchReasonsApi = async () => {
     const res = await request.get(`Reason/GetAllActiveReasons`);

@@ -58,11 +58,20 @@ export const ListOfOrders = ({
           List of Orders
         </Text>
         <PageScroll minHeight="260px" maxHeight="270px">
-          <Table size="sm" variant="simple">
+          <Table
+            size="sm"
+            variant="simple"
+            position="sticky"
+            top={0}
+            zIndex={1}
+          >
             <Thead bgColor="secondary">
               <Tr h="30px">
                 <Th color="white" fontSize="10px">
                   Line
+                </Th>
+                <Th color="white" fontSize="10px">
+                  Order ID
                 </Th>
                 <Th color="white" fontSize="10px">
                   Order Date
@@ -91,9 +100,9 @@ export const ListOfOrders = ({
                 <Th color="white" fontSize="10px">
                   Quantity Order
                 </Th>
-                <Th color="white" fontSize="10px">
+                {/* <Th color="white" fontSize="10px">
                   Remarks
-                </Th>
+                </Th> */}
               </Tr>
             </Thead>
             {orderNo ? (
@@ -101,6 +110,7 @@ export const ListOfOrders = ({
                 {customerOrders?.map((item, i) => (
                   <Tr key={i}>
                     <Td fontSize="11px">{i + 1}</Td>
+                    <Td fontSize="11px">{item.orderId}</Td>
                     <Td fontSize="11px">{item.orderDate}</Td>
                     <Td fontSize="11px">{item.dateNeeded}</Td>
                     {/* <Td fontSize="11px">{item.customerCode}</Td>
@@ -110,7 +120,7 @@ export const ListOfOrders = ({
                     <Td fontSize="11px">{item.itemDescription}</Td>
                     <Td fontSize="11px">{item.uom}</Td>
                     <Td fontSize="11px">{item.quantityOrder}</Td>
-                    <Td fontSize="11px">{item.rush}</Td>
+                    {/* <Td fontSize="11px">{item.rush}</Td> */}
                     {/* <Td fontSize="11px">{item.orderDate}</Td> */}
                   </Tr>
                 ))}

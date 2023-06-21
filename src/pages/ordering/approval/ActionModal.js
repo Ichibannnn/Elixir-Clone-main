@@ -40,7 +40,7 @@ export const ApproveModal = ({
     try {
       const res = request
         .put(`Ordering/ApprovePreparedDate`, {
-          orderNoPKey: orderNo,
+          trasactId: orderNo,
         })
         .then((res) => {
           ToastComponent(
@@ -156,7 +156,7 @@ export const RejectModal = ({
     try {
       const res = request
         .put(`Ordering/RejectPreparedDate`, {
-          orderNoPKey: orderNo,
+          trasactId: orderNo,
           remarks: reason,
           rejectedBy: currentUser.userName,
         })

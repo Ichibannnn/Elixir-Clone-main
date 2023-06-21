@@ -126,4 +126,13 @@
     /* text-align: center; */
 }
 
+.inputCapitalType{
+    text-transform: capitalize !important;
+    /* justify-content: center; */
+    /* align-items: ; */
+    width: 90px;
+    /* height: 30px; */
+    /* text-align: center; */
+}
+
 /* "linear-gradient(rgba(0, 0, 0, 0.800),rgba(0, 0, 0, 0.5))" */

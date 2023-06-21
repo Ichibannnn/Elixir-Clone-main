@@ -215,7 +215,7 @@ export const ListOrders = ({
               onChange={(date) => setFromDate(date.target.value)}
               // value={fromDate}
               defaultValue={fromDate}
-              min={startDate}
+              // min={startDate}
               size="sm"
               type="date"
               fontSize="11px"
@@ -264,6 +264,7 @@ export const ListOrders = ({
                   borderRadius="none"
                   leftIcon={<TiArrowSync fontSize="19px" />}
                   onClick={() => syncHandler()}
+                  isLoading={isLoading}
                 >
                   Sync
                 </Button>

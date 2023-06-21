@@ -58,7 +58,7 @@ const Header = ({ toggleSidebar }) => {
             /> */}
             <FaUserCircle color="#D1D2D5" fontSize="25px" />
           </MenuButton>
-          <MenuList>
+          <MenuList zIndex={2}>
             <MenuGroup title="Profile:" />
             <MenuDivider />
             <MenuItem icon={<RiUser3Fill fontSize="17px" />}>

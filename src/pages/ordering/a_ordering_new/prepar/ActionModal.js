@@ -20,13 +20,9 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
-import { BsFillQuestionOctagonFill } from "react-icons/bs";
 import request from "../../../../services/ApiClient";
 import { ToastComponent } from "../../../../components/Toast";
 import { decodeUser } from "../../../../services/decode-user";
-import { BsQuestionOctagonFill } from "react-icons/bs";
-import swal from "sweetalert";
-import DateConverter from "../../../../components/DateConverter";
 import Swal from "sweetalert2";
 import moment from "moment";
 
@@ -191,6 +187,8 @@ export const CancelModalConfirmation = ({
   cancelId,
   fetchOrderList,
   fetchMirList,
+  fetchCustomerList,
+  setCustomerName,
 }) => {
   const [cancelRemarks, setCancelRemarks] = useState("");
   const [reasons, setReasons] = useState([]);
@@ -316,10 +314,16 @@ export const CancelModalConfirmation = ({
 export const ScheduleModal = ({
   isOpen,
   onClose,
-  checkedItems,
   setCheckedItems,
   customerName,
+  setCustomerName,
   fetchOrders,
+  fetchMirList,
+  fetchCustomerList,
+  selectedMIRIds,
+  setSelectedMIRIds,
+  isAllChecked,
+  setIsAllChecked,
   // setCurrentPage,
   // currentPage,
 }) => {
@@ -362,10 +366,10 @@ export const ScheduleModal = ({
       width: "40em",
     }).then((result) => {
       if (result.isConfirmed) {
-        const submitArray = checkedItems?.map((item) => {
+        const submitArray = selectedMIRIds?.map((item) => {
           console.log(item);
           return {
-            id: item,
+            trasactId: item,
             preparedDate: preparationDate,
             preparedBy: currentUser.userName,
           };
@@ -374,7 +378,7 @@ export const ScheduleModal = ({
         setIsLoading(true);
         try {
           const res = request
-            .put(`Ordering/SchedulePreparedOrderedDate`, submitArray)
+            .put(`Ordering/PreparationOfSchedule`, submitArray)
             .then((res) => {
               ToastComponent(
                 "Success",
@@ -385,10 +389,15 @@ export const ScheduleModal = ({
               // fetchNotification()
               // closeSchedule();
               // setCurrentPage(currentPage);
-              setCheckedItems([]);
-              fetchOrders();
-              setIsLoading(false);
+              // setCheckedItems([]);
               onClose();
+              // setCustomerName("");
+              fetchCustomerList();
+              setSelectedMIRIds([]);
+              // setIsAllChecked(isAllChecked);
+              // fetchOrders();
+              fetchMirList();
+              setIsLoading(false);
             })
             .catch((err) => {
               console.log(err);

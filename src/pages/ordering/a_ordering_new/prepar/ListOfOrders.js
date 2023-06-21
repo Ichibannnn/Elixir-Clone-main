@@ -24,11 +24,20 @@ import {
 
 export const ListOfOrders = ({
   customerName,
-  selectedMIRIds,
   fetchCustomerList,
   fetchMirList,
+  selectedMIRIds,
+  setSelectedMIRIds,
+  setCustomerName,
+  isAllChecked,
+  setIsAllChecked,
+  disableScheduleButton,
+  setDisableScheduleButton,
+  checkedItems,
+  setCheckedItems,
 }) => {
   const [orderList, setOrderList] = useState([]);
+  const [disabledButton, setDisabledButton] = useState(false);
 
   const [editData, setEditData] = useState({
     mirId: "",
@@ -40,7 +49,8 @@ export const ListOfOrders = ({
     standardQuantity: "",
   });
   const [cancelId, setCancelId] = useState("");
-  const [disableScheduleButton, setDisableScheduleButton] = useState(false);
+
+  // const [isCheckboxChecked, setIsCheckboxChecked] = useState(true);
 
   const {
     isOpen: isEdit,
@@ -159,7 +169,7 @@ export const ListOfOrders = ({
       </Text>
       <PageScroll minHeight="260px" maxHeight="270px">
         <Table size="sm" variant="simple">
-          <Thead bgColor="secondary">
+          <Thead bgColor="secondary" position="sticky" top={0} zIndex={1}>
             <Tr>
               <Th color="white" fontSize="10px">
                 MIR ID
@@ -232,8 +242,8 @@ export const ListOfOrders = ({
 
       <Flex w="full" justifyContent="space-between" py={2} px={2}>
         <Text fontSize="xs">
-          Selected Item(s):
-          {/* {checkedItems?.length} */}
+          {/* Selected Item(s):
+          {checkedItems?.length} */}
         </Text>
         <Button
           onClick={scheduleHandler}
@@ -247,7 +257,7 @@ export const ListOfOrders = ({
           //     : "Schedule order(s)"
           // }
           // disabled={!checkedItems?.length > 0 || disableIfStock}
-          disabled={disableScheduleButton}
+          disabled={!selectedMIRIds?.length > 0 || disableScheduleButton}
           size="sm"
           px={3}
           colorScheme="blue"
@@ -274,7 +284,11 @@ export const ListOfOrders = ({
           cancelId={cancelId}
           fetchOrderList={fetchOrderList}
           fetchMirList={fetchMirList}
+          fetchCustomerList={fetchCustomerList}
+          setCustomerName={setCustomerName}
           //   fetchNotification={fetchNotification}
+          isAllChecked={isAllChecked}
+          setIsAllChecked={setIsAllChecked}
         />
       )}
 
@@ -285,7 +299,13 @@ export const ListOfOrders = ({
           isOpen={isSchedule}
           onClose={closeSchedule}
           customerName={customerName}
+          setCustomerName={setCustomerName}
           fetchOrderList={fetchOrderList}
+          fetchMirList={fetchMirList}
+          fetchCustomerList={fetchCustomerList}
+          selectedMIRIds={selectedMIRIds}
+          setSelectedMIRIds={setSelectedMIRIds}
+
           // setCurrentPage={setCurrentPage}
           // currentPage={currentPage}
         />

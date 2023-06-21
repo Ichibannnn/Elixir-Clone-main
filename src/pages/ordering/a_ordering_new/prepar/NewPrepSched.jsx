@@ -9,6 +9,7 @@ const NewPrepSched = () => {
   const [customerList, setCustomerList] = useState([]);
   const [status, setStatus] = useState(false);
   const [selectedMIRIds, setSelectedMIRIds] = useState([]);
+  const [search, setSearch] = useState();
 
   const [mirList, setMirList] = useState([]);
   const [rushOrders, setRushOrders] = useState([]);
@@ -16,11 +17,17 @@ const NewPrepSched = () => {
   const [regularOrdersCount, setRegularOrdersCount] = useState(0);
   const [rushOrdersCount, setRushOrdersCount] = useState(0);
 
+  const [lengthIndicator, setLengthIndicator] = useState("");
+  const [checkedItems, setCheckedItems] = useState([]);
+
+  const [isAllChecked, setIsAllChecked] = useState(false);
+  const [disableScheduleButton, setDisableScheduleButton] = useState(true);
+
   // Fetch customer names with pagination
   const fetchCustomerList = async () => {
     try {
       const response = await request.get(
-        `Ordering/GetAllListofOrdersPaginationOrig?PageNumber=1&PageSize=10`
+        `Ordering/GetAllListofOrdersPaginationOrig?PageNumber=1&PageSize=10000`
       );
       setCustomerList(response.data);
     } catch (error) {
@@ -86,13 +93,28 @@ const NewPrepSched = () => {
           mirList={mirList}
           regularOrdersCount={regularOrdersCount}
           rushOrdersCount={rushOrdersCount}
+          isAllChecked={isAllChecked}
+          setIsAllChecked={setIsAllChecked}
+          checkedItems={checkedItems}
+          setCheckedItems={setCheckedItems}
+          setDisableScheduleButton={setDisableScheduleButton}
+          search={search}
+          setSearch={setSearch}
         />
 
         <ListOfOrders
           customerName={customerName}
+          setCustomerName={setCustomerName}
           selectedMIRIds={selectedMIRIds}
+          setSelectedMIRIds={setSelectedMIRIds}
           fetchCustomerList={fetchCustomerList}
           fetchMirList={fetchMirList}
+          isAllChecked={isAllChecked}
+          setIsAllChecked={setIsAllChecked}
+          checkedItems={checkedItems}
+          setCheckedItems={setCheckedItems}
+          disableScheduleButton={disableScheduleButton}
+          setDisableScheduleButton={setDisableScheduleButton}
         />
       </VStack>
     </Flex>

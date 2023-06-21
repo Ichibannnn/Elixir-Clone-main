@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 import request from "../../../services/ApiClient";
 import { CalendarList } from "./CalendarList";
 
-const fetchForMoveOrderApi = async () => {
-  const res = await request.get(`Ordering/GetAllApprovedOrdersForCalendar`);
+const fetchForMoveOrderApi = async (status) => {
+  const res = await request.get(
+    `Ordering/GetAllApprovedOrdersForCalendar?status=${status}`
+  );
   return res.data;
 };
 
 const CalendarPage = () => {
   const [forMOData, setForMOData] = useState([]);
+  const [status, setStatus] = useState(false);
 
   const fetchForMoveOrder = () => {
-    fetchForMoveOrderApi().then((res) => {
+    fetchForMoveOrderApi(status).then((res) => {
       setForMOData(res);
     });
   };
@@ -22,9 +25,11 @@ const CalendarPage = () => {
     return () => {
       setForMOData([]);
     };
-  }, []);
+  }, [status]);
 
-  return <CalendarList forMOData={forMOData} />;
+  return (
+    <CalendarList forMOData={forMOData} status={status} setStatus={setStatus} />
+  );
 };
 
 export default CalendarPage;

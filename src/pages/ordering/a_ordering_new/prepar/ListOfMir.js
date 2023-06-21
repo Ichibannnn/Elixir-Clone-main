@@ -11,9 +11,13 @@ import {
   DrawerOverlay,
   Flex,
   HStack,
+  Input,
+  InputGroup,
+  InputLeftElement,
   Select,
   Table,
   Tag,
+  TagLeftIcon,
   Tbody,
   Td,
   Text,
@@ -24,6 +28,8 @@ import {
 import moment from "moment";
 import PageScroll from "../../../../utils/PageScroll";
 import request from "../../../../services/ApiClient";
+import { AddIcon, Search2Icon } from "@chakra-ui/icons";
+import { FiSearch } from "react-icons/fi";
 
 export const ListOfMir = ({
   customerName,
@@ -36,15 +42,29 @@ export const ListOfMir = ({
   mirList,
   regularOrdersCount,
   rushOrdersCount,
-  setCustomerList,
-  selectedMIRIdsChange,
+  checkedItems,
+  setCheckedItems,
+  isAllChecked,
+  setIsAllChecked,
+  setDisableScheduleButton,
+  search,
+  setSearch,
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isAllChecked, setIsAllChecked] = useState(false);
+  const [keyword, setKeyword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleAllCheckboxChange = () => {
+  const handleAllCheckboxChange = (mirId) => {
     setIsAllChecked(!isAllChecked);
     setSelectedMIRIds(isAllChecked ? [] : mirList.map((mir) => mir.mirId));
+
+    //Array Submit
+    // if (checkedItems.includes(mirId)) {
+    //   setCheckedItems(checkedItems.filter((item) => item !== mirId));
+    // } else {
+    //   setCheckedItems([...checkedItems, mirId]);
+    // }
+    // console.log(checkedItems);
   };
 
   const handleMIRCheckboxChange = (mirId) => {
@@ -56,9 +76,17 @@ export const ListOfMir = ({
       }
     });
     setIsAllChecked(false); // Uncheck "Select All" checkbox when individual checkboxes are clicked
+
+    //Array Submit
+    // if (checkedItems.includes(mirId)) {
+    //   setCheckedItems(checkedItems.filter((item) => item !== mirId));
+    // } else {
+    //   setCheckedItems([...checkedItems, mirId]);
+    // }
+    // console.log(checkedItems);
   };
 
-  console.log(selectedMIRIds);
+  // console.log(selectedMIRIds);
 
   const handleStatusChange = (newStatus) => {
     setStatus(newStatus);
@@ -76,7 +104,18 @@ export const ListOfMir = ({
   const handleCustomerNameClick = (name) => {
     setCustomerName(name);
     setIsDrawerOpen(false);
+    setIsAllChecked(false);
+    setSelectedMIRIds([]);
+    setDisableScheduleButton(true);
   };
+
+  // const handleCheckboxChange = (mirId) => {
+  //   if (checkedItems.includes(mirId)) {
+  //     setCheckedItems(checkedItems.filter((item) => item !== mirId));
+  //   } else {
+  //     setCheckedItems([...checkedItems, mirId]);
+  //   }
+  // };
 
   return (
     <Flex direction="column" p={4} w="full">
@@ -101,11 +140,11 @@ export const ListOfMir = ({
           onClick={() => handleStatusChange(false)}
         >
           Regular Orders
-          {regularOrdersCount > 0 && (
-            <Badge ml={2} colorScheme="red" variant="solid" borderRadius="40%">
-              {regularOrdersCount}
-            </Badge>
-          )}
+          {/* {regularOrdersCount > 0 && (
+            // <Badge ml={2} colorScheme="red" variant="solid" borderRadius="40%">
+            //   {regularOrdersCount}
+            // </Badge>
+          )} */}
         </Button>
         <Button
           size="xs"
@@ -116,11 +155,11 @@ export const ListOfMir = ({
           onClick={() => handleStatusChange(true)}
         >
           Rush Orders
-          {rushOrdersCount > 0 && (
+          {/* {rushOrdersCount > 0 && (
             <Badge ml={2} colorScheme="red" variant="solid" borderRadius="40%">
               {rushOrdersCount}
             </Badge>
-          )}
+          )} */}
         </Button>
       </Flex>
 
@@ -130,23 +169,60 @@ export const ListOfMir = ({
         onClose={handleCloseDrawer}
       >
         <DrawerOverlay />
-        <DrawerContent spacing={4}>
+        <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Customer Names</DrawerHeader>
+          <DrawerHeader>
+            <Text fontSize="sm">Select Customer Name</Text>
+          </DrawerHeader>
           <DrawerBody>
-            {customerList?.orders?.map((customer, i) => (
-              <HStack key={i} spacing={2}>
-                <Tag
-                  onClick={() => handleCustomerNameClick(customer.customerName)}
-                  cursor="pointer"
-                  colorScheme={
-                    customer.customerName === customerName ? "blue" : "gray"
-                  }
-                >
-                  {customer.customerName}
-                </Tag>
-              </HStack>
-            ))}
+            <HStack mb={5}>
+              {/* <Text>Search</Text> */}
+              <InputGroup size="sm">
+                <InputLeftElement
+                  pointerEvents="none"
+                  children={<FiSearch bg="black" fontSize="18px" />}
+                />
+                <Input
+                  borderRadius="full"
+                  fontSize="13px"
+                  size="sm"
+                  type="text"
+                  placeholder="Search: Customer Name"
+                  onChange={(e) => setKeyword(e.target.value)}
+                  disabled={isLoading}
+                  borderColor="gray.400"
+                  _hover={{ borderColor: "gray.400" }}
+                />
+              </InputGroup>
+            </HStack>
+
+            <PageScroll minHeight="479px" maxHeight="480px">
+              {customerList?.orders
+                ?.filter((val) => {
+                  const newKeyword = new RegExp(`${keyword.toLowerCase()}`);
+                  return val?.customerName
+                    ?.toLowerCase()
+                    .match(newKeyword, "*");
+                })
+                ?.map((customer, i) => (
+                  <HStack key={i} mt={2}>
+                    <Tag
+                      borderRadius="full"
+                      spacing={5}
+                      onClick={() =>
+                        handleCustomerNameClick(customer.customerName)
+                      }
+                      cursor="pointer"
+                      colorScheme={
+                        customer.customerName === customerName ? "blue" : "gray"
+                      }
+                    >
+                      <TagLeftIcon boxSize="12px" as={Search2Icon} />
+                      {customer.customerName}
+                    </Tag>
+                  </HStack>
+                ))}
+            </PageScroll>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -160,7 +236,7 @@ export const ListOfMir = ({
       </Text>
       <PageScroll minHeight="200px" maxHeight="210px">
         <Table size="sm" variant="simple">
-          <Thead bgColor="secondary">
+          <Thead bgColor="secondary" position="sticky" top={0} zIndex={1}>
             <Tr cursor="pointer">
               <Th color="white" fontSize="10px">
                 <Checkbox
