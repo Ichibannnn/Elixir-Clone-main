@@ -27,7 +27,7 @@ const NewPrepSched = () => {
   const fetchCustomerList = async () => {
     try {
       const response = await request.get(
-        `Ordering/GetAllListofOrdersPaginationOrig?PageNumber=1&PageSize=10000`
+        `Ordering/GetAllListofOrdersPaginationOrig?PageNumber=1&PageSize=20000`
       );
       setCustomerList(response.data);
     } catch (error) {
@@ -68,8 +68,28 @@ const NewPrepSched = () => {
   }, []);
 
   useEffect(() => {
-    fetchMirList();
+    if (customerName) {
+      fetchMirList();
+    }
   }, [customerName, selectedMIRIds, status]);
+
+  // useEffect(() => {
+  //   if (mirList.length !== 0) {
+  //     setCustomerName("");
+  //   }
+  // }, [mirList.length, setCustomerName]);
+
+  // useEffect(() => {
+  //   if (customerName) {
+  //     if (mirList?.length === 0) {
+  //       setCustomerName("");
+  //       fetchMirList();
+  //       // fetchOrders();
+  //     }
+  //   }
+  // }, [mirList, customerName]);
+
+  // console.log(mirList?.length);
 
   return (
     <Flex

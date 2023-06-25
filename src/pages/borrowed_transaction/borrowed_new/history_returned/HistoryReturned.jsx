@@ -176,14 +176,21 @@ const HistoryReturned = () => {
                   Borrowed Date
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
-                  Transacted By
+                  Status
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
+                  Aging Days
+                </Th>
+                <Th h="40px" color="white" fontSize="10px">
+                  Transacted By
+                </Th>
+                {/* <Th h="40px" color="white" fontSize="10px">
                   Borrowed Status
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
                   Returned Status
-                </Th>
+                </Th> */}
+
                 <Th h="40px" color="white" fontSize="10px">
                   View
                 </Th>
@@ -212,61 +219,11 @@ const HistoryReturned = () => {
                   <Td fontSize="xs">
                     {moment(borrow.borrowedDate).format("yyyy-MM-DD")}
                   </Td>
+                  <Td fontSize="xs">{borrow.statusApprove}</Td>
+                  <Td fontSize="xs">
+                    {borrow.agingDays} {`Day(s)`}{" "}
+                  </Td>
                   <Td fontSize="xs">{borrow.preparedBy}</Td>
-                  <Td fontSize="xs">
-                    {borrow.isApproved === true ? (
-                      <Badge
-                        borderRadius="30px"
-                        fontSize="9px"
-                        fontWeight="semibold"
-                        colorScheme="green"
-                        // textTransform="capitalize"
-                        variant="solid"
-                      >
-                        Approved Borrowed
-                      </Badge>
-                    ) : (
-                      <Badge
-                        borderRadius="30px"
-                        fontSize="9px"
-                        fontWeight="semibold"
-                        colorScheme="orange"
-                        // textTransform="capitalize"
-                        variant="solid"
-                      >
-                        For Transaction
-                      </Badge>
-                    )}
-                  </Td>
-                  <Td fontSize="xs">
-                    {borrow.isApproveReturned === true ? (
-                      <Badge
-                        borderRadius="30px"
-                        fontSize="9px"
-                        fontWeight="semibold"
-                        colorScheme="green"
-                        // textTransform="capitalize"
-                        variant="solid"
-                      >
-                        Approved Returned
-                      </Badge>
-                    ) : (
-                      ""
-                      //   <Badge
-                      //     borderRadius="30px"
-                      //     fontSize="9px"
-                      //     fontWeight="semibold"
-                      //     colorScheme="orange"
-                      //     // textTransform="capitalize"
-                      //     variant="solid"
-                      //   >
-                      //     Pending
-                      //   </Badge>
-                    )}
-                  </Td>
-                  {/* <Td fontSize="xs">
-                                {borrow.isApproved === false ? "For Approval" : ""}
-                              </Td> */}
                   <Td fontSize="xs">
                     <Button
                       onClick={() => viewHandler(borrow.id)}

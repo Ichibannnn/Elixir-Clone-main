@@ -49,7 +49,7 @@ export const CancelApprovedDate = ({
     console.log(id);
     try {
       const res = request
-        .put(`Ordering/CancelOrdersInMoveOrder`, { orderNoPKey: id })
+        .put(`Ordering/CancelOrdersInMoveOrder`, { trasactId: id })
         .then((res) => {
           ToastComponent(
             "Success",
@@ -606,7 +606,7 @@ export const AddQuantityConfirmation = ({
               <Text fontSize="sm">
                 Are you sure you want to add this quantity?
               </Text>
-              <Text fontSize="sm">{`[ Order No. ${orderNo} ] [ Item Code ${itemCode} ] [ Quantity Ordered ${quantityOrdered} ]`}</Text>
+              <Text fontSize="sm">{`[ MIR ID: ${orderNo} ] [ Item Code: ${itemCode} ] [ Quantity Ordered: ${quantityOrdered} ]`}</Text>
             </VStack>
           </ModalBody>
 

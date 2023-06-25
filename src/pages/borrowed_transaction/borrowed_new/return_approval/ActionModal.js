@@ -431,6 +431,7 @@ export const ApproveReturnedModal = ({
           );
           //   fetchNotification()
           fetchBorrowed();
+          setIsLoading(false);
           onClose();
         })
         .catch((item) => {

@@ -33,9 +33,11 @@ import PageScrollImport from "../../components/PageScrollImport";
 import { AddQuantityConfirmation } from "./ActionModal";
 
 const fetchAvailableBarcodePerItemCodeApi = async (itemCode) => {
-  const res = await request.get(
-    `Warehouse/GetAllListOfWarehouseReceivingId?search=${itemCode}`
-  );
+  const res = await request.get(`Warehouse/GetAllListOfWarehouseReceivingId`, {
+    params: {
+      search: itemCode,
+    },
+  });
   return res.data;
 };
 
@@ -55,6 +57,25 @@ export const ActualItemQuantity = ({
   setItemCode,
 }) => {
   const [availableBarcode, setAvailableBarcode] = useState([]);
+
+  // const fetchAvailableBarcodePerItemCodeApi = async () => {
+  //   try {
+  //     const res = await request.get(
+  //       `Warehouse/GetAllListOfWarehouseReceivingId`,
+  //       {
+  //         params: {
+  //           search: itemCode,
+  //         },
+  //       }
+  //     );
+  //   } catch (error) {}
+  // };
+
+  // useEffect(() => {
+  //   // try {
+  //   fetchAvailableBarcodePerItemCodeApi();
+  //   // } catch (error) {}
+  // }, [itemCode]);
 
   const fetchAvailableBarcodePerItemCode = () => {
     fetchAvailableBarcodePerItemCodeApi(itemCode).then((res) => {
@@ -81,6 +102,7 @@ export const ActualItemQuantity = ({
   const [quantity, setQuantity] = useState("");
 
   const [inputValidate, setInputValidate] = useState(true);
+  const [isQuantityZero, setIsQuantityZero] = useState(false);
 
   const toast = useToast();
 
@@ -98,6 +120,8 @@ export const ActualItemQuantity = ({
     } else {
       setInputValidate(false);
     }
+
+    setIsQuantityZero(Number(quantity) === 0);
 
     return () => {
       setInputValidate(true);
@@ -129,6 +153,12 @@ export const ActualItemQuantity = ({
       }
     }
   }, [barcodeData]);
+
+  const setQuantityValidate = (value) => {
+    if (value !== "0") {
+      setQuantity(value);
+    }
+  };
 
   return (
     <Flex w="full" flexDirection="column">
@@ -209,7 +239,7 @@ export const ActualItemQuantity = ({
           <Input
             borderRadius="none"
             fontSize="13px"
-            onChange={(e) => setQuantity(e.target.value)}
+            onChange={(e) => setQuantityValidate(e.target.value)}
             disabled={!barcodeData?.orders?.remaining}
             title={
               barcodeData?.orders?.remaining
@@ -238,6 +268,7 @@ export const ActualItemQuantity = ({
           onClick={() => openQuantity()}
           disabled={
             !warehouseId ||
+            isQuantityZero ||
             !quantity ||
             inputValidate ||
             !barcodeData ||

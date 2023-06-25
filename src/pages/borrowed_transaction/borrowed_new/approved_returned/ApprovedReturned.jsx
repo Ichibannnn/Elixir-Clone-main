@@ -200,20 +200,7 @@ const ApprovedReturned = () => {
                   </Td>
                   <Td fontSize="xs">{borrow.preparedBy}</Td>
                   <Td fontSize="xs">
-                    {borrow.isApproveReturn === true ? (
-                      <Badge
-                        borderRadius="30px"
-                        fontSize="9px"
-                        fontWeight="semibold"
-                        colorScheme="green"
-                        // textTransform="capitalize"
-                        variant="solid"
-                      >
-                        Approved Returned
-                      </Badge>
-                    ) : (
-                      ""
-                    )}
+                    {borrow.isApproveReturn === true ? "Approved Return" : ""}
                   </Td>
                   {/* <Td fontSize="xs">
                             {borrow.isApproved === false ? "For Approval" : ""}

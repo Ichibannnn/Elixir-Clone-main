@@ -197,20 +197,7 @@ export const PendingBorrowedMaterials = () => {
                   </Td>
                   <Td fontSize="xs">{borrow.preparedBy}</Td>
                   <Td fontSize="xs">
-                    {borrow.isApproved === false ? (
-                      <Badge
-                        borderRadius="30px"
-                        fontSize="9px"
-                        fontWeight="semibold"
-                        colorScheme="orange"
-                        // textTransform="capitalize"
-                        variant="solid"
-                      >
-                        For Approval
-                      </Badge>
-                    ) : (
-                      ""
-                    )}
+                    {borrow.isApproved === false ? "For Approval" : ""}
                   </Td>
                   <Td fontSize="xs">
                     <Button

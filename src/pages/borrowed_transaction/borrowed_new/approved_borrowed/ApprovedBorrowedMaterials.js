@@ -173,8 +173,12 @@ export const ApprovedBorrowedMaterials = () => {
                   Remarks
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
+                  Aging Days
+                </Th>
+                <Th h="40px" color="white" fontSize="10px">
                   Status
                 </Th>
+
                 <Th h="40px" color="white" fontSize="10px">
                   View
                 </Th>
@@ -200,20 +204,10 @@ export const ApprovedBorrowedMaterials = () => {
                   <Td fontSize="xs">{borrow.preparedBy}</Td>
                   <Td fontSize="xs">{borrow.reason}</Td>
                   <Td fontSize="xs">
-                    {borrow.isApproved === true ? (
-                      <Badge
-                        borderRadius="30px"
-                        fontSize="9px"
-                        fontWeight="semibold"
-                        colorScheme="green"
-                        variant="solid"
-                      >
-                        Approved Borrowed
-                      </Badge>
-                    ) : (
-                      ""
-                    )}
+                    {borrow.agingDays} {`Day(s)`}
                   </Td>
+                  <Td fontSize="xs">{borrow.statusApprove}</Td>
+
                   <Td fontSize="xs">
                     <Button
                       onClick={() =>

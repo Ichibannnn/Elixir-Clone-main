@@ -5,16 +5,16 @@ import { ForApprovalMoveOrder } from "./ForApprovalMoveOrder";
 // import apiClient from '../../services/apiClient'
 // import { ForApprovalMoveOrder } from './forapproval/For-Approval-Move-Order'
 
-const fetchForApprovalMOApi = async (pageNumber, pageSize, search) => {
+const fetchForApprovalMOApi = async (pageNumber, pageSize, search, status) => {
   const res = await request.get(
-    `Ordering/GetAllForApprovalMoveOrderPaginationOrig?pageSize=${pageSize}&pageNumber=${pageNumber}&search=${search}`
+    `Ordering/GetAllForApprovalMoveOrderPaginationOrig?pageSize=${pageSize}&pageNumber=${pageNumber}&search=${search}&status=${status}`
   );
   return res.data;
 };
 
-const fetchViewApi = async (orderId) => {
+const fetchViewApi = async (mirId) => {
   const res = await request.get(
-    `Ordering/ViewMoveOrderForApproval?id=${orderId}`
+    `Ordering/ViewMoveOrderForApproval?id=${mirId}`
   );
   return res.data;
 };
@@ -23,8 +23,9 @@ const ForApprovalMo = () => {
   const [forApprovalData, setForApprovalData] = useState([]);
   const [search, setSearch] = useState("");
   const [pageTotal, setPageTotal] = useState(undefined);
-  const [orderId, setOrderId] = useState("");
+  const [mirId, setMirId] = useState("");
   const [viewData, setViewData] = useState([]);
+  const [status, setStatus] = useState(false);
 
   const outerLimit = 2;
   const innerLimit = 2;
@@ -46,7 +47,7 @@ const ForApprovalMo = () => {
 
   //List
   const fetchForApprovalMO = () => {
-    fetchForApprovalMOApi(currentPage, pageSize, search).then((res) => {
+    fetchForApprovalMOApi(currentPage, pageSize, search, status).then((res) => {
       setForApprovalData(res);
       setPageTotal(res.totalCount);
     });
@@ -58,24 +59,24 @@ const ForApprovalMo = () => {
     return () => {
       setForApprovalData([]);
     };
-  }, [pageSize, currentPage, search]);
+  }, [pageSize, currentPage, search, status]);
 
   //For View and Printing Layout
   const fetchView = () => {
-    fetchViewApi(orderId).then((res) => {
+    fetchViewApi(mirId).then((res) => {
       setViewData(res);
     });
   };
 
   useEffect(() => {
-    if (orderId) {
+    if (mirId) {
       fetchView();
     }
 
     return () => {
       setViewData([]);
     };
-  }, [orderId]);
+  }, [mirId]);
 
   return (
     <ForApprovalMoveOrder
@@ -87,9 +88,11 @@ const ForApprovalMo = () => {
       pageSize={pageSize}
       forApprovalData={forApprovalData}
       fetchForApprovalMO={fetchForApprovalMO}
-      orderId={orderId}
-      setOrderId={setOrderId}
+      mirId={mirId}
+      setMirId={setMirId}
       viewData={viewData}
+      status={status}
+      setStatus={setStatus}
       //   fetchNotification={fetchNotification}
     />
   );

@@ -42,10 +42,12 @@ export const ApproveMoveOrder = ({
   setOrderId,
   orderId,
   printData,
+  status,
+  setStatus,
 }) => {
   const TableHead = [
     "Line",
-    "Order ID",
+    "MIR ID",
     "Customer Code",
     "Customer Name",
     // "Status",
@@ -112,7 +114,7 @@ export const ApproveMoveOrder = ({
 
   const trackHandler = (data) => {
     if (data) {
-      setOrderId(data.orderNo);
+      setOrderId(data.mirId);
       setTrackData([
         {
           barcodeNo: data.barcodeNo,
@@ -154,6 +156,10 @@ export const ApproveMoveOrder = ({
     }
   };
 
+  const handleStatusChange = (newStatus) => {
+    setStatus(newStatus);
+  };
+
   return (
     <Flex w="full" flexDirection="column" p={5} bg="form">
       <Flex justifyContent="space-between">
@@ -175,13 +181,45 @@ export const ApproveMoveOrder = ({
             borderColor="gray.400"
             fontSize="11px"
             borderRadius="none"
-            placeholder="Order Id"
+            placeholder="MIR Id"
             onChange={(e) => searchHandler(e.target.value)}
           />
         </HStack>
       </Flex>
 
-      <Flex mt={5}>
+      <Flex mt={5} flexDirection="column">
+        <Flex direction="row" justifyContent="left">
+          <Button
+            size="xs"
+            fontSize="xs"
+            borderRadius="none"
+            colorScheme={!status ? "blue" : "gray"}
+            variant={!status ? "solid" : "outline"}
+            onClick={() => handleStatusChange(false)}
+          >
+            Regular Orders
+            {/* {regularOrdersCount > 0 && (
+            // <Badge ml={2} colorScheme="red" variant="solid" borderRadius="40%">
+            //   {regularOrdersCount}
+            // </Badge>
+          )} */}
+          </Button>
+          <Button
+            size="xs"
+            fontSize="xs"
+            borderRadius="none"
+            colorScheme={status ? "blue" : "gray"}
+            variant={status ? "solid" : "outline"}
+            onClick={() => handleStatusChange(true)}
+          >
+            Rush Orders
+            {/* {rushOrdersCount > 0 && (
+            <Badge ml={2} colorScheme="red" variant="solid" borderRadius="40%">
+              {rushOrdersCount}
+            </Badge>
+          )} */}
+          </Button>
+        </Flex>
         <PageScroll minHeight="200px" maxHeight="700px">
           <Table size="sm" variant="striped">
             <Thead bgColor="primary">
@@ -197,7 +235,7 @@ export const ApproveMoveOrder = ({
               {approvedData?.moveorder?.map((order, i) => (
                 <Tr key={i}>
                   <Td fontSize="13px">{i + 1}</Td>
-                  <Td fontSize="13px">{order.orderNo}</Td>
+                  <Td fontSize="13px">{order.mirId}</Td>
                   <Td fontSize="13px">{order.customerCode}</Td>
                   <Td fontSize="13px">{order.customerName}</Td>
                   {/* <Td fontSize="13px">{order.category}</Td> */}
@@ -234,16 +272,14 @@ export const ApproveMoveOrder = ({
                       size="xs"
                       colorScheme="blue"
                       color="white"
-                      onClick={() =>
-                        printHandler(order.orderNo, order.quantity)
-                      }
+                      onClick={() => printHandler(order.mirId, order.quantity)}
                     >
                       Print
                     </Button>
                   </Td>
                   <Td>
                     <Button
-                      onClick={() => rejectHandler(order.orderNo)}
+                      onClick={() => rejectHandler(order.mirId)}
                       disabled={order.isTransact}
                       title={
                         order.isTransact

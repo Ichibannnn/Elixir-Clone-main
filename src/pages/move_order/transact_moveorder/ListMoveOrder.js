@@ -38,15 +38,15 @@ export const ListMoveOrder = ({
   } = useDisclosure();
 
   const viewHandler = ({
-    orderNo,
+    mirId,
     deliveryStatus,
     customerName,
     customerCode,
   }) => {
     // Add delivery status for condition
-    if (orderNo && customerName && customerCode) {
+    if (mirId && customerName && customerCode) {
       setMoveOrderInformation({
-        orderNo: orderNo,
+        orderNo: mirId,
         deliveryStatus: "Pick-Up",
         customerName: customerName,
         customerCode: customerCode,
@@ -65,7 +65,7 @@ export const ListMoveOrder = ({
   // const moveOrderData = moveOrderList?.filter(item => item.stockOnHand >= item.quantityOrder)
   const submitData = moveOrderList?.map((item) => {
     return {
-      orderNo: item.orderNo,
+      orderNo: item.mirId,
       // farmType: item.farmType,
       customerName: item.customerName,
       customerCode: item.customerCode,
@@ -82,13 +82,14 @@ export const ListMoveOrder = ({
     } else {
       setCheckedItems([]);
     }
+    console.log(checkedItems);
   };
 
   // console.log(moveOrderList)
   const childCheckHandler = (e) => {
     const data = JSON.parse(e.target.value);
     let valueSubmit = {
-      orderNo: data.orderNo,
+      orderNo: data.mirId,
       // farmType: data.farmType,
       customerName: data.customerName,
       customerCode: data.customerCode,
@@ -103,6 +104,7 @@ export const ListMoveOrder = ({
         (item) => item.orderNo !== valueSubmit.orderNo
       );
       setCheckedItems(filterData);
+      console.log(checkedItems);
     }
   };
 
@@ -175,7 +177,7 @@ export const ListMoveOrder = ({
                         // onChange={() => childCheckHandler(list)}
                         onChange={childCheckHandler}
                         isChecked={checkedItems.some(
-                          (item) => item.orderNo === list.orderNo
+                          (item) => item.orderNo === list.mirId
                         )}
                         value={JSON.stringify(list)}
                         color="black"
@@ -185,7 +187,7 @@ export const ListMoveOrder = ({
                         {i + 1}
                       </Checkbox>
                     </Td>
-                    <Td fontSize="xs">{list.orderNo}</Td>
+                    <Td fontSize="xs">{list.mirId}</Td>
                     <Td fontSize="xs">{list.customerCode}</Td>
                     <Td fontSize="xs">{list.customerName}</Td>
                     {/* <Td fontSize="11px">{list.category}</Td> */}

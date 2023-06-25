@@ -175,7 +175,7 @@ export const ListOfMir = ({
             <Text fontSize="sm">Select Customer Name</Text>
           </DrawerHeader>
           <DrawerBody>
-            <HStack mb={5}>
+            <HStack mb={3}>
               {/* <Text>Search</Text> */}
               <InputGroup size="sm">
                 <InputLeftElement
@@ -215,6 +215,16 @@ export const ListOfMir = ({
                       cursor="pointer"
                       colorScheme={
                         customer.customerName === customerName ? "blue" : "gray"
+                      }
+                      color={
+                        customer.customerName === customerName
+                          ? "white"
+                          : "black"
+                      }
+                      variant={
+                        customer.customerName === customerName
+                          ? "solid"
+                          : "subtle"
                       }
                     >
                       <TagLeftIcon boxSize="12px" as={Search2Icon} />

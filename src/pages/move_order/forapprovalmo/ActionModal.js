@@ -66,7 +66,7 @@ export const ViewModal = ({ isOpen, onClose, viewData }) => {
           </Flex>
           <Flex justifyContent="space-between">
             <VStack alignItems="start" spacing={-1}>
-              <Text fontSize="xs">Order ID: {viewData[0]?.orderNo}</Text>
+              <Text fontSize="xs">MIR ID: {viewData[0]?.mirId}</Text>
               <Text fontSize="xs">
                 Customer Code: {viewData[0]?.customercode}
               </Text>

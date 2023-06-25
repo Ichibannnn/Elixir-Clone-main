@@ -366,6 +366,10 @@ export const ScheduleModal = ({
       width: "40em",
     }).then((result) => {
       if (result.isConfirmed) {
+        if (selectedMIRIds === 0) {
+          setCustomerName("");
+        }
+
         const submitArray = selectedMIRIds?.map((item) => {
           console.log(item);
           return {

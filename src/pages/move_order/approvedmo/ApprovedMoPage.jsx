@@ -4,9 +4,9 @@ import request from "../../../services/ApiClient";
 import { ApproveMoveOrder } from "./ApproveMoveOrder";
 // import { ApprovedMoveOrder } from './approvedmo/Approved-Move-Order'
 
-const fetchApprovedMOApi = async (pageNumber, pageSize, search) => {
+const fetchApprovedMOApi = async (pageNumber, pageSize, search, status) => {
   const res = await request.get(
-    `Ordering/ApprovedMoveOrderPaginationOrig?pageSize=${pageSize}&pageNumber=${pageNumber}&search=${search}`
+    `Ordering/ApprovedMoveOrderPaginationOrig?pageSize=${pageSize}&pageNumber=${pageNumber}&search=${search}&status=${status}`
   );
   return res.data;
 };
@@ -24,6 +24,7 @@ function ApprovedMoPage() {
   const [pageTotal, setPageTotal] = useState(undefined);
   const [orderId, setOrderId] = useState("");
   const [printData, setPrintData] = useState([]);
+  const [status, setStatus] = useState(false);
 
   const outerLimit = 2;
   const innerLimit = 2;
@@ -44,7 +45,7 @@ function ApprovedMoPage() {
   });
 
   const fetchApprovedMO = () => {
-    fetchApprovedMOApi(currentPage, pageSize, search).then((res) => {
+    fetchApprovedMOApi(currentPage, pageSize, search, status).then((res) => {
       setApprovedData(res);
       setPageTotal(res.totalCount);
     });
@@ -56,7 +57,7 @@ function ApprovedMoPage() {
     return () => {
       setApprovedData([]);
     };
-  }, [pageSize, currentPage, search]);
+  }, [pageSize, currentPage, search, status]);
 
   const fetchView = () => {
     fetchViewApi(orderId).then((res) => {
@@ -87,6 +88,8 @@ function ApprovedMoPage() {
       orderId={orderId}
       setOrderId={setOrderId}
       printData={printData}
+      status={status}
+      setStatus={setStatus}
       //   fetchNotification={fetchNotification}
     />
   );

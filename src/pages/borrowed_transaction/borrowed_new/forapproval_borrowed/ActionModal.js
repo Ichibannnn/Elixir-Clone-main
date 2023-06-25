@@ -425,6 +425,7 @@ export const ApproveModal = ({
           );
           //   fetchNotification()
           fetchBorrowed();
+          setIsLoading(false);
           onClose();
         })
         .catch((item) => {
