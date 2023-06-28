@@ -42,6 +42,8 @@ export const ListOfMir = ({
   mirList,
   regularOrdersCount,
   rushOrdersCount,
+  regularOrders,
+  rushOrders,
   checkedItems,
   setCheckedItems,
   isAllChecked,
@@ -141,9 +143,9 @@ export const ListOfMir = ({
         >
           Regular Orders
           {/* {regularOrdersCount > 0 && (
-            // <Badge ml={2} colorScheme="red" variant="solid" borderRadius="40%">
-            //   {regularOrdersCount}
-            // </Badge>
+            <Badge ml={2} colorScheme="red" variant="solid" borderRadius="40%">
+              {regularOrdersCount}
+            </Badge>
           )} */}
         </Button>
         <Button
@@ -253,6 +255,9 @@ export const ListOfMir = ({
                   // size="sm"
                   isChecked={isAllChecked}
                   onChange={() => handleAllCheckboxChange()}
+                  // isDisabled={
+                  //   regularOrders.length === 0 || rushOrders.length === 0
+                  // }
                 />{" "}
                 Line
               </Th>

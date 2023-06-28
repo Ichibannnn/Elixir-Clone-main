@@ -98,6 +98,9 @@ import ApprovedReturned from "./pages/borrowed_transaction/borrowed_new/approved
 import HistoryReturned from "./pages/borrowed_transaction/borrowed_new/history_returned/HistoryReturned";
 import RejectBorrowed from "./pages/borrowed_transaction/reject_borrowed/RejectBorrowed";
 import NewPrepSched from "./pages/ordering/a_ordering_new/prepar/NewPrepSched";
+import PendingReturned from "./pages/borrowed_transaction/borrowed_new/pending_returned/PendingReturned";
+import AddRequest from "./pages/borrowed_transaction/borrowed_v2/view_request/ViewRequest";
+import ViewRequest from "./pages/borrowed_transaction/borrowed_v2/view_request/ViewRequest";
 
 const App = () => {
   const [menu, setMenu] = useState(null);
@@ -393,6 +396,11 @@ const App = () => {
               />
 
               <Route
+                path="/borrowed/pending-returned"
+                element={user ? <PendingReturned /> : <Navigate to="/login" />}
+              />
+
+              <Route
                 path="/borrowed/approved-borrowed"
                 element={
                   user ? (
@@ -421,6 +429,11 @@ const App = () => {
               <Route
                 path="/borrowed/reject-borrowed"
                 element={user ? <RejectBorrowed /> : <Navigate to="/login" />}
+              />
+
+              <Route
+                path="/borrowed/view-request"
+                element={user ? <ViewRequest /> : <Navigate to="/login" />}
               />
             </Route>
 

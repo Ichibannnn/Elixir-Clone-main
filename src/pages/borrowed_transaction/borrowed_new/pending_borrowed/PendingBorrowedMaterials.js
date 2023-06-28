@@ -34,6 +34,7 @@ import request from "../../../../services/ApiClient";
 import moment from "moment/moment";
 import { decodeUser } from "../../../../services/decode-user";
 import { ViewModal } from "../../viewingBorrowed/ActionButtonBorrowed";
+import { PendingCancelModal } from "./PendingActionModal";
 
 const currentUser = decodeUser();
 const userId = currentUser?.id;
@@ -62,6 +63,18 @@ export const PendingBorrowedMaterials = () => {
     isOpen: isView,
     onClose: closeView,
     onOpen: openView,
+  } = useDisclosure();
+
+  const {
+    isOpen: isEdit,
+    onClose: closeEdit,
+    onOpen: openEdit,
+  } = useDisclosure();
+
+  const {
+    isOpen: isCancel,
+    onClose: closeCancel,
+    onOpen: openCancel,
   } = useDisclosure();
 
   const outerLimit = 2;
@@ -121,8 +134,24 @@ export const PendingBorrowedMaterials = () => {
     }
   };
 
+  const cancelHandler = (id, status) => {
+    if (id) {
+      setStatusBody({
+        id: id,
+        status: status,
+      });
+      console.log(statusBody?.id);
+      openCancel();
+    } else {
+      setStatusBody({
+        id: "",
+        status: "",
+      });
+    }
+  };
+
   // console.log(issueBorrowData);
-  console.log(statusBody);
+  // console.log(statusBody);
 
   return (
     <Flex
@@ -168,14 +197,14 @@ export const PendingBorrowedMaterials = () => {
                 <Th h="40px" color="white" fontSize="10px">
                   Borrowed Date
                 </Th>
-                <Th h="40px" color="white" fontSize="10px">
+                {/* <Th h="40px" color="white" fontSize="10px">
                   Transacted By
-                </Th>
+                </Th> */}
                 <Th h="40px" color="white" fontSize="10px">
                   Status
                 </Th>
-                <Th h="40px" color="white" fontSize="10px">
-                  View
+                <Th h="40px" color="white" fontSize="10px" textAlign="center">
+                  Action
                 </Th>
               </Tr>
             </Thead>
@@ -195,20 +224,43 @@ export const PendingBorrowedMaterials = () => {
                   <Td fontSize="xs">
                     {moment(borrow.borrowedDate).format("yyyy-MM-DD")}
                   </Td>
-                  <Td fontSize="xs">{borrow.preparedBy}</Td>
+                  {/* <Td fontSize="xs">{borrow.preparedBy}</Td> */}
                   <Td fontSize="xs">
                     {borrow.isApproved === false ? "For Approval" : ""}
                   </Td>
                   <Td fontSize="xs">
-                    <Button
-                      onClick={() =>
-                        viewHandler(borrow.borrowedPKey, borrow.isActive)
-                      }
-                      colorScheme="blue"
-                      size="xs"
-                    >
-                      View
-                    </Button>
+                    <HStack spacing={3} justifyContent="center">
+                      <Button
+                        onClick={() =>
+                          viewHandler(borrow.borrowedPKey, borrow.isActive)
+                        }
+                        colorScheme="blue"
+                        size="xs"
+                        borderRadius="none"
+                      >
+                        View
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          viewHandler(borrow.borrowedPKey, borrow.isActive)
+                        }
+                        colorScheme="facebook"
+                        size="xs"
+                        borderRadius="none"
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          cancelHandler(borrow.borrowedPKey, borrow.isActive)
+                        }
+                        colorScheme="red"
+                        size="xs"
+                        borderRadius="none"
+                      >
+                        Cancel
+                      </Button>
+                    </HStack>
                   </Td>
                 </Tr>
               ))}
@@ -271,6 +323,18 @@ export const PendingBorrowedMaterials = () => {
           isOpen={isView}
           onClose={closeView}
           statusBody={statusBody}
+          fetchBorrowed={fetchBorrowed}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
+      )}
+
+      {isCancel && (
+        <PendingCancelModal
+          isOpen={isCancel}
+          onClose={closeCancel}
+          statusBody={statusBody}
+          setStatusBody={setStatusBody}
           fetchBorrowed={fetchBorrowed}
           isLoading={isLoading}
           setIsLoading={setIsLoading}

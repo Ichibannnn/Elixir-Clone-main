@@ -339,7 +339,7 @@ export const AccountTitleModal = ({
   //   location?.find((x) => x.name === moveData[0]?.locationName)?.id
   // );
 
-  console.log(location);
+  // console.log(location);
 
   const submitHandler = async (data) => {
     const submitArrayBody = moveData?.map((item) => {
@@ -379,8 +379,8 @@ export const AccountTitleModal = ({
           setOrderId("");
           setHighlighterId("");
           setItemCode("");
-          setButtonChanger(false);
-          setCurrentPage(currentPage);
+          // setButtonChanger(false);
+          // setCurrentPage(currentPage);
           fetchApprovedMoveOrders();
           fetchOrderList();
           setIsLoading(false);

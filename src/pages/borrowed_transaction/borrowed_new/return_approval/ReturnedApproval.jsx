@@ -222,14 +222,8 @@ const ReturnedApproval = () => {
                 {/* <Th h="40px" color="white" fontSize="10px">
                       Status
                     </Th> */}
-                <Th h="40px" color="white" fontSize="10px">
-                  View
-                </Th>
-                <Th h="40px" color="white" fontSize="10px">
-                  Approve
-                </Th>
-                <Th h="40px" color="white" fontSize="10px">
-                  Cancel
+                <Th h="40px" color="white" fontSize="10px" textAlign="center">
+                  Action
                 </Th>
               </Tr>
             </Thead>
@@ -251,34 +245,32 @@ const ReturnedApproval = () => {
                   </Td>
                   <Td fontSize="xs">{borrow.preparedBy}</Td>
                   <Td fontSize="xs">
-                    <Button
-                      onClick={() => viewHandler(borrow.id)}
-                      colorScheme="blue"
-                      size="xs"
-                      borderRadius="none"
-                    >
-                      View
-                    </Button>
-                  </Td>
-                  <Td fontSize="xs">
-                    <Button
-                      onClick={() => approveHandler(borrow.id)}
-                      colorScheme="facebook"
-                      size="xs"
-                      borderRadius="none"
-                    >
-                      Approve
-                    </Button>
-                  </Td>
-                  <Td fontSize="xs">
-                    <Button
-                      onClick={() => rejectHandler(borrow.id)}
-                      colorScheme="red"
-                      size="xs"
-                      borderRadius="none"
-                    >
-                      Cancel
-                    </Button>
+                    <HStack spacing={3} justifyContent="center">
+                      <Button
+                        onClick={() => viewHandler(borrow.id)}
+                        colorScheme="blue"
+                        size="xs"
+                        borderRadius="none"
+                      >
+                        View
+                      </Button>
+                      <Button
+                        onClick={() => approveHandler(borrow.id)}
+                        colorScheme="facebook"
+                        size="xs"
+                        borderRadius="none"
+                      >
+                        Approve
+                      </Button>
+                      <Button
+                        onClick={() => rejectHandler(borrow.id)}
+                        colorScheme="red"
+                        size="xs"
+                        borderRadius="none"
+                      >
+                        Cancel
+                      </Button>
+                    </HStack>
                   </Td>
                 </Tr>
               ))}

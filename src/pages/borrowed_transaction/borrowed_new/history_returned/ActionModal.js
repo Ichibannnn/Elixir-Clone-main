@@ -47,7 +47,7 @@ export const ViewModalHistory = ({
   const idparams = statusBody?.id;
   const fetchBorrowedDetailsApi = async (idparams) => {
     const res = await request.get(
-      `Borrowed/ViewBorrowedReturnDetails?id=${idparams}`
+      `Borrowed/ViewAllBorrowedDetails?id=${idparams}`
     );
     return res.data;
   };

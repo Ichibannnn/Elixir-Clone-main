@@ -220,14 +220,8 @@ const ForApprovalBorrowedMaterials = () => {
                 {/* <Th h="40px" color="white" fontSize="10px">
                   Status
                 </Th> */}
-                <Th h="40px" color="white" fontSize="10px">
-                  View
-                </Th>
-                <Th h="40px" color="white" fontSize="10px">
-                  Approve
-                </Th>
-                <Th h="40px" color="white" fontSize="10px">
-                  Reject
+                <Th h="40px" color="white" fontSize="10px" textAlign="center">
+                  Action
                 </Th>
               </Tr>
             </Thead>
@@ -252,34 +246,32 @@ const ForApprovalBorrowedMaterials = () => {
                     {borrow.isApproved === false ? "For Approval" : ""}
                   </Td> */}
                   <Td fontSize="xs">
-                    <Button
-                      onClick={() => viewHandler(borrow.borrowedPKey)}
-                      colorScheme="blue"
-                      size="xs"
-                      borderRadius="none"
-                    >
-                      View
-                    </Button>
-                  </Td>
-                  <Td fontSize="xs">
-                    <Button
-                      onClick={() => approveHandler(borrow.borrowedPKey)}
-                      colorScheme="facebook"
-                      size="xs"
-                      borderRadius="none"
-                    >
-                      Approve
-                    </Button>
-                  </Td>
-                  <Td fontSize="xs">
-                    <Button
-                      onClick={() => rejectHandler(borrow.borrowedPKey)}
-                      colorScheme="red"
-                      size="xs"
-                      borderRadius="none"
-                    >
-                      Reject
-                    </Button>
+                    <HStack spacing={3} justifyContent="center">
+                      <Button
+                        onClick={() => viewHandler(borrow.borrowedPKey)}
+                        colorScheme="blue"
+                        size="xs"
+                        borderRadius="none"
+                      >
+                        View
+                      </Button>
+                      <Button
+                        onClick={() => approveHandler(borrow.borrowedPKey)}
+                        colorScheme="facebook"
+                        size="xs"
+                        borderRadius="none"
+                      >
+                        Approve
+                      </Button>
+                      <Button
+                        onClick={() => rejectHandler(borrow.borrowedPKey)}
+                        colorScheme="red"
+                        size="xs"
+                        borderRadius="none"
+                      >
+                        Reject
+                      </Button>
+                    </HStack>
                   </Td>
                 </Tr>
               ))}

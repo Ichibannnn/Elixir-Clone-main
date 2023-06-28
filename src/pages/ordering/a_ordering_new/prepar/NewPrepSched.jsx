@@ -45,19 +45,30 @@ const NewPrepSched = () => {
       );
       setMirList(response.data);
 
-      const rushOrdersList = response.data.filter((mir) => mir.status);
-      const newRushOrders = rushOrdersList.filter(
-        (mir) => !rushOrders.find((order) => order.mirId === mir.mirId)
-      );
-      setRushOrders(rushOrdersList);
-      setRushOrdersCount(newRushOrders.length);
+      // Calculate the counts of regular and rush orders
+      const regularCount = response.data.filter(
+        (mir) => mir.rush === null
+      ).length;
+      const rushCount = response.data.filter(
+        (mir) => mir.rush === !null
+      ).length;
+      setRegularOrdersCount(regularCount);
+      setRushOrdersCount(rushCount);
 
-      const regularOrdersList = response.data.filter((mir) => !mir.status);
-      const newRegularOrders = regularOrdersList.filter(
-        (mir) => !regularOrders.find((order) => order.mirId === mir.mirId)
-      );
-      setRegularOrders(regularOrdersList);
-      setRegularOrdersCount(newRegularOrders.length);
+      // const rushOrdersList = response.data.filter((mir) => mir.status);
+      // const newRushOrders = rushOrdersList.filter(
+      //   (mir) => !rushOrders.find((order) => order.mirId === mir.mirId)
+      // );
+      // setRushOrders(rushOrdersList);
+      // setRushOrdersCount(newRushOrders.length);
+
+      // const regularOrdersList = response.data.filter((mir) => !mir.status);
+      // const newRegularOrders = regularOrdersList.filter(
+      //   (mir) => !regularOrders.find((order) => order.mirId === mir.mirId)
+      // );
+      // setRegularOrders(regularOrdersList);
+      // setRegularOrdersCount(newRegularOrders.length);
+      console.log(regularOrders.length);
     } catch (error) {
       console.error("Error fetching MIR list:", error);
     }
@@ -81,10 +92,9 @@ const NewPrepSched = () => {
 
   // useEffect(() => {
   //   if (customerName) {
-  //     if (mirList?.length === 0) {
+  //     if (rushOrders?.length === 0) {
   //       setCustomerName("");
   //       fetchMirList();
-  //       // fetchOrders();
   //     }
   //   }
   // }, [mirList, customerName]);
@@ -120,6 +130,8 @@ const NewPrepSched = () => {
           setDisableScheduleButton={setDisableScheduleButton}
           search={search}
           setSearch={setSearch}
+          rushOrders={rushOrders}
+          regularOrders={regularOrders}
         />
 
         <ListOfOrders

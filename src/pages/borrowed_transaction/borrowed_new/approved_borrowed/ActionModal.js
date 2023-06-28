@@ -358,7 +358,7 @@ export const ViewModal = ({
                           colorScheme="blue"
                           size="xs"
                         >
-                          Return
+                          Edit
                         </Button>
                       </Td>
                     </Tr>

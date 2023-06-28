@@ -178,7 +178,7 @@ const ApprovedReturned = () => {
                           Status
                         </Th> */}
                 <Th h="40px" color="white" fontSize="10px">
-                  View
+                  Action
                 </Th>
               </Tr>
             </Thead>
