@@ -15,6 +15,7 @@ import {
   InputGroup,
   InputLeftElement,
   Select,
+  Stack,
   Table,
   Tag,
   TagLeftIcon,
@@ -30,6 +31,14 @@ import PageScroll from "../../../../utils/PageScroll";
 import request from "../../../../services/ApiClient";
 import { AddIcon, Search2Icon } from "@chakra-ui/icons";
 import { FiSearch } from "react-icons/fi";
+import {
+  Pagination,
+  PaginationContainer,
+  PaginationNext,
+  PaginationPage,
+  PaginationPageGroup,
+  PaginationPrevious,
+} from "@ajna/pagination";
 
 export const ListOfMir = ({
   customerName,
@@ -51,6 +60,11 @@ export const ListOfMir = ({
   setDisableScheduleButton,
   search,
   setSearch,
+  pages,
+  currentPage,
+  setCurrentPage,
+  setPageSize,
+  pagesCount,
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [keyword, setKeyword] = useState("");
@@ -58,7 +72,9 @@ export const ListOfMir = ({
 
   const handleAllCheckboxChange = (mirId) => {
     setIsAllChecked(!isAllChecked);
-    setSelectedMIRIds(isAllChecked ? [] : mirList.map((mir) => mir.mirId));
+    setSelectedMIRIds(
+      isAllChecked ? [] : mirList?.orders?.map((mir) => mir.mirId)
+    );
 
     //Array Submit
     // if (checkedItems.includes(mirId)) {
@@ -72,27 +88,54 @@ export const ListOfMir = ({
   const handleMIRCheckboxChange = (mirId) => {
     setSelectedMIRIds((prevSelectedMIRIds) => {
       if (prevSelectedMIRIds.includes(mirId)) {
-        return prevSelectedMIRIds.filter((id) => id !== mirId);
+        // Uncheck the checkbox
+        const updatedSelectedMIRIds = prevSelectedMIRIds.filter(
+          (id) => id !== mirId
+        );
+        setIsAllChecked(false); // Uncheck "Select All" checkbox
+        return updatedSelectedMIRIds;
       } else {
-        return [...prevSelectedMIRIds, mirId];
+        // Check the checkbox
+        const updatedSelectedMIRIds = [...prevSelectedMIRIds, mirId];
+        if (updatedSelectedMIRIds.length === mirList?.orders?.length) {
+          setIsAllChecked(true); // All checkboxes are selected, check "Select All" checkbox
+        }
+        return updatedSelectedMIRIds;
       }
     });
-    setIsAllChecked(false); // Uncheck "Select All" checkbox when individual checkboxes are clicked
-
-    //Array Submit
-    // if (checkedItems.includes(mirId)) {
-    //   setCheckedItems(checkedItems.filter((item) => item !== mirId));
-    // } else {
-    //   setCheckedItems([...checkedItems, mirId]);
-    // }
-    // console.log(checkedItems);
   };
 
-  // console.log(selectedMIRIds);
+  // useEffect(() => {
+  //   setSelectedMIRIds(!isAllChecked);
+
+  //   return () => {
+  //     setSelectedMIRIds([]);
+  //   };
+  // }, [!isAllChecked]);
+
+  const handlePageChange = (nextPage) => {
+    setCurrentPage(nextPage);
+    setSelectedMIRIds([]);
+    setIsAllChecked(false);
+  };
+
+  const handlePageSizeChange = (e) => {
+    const pageSize = Number(e.target.value);
+    setPageSize(pageSize);
+    setSelectedMIRIds([]);
+    setIsAllChecked(false);
+  };
+
+  // SEARCH
+  const searchHandler = (inputValue) => {
+    setSearch(inputValue);
+    console.log(inputValue);
+  };
 
   const handleStatusChange = (newStatus) => {
     setStatus(newStatus);
     setSelectedMIRIds([]); // Reset selected MIR IDs when changing status
+    setIsAllChecked(false);
   };
 
   const handleCustomerButtonClick = () => {
@@ -121,7 +164,7 @@ export const ListOfMir = ({
 
   return (
     <Flex direction="column" p={4} w="full">
-      <Button
+      {/* <Button
         w="auto"
         variant="solid"
         colorScheme="gray"
@@ -131,113 +174,61 @@ export const ListOfMir = ({
         fontSize="xs"
       >
         Customer Name: {customerName}
-      </Button>
-      <Flex direction="row" justifyContent="left">
-        <Button
-          size="xs"
-          fontSize="xs"
-          borderRadius="none"
-          colorScheme={!status ? "blue" : "gray"}
-          variant={!status ? "solid" : "outline"}
-          onClick={() => handleStatusChange(false)}
-        >
-          Regular Orders
-          {/* {regularOrdersCount > 0 && (
+      </Button> */}
+      <Flex direction="row" justifyContent="space-between">
+        <HStack spacing={0}>
+          <Button
+            size="xs"
+            fontSize="xs"
+            borderRadius="none"
+            colorScheme={!status ? "blue" : "gray"}
+            variant={!status ? "solid" : "outline"}
+            onClick={() => handleStatusChange(false)}
+          >
+            Regular Orders
+            {/* {regularOrdersCount > 0 && (
             <Badge ml={2} colorScheme="red" variant="solid" borderRadius="40%">
               {regularOrdersCount}
             </Badge>
           )} */}
-        </Button>
-        <Button
-          size="xs"
-          fontSize="xs"
-          borderRadius="none"
-          colorScheme={status ? "blue" : "gray"}
-          variant={status ? "solid" : "outline"}
-          onClick={() => handleStatusChange(true)}
-        >
-          Rush Orders
-          {/* {rushOrdersCount > 0 && (
+          </Button>
+          <Button
+            size="xs"
+            fontSize="xs"
+            borderRadius="none"
+            colorScheme={status ? "blue" : "gray"}
+            variant={status ? "solid" : "outline"}
+            onClick={() => handleStatusChange(true)}
+          >
+            Rush Orders
+            {/* {rushOrdersCount > 0 && (
             <Badge ml={2} colorScheme="red" variant="solid" borderRadius="40%">
               {rushOrdersCount}
             </Badge>
           )} */}
-        </Button>
+          </Button>
+        </HStack>
+        <HStack flexDirection="row">
+          <InputGroup size="sm">
+            <InputLeftElement
+              pointerEvents="none"
+              children={<FiSearch bg="black" fontSize="18px" />}
+            />
+            <Input
+              fontSize="13px"
+              type="text"
+              border="1px"
+              // bg="#E9EBEC"
+              borderRadius="none"
+              placeholder="Search: Customer"
+              // borderColor="gray.400"
+              // _hover={{ borderColor: "gray.400" }}
+              onChange={(e) => searchHandler(e.target.value)}
+            />
+          </InputGroup>
+        </HStack>
       </Flex>
 
-      <Drawer
-        isOpen={isDrawerOpen}
-        placement="right"
-        onClose={handleCloseDrawer}
-      >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>
-            <Text fontSize="sm">Select Customer Name</Text>
-          </DrawerHeader>
-          <DrawerBody>
-            <HStack mb={3}>
-              {/* <Text>Search</Text> */}
-              <InputGroup size="sm">
-                <InputLeftElement
-                  pointerEvents="none"
-                  children={<FiSearch bg="black" fontSize="18px" />}
-                />
-                <Input
-                  borderRadius="full"
-                  fontSize="13px"
-                  size="sm"
-                  type="text"
-                  placeholder="Search: Customer Name"
-                  onChange={(e) => setKeyword(e.target.value)}
-                  disabled={isLoading}
-                  borderColor="gray.400"
-                  _hover={{ borderColor: "gray.400" }}
-                />
-              </InputGroup>
-            </HStack>
-
-            <PageScroll minHeight="479px" maxHeight="480px">
-              {customerList?.orders
-                ?.filter((val) => {
-                  const newKeyword = new RegExp(`${keyword.toLowerCase()}`);
-                  return val?.customerName
-                    ?.toLowerCase()
-                    .match(newKeyword, "*");
-                })
-                ?.map((customer, i) => (
-                  <HStack key={i} mt={2}>
-                    <Tag
-                      borderRadius="full"
-                      spacing={5}
-                      onClick={() =>
-                        handleCustomerNameClick(customer.customerName)
-                      }
-                      cursor="pointer"
-                      colorScheme={
-                        customer.customerName === customerName ? "blue" : "gray"
-                      }
-                      color={
-                        customer.customerName === customerName
-                          ? "white"
-                          : "black"
-                      }
-                      variant={
-                        customer.customerName === customerName
-                          ? "solid"
-                          : "subtle"
-                      }
-                    >
-                      <TagLeftIcon boxSize="12px" as={Search2Icon} />
-                      {customer.customerName}
-                    </Tag>
-                  </HStack>
-                ))}
-            </PageScroll>
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
       <Text
         textAlign="center"
         bgColor="secondary"
@@ -288,7 +279,7 @@ export const ListOfMir = ({
             </Tr>
           </Thead>
           <Tbody>
-            {mirList?.map((mir, i) => (
+            {mirList?.orders?.map((mir, i) => (
               <Tr key={i}>
                 <Td fontSize="xs">
                   <Checkbox
@@ -296,7 +287,7 @@ export const ListOfMir = ({
                       isAllChecked || selectedMIRIds.includes(mir.mirId)
                     }
                     onChange={() => handleMIRCheckboxChange(mir.mirId)}
-                    // value={JSON.stringify(mir)}
+                    value={mir.mirId}
                   >
                     <Text fontSize="xs">{i + 1}</Text>
                   </Checkbox>
@@ -318,6 +309,65 @@ export const ListOfMir = ({
           </Tbody>
         </Table>
       </PageScroll>
+      <Flex justifyContent="right ">
+        <Stack>
+          <Pagination
+            pagesCount={pagesCount}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          >
+            <PaginationContainer>
+              <PaginationPrevious
+                bg="primary"
+                color="white"
+                p={1}
+                _hover={{ bg: "btnColor", color: "white" }}
+                size="sm"
+              >
+                {"<<"}
+              </PaginationPrevious>
+              <PaginationPageGroup ml={1} mr={1}>
+                {pages.map((page) => (
+                  <PaginationPage
+                    _hover={{ bg: "btnColor", color: "white" }}
+                    _focus={{ bg: "btnColor" }}
+                    p={3}
+                    bg="primary"
+                    color="white"
+                    key={`pagination_page_${page}`}
+                    page={page}
+                    size="sm"
+                  />
+                ))}
+              </PaginationPageGroup>
+              <HStack>
+                <PaginationNext
+                  bg="primary"
+                  color="white"
+                  p={1}
+                  _hover={{ bg: "btnColor", color: "white" }}
+                  size="sm"
+                  mb={2}
+                >
+                  {">>"}
+                </PaginationNext>
+                <Select
+                  onChange={handlePageSizeChange}
+                  bg="#FFFFFF"
+                  // size="sm"
+                  mb={2}
+                  variant="outline"
+                >
+                  <option value={Number(5)}>5</option>
+                  <option value={Number(10)}>10</option>
+                  <option value={Number(25)}>25</option>
+                  <option value={Number(50)}>50</option>
+                </Select>
+              </HStack>
+            </PaginationContainer>
+          </Pagination>
+        </Stack>
+      </Flex>
     </Flex>
   );
 };

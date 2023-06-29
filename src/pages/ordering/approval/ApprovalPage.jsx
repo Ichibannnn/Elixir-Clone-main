@@ -20,6 +20,7 @@ const fetchOrdersByOrderNoApi = async (orderNo) => {
 
 const ApprovalPage = () => {
   const [orderNo, setOrderNo] = useState("");
+  const [orderIds, setOrderIds] = useState([]);
   const [orders, setOrders] = useState([]);
   const [customerOrders, setCustomerOrders] = useState([]);
   const [status, setStatus] = useState(false);
@@ -73,6 +74,7 @@ const ApprovalPage = () => {
           customerOrders={customerOrders}
           status={status}
           setStatus={setStatus}
+          setOrderIds={setOrderIds}
         />
         <ListOfOrders
           customerOrders={customerOrders}
@@ -80,6 +82,7 @@ const ApprovalPage = () => {
           setOrderNo={setOrderNo}
           fetchOrderList={fetchOrderList}
           fetchOrdersByOrderNo={fetchOrdersByOrderNo}
+          orderIds={orderIds}
         />
       </VStack>
     </Flex>

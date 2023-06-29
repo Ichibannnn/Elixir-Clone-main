@@ -24,6 +24,7 @@ export const ListOfOrders = ({
   setOrderNo,
   fetchOrderList,
   fetchOrdersByOrderNo,
+  orderIds,
 }) => {
   // const [stockIdentifier, setStockIdentifier] = useState("false");
 
@@ -161,6 +162,7 @@ export const ListOfOrders = ({
           setOrderNo={setOrderNo}
           fetchOrderList={fetchOrderList}
           fetchOrdersByOrderNo={fetchOrdersByOrderNo}
+          orderIds={orderIds}
           // fetchNotification={fetchNotification}
         />
       )}
@@ -173,6 +175,7 @@ export const ListOfOrders = ({
           setOrderNo={setOrderNo}
           fetchOrderList={fetchOrderList}
           fetchOrdersByOrderNo={fetchOrdersByOrderNo}
+          orderIds={orderIds}
           // fetchNotification={fetchNotification}
         />
       )}

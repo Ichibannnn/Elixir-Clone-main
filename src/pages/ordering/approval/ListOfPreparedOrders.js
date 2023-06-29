@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Badge,
   Button,
+  Checkbox,
   Flex,
   HStack,
   Select,
@@ -24,6 +25,7 @@ export const ListOfPreparedOrders = ({
   customerOrders,
   status,
   setStatus,
+  setOrderIds,
 }) => {
   const orderNoHandler = (mirId) => {
     if (mirId) {
@@ -38,6 +40,36 @@ export const ListOfPreparedOrders = ({
   useEffect(() => {
     setOrderNo(orders[0]?.mirId);
   }, [orders]);
+
+  const allOrders = orders?.map((item) => item.mirId);
+
+  const [checkedItems, setCheckedItems] = useState([]);
+  const parentCheckHandler = (e) => {
+    if (e.target.checked) {
+      setCheckedItems(allOrders);
+    } else {
+      setCheckedItems([]);
+    }
+  };
+
+  const childCheckHandler = (e) => {
+    if (e.target.checked) {
+      setCheckedItems([...checkedItems, parseInt(e.target.value)]);
+    } else {
+      const data = checkedItems?.filter(
+        (item) => item !== parseInt(e.target.value)
+      );
+      setCheckedItems(data);
+    }
+  };
+
+  useEffect(() => {
+    setOrderIds(checkedItems);
+
+    return () => {
+      setOrderIds([]);
+    };
+  }, [checkedItems]);
 
   // const handleStatusChange = (newStatus) => {
   //   setStatus(newStatus);
@@ -95,6 +127,11 @@ export const ListOfPreparedOrders = ({
             <Thead bgColor="secondary" position="sticky" top={0} zIndex={1}>
               <Tr h="30px">
                 <Th color="white" fontSize="10px">
+                  <Checkbox
+                    onChange={parentCheckHandler}
+                    isChecked={allOrders?.length === checkedItems?.length}
+                    disabled={!allOrders?.length > 0}
+                  />{" "}
                   Line
                 </Th>
                 <Th color="white" fontSize="10px">
@@ -125,7 +162,17 @@ export const ListOfPreparedOrders = ({
                   key={i}
                   cursor="pointer"
                 >
-                  <Td fontSize="xs">{i + 1}</Td>
+                  <Td fontSize="xs">
+                    <Checkbox
+                      onChange={childCheckHandler}
+                      isChecked={checkedItems.includes(item.mirId)}
+                      value={item.mirId}
+                      color="black"
+                    >
+                      <Text fontSize="xs">{i + 1}</Text>
+                    </Checkbox>
+                  </Td>
+
                   <Td fontSize="xs">{item.mirId}</Td>
                   {/* <Td fontSize="xs">{item.department}</Td> */}
                   <Td fontSize="xs">{item.customerCode}</Td>

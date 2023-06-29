@@ -23,8 +23,6 @@ import {
 } from "./ActionModal";
 
 export const ListOfOrders = ({
-  customerName,
-  fetchCustomerList,
   fetchMirList,
   selectedMIRIds,
   setSelectedMIRIds,
@@ -35,6 +33,8 @@ export const ListOfOrders = ({
   setDisableScheduleButton,
   checkedItems,
   setCheckedItems,
+  setCurrentPage,
+  setSearch,
 }) => {
   const [orderList, setOrderList] = useState([]);
   const [disabledButton, setDisabledButton] = useState(false);
@@ -72,7 +72,7 @@ export const ListOfOrders = ({
   const fetchOrderList = async () => {
     try {
       const response = await request.get(
-        `Ordering/GetAllListOfMirOrdersByMirIds?customerName=${customerName}&listofMirIds=${selectedMIRIds.join(
+        `Ordering/GetAllListOfMirOrdersByMirIds?listofMirIds=${selectedMIRIds.join(
           "&listofMirIds="
         )}`
       );
@@ -92,12 +92,12 @@ export const ListOfOrders = ({
     // Fetch orders based on customer name and selected MIR IDs
     // fetchOrderList();
 
-    if (customerName && selectedMIRIds.length > 0) {
+    if (selectedMIRIds.length > 0) {
       fetchOrderList();
     } else {
       setOrderList([]); // Reset order list if customer name or selected MIR IDs are empty
     }
-  }, [customerName, selectedMIRIds]);
+  }, [selectedMIRIds]);
 
   const editHandler = ({
     mirId,
@@ -273,7 +273,7 @@ export const ListOfOrders = ({
           onClose={closeEdit}
           editData={editData}
           fetchOrderList={fetchOrderList}
-          fetchCustomerList={fetchCustomerList}
+          // fetchCustomerList={fetchCustomerList}
         />
       )}
 
@@ -284,7 +284,7 @@ export const ListOfOrders = ({
           cancelId={cancelId}
           fetchOrderList={fetchOrderList}
           fetchMirList={fetchMirList}
-          fetchCustomerList={fetchCustomerList}
+          // fetchCustomerList={fetchCustomerList}
           setCustomerName={setCustomerName}
           //   fetchNotification={fetchNotification}
           isAllChecked={isAllChecked}
@@ -298,13 +298,15 @@ export const ListOfOrders = ({
           // setCheckedItems={setCheckedItems}
           isOpen={isSchedule}
           onClose={closeSchedule}
-          customerName={customerName}
+          // customerName={customerName}
           setCustomerName={setCustomerName}
           fetchOrderList={fetchOrderList}
           fetchMirList={fetchMirList}
-          fetchCustomerList={fetchCustomerList}
+          // fetchCustomerList={fetchCustomerList}
           selectedMIRIds={selectedMIRIds}
           setSelectedMIRIds={setSelectedMIRIds}
+          setSearch={setSearch}
+          setCurrentPage={setCurrentPage}
 
           // setCurrentPage={setCurrentPage}
           // currentPage={currentPage}

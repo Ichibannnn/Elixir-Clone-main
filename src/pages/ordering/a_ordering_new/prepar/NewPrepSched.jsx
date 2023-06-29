@@ -3,13 +3,14 @@ import { Box, Flex, Stack, VStack } from "@chakra-ui/react";
 import request from "../../../../services/ApiClient";
 import { ListOfOrders } from "./ListOfOrders";
 import { ListOfMir } from "./ListOfMir";
+import { usePagination } from "@ajna/pagination";
 
 const NewPrepSched = () => {
-  const [customerName, setCustomerName] = useState("");
-  const [customerList, setCustomerList] = useState([]);
-  const [status, setStatus] = useState(false);
+  // const [customerName, setCustomerName] = useState("");
+  // const [customerList, setCustomerList] = useState([]);
+
   const [selectedMIRIds, setSelectedMIRIds] = useState([]);
-  const [search, setSearch] = useState();
+  // const [search, setSearch] = useState();
 
   const [mirList, setMirList] = useState([]);
   const [rushOrders, setRushOrders] = useState([]);
@@ -23,83 +24,114 @@ const NewPrepSched = () => {
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [disableScheduleButton, setDisableScheduleButton] = useState(true);
 
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState(false);
+  const [pageTotal, setPageTotal] = useState(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+
   // Fetch customer names with pagination
-  const fetchCustomerList = async () => {
-    try {
-      const response = await request.get(
-        `Ordering/GetAllListofOrdersPaginationOrig?PageNumber=1&PageSize=20000`
-      );
-      setCustomerList(response.data);
-    } catch (error) {
-      console.error("Error fetching customer list:", error);
-    }
-  };
+  // const fetchCustomerList = async () => {
+  //   try {
+  //     const response = await request.get(
+  //       `Ordering/GetAllListofOrdersPaginationOrig?PageNumber=1&PageSize=20000`
+  //     );
+  //     setCustomerList(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching customer list:", error);
+  //   }
+  // };
 
   // Fetch MIR IDs based on customer name and status
-  const fetchMirList = async () => {
-    try {
-      const response = await request.get(
-        `Ordering/GetAllListOfMir?customer=${customerName}&status=${status}&listofMirIds=${selectedMIRIds.join(
-          "&listofMirIds="
-        )}`
-      );
-      setMirList(response.data);
+  // const fetchMirList = async (pageNumber, pageSize, status, search) => {
+  //   try {
+  //     const response = await request.get(
+  //       `Ordering/GetAllListOfMir?PageNumber=${pageNumber}&PageSize=${pageSize}0&status=${status}&search=${search}
+  //       )}`
+  //     );
+  //     setMirList(response.data);
+  //     setPageTotal(response.totalCount);
+  //     setIsLoading(false);
 
-      // Calculate the counts of regular and rush orders
-      const regularCount = response.data.filter(
-        (mir) => mir.rush === null
-      ).length;
-      const rushCount = response.data.filter(
-        (mir) => mir.rush === !null
-      ).length;
-      setRegularOrdersCount(regularCount);
-      setRushOrdersCount(rushCount);
+  //     // Calculate the counts of regular and rush orders
+  //     const regularCount = response.data.filter(
+  //       (mir) => mir.rush === null
+  //     ).length;
+  //     const rushCount = response.data.filter(
+  //       (mir) => mir.rush === !null
+  //     ).length;
+  //     setRegularOrdersCount(regularCount);
+  //     setRushOrdersCount(rushCount);
 
-      // const rushOrdersList = response.data.filter((mir) => mir.status);
-      // const newRushOrders = rushOrdersList.filter(
-      //   (mir) => !rushOrders.find((order) => order.mirId === mir.mirId)
-      // );
-      // setRushOrders(rushOrdersList);
-      // setRushOrdersCount(newRushOrders.length);
+  //     // const rushOrdersList = response.data.filter((mir) => mir.status);
+  //     // const newRushOrders = rushOrdersList.filter(
+  //     //   (mir) => !rushOrders.find((order) => order.mirId === mir.mirId)
+  //     // );
+  //     // setRushOrders(rushOrdersList);
+  //     // setRushOrdersCount(newRushOrders.length);
 
-      // const regularOrdersList = response.data.filter((mir) => !mir.status);
-      // const newRegularOrders = regularOrdersList.filter(
-      //   (mir) => !regularOrders.find((order) => order.mirId === mir.mirId)
-      // );
-      // setRegularOrders(regularOrdersList);
-      // setRegularOrdersCount(newRegularOrders.length);
-      console.log(regularOrders.length);
-    } catch (error) {
-      console.error("Error fetching MIR list:", error);
-    }
+  //     // const regularOrdersList = response.data.filter((mir) => !mir.status);
+  //     // const newRegularOrders = regularOrdersList.filter(
+  //     //   (mir) => !regularOrders.find((order) => order.mirId === mir.mirId)
+  //     // );
+  //     // setRegularOrders(regularOrdersList);
+  //     // setRegularOrdersCount(newRegularOrders.length);
+  //     console.log(regularOrders.length);
+  //   } catch (error) {
+  //     console.error("Error fetching MIR list:", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchMirList();
+
+  //   return () => {
+  //     setMirList([]);
+  //   };
+  // }, [currentPage, pageSize, status, search]);
+
+  const fetchMirListApi = async (pageNumber, pageSize, status, search) => {
+    const response = await request.get(
+      `Ordering/GetAllListOfMir?PageNumber=${pageNumber}&PageSize=${pageSize}&status=${status}&search=${search}`
+    );
+
+    return response.data;
   };
 
-  useEffect(() => {
-    fetchCustomerList();
-  }, []);
+  //SHOW MIRLIST DATA----
+  const fetchMirList = () => {
+    fetchMirListApi(currentPage, pageSize, status, search).then((res) => {
+      setIsLoading(false);
+      setMirList(res);
+      setPageTotal(res.totalCount);
+    });
+  };
+
+  //PAGINATION
+  const outerLimit = 2;
+  const innerLimit = 2;
+  const {
+    currentPage,
+    setCurrentPage,
+    pagesCount,
+    pages,
+    setPageSize,
+    pageSize,
+  } = usePagination({
+    total: pageTotal,
+    limits: {
+      outer: outerLimit,
+      inner: innerLimit,
+    },
+    initialState: { currentPage: 1, pageSize: 5 },
+  });
 
   useEffect(() => {
-    if (customerName) {
-      fetchMirList();
-    }
-  }, [customerName, selectedMIRIds, status]);
+    fetchMirList();
 
-  // useEffect(() => {
-  //   if (mirList.length !== 0) {
-  //     setCustomerName("");
-  //   }
-  // }, [mirList.length, setCustomerName]);
-
-  // useEffect(() => {
-  //   if (customerName) {
-  //     if (rushOrders?.length === 0) {
-  //       setCustomerName("");
-  //       fetchMirList();
-  //     }
-  //   }
-  // }, [mirList, customerName]);
-
-  // console.log(mirList?.length);
+    return () => {
+      setMirList([]);
+    };
+  }, [currentPage, pageSize, status, search]);
 
   return (
     <Flex
@@ -112,15 +144,12 @@ const NewPrepSched = () => {
     >
       <VStack w="full">
         <ListOfMir
-          customerName={customerName}
-          setCustomerName={setCustomerName}
           status={status}
           setStatus={setStatus}
           selectedMIRIds={selectedMIRIds}
           setSelectedMIRIds={setSelectedMIRIds}
-          customerList={customerList}
-          setCustomerList={setCustomerList}
           mirList={mirList}
+          setMirList={setMirList}
           regularOrdersCount={regularOrdersCount}
           rushOrdersCount={rushOrdersCount}
           isAllChecked={isAllChecked}
@@ -132,14 +161,18 @@ const NewPrepSched = () => {
           setSearch={setSearch}
           rushOrders={rushOrders}
           regularOrders={regularOrders}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          setPageSize={setPageSize}
+          pagesCount={pagesCount}
+          pages={pages}
         />
 
         <ListOfOrders
-          customerName={customerName}
-          setCustomerName={setCustomerName}
+          setCurrentPage={setCurrentPage}
+          setSearch={setSearch}
           selectedMIRIds={selectedMIRIds}
           setSelectedMIRIds={setSelectedMIRIds}
-          fetchCustomerList={fetchCustomerList}
           fetchMirList={fetchMirList}
           isAllChecked={isAllChecked}
           setIsAllChecked={setIsAllChecked}

@@ -315,17 +315,14 @@ export const ScheduleModal = ({
   isOpen,
   onClose,
   setCheckedItems,
-  customerName,
-  setCustomerName,
   fetchOrders,
   fetchMirList,
-  fetchCustomerList,
   selectedMIRIds,
   setSelectedMIRIds,
   isAllChecked,
   setIsAllChecked,
-  // setCurrentPage,
-  // currentPage,
+  setCurrentPage,
+  setSearch,
 }) => {
   const [preparationDate, setPreparationDate] = useState();
   const date = new Date();
@@ -366,9 +363,9 @@ export const ScheduleModal = ({
       width: "40em",
     }).then((result) => {
       if (result.isConfirmed) {
-        if (selectedMIRIds === 0) {
-          setCustomerName("");
-        }
+        // if (selectedMIRIds === 0) {
+        //   setCustomerName("");
+        // }
 
         const submitArray = selectedMIRIds?.map((item) => {
           console.log(item);
@@ -396,8 +393,10 @@ export const ScheduleModal = ({
               // setCheckedItems([]);
               onClose();
               // setCustomerName("");
-              fetchCustomerList();
+              // fetchCustomerList();
               setSelectedMIRIds([]);
+              setSearch("");
+              setCurrentPage(1);
               // setIsAllChecked(isAllChecked);
               // fetchOrders();
               fetchMirList();
@@ -428,7 +427,7 @@ export const ScheduleModal = ({
         <ModalBody>
           <VStack textAlign="start">
             <HStack spacing={4} w="full" justifyContent="center">
-              <Text w="38%" pl={2} fontSize="sm">
+              {/* <Text w="38%" pl={2} fontSize="sm">
                 Customer:
               </Text>
               <Text
@@ -441,7 +440,7 @@ export const ScheduleModal = ({
                 fontSize="sm"
               >
                 {customerName && customerName}
-              </Text>
+              </Text> */}
             </HStack>
             <HStack spacing={4} w="full" justifyContent="center">
               <Text w="40%" pl={2} fontSize="sm">

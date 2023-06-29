@@ -31,17 +31,24 @@ export const ApproveModal = ({
   setOrderNo,
   fetchOrderList,
   fetchOrdersByOrderNo,
+  orderIds,
 }) => {
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
   const submitHandler = () => {
+    console.log(orderIds);
     setIsLoading(true);
     try {
       const res = request
-        .put(`Ordering/ApprovePreparedDate`, {
-          trasactId: orderNo,
-        })
+        .put(
+          `Ordering/ApprovePreparedDate`,
+          orderIds?.map((item) => {
+            return {
+              trasactId: item,
+            };
+          })
+        )
         .then((res) => {
           ToastComponent(
             "Success",
@@ -125,6 +132,7 @@ export const RejectModal = ({
   fetchOrderList,
   fetchOrdersByOrderNo,
   fetchNotification,
+  orderIds,
 }) => {
   const [reason, setReason] = useState("");
   const [reasonData, setReasonData] = useState([]);
@@ -155,11 +163,21 @@ export const RejectModal = ({
     setIsLoading(true);
     try {
       const res = request
-        .put(`Ordering/RejectPreparedDate`, {
-          trasactId: orderNo,
-          remarks: reason,
-          rejectedBy: currentUser.userName,
-        })
+        .put(
+          `Ordering/RejectPreparedDate`,
+          orderIds?.map((item) => {
+            return {
+              trasactId: item,
+              remarks: reason,
+              rejectedBy: currentUser.fullName,
+            };
+          })
+          // {
+          //   trasactId: orderNo,
+          //   remarks: reason,
+          //   rejectedBy: currentUser.userName,
+          // }
+        )
         .then((res) => {
           ToastComponent("Succes", "Order has been rejected", "success", toast);
           setOrderNo("");
