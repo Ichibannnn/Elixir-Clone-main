@@ -58,7 +58,6 @@ export const ListOfMir = ({
   isAllChecked,
   setIsAllChecked,
   setDisableScheduleButton,
-  search,
   setSearch,
   pages,
   currentPage,

@@ -307,6 +307,7 @@ export const ListOfOrders = ({
           setSelectedMIRIds={setSelectedMIRIds}
           setSearch={setSearch}
           setCurrentPage={setCurrentPage}
+          setIsAllChecked={setIsAllChecked}
 
           // setCurrentPage={setCurrentPage}
           // currentPage={currentPage}

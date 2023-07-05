@@ -24,8 +24,10 @@ const ForApprovalMo = () => {
   const [search, setSearch] = useState("");
   const [pageTotal, setPageTotal] = useState(undefined);
   const [mirId, setMirId] = useState("");
+  const [mirNo, setMirNo] = useState([]);
   const [viewData, setViewData] = useState([]);
   const [status, setStatus] = useState(false);
+  const [checkedItems, setCheckedItems] = useState([]);
 
   const outerLimit = 2;
   const innerLimit = 2;
@@ -90,9 +92,13 @@ const ForApprovalMo = () => {
       fetchForApprovalMO={fetchForApprovalMO}
       mirId={mirId}
       setMirId={setMirId}
+      mirNo={mirNo}
+      setMirNo={setMirNo}
       viewData={viewData}
       status={status}
       setStatus={setStatus}
+      checkedItems={checkedItems}
+      setCheckedItems={setCheckedItems}
       //   fetchNotification={fetchNotification}
     />
   );

@@ -101,6 +101,14 @@ import NewPrepSched from "./pages/ordering/a_ordering_new/prepar/NewPrepSched";
 import PendingReturned from "./pages/borrowed_transaction/borrowed_new/pending_returned/PendingReturned";
 import AddRequest from "./pages/borrowed_transaction/borrowed_v2/view_request/ViewRequest";
 import ViewRequest from "./pages/borrowed_transaction/borrowed_v2/view_request/ViewRequest";
+import ApproverBorrowedApproval from "./pages/borrowed_transaction/borrowed_v2/approver_borrowedapproval/ApproverBorrowedApproval";
+import ViewReturnMaterialsCustomer from "./pages/borrowed_transaction/borrowed_v2/viewreturn_materials_customer/ViewReturnMaterialsCustomer";
+import ReturnRequestsApprover from "./pages/borrowed_transaction/borrowed_v2/approver_returnrequests/ReturnRequestsApprover";
+
+const fetchNotificationApi = async () => {
+  const res = await request.get(`Notification/GetNotification`);
+  return res.data;
+};
 
 const App = () => {
   const [menu, setMenu] = useState(null);
@@ -112,7 +120,25 @@ const App = () => {
 
   //Borrowed Mats Fetch and Cancel Feature
   const [borrowedData, setBorrowedData] = useState([]);
-  const [borrowedNav, setBorrowedNav] = useState("");
+  const [borrowedNav, setBorrowedNav] = useState(1);
+
+  const [notification, setNotification] = useState([]);
+
+  const fetchNotification = () => {
+    fetchNotificationApi().then((res) => {
+      setNotification(res);
+    });
+  };
+
+  useEffect(() => {
+    fetchNotification();
+
+    return () => {
+      setNotification([]);
+    };
+  }, []);
+
+  // console.log(notification?.borrowedApproval?.forborrowedApprovalcount);
 
   //Get Added Misc Issues per Item
   const userId = user?.id;
@@ -192,15 +218,40 @@ const App = () => {
     }
   }, [pathBorrowed.pathname !== pathBorrowedMats]);
 
+  //Fetch Notif every 40s
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchNotification();
+    }, 41000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Context.Provider value={{ menu, setMenu }}>
       <Routes>
         <Route path="/login" element={<Login />} />
 
         <Route element={<ProtectedRoutes />}>
-          <Route path="/" element={<MainContainer />}>
+          <Route
+            path="/"
+            element={
+              <MainContainer
+                notification={notification}
+                fetchNotification={fetchNotification}
+              />
+            }
+          >
             {/* SETUP */}
-            <Route path="/setup" element={<SetupManagementPage />}>
+            <Route
+              path="/setup"
+              element={
+                <SetupManagementPage
+                  notification={notification}
+                  fetchNotification={fetchNotification}
+                />
+              }
+            >
               <Route path="/setup/uom" element={<UomManagement />} />
               <Route
                 path="/setup/materials"
@@ -240,7 +291,15 @@ const App = () => {
             </Route>
 
             {/* USER */}
-            <Route path="/user" element={<UserManagementPage />}>
+            <Route
+              path="/user"
+              element={
+                <UserManagementPage
+                  notification={notification}
+                  fetchNotification={fetchNotification}
+                />
+              }
+            >
               <Route path="/user/user-account" element={<UserAccount />} />
               <Route path="/user/user-role" element={<UserRole />} />
               <Route
@@ -254,13 +313,29 @@ const App = () => {
             </Route>
 
             {/* IMPORT */}
-            <Route path="/import" element={<ImportPage />}>
+            <Route
+              path="/import"
+              element={
+                <ImportPage
+                  notification={notification}
+                  fetchNotification={fetchNotification}
+                />
+              }
+            >
               <Route path="/import/import-po" element={<ImportPO />} />
               <Route path="/import/import-order" element={<ImportOrder />} />
             </Route>
 
             {/* RECEIVING */}
-            <Route path="/receiving" element={<ReceivingModule />}>
+            <Route
+              path="/receiving"
+              element={
+                <ReceivingModule
+                  notification={notification}
+                  fetchNotification={fetchNotification}
+                />
+              }
+            >
               <Route
                 path="/receiving/warehouse-receiving"
                 element={<WarehouseReceiving />}
@@ -281,7 +356,15 @@ const App = () => {
             </Route>
 
             {/* ORDERING */}
-            <Route path="/ordering" element={<OrderingPage />}>
+            <Route
+              path="/ordering"
+              element={
+                <OrderingPage
+                  notification={notification}
+                  fetchNotification={fetchNotification}
+                />
+              }
+            >
               <Route path="/ordering/orders" element={<Orders />} />
               <Route path="/ordering/preparation" element={<NewPrepSched />} />
               {/* <Route
@@ -293,12 +376,28 @@ const App = () => {
             </Route>
 
             {/* INVENTORY */}
-            <Route path="/inventory" element={<InventoryPage />}>
+            <Route
+              path="/inventory"
+              element={
+                <InventoryPage
+                  notification={notification}
+                  fetchNotification={fetchNotification}
+                />
+              }
+            >
               <Route path="/inventory/mrp" element={<MrpPage />} />
             </Route>
 
             {/* MOVE ORDER */}
-            <Route path="/move-order" element={<MoveOrderPage />}>
+            <Route
+              path="/move-order"
+              element={
+                <MoveOrderPage
+                  notification={notification}
+                  fetchNotification={fetchNotification}
+                />
+              }
+            >
               <Route path="/move-order/mo-issue" element={<MoveOrder />} />
               <Route
                 path="/move-order/forapprovalmo"
@@ -321,7 +420,12 @@ const App = () => {
             {/* MISCELLANEOUS */}
             <Route
               path="/miscellaneous"
-              element={<MiscellaneousTransactions />}
+              element={
+                <MiscellaneousTransactions
+                  notification={notification}
+                  fetchNotification={fetchNotification}
+                />
+              }
             >
               <Route
                 path="/miscellaneous/misc-receipt"
@@ -345,7 +449,12 @@ const App = () => {
             </Route>
 
             {/* BORROWED MATERIALS */}
-            <Route path="/borrowed" element={<BorrowedTransactionPage />}>
+            <Route
+              path="/borrowed"
+              element={<BorrowedTransactionPage />}
+              notification={notification}
+              fetchNotification={fetchNotification}
+            >
               <Route
                 path="/borrowed/borrowed-materials"
                 element={
@@ -435,10 +544,43 @@ const App = () => {
                 path="/borrowed/view-request"
                 element={user ? <ViewRequest /> : <Navigate to="/login" />}
               />
+
+              <Route
+                path="/borrowed/borrowed-requests"
+                element={
+                  user ? <ApproverBorrowedApproval /> : <Navigate to="/login" />
+                }
+              />
+
+              <Route
+                path="/borrowed/return-materials"
+                element={
+                  user ? (
+                    <ViewReturnMaterialsCustomer />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
+              />
+
+              <Route
+                path="/borrowed/returned-requests"
+                element={
+                  user ? <ReturnRequestsApprover /> : <Navigate to="/login" />
+                }
+              />
             </Route>
 
             {/* REPORTS */}
-            <Route path="/reports" element={<ReportsPage />}>
+            <Route
+              path="/reports"
+              element={
+                <ReportsPage
+                  notification={notification}
+                  fetchNotification={fetchNotification}
+                />
+              }
+            >
               <Route path="/reports/report-details" element={<Reports />} />
             </Route>
           </Route>
@@ -575,7 +717,7 @@ const CancelBorrowedArrayModalConfirmation = ({
   onClose,
   borrowedData,
   fetchActiveBorrowed,
-  // setBorrowedNav,
+  setBorrowedNav,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
@@ -607,9 +749,9 @@ const CancelBorrowedArrayModalConfirmation = ({
     } catch (error) {}
   };
 
-  const noHandler = () => {
+  const noHandlerBorrowed = () => {
     // setBorrowedNav(1);
-    navigateBorrowed("/borrowed/borrowed-materials");
+    navigateBorrowed("/borrowed/addborrowed-materials");
     onClose();
   };
 
@@ -628,7 +770,7 @@ const CancelBorrowedArrayModalConfirmation = ({
             </Text>
           </VStack>
         </ModalHeader>
-        <ModalCloseButton onClick={noHandler} />
+        <ModalCloseButton onClick={noHandlerBorrowed} />
 
         <ModalBody mb={5}>
           <VStack spacing={0}>
@@ -654,7 +796,7 @@ const CancelBorrowedArrayModalConfirmation = ({
             </Button>
             <Button
               size="sm"
-              onClick={noHandler}
+              onClick={noHandlerBorrowed}
               isLoading={isLoading}
               colorScheme="blackAlpha"
             >

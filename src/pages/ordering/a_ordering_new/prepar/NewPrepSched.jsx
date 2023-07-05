@@ -134,14 +134,7 @@ const NewPrepSched = () => {
   }, [currentPage, pageSize, status, search]);
 
   return (
-    <Flex
-      color="fontColor"
-      w="full"
-      flexDirection="column"
-      p={2}
-      bg="form"
-      boxShadow="md"
-    >
+    <Flex color="fontColor" w="full" flexDirection="column" p={2} bg="white">
       <VStack w="full">
         <ListOfMir
           status={status}

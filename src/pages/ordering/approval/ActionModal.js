@@ -254,6 +254,7 @@ export const RejectModal = ({
               disabled={isLoading}
               fontSize="10px"
               borderRadius="none"
+              onClick={onClose}
             >
               No
             </Button>

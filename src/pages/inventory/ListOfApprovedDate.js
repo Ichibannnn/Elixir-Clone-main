@@ -15,6 +15,7 @@ import {
   InputGroup,
   InputLeftElement,
   Select,
+  Stack,
   Table,
   Tag,
   TagLeftIcon,
@@ -29,12 +30,11 @@ import {
 } from "@chakra-ui/react";
 import {
   Pagination,
-  usePagination,
+  PaginationContainer,
   PaginationNext,
   PaginationPage,
-  PaginationPrevious,
-  PaginationContainer,
   PaginationPageGroup,
+  PaginationPrevious,
 } from "@ajna/pagination";
 import PageScrollImport from "../../components/PageScrollImport";
 import { VscCircleLargeFilled } from "react-icons/vsc";
@@ -69,6 +69,9 @@ export const ListofApprovedDate = ({
   orderListData,
   status,
   setStatus,
+  setSearch,
+  pages,
+  setPageSize,
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [keyword, setKeyword] = useState("");
@@ -78,8 +81,13 @@ export const ListofApprovedDate = ({
     setCurrentPage(nextPage);
     setItemCode("");
     setWarehouseId("");
-    // setHighlighterId('')
+    setHighlighterId("");
     setOrderId("");
+  };
+
+  const handlePageSizeChange = (e) => {
+    const pageSize = Number(e.target.value);
+    setPageSize(pageSize);
   };
 
   const handleId = (data) => {
@@ -105,7 +113,7 @@ export const ListofApprovedDate = ({
 
   //Auto select index 0
   useEffect(() => {
-    setOrderId(moveData[0]?.id);
+    setOrderId(moveData?.orders?.id);
   }, [moveData]);
 
   //Sort by date start line
@@ -144,6 +152,12 @@ export const ListofApprovedDate = ({
     }
   };
 
+  // SEARCH
+  const searchHandler = (inputValue) => {
+    setSearch(inputValue);
+    console.log(inputValue);
+  };
+
   const selectedValue = () => {
     const option = [{ name: "Pick-Up" }];
     const selectedId = 0;
@@ -172,128 +186,58 @@ export const ListofApprovedDate = ({
 
   return (
     <Flex w="full" flexDirection="column">
-      <Flex w="full" justifyContent="space-between">
-        <Flex flexDirection="column">
+      <Flex w="full" direction="row" justifyContent="space-between">
+        <HStack spacing={0}>
           <Button
-            w="full"
-            variant="solid"
-            colorScheme="gray"
-            onClick={handleCustomerButtonClick}
-            mb={3}
-            borderRadius="none"
+            size="xs"
             fontSize="xs"
+            borderRadius="none"
+            colorScheme={!status ? "blue" : "gray"}
+            variant={!status ? "solid" : "outline"}
+            onClick={() => handleStatusChange(false)}
           >
-            Customer Name: {customerName}
-          </Button>
-          <Flex direction="row" justifyContent="left">
-            <Button
-              size="xs"
-              fontSize="xs"
-              borderRadius="none"
-              colorScheme={!status ? "blue" : "gray"}
-              variant={!status ? "solid" : "outline"}
-              onClick={() => handleStatusChange(false)}
-            >
-              Regular Orders
-              {/* {regularOrdersCount > 0 && (
+            Regular Orders
+            {/* {regularOrdersCount > 0 && (
             // <Badge ml={2} colorScheme="red" variant="solid" borderRadius="40%">
             //   {regularOrdersCount}
             // </Badge>
           )} */}
-            </Button>
-            <Button
-              size="xs"
-              fontSize="xs"
-              borderRadius="none"
-              colorScheme={status ? "blue" : "gray"}
-              variant={status ? "solid" : "outline"}
-              onClick={() => handleStatusChange(true)}
-            >
-              Rush Orders
-              {/* {rushOrdersCount > 0 && (
+          </Button>
+          <Button
+            size="xs"
+            fontSize="xs"
+            borderRadius="none"
+            colorScheme={status ? "blue" : "gray"}
+            variant={status ? "solid" : "outline"}
+            onClick={() => handleStatusChange(true)}
+          >
+            Rush Orders
+            {/* {rushOrdersCount > 0 && (
             <Badge ml={2} colorScheme="red" variant="solid" borderRadius="40%">
               {rushOrdersCount}
             </Badge>
           )} */}
-            </Button>
-          </Flex>
-        </Flex>
-
-        <Drawer
-          isOpen={isDrawerOpen}
-          placement="right"
-          onClose={handleCloseDrawer}
-        >
-          <DrawerOverlay />
-          <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader>
-              <Text fontSize="sm">Select Customer Name</Text>
-            </DrawerHeader>
-            <DrawerBody>
-              <HStack mb={3}>
-                {/* <Text>Search</Text> */}
-                <InputGroup size="sm">
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<FiSearch bg="black" fontSize="18px" />}
-                  />
-                  <Input
-                    borderRadius="full"
-                    fontSize="13px"
-                    size="sm"
-                    type="text"
-                    placeholder="Search: Customer Name"
-                    onChange={(e) => setKeyword(e.target.value)}
-                    disabled={isLoading}
-                    borderColor="gray.400"
-                    _hover={{ borderColor: "gray.400" }}
-                  />
-                </InputGroup>
-              </HStack>
-
-              <PageScroll minHeight="479px" maxHeight="480px">
-                {customerList?.orders
-                  ?.filter((val) => {
-                    const newKeyword = new RegExp(`${keyword.toLowerCase()}`);
-                    return val?.customerName
-                      ?.toLowerCase()
-                      .match(newKeyword, "*");
-                  })
-                  ?.map((customer, i) => (
-                    <HStack key={i} mt={2}>
-                      <Tag
-                        borderRadius="full"
-                        spacing={5}
-                        onClick={() =>
-                          handleCustomerNameClick(customer.customerName)
-                        }
-                        cursor="pointer"
-                        colorScheme={
-                          customer.customerName === customerName
-                            ? "blue"
-                            : "gray"
-                        }
-                        color={
-                          customer.customerName === customerName
-                            ? "white"
-                            : "black"
-                        }
-                        variant={
-                          customer.customerName === customerName
-                            ? "solid"
-                            : "subtle"
-                        }
-                      >
-                        <TagLeftIcon boxSize="12px" as={Search2Icon} />
-                        {customer.customerName}
-                      </Tag>
-                    </HStack>
-                  ))}
-              </PageScroll>
-            </DrawerBody>
-          </DrawerContent>
-        </Drawer>
+          </Button>
+        </HStack>
+        <HStack flexDirection="row">
+          <InputGroup size="sm">
+            <InputLeftElement
+              pointerEvents="none"
+              children={<FiSearch bg="black" fontSize="18px" />}
+            />
+            <Input
+              fontSize="13px"
+              type="text"
+              border="1px"
+              // bg="#E9EBEC"
+              borderRadius="none"
+              placeholder="Search"
+              // borderColor="gray.400"
+              // _hover={{ borderColor: "gray.400" }}
+              onChange={(e) => searchHandler(e.target.value)}
+            />
+          </InputGroup>
+        </HStack>
         {/* <HStack w="40%">
           <Badge bgColor="secondary" fontSize="10px" color="white" px={1}>
             Customer:{" "}
@@ -390,7 +334,7 @@ export const ListofApprovedDate = ({
         </Box>
         <PageScroll minHeight="150px" maxHeight="210px">
           <Table size="sm" variant="simple">
-            <Thead bgColor="secondary">
+            <Thead bgColor="secondary" position="sticky" top={0} zIndex={1}>
               <Tr>
                 <Th color="white" fontSize="10px">
                   Line
@@ -440,7 +384,7 @@ export const ListofApprovedDate = ({
               </Tr>
             </Thead>
             <Tbody>
-              {moveData?.sort(getComparator(order)).map((order, i) => (
+              {moveData?.orders?.sort(getComparator(order)).map((order, i) => (
                 <Tr
                   key={i}
                   title={order.isReject ? order.remarks : ""}
@@ -506,6 +450,69 @@ export const ListofApprovedDate = ({
           </Table>
         </PageScroll>
       </VStack>
+      <Flex justifyContent="right" mt={1}>
+        <Stack>
+          <Pagination
+            pagesCount={pagesCount}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          >
+            <PaginationContainer>
+              <PaginationPrevious
+                borderRadius="none"
+                bg="primary"
+                color="white"
+                p={1}
+                _hover={{ bg: "btnColor", color: "white" }}
+                size="sm"
+              >
+                {"<<"}
+              </PaginationPrevious>
+              <PaginationPageGroup ml={1} mr={1}>
+                {pages.map((page) => (
+                  <PaginationPage
+                    borderRadius="none"
+                    _hover={{ bg: "btnColor", color: "white" }}
+                    _focus={{ bg: "btnColor" }}
+                    p={3}
+                    bg="primary"
+                    color="white"
+                    key={`pagination_page_${page}`}
+                    page={page}
+                    size="sm"
+                  />
+                ))}
+              </PaginationPageGroup>
+              <HStack>
+                <PaginationNext
+                  borderRadius="none"
+                  bg="primary"
+                  color="white"
+                  p={1}
+                  _hover={{ bg: "btnColor", color: "white" }}
+                  size="sm"
+                  mb={2}
+                >
+                  {">>"}
+                </PaginationNext>
+                <Select
+                  borderRadius="none"
+                  onChange={handlePageSizeChange}
+                  bg="#FFFFFF"
+                  // size="xs"
+                  mb={2}
+                  variant="outline"
+                >
+                  <option value={Number(5)}>5</option>
+                  <option value={Number(10)}>10</option>
+                  <option value={Number(25)}>25</option>
+                  <option value={Number(50)}>50</option>
+                </Select>
+              </HStack>
+            </PaginationContainer>
+          </Pagination>
+        </Stack>
+      </Flex>
 
       {isCancel && (
         <CancelApprovedDate

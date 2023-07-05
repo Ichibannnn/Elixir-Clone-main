@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Badge,
   Button,
   Flex,
   HStack,
@@ -33,30 +32,37 @@ import PageScroll from "../../../../utils/PageScroll";
 import request from "../../../../services/ApiClient";
 import moment from "moment/moment";
 import { decodeUser } from "../../../../services/decode-user";
-import { ViewModal } from "../../viewingBorrowed/ActionButtonBorrowed";
-import { EditModal, PendingCancelModal } from "./PendingActionModal";
+import {
+  ApproveModal,
+  ApproveReturnedModal,
+  CancelModalApproval,
+  ViewModal,
+  ViewModalApproval,
+} from "./ActionModal";
 
-const currentUser = decodeUser();
-const userId = currentUser?.id;
-
-const fetchBorrowedApi = async (pageNumber, pageSize, search, status) => {
+const fetchBorrowedApprovalApi = async (
+  pageNumber,
+  pageSize,
+  search,
+  status
+) => {
   const res = await request.get(
-    `Borrowed/GetAllBorrowedIssueWithPaginationOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}&status=${status}&empid=${userId}`
+    `Borrowed/GetAllForApproveReturnedItemOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}&status=${status}`
   );
   return res.data;
 };
 
-export const PendingBorrowedMaterials = () => {
-  const [issueBorrowData, setBorrowIssueData] = useState([]);
+export const ApprovedReturnApprover = () => {
+  const [borrowedApprovalData, setBorrowedApprovalData] = useState([]);
 
   const [pageTotal, setPageTotal] = useState(undefined);
-  const [status, setStatus] = useState(false);
+  const [status, setStatus] = useState(true);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
 
   const [statusBody, setStatusBody] = useState({
     id: "",
-    status: "",
   });
 
   const {
@@ -65,16 +71,16 @@ export const PendingBorrowedMaterials = () => {
     onOpen: openView,
   } = useDisclosure();
 
-  // const {
-  //   isOpen: isEdit,
-  //   onClose: closeEdit,
-  //   onOpen: openEdit,
-  // } = useDisclosure();
+  const {
+    isOpen: isReject,
+    onClose: closeReject,
+    onOpen: openReject,
+  } = useDisclosure();
 
   const {
-    isOpen: isCancel,
-    onClose: closeCancel,
-    onOpen: openCancel,
+    isOpen: isApprove,
+    onClose: closeApprove,
+    onOpen: openApprove,
   } = useDisclosure();
 
   const outerLimit = 2;
@@ -96,10 +102,12 @@ export const PendingBorrowedMaterials = () => {
   });
 
   const fetchBorrowed = () => {
-    fetchBorrowedApi(currentPage, pageSize, search, status).then((res) => {
-      setBorrowIssueData(res);
-      setPageTotal(res.totalCount);
-    });
+    fetchBorrowedApprovalApi(currentPage, pageSize, search, status).then(
+      (res) => {
+        setBorrowedApprovalData(res);
+        setPageTotal(res.totalCount);
+      }
+    );
   };
 
   useEffect(() => {
@@ -119,39 +127,19 @@ export const PendingBorrowedMaterials = () => {
     setSearch(inputValue);
   };
 
-  const viewHandler = (id, status) => {
+  const viewHandler = (id) => {
+    // console.log(id);
     if (id) {
       setStatusBody({
         id: id,
-        status: status,
       });
       openView();
     } else {
       setStatusBody({
         id: "",
-        status: "",
       });
     }
   };
-
-  const cancelHandler = (id, status) => {
-    if (id) {
-      setStatusBody({
-        id: id,
-        status: status,
-      });
-      console.log(statusBody?.id);
-      openCancel();
-    } else {
-      setStatusBody({
-        id: "",
-        status: "",
-      });
-    }
-  };
-
-  // console.log(issueBorrowData);
-  // console.log(statusBody);
 
   return (
     <Flex
@@ -192,31 +180,31 @@ export const PendingBorrowedMaterials = () => {
                   Customer Name
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
-                  Total Borrowed
+                  Returned Qty
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
                   Borrowed Date
                 </Th>
-                {/* <Th h="40px" color="white" fontSize="10px">
-                  Transacted By
-                </Th> */}
                 <Th h="40px" color="white" fontSize="10px">
-                  Status
+                  Transacted By
                 </Th>
+                {/* <Th h="40px" color="white" fontSize="10px">
+                          Status
+                        </Th> */}
                 <Th h="40px" color="white" fontSize="10px" textAlign="center">
                   Action
                 </Th>
               </Tr>
             </Thead>
             <Tbody>
-              {issueBorrowData?.issue?.map((borrow, i) => (
+              {borrowedApprovalData?.issue?.map((borrow, i) => (
                 <Tr key={i}>
-                  <Td fontSize="xs">{borrow.borrowedPKey}</Td>
+                  <Td fontSize="xs">{borrow.id}</Td>
                   <Td fontSize="xs">{borrow.customerCode}</Td>
                   <Td fontSize="xs">{borrow.customerName}</Td>
                   <Td fontSize="xs">
                     {" "}
-                    {borrow.totalQuantity.toLocaleString(undefined, {
+                    {borrow.totalReturned.toLocaleString(undefined, {
                       maximumFractionDigits: 2,
                       minimumFractionDigits: 2,
                     })}
@@ -224,41 +212,16 @@ export const PendingBorrowedMaterials = () => {
                   <Td fontSize="xs">
                     {moment(borrow.borrowedDate).format("yyyy-MM-DD")}
                   </Td>
-                  {/* <Td fontSize="xs">{borrow.preparedBy}</Td> */}
-                  <Td fontSize="xs">
-                    {borrow.isApproved === false ? "For Approval" : ""}
-                  </Td>
+                  <Td fontSize="xs">{borrow.preparedBy}</Td>
                   <Td fontSize="xs">
                     <HStack spacing={3} justifyContent="center">
                       <Button
-                        onClick={() =>
-                          viewHandler(borrow.borrowedPKey, borrow.isActive)
-                        }
+                        onClick={() => viewHandler(borrow.id)}
                         colorScheme="blue"
                         size="xs"
                         borderRadius="none"
                       >
                         View
-                      </Button>
-                      {/* <Button
-                        onClick={() =>
-                          viewHandler(borrow.borrowedPKey, borrow.isActive)
-                        }
-                        colorScheme="facebook"
-                        size="xs"
-                        borderRadius="none"
-                      >
-                        Edit
-                      </Button> */}
-                      <Button
-                        onClick={() =>
-                          cancelHandler(borrow.borrowedPKey, borrow.isActive)
-                        }
-                        colorScheme="red"
-                        size="xs"
-                        borderRadius="none"
-                      >
-                        Cancel
                       </Button>
                     </HStack>
                   </Td>
@@ -323,29 +286,6 @@ export const PendingBorrowedMaterials = () => {
           isOpen={isView}
           onClose={closeView}
           statusBody={statusBody}
-          fetchBorrowed={fetchBorrowed}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-        />
-      )}
-
-      {/* {isEdit && (
-        <EditModal
-          isOpen={isEdit}
-          onClose={closeEdit}
-          statusBody={statusBody}
-          fetchBorrowed={fetchBorrowed}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-        />
-      )} */}
-
-      {isCancel && (
-        <PendingCancelModal
-          isOpen={isCancel}
-          onClose={closeCancel}
-          statusBody={statusBody}
-          setStatusBody={setStatusBody}
           fetchBorrowed={fetchBorrowed}
           isLoading={isLoading}
           setIsLoading={setIsLoading}

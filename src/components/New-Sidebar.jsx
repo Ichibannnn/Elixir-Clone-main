@@ -9,13 +9,16 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Badge,
   Box,
   Flex,
+  HStack,
   Image,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import PageScroll from "../utils/PageScroll";
+import { MdOutlineNotificationsActive } from "react-icons/md";
 
 const currentUser = decodeUser();
 // const userId = decodeUser();
@@ -33,7 +36,7 @@ const fetchTagModuleApi = async () => {
 };
 
 //Main
-const Sidebar = () => {
+const Sidebar = ({ notification, fetchNotification }) => {
   // console.log(currentUser);
   // console.log(userId);
   return (
@@ -47,7 +50,10 @@ const Sidebar = () => {
     >
       <Flex flexDirection="column" w="full">
         <SidebarHeader />
-        <SidebarList />
+        <SidebarList
+          notification={notification}
+          fetchNotification={fetchNotification}
+        />
       </Flex>
       <SidebarFooter />
     </Flex>
@@ -59,7 +65,7 @@ const Sidebar = () => {
 export default Sidebar;
 
 //Navigation
-const SidebarList = () => {
+const SidebarList = ({ notification, fetchNotification }) => {
   const { pathname } = useLocation();
   const [tagModules, setTagModules] = useState([]);
   const { menu, setMenu } = useContext(Context);
@@ -102,6 +108,24 @@ const SidebarList = () => {
     };
   }, []);
 
+  const sideBars = [
+    {
+      title: "Borrowed Requests",
+      notifcation: notification?.borrowedApproval?.forborrowedApprovalcount,
+    },
+    // ,
+    {
+      title: "Returned Requests",
+      notifcation: notification?.returnedApproval?.forreturnedApprovalcount,
+    },
+    // {
+    //     title: 'Inventory',
+    //     notifcation: notification?.moveOrderList?.moveordercount,
+    // }
+  ];
+
+  // console.log(notification?.borrowedApproval?.forborrowedApprovalcount);
+
   return (
     <Flex w="full">
       <Accordion allowToggle w="full">
@@ -136,25 +160,50 @@ const SidebarList = () => {
                 {menu?.map((sub, i) => (
                   <Link to={sub.path} key={sub.path}>
                     <Box w="full" justifyContent="start" cursor="pointer">
-                      <Text
-                        p={1}
-                        m={1}
-                        fontSize="xs"
-                        bgColor={
-                          pathname.includes(sub.path) ? "blue.600" : "secondary"
-                        }
-                        textAlign="left"
-                        borderStyle={
-                          pathname.includes(sub.path) ? "groove" : "dashed"
-                        }
-                        _focus={{ bg: "buttonColor" }}
-                        _hover={{
-                          bg: "whiteAlpha.200",
-                          color: "white",
-                        }}
+                      <Flex
+                        w="full"
+                        flexDirection="row"
+                        justifyContent="space-between"
                       >
-                        {sub.title}
-                      </Text>
+                        <Text
+                          p={1}
+                          m={1}
+                          fontSize="xs"
+                          bgColor={
+                            pathname.includes(sub.path)
+                              ? "blue.600"
+                              : "secondary"
+                          }
+                          textAlign="left"
+                          borderStyle={
+                            pathname.includes(sub.path) ? "groove" : "dashed"
+                          }
+                          _focus={{ bg: "buttonColor" }}
+                          _hover={{
+                            bg: "whiteAlpha.200",
+                            color: "white",
+                          }}
+                        >
+                          {sub.title}
+                          {sideBars.map((side, i) =>
+                            !pathname.includes(sub.path)
+                              ? sub.title === side.title && (
+                                  <Badge key={i} background="none" mb={1}>
+                                    {side.notifcation === 0 ? (
+                                      ""
+                                    ) : (
+                                      <MdOutlineNotificationsActive
+                                        fontSize="15px"
+                                        // color='#87CEAA'
+                                        color="#f56565"
+                                      />
+                                    )}
+                                  </Badge>
+                                )
+                              : ""
+                          )}
+                        </Text>
+                      </Flex>
                     </Box>
                   </Link>
                 ))}

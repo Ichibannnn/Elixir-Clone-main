@@ -104,9 +104,7 @@ export const ListOfOrders = ({
                 <Td fontSize="xs">
                   {moment(list.dateNeeded).format("yyyy-MM-DD")}
                 </Td>
-                {/* <Td fontSize="11px">{list.customerCode}</Td>
-                <Td fontSize="11px">{list.customerName}</Td>
-                <Td fontSize="11px">{list.category}</Td> */}
+
                 <Td fontSize="xs">{list.itemCode}</Td>
                 <Td fontSize="xs">{list.itemDescription}</Td>
                 <Td fontSize="xs">{list.uom}</Td>
@@ -115,7 +113,6 @@ export const ListOfOrders = ({
                 <Td fontSize="xs">{list.rush}</Td>
                 <Td>
                   {list.quantityOrder <= list.preparedQuantity ? (
-                    // <BsCheck2Circle fontSize="20px" title="Done" />
                     <Badge
                       colorScheme="twitter"
                       fontSize="0.7em"

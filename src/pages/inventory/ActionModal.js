@@ -49,7 +49,7 @@ export const CancelApprovedDate = ({
     console.log(id);
     try {
       const res = request
-        .put(`Ordering/CancelOrdersInMoveOrder`, { trasactId: id })
+        .put(`Ordering/CancelOrdersInMoveOrder`, [{ trasactId: id }])
         .then((res) => {
           ToastComponent(
             "Success",
@@ -232,6 +232,10 @@ export const AccountTitleModal = ({
   const [department, setDepartment] = useState([]);
   const [location, setLocation] = useState([]);
   const [account, setAccount] = useState([]);
+  console.log(
+    "movedata",
+    moveData?.orders?.find((item) => item.id === orderId)
+  );
 
   // FETCH COMPANY API
   const fetchCompanyApi = async () => {
@@ -342,7 +346,7 @@ export const AccountTitleModal = ({
   // console.log(location);
 
   const submitHandler = async (data) => {
-    const submitArrayBody = moveData?.map((item) => {
+    const submitArrayBody = moveData?.orders?.map((item) => {
       return {
         orderNo: orderId,
         companyCode: company?.find((x) => x.id === data.formData.companyId)
@@ -384,6 +388,7 @@ export const AccountTitleModal = ({
           fetchApprovedMoveOrders();
           fetchOrderList();
           setIsLoading(false);
+          setCurrentPage(1);
           onClose();
         })
         .catch((err) => {
@@ -417,7 +422,11 @@ export const AccountTitleModal = ({
                       {...register("formData.companyId")}
                       defaultValue={
                         company?.find(
-                          (x) => x.name === moveData[0]?.companyName
+                          (x) =>
+                            x.code ===
+                            moveData?.orders?.find(
+                              (item) => item.id === orderId
+                            )?.companyCode
                         )?.id
                       }
                       placeholder="Select Company"
@@ -449,7 +458,10 @@ export const AccountTitleModal = ({
                     {...register("formData.departmentId")}
                     defaultValue={
                       department?.find(
-                        (x) => x.code === moveData[0]?.departmentCode
+                        (x) =>
+                          x.code ===
+                          moveData?.orders?.find((item) => item.id === orderId)
+                            ?.departmentCode
                       )?.id
                     }
                     placeholder="Select Department"
@@ -479,7 +491,10 @@ export const AccountTitleModal = ({
                     {...register("formData.locationId")}
                     defaultValue={
                       location?.find(
-                        (x) => x.name === moveData[0]?.locationName
+                        (x) =>
+                          x.code ===
+                          moveData?.orders?.find((item) => item.id === orderId)
+                            ?.locationCode
                       )?.id
                     }
                     placeholder="Select Location"

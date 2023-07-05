@@ -25,6 +25,7 @@ export const ListOfOrders = ({
   fetchOrderList,
   fetchOrdersByOrderNo,
   orderIds,
+  checkedItems,
 }) => {
   // const [stockIdentifier, setStockIdentifier] = useState("false");
 
@@ -136,14 +137,14 @@ export const ListOfOrders = ({
           <Button
             colorScheme="blue"
             px={2}
-            disabled={!orderNo}
+            disabled={!orderNo || checkedItems?.length === 0}
             onClick={approveModal}
           >
             APPROVE
           </Button>
           <Button
             px={4}
-            disabled={!orderNo}
+            disabled={!orderNo || checkedItems?.length === 0}
             onClick={rejectModal}
             color="white"
             size="xs"

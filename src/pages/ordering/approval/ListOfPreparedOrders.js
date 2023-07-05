@@ -26,6 +26,8 @@ export const ListOfPreparedOrders = ({
   status,
   setStatus,
   setOrderIds,
+  checkedItems,
+  setCheckedItems,
 }) => {
   const orderNoHandler = (mirId) => {
     if (mirId) {
@@ -43,7 +45,6 @@ export const ListOfPreparedOrders = ({
 
   const allOrders = orders?.map((item) => item.mirId);
 
-  const [checkedItems, setCheckedItems] = useState([]);
   const parentCheckHandler = (e) => {
     if (e.target.checked) {
       setCheckedItems(allOrders);

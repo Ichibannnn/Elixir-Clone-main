@@ -33,7 +33,7 @@ import PageScroll from "../../../../utils/PageScroll";
 import request from "../../../../services/ApiClient";
 import moment from "moment/moment";
 import { decodeUser } from "../../../../services/decode-user";
-import { ViewModal } from "./ActionModal";
+import { PendingCancelModal, ViewModal } from "./ActionModal";
 // import { PendingCancelModal } from "./PendingActionModal";
 
 const currentUser = decodeUser();
@@ -234,14 +234,6 @@ const PendingReturned = () => {
                         View
                       </Button>
                       <Button
-                        onClick={() => viewHandler(borrow.id, borrow.isActive)}
-                        colorScheme="facebook"
-                        size="xs"
-                        borderRadius="none"
-                      >
-                        Edit
-                      </Button>
-                      <Button
                         onClick={() =>
                           cancelHandler(borrow.id, borrow.isActive)
                         }
@@ -309,28 +301,28 @@ const PendingReturned = () => {
         </Stack>
       </Flex>
 
-      {/* {isView && (
-            <ViewModal
-              isOpen={isView}
-              onClose={closeView}
-              statusBody={statusBody}
-              fetchBorrowed={fetchBorrowed}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-            />
-          )}
-    
-          {isCancel && (
-            <PendingCancelModal
-              isOpen={isCancel}
-              onClose={closeCancel}
-              statusBody={statusBody}
-              setStatusBody={setStatusBody}
-              fetchBorrowed={fetchBorrowed}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-            />
-          )} */}
+      {isView && (
+        <ViewModal
+          isOpen={isView}
+          onClose={closeView}
+          statusBody={statusBody}
+          fetchBorrowed={fetchBorrowed}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
+      )}
+
+      {isCancel && (
+        <PendingCancelModal
+          isOpen={isCancel}
+          onClose={closeCancel}
+          statusBody={statusBody}
+          setStatusBody={setStatusBody}
+          fetchBorrowed={fetchBorrowed}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
+      )}
     </Flex>
   );
 };

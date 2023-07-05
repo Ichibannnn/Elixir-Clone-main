@@ -31,26 +31,22 @@ import {
 } from "@ajna/pagination";
 import PageScroll from "../../../../utils/PageScroll";
 import request from "../../../../services/ApiClient";
-import moment from "moment/moment";
+import moment from "moment";
 import { decodeUser } from "../../../../services/decode-user";
-import { ViewModal } from "../../viewingBorrowed/ActionButtonBorrowed";
-import { EditModal, PendingCancelModal } from "./PendingActionModal";
-
-const currentUser = decodeUser();
-const userId = currentUser?.id;
+import { ViewModal } from "./ActionModal";
 
 const fetchBorrowedApi = async (pageNumber, pageSize, search, status) => {
   const res = await request.get(
-    `Borrowed/GetAllBorrowedIssueWithPaginationOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}&status=${status}&empid=${userId}`
+    `Borrowed/GetAllForApprovalBorrowedWithPaginationOrig?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}&status=${status}`
   );
   return res.data;
 };
 
-export const PendingBorrowedMaterials = () => {
+export const ApprovedBorrowedApprover = () => {
   const [issueBorrowData, setBorrowIssueData] = useState([]);
 
   const [pageTotal, setPageTotal] = useState(undefined);
-  const [status, setStatus] = useState(false);
+  const [status, setStatus] = useState(true);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -63,18 +59,6 @@ export const PendingBorrowedMaterials = () => {
     isOpen: isView,
     onClose: closeView,
     onOpen: openView,
-  } = useDisclosure();
-
-  // const {
-  //   isOpen: isEdit,
-  //   onClose: closeEdit,
-  //   onOpen: openEdit,
-  // } = useDisclosure();
-
-  const {
-    isOpen: isCancel,
-    onClose: closeCancel,
-    onOpen: openCancel,
   } = useDisclosure();
 
   const outerLimit = 2;
@@ -134,25 +118,6 @@ export const PendingBorrowedMaterials = () => {
     }
   };
 
-  const cancelHandler = (id, status) => {
-    if (id) {
-      setStatusBody({
-        id: id,
-        status: status,
-      });
-      console.log(statusBody?.id);
-      openCancel();
-    } else {
-      setStatusBody({
-        id: "",
-        status: "",
-      });
-    }
-  };
-
-  // console.log(issueBorrowData);
-  // console.log(statusBody);
-
   return (
     <Flex
       justifyContent="center"
@@ -197,13 +162,20 @@ export const PendingBorrowedMaterials = () => {
                 <Th h="40px" color="white" fontSize="10px">
                   Borrowed Date
                 </Th>
-                {/* <Th h="40px" color="white" fontSize="10px">
+                <Th h="40px" color="white" fontSize="10px">
                   Transacted By
-                </Th> */}
+                </Th>
+                <Th h="40px" color="white" fontSize="10px">
+                  Remarks
+                </Th>
+                <Th h="40px" color="white" fontSize="10px">
+                  Aging Days
+                </Th>
                 <Th h="40px" color="white" fontSize="10px">
                   Status
                 </Th>
-                <Th h="40px" color="white" fontSize="10px" textAlign="center">
+
+                <Th h="40px" color="white" fontSize="10px">
                   Action
                 </Th>
               </Tr>
@@ -224,43 +196,25 @@ export const PendingBorrowedMaterials = () => {
                   <Td fontSize="xs">
                     {moment(borrow.borrowedDate).format("yyyy-MM-DD")}
                   </Td>
-                  {/* <Td fontSize="xs">{borrow.preparedBy}</Td> */}
+
+                  <Td fontSize="xs">{borrow.preparedBy}</Td>
+                  <Td fontSize="xs">{borrow.reason}</Td>
                   <Td fontSize="xs">
-                    {borrow.isApproved === false ? "For Approval" : ""}
+                    {borrow.agingDays} {`Day(s)`}
                   </Td>
+                  <Td fontSize="xs">{borrow.statusApprove}</Td>
+
                   <Td fontSize="xs">
-                    <HStack spacing={3} justifyContent="center">
-                      <Button
-                        onClick={() =>
-                          viewHandler(borrow.borrowedPKey, borrow.isActive)
-                        }
-                        colorScheme="blue"
-                        size="xs"
-                        borderRadius="none"
-                      >
-                        View
-                      </Button>
-                      {/* <Button
-                        onClick={() =>
-                          viewHandler(borrow.borrowedPKey, borrow.isActive)
-                        }
-                        colorScheme="facebook"
-                        size="xs"
-                        borderRadius="none"
-                      >
-                        Edit
-                      </Button> */}
-                      <Button
-                        onClick={() =>
-                          cancelHandler(borrow.borrowedPKey, borrow.isActive)
-                        }
-                        colorScheme="red"
-                        size="xs"
-                        borderRadius="none"
-                      >
-                        Cancel
-                      </Button>
-                    </HStack>
+                    <Button
+                      onClick={() =>
+                        viewHandler(borrow.borrowedPKey, borrow.isActive)
+                      }
+                      colorScheme="blue"
+                      borderRadius="none"
+                      size="xs"
+                    >
+                      View
+                    </Button>
                   </Td>
                 </Tr>
               ))}
@@ -323,29 +277,6 @@ export const PendingBorrowedMaterials = () => {
           isOpen={isView}
           onClose={closeView}
           statusBody={statusBody}
-          fetchBorrowed={fetchBorrowed}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-        />
-      )}
-
-      {/* {isEdit && (
-        <EditModal
-          isOpen={isEdit}
-          onClose={closeEdit}
-          statusBody={statusBody}
-          fetchBorrowed={fetchBorrowed}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-        />
-      )} */}
-
-      {isCancel && (
-        <PendingCancelModal
-          isOpen={isCancel}
-          onClose={closeCancel}
-          statusBody={statusBody}
-          setStatusBody={setStatusBody}
           fetchBorrowed={fetchBorrowed}
           isLoading={isLoading}
           setIsLoading={setIsLoading}

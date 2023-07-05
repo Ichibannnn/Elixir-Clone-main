@@ -264,6 +264,7 @@ export const ApproveModal = ({
   printData,
   fetchNotification,
   totalQuantity,
+  mirNo,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -283,10 +284,18 @@ export const ApproveModal = ({
   } = useDisclosure();
 
   const submitHandler = () => {
+    // console.log(mirNo);
     setIsLoading(true);
     try {
       const res = request
-        .put(`Ordering/ApproveListOfMoveOrder`, { orderNo: orderNo })
+        .put(
+          `Ordering/ApproveListOfMoveOrder`,
+          mirNo?.map((item) => {
+            return {
+              orderNo: item,
+            };
+          })
+        )
         .then((res) => {
           ToastComponent(
             "Success",
@@ -298,11 +307,19 @@ export const ApproveModal = ({
           fetchForApprovalMO();
           try {
             const res = request
-              .put(`Ordering/UpdatePrintStatus`, { orderNo: orderNo })
+              .put(
+                `Ordering/UpdatePrintStatus`,
+                mirNo?.map((item) => {
+                  return {
+                    orderNo: item,
+                  };
+                })
+              )
               .then((res) => {
                 setIsLoading(false);
-                handlePrint();
-                openPrint();
+                onClose();
+                // handlePrint();
+                // openPrint();
               })
               .catch((err) => {});
           } catch (error) {}

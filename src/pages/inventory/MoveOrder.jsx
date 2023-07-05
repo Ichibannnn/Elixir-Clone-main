@@ -25,47 +25,8 @@ import { PreparedItem } from "./PreparedItem";
 
 //List of Approved Move Orders
 
-const fetchApprovedMoveOrdersApi = async (customerName, status) => {
-  const res = await request.get(
-    `Ordering/GetAllListOfApprovedPreparedforMoveOrder?customername=${customerName}&status=${status}`
-  );
-  return res.data;
-};
-
-//List of Orders
-
-const fetchOrderListApi = async (orderId) => {
-  const res = await request.get(
-    `Ordering/GetAllListOfOrdersForMoveOrder?id=${orderId}`
-  );
-  return res.data;
-};
-
-//Actual Item Quantity || Barcode Details
-const fetchBarcodeDetailsApi = async (warehouseId, itemCode) => {
-  const res = await request.get(
-    `Ordering/GetAvailableStockFromWarehouse?id=${warehouseId}&itemcode=${itemCode}`
-  );
-  return res.data;
-};
-
-//Prepared Items
-
-const fetchPreparedItemsApi = async (orderId) => {
-  const res = await request.get(
-    `Ordering/ListOfPreparedItemsForMoveOrder?id=${orderId}`
-  );
-  return res.data;
-};
-
 const MoveOrder = () => {
-  const [customerName, setCustomerName] = useState("");
-  const [status, setStatus] = useState(false);
-  const [customerList, setCustomerList] = useState([]);
-
-  // const [deliveryStatus, setDeliveryStatus] = useState("");
   const [batchNumber, setBatchNumber] = useState("");
-
   const [moveData, setMoveData] = useState([]);
   const [lengthIndicator, setLengthIndicator] = useState("");
 
@@ -80,11 +41,62 @@ const MoveOrder = () => {
   const [warehouseId, setWarehouseId] = useState("");
   const [itemCode, setItemCode] = useState("");
   const [barcodeData, setBarcodeData] = useState([]);
-  // const [nearlyExpireBarcode, setNearlyExpireBarcode] = useState("");
+
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState(false);
+  const [pageTotal, setPageTotal] = useState(undefined);
 
   const [preparedData, setPreparedData] = useState([]);
 
   let [buttonChanger, setButtonChanger] = useState(false);
+
+  const fetchApprovedMoveOrdersApi = async (
+    pageNumber,
+    pageSize,
+    status,
+    search
+  ) => {
+    const res = await request.get(
+      `Ordering/GetAllListOfApprovedPreparedforMoveOrder?PageNumber=${pageNumber}&PageSize=${pageSize}&status=${status}&search=${search}`
+    );
+    return res.data;
+  };
+
+  //List of Orders
+
+  const fetchOrderListApi = async (orderId) => {
+    const res = await request.get(
+      `Ordering/GetAllListOfOrdersForMoveOrder?id=${orderId}`
+    );
+    return res.data;
+  };
+
+  //Actual Item Quantity || Barcode Details
+  // const fetchBarcodeDetailsApi = async (warehouseId, itemCode) => {
+  //   const res = await request.get(
+  //     `Ordering/GetAvailableStockFromWarehouse?id=${warehouseId}&itemcode=${itemCode}`
+  //   );
+  //   return res.data;
+  // };
+
+  const fetchBarcodeDetailsApi = async (warehouseId, itemCode) => {
+    const res = await request.get(`Ordering/GetAvailableStockFromWarehouse`, {
+      params: {
+        id: warehouseId,
+        itemCode: itemCode,
+      },
+    });
+    return res.data;
+  };
+
+  //Prepared Items
+
+  const fetchPreparedItemsApi = async (orderId) => {
+    const res = await request.get(
+      `Ordering/ListOfPreparedItemsForMoveOrder?id=${orderId}`
+    );
+    return res.data;
+  };
 
   // const [pageTotal, setPageTotal] = useState(undefined);
   // const outerLimit = 2;
@@ -101,59 +113,69 @@ const MoveOrder = () => {
   //Pagination
 
   // Fetch customer names with pagination
-  const fetchCustomerList = async () => {
-    try {
-      const response = await request.get(
-        `Ordering/GetAllListForMoveOrderPaginationOrig?PageNumber=1&PageSize=20000`
-      );
-      setCustomerList(response.data);
-      setCustomerName(response.data?.orders[0]?.customerName);
-    } catch (error) {
-      console.error("Error fetching customer list:", error);
-    }
-  };
-
-  // const fetchMoveOrder = () => {
-  //   fetchMoveOrderApi().then((res) => {
-  //     setCustomerData(res?.orders[0]?.customerName);
-  //     // setPageTotal(res.totalCount);
-  //   });
+  // const fetchCustomerList = async () => {
+  //   try {
+  //     const response = await request.get(
+  //       `Ordering/GetAllListForMoveOrderPaginationOrig?PageNumber=1&PageSize=20000`
+  //     );
+  //     setCustomerList(response.data);
+  //     setCustomerName(response.data?.orders[0]?.customerName);
+  //   } catch (error) {
+  //     console.error("Error fetching customer list:", error);
+  //   }
   // };
 
   // useEffect(() => {
-  //   fetchMoveOrder();
-  //   return () => {
-  //     setCustomerData([]);
-  //   };
+  //   fetchCustomerList();
   // }, []);
-
-  useEffect(() => {
-    fetchCustomerList();
-  }, []);
 
   // console.log(customerList);
 
   //Approved Move Orders
 
   const fetchApprovedMoveOrders = () => {
-    fetchApprovedMoveOrdersApi(customerName, status).then((res) => {
-      setMoveData(res);
-      setLengthIndicator(res.length);
-      setOrderId(res[0]?.id);
-    });
+    fetchApprovedMoveOrdersApi(currentPage, pageSize, status, search).then(
+      (res) => {
+        setMoveData(res);
+        setLengthIndicator(res.length);
+        setOrderId(res[0]?.id);
+        setPageTotal(res.totalCount);
+        // console.log(setOrderId(res[0]?.id));
+        // console.log(orderId?.res);
+      }
+    );
   };
+
+  console.log(moveData);
+
+  //PAGINATION
+  const outerLimit = 2;
+  const innerLimit = 2;
+  const {
+    currentPage,
+    setCurrentPage,
+    pagesCount,
+    pages,
+    setPageSize,
+    pageSize,
+  } = usePagination({
+    total: pageTotal,
+    limits: {
+      outer: outerLimit,
+      inner: innerLimit,
+    },
+    initialState: { currentPage: 1, pageSize: 5 },
+  });
 
   // console.log(orderId)
 
   useEffect(() => {
-    if (customerName) {
-      fetchApprovedMoveOrders();
-    }
+    fetchApprovedMoveOrders();
 
     return () => {
       setMoveData([]);
     };
-  }, [customerName, status]);
+  }, [currentPage, pageSize, status, search]);
 
   //List of Orders
 
@@ -228,27 +250,27 @@ const MoveOrder = () => {
     <>
       <VStack color="fontColor" w="full" p={4} bg="form" boxShadow="md">
         <ListofApprovedDate
-          customerName={customerName}
-          setCustomerName={setCustomerName}
-          customerList={customerList}
           moveData={moveData}
           status={status}
           setStatus={setStatus}
-          // setCurrentPage={setCurrentPage}
-          // currentPage={currentPage}
-          // pagesCount={pagesCount}
+          setPageSize={setPageSize}
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+          pagesCount={pagesCount}
+          pages={pages}
           setOrderId={setOrderId}
           orderId={orderId}
           setItemCode={setItemCode}
           setWarehouseId={setWarehouseId}
           setHighlighterId={setHighlighterId}
-          // setDeliveryStatus={setDeliveryStatus}
           setBatchNumber={setBatchNumber}
           buttonChanger={buttonChanger}
           fetchApprovedMoveOrders={fetchApprovedMoveOrders}
           lengthIndicator={lengthIndicator}
           preparedLength={preparedData?.length}
           orderListData={orderListData}
+          search={search}
+          setSearch={setSearch}
         />
         {orderId ? (
           <ListOfOrders
@@ -277,9 +299,9 @@ const MoveOrder = () => {
             setOrderId={setOrderId}
             setHighlighterId={setHighlighterId}
             setItemCode={setItemCode}
-            // setButtonChanger={setButtonChanger}
-            // setCurrentPage={setCurrentPage}
-            // currentPage={currentPage}
+            setButtonChanger={setButtonChanger}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
             moveData={moveData}
             // fetchNotification={fetchNotification}
           />

@@ -27,7 +27,12 @@ const fetchTransactApi = async () => {
 
 const fetchBarcodeNoApi = async (itemCode) => {
   const res = await request.get(
-    `Miscellaneous/GetAllAvailableStocksForMIsssue?itemcode=${itemCode}`
+    `Miscellaneous/GetAllAvailableStocksForMIsssue`,
+    {
+      params: {
+        itemcode: itemCode,
+      },
+    }
   );
   return res.data;
 };
@@ -147,11 +152,11 @@ const AddBorrowedMaterials = ({
   return (
     <Flex px={5} pt={5} pb={0} w="full" flexDirection="column" bg="form">
       <Flex w="full" justifyContent="space-between">
-        {/* <HStack spacing={0}>
+        <HStack spacing={0}>
           <Button
             bgColor={borrowedNav === 1 ? "primary" : ""}
             color={borrowedNav === 1 ? "white" : ""}
-            _hover={{ bgColor: "btnColor", color: "white" }}
+            _hover={{ bgColor: "primary", color: "white" }}
             border="1px"
             borderColor="gray.300"
             size="sm"
@@ -161,7 +166,7 @@ const AddBorrowedMaterials = ({
           >
             Add Borrow Materials
           </Button>
-          <Button
+          {/* <Button
             bgColor={borrowedNav === 2 ? "primary" : ""}
             color={borrowedNav === 2 ? "white" : ""}
             _hover={{ bgColor: "btnColor", color: "white" }}
@@ -186,8 +191,8 @@ const AddBorrowedMaterials = ({
             borderRadius="none"
           >
             Transacted Return Materials
-          </Button>
-        </HStack> */}
+          </Button> */}
+        </HStack>
       </Flex>
 
       <VStack
@@ -197,69 +202,73 @@ const AddBorrowedMaterials = ({
         height={borrowedData?.length === 0 ? "87vh" : "auto"}
         border="2px"
       >
-        <>
-          <BorrowedInformation
-            rawMatsInfo={rawMatsInfo}
-            setRawMatsInfo={setRawMatsInfo}
-            details={details}
-            setDetails={setDetails}
-            transactions={transactions}
-            customers={customers}
-            rawMats={rawMats}
-            barcodeNo={barcodeNo}
-            setSelectorId={setSelectorId}
-            warehouseId={warehouseId}
-            setWarehouseId={setWarehouseId}
-            fetchActiveBorrowed={fetchActiveBorrowed}
-            customerData={customerData}
-            setCustomerData={setCustomerData}
-            customerRef={customerRef}
-            remarks={remarks}
-            setRemarks={setRemarks}
-            remarksRef={remarksRef}
-            transactionDate={transactionDate}
-            setTransactionDate={setTransactionDate}
-          />
-          {borrowedData?.length > 0 ? (
-            <>
-              <ListOfBorrowed
-                selectorId={selectorId}
-                setSelectorId={setSelectorId}
-                setTotalQuantity={setTotalQuantity}
-                borrowedData={borrowedData}
-                fetchActiveBorrowed={fetchActiveBorrowed}
-                fetchBarcodeNo={fetchBarcodeNo}
-                remarks={remarks}
-              />
-              <ActionButton
-                setIsLoading={setIsLoading}
-                isLoading={isLoading}
-                totalQuantity={totalQuantity}
-                setTotalQuantity={setTotalQuantity}
-                customerData={customerData}
-                setCustomerData={setCustomerData}
-                details={details}
-                selectorId={selectorId}
-                setSelectorId={setSelectorId}
-                borrowedData={borrowedData}
-                fetchActiveBorrowed={fetchActiveBorrowed}
-                customerRef={customerRef}
-                setDetails={setDetails}
-                setRawMatsInfo={setRawMatsInfo}
-                //warehouse Id
-                warehouseId={warehouseId}
-                fetchBarcodeNo={fetchBarcodeNo}
-                remarks={remarks}
-                setRemarks={setRemarks}
-                remarksRef={remarksRef}
-                transactionDate={transactionDate}
-                setTransactionDate={setTransactionDate}
-              />
-            </>
-          ) : (
-            ""
-          )}
-        </>
+        {borrowedNav === 1 ? (
+          <>
+            <BorrowedInformation
+              rawMatsInfo={rawMatsInfo}
+              setRawMatsInfo={setRawMatsInfo}
+              details={details}
+              setDetails={setDetails}
+              transactions={transactions}
+              customers={customers}
+              rawMats={rawMats}
+              barcodeNo={barcodeNo}
+              setSelectorId={setSelectorId}
+              warehouseId={warehouseId}
+              setWarehouseId={setWarehouseId}
+              fetchActiveBorrowed={fetchActiveBorrowed}
+              customerData={customerData}
+              setCustomerData={setCustomerData}
+              customerRef={customerRef}
+              remarks={remarks}
+              setRemarks={setRemarks}
+              remarksRef={remarksRef}
+              transactionDate={transactionDate}
+              setTransactionDate={setTransactionDate}
+            />
+            {borrowedData?.length > 0 ? (
+              <>
+                <ListOfBorrowed
+                  selectorId={selectorId}
+                  setSelectorId={setSelectorId}
+                  setTotalQuantity={setTotalQuantity}
+                  borrowedData={borrowedData}
+                  fetchActiveBorrowed={fetchActiveBorrowed}
+                  fetchBarcodeNo={fetchBarcodeNo}
+                  remarks={remarks}
+                />
+                <ActionButton
+                  setIsLoading={setIsLoading}
+                  isLoading={isLoading}
+                  totalQuantity={totalQuantity}
+                  setTotalQuantity={setTotalQuantity}
+                  customerData={customerData}
+                  setCustomerData={setCustomerData}
+                  details={details}
+                  selectorId={selectorId}
+                  setSelectorId={setSelectorId}
+                  borrowedData={borrowedData}
+                  fetchActiveBorrowed={fetchActiveBorrowed}
+                  customerRef={customerRef}
+                  setDetails={setDetails}
+                  setRawMatsInfo={setRawMatsInfo}
+                  //warehouse Id
+                  warehouseId={warehouseId}
+                  fetchBarcodeNo={fetchBarcodeNo}
+                  remarks={remarks}
+                  setRemarks={setRemarks}
+                  remarksRef={remarksRef}
+                  transactionDate={transactionDate}
+                  setTransactionDate={setTransactionDate}
+                />
+              </>
+            ) : (
+              ""
+            )}
+          </>
+        ) : (
+          ""
+        )}
       </VStack>
     </Flex>
   );

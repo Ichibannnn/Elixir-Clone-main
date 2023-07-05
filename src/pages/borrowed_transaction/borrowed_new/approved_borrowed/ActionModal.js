@@ -52,6 +52,7 @@ export const ViewModal = ({
     consumes: "",
     quantity: "",
   });
+  const [zeroValue, setZeroValue] = useState(0);
 
   const toast = useToast();
 
@@ -73,6 +74,80 @@ export const ViewModal = ({
     fetchBorrowedDetails();
   }, [id]);
 
+  const closeHandler = () => {
+    const updatedBorrowedDetails = borrowedDetailsData.map((item) => {
+      if (item.id === editData.id) {
+        return { ...item, returnQuantity: 0 };
+      }
+      return item;
+    });
+    setBorrowedDetailsData(updatedBorrowedDetails);
+    onClose();
+  };
+
+  // const returnZero = () => {
+  //   try {
+  //     const res = request
+  //       .put(`Borrowed/EditReturnedQuantity`, {
+  //         id: editData.id,
+  //         returnQuantity: quantitySubmit,
+  //       })
+  //       .then((res) => {
+  //         ToastComponent("Success", "Order has been edited!", "success", toast);
+  //         onClose();
+  //         fetchBorrowedDetails();
+  //       })
+  //       .catch((err) => {
+  //         // ToastComponent("Error", err.response.data, "error", toast);
+  //         setIsLoading(false);
+  //       });
+  //   } catch (error) {}
+  // };
+
+  const returnZero = () => {
+    // console.log(borrowedDetailsData[0]?.borrowedPKey);
+    setIsLoading(true);
+    Swal.fire({
+      title: "Confirmation!",
+      text: "Changes was not saved. Are you sure you want to exit?",
+      icon: "info",
+      color: "white",
+      background: "#1B1C1D",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#CBD1D8",
+      confirmButtonText: "Yes",
+      heightAuto: false,
+      width: "40em",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        try {
+          const res = request
+            .put(`Borrowed/CloseSaveBorrowed`, [
+              {
+                borrowedPKey: borrowedDetailsData[0]?.borrowedPKey,
+                // returnQuantity: zeroValue,
+              },
+            ])
+            .then((res) => {
+              ToastComponent(
+                "Success",
+                "Order has been edited!",
+                "success",
+                toast
+              );
+              onClose();
+              fetchBorrowedDetails();
+            })
+            .catch((err) => {
+              ToastComponent("Error", err.response.data, "error", toast);
+              setIsLoading(false);
+            });
+        } catch (error) {}
+      }
+    });
+  };
+
   const editHandler = ({
     id,
     itemCode,
@@ -88,12 +163,6 @@ export const ViewModal = ({
       returnQuantity >= 0 &&
       consumes >= 0 &&
       quantity
-      //   id &&
-      //   itemCode &&
-      //   itemDescription &&
-      //   returnQuantity > 0 &&
-      //   consumes > 0 &&
-      //   quantity
     ) {
       setEditData({
         id: id,
@@ -164,53 +233,8 @@ export const ViewModal = ({
     <Modal isOpen={isOpen} onClose={() => {}} size="5xl" isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader mb={5} fontSize="md">
-          {/* <Flex fontSize="sm" justifyContent="center" mb={5}>
-            <Text>Borrowed Details</Text>
-          </Flex>
-          <Flex justifyContent="space-between">
-            <VStack alignItems="start" spacing={-1}>
-              <Text fontSize="xs">
-                Customer Code: {borrowedDetailsData[0]?.customerCode}
-              </Text>
-              <Text fontSize="xs">
-                Customer Name: {borrowedDetailsData[0]?.customer}
-              </Text>
-              <Text fontSize="xs">
-                Details: {borrowedDetailsData[0]?.remarks}
-              </Text>
-            </VStack>
-            <VStack alignItems="start" spacing={-1}>
-              <Text fontSize="xs">
-                Transaction ID: {borrowedDetailsData[0]?.borrowedPKey}
-              </Text>
-              <Text fontSize="xs">
-                Transaction Date:{" "}
-                {moment(borrowedDetailsData[0]?.borrowedDate).format(
-                  "yyyy-MM-DD"
-                )}
-              </Text>
-              <Text fontSize="xs">
-                Transact By: {borrowedDetailsData[0]?.preparedBy}
-              </Text>
-            </VStack>
-            <VStack alignItems="start" spacing={-1}>
-              <Text fontSize="xs">
-                Company: {borrowedDetailsData[0]?.companyName}
-              </Text>
-              <Text fontSize="xs">
-                Department: {borrowedDetailsData[0]?.departmentName}
-              </Text>
-              <Text fontSize="xs">
-                Location: {borrowedDetailsData[0]?.locationName}
-              </Text>
-              <Text fontSize="xs">
-                Account Title: {borrowedDetailsData[0]?.accountTitles}
-              </Text>
-            </VStack>
-          </Flex> */}
-        </ModalHeader>
-        <ModalCloseButton onClick={onClose} />
+        <ModalHeader mb={5} fontSize="md"></ModalHeader>
+        {/* <ModalCloseButton onClick={onClose} /> */}
         <ModalBody mb={5}>
           <Flex fontSize="sm" justifyContent="center" mb={5}>
             <Text fontWeight="semibold">Approved Borrowed Details</Text>
@@ -386,7 +410,10 @@ export const ViewModal = ({
             <Button colorScheme="blue" onClick={submitBody}>
               Submit
             </Button>
-            <Button colorScheme="gray" onClick={onClose}>
+            <Button
+              colorScheme="gray"
+              onClick={() => returnZero(borrowedDetailsData[0]?.borrowedPKey)}
+            >
               Close
             </Button>
           </ButtonGroup>

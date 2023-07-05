@@ -63,8 +63,8 @@ export const PreparedItem = ({
           Prepared Items
         </Text>
       </Box>
-      <PageScroll minHeight="150px" maxHeight="200px">
-        <Table size="sm" variant="simple">
+      <PageScroll minHeight="120px" maxHeight="150px">
+        <Table size="xs" variant="simple">
           <Thead bgColor="secondary">
             <Tr>
               {TableHead?.map((head, i) => (

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Badge,
   Button,
+  Checkbox,
   Flex,
   HStack,
   Input,
@@ -46,6 +47,10 @@ export const ForApprovalMoveOrder = ({
   fetchNotification,
   status,
   setStatus,
+  checkedItems,
+  setCheckedItems,
+  setMirNo,
+  mirNo,
 }) => {
   const TableHead = [
     "Line",
@@ -57,7 +62,7 @@ export const ForApprovalMoveOrder = ({
     "Prepared Date",
     "Rush",
     "View",
-    "Approve",
+    // "Approve",
     "Reject",
   ];
 
@@ -101,17 +106,17 @@ export const ForApprovalMoveOrder = ({
     openView();
   };
 
-  const approveHandler = (data) => {
-    if (data) {
-      setMirId(data.mirId);
-      setTotalQuantity(data.quantity);
-    } else {
-      setMirId("");
-      setTotalQuantity("");
-    }
-    openApprove();
-    console.log(mirId);
-  };
+  // const approveHandler = (data) => {
+  //   if (data) {
+  //     setMirId(data.mirId);
+  //     setTotalQuantity(data.quantity);
+  //   } else {
+  //     setMirId("");
+  //     setTotalQuantity("");
+  //   }
+  //   openApprove();
+  //   console.log(mirId);
+  // };
 
   const rejectHandler = (id) => {
     if (id) {
@@ -124,6 +129,39 @@ export const ForApprovalMoveOrder = ({
 
   const handleStatusChange = (newStatus) => {
     setStatus(newStatus);
+  };
+
+  const allOrders = forApprovalData?.moveorder?.map((item) => item.mirId);
+
+  const parentCheckHandler = (e) => {
+    if (e.target.checked) {
+      setCheckedItems(allOrders);
+    } else {
+      setCheckedItems([]);
+    }
+  };
+
+  const childCheckHandler = (e) => {
+    if (e.target.checked) {
+      setCheckedItems([...checkedItems, parseInt(e.target.value)]);
+    } else {
+      const data = checkedItems?.filter(
+        (item) => item !== parseInt(e.target.value)
+      );
+      setCheckedItems(data);
+    }
+  };
+
+  useEffect(() => {
+    setMirNo(checkedItems);
+
+    return () => {
+      setMirNo([]);
+    };
+  }, [checkedItems]);
+
+  const approveModal = () => {
+    openApprove();
   };
 
   return (
@@ -189,17 +227,60 @@ export const ForApprovalMoveOrder = ({
           <Table size="sm">
             <Thead bgColor="primary">
               <Tr>
-                {TableHead?.map((head, i) => (
+                <Th color="white" fontSize="10px">
+                  <Checkbox
+                    onChange={parentCheckHandler}
+                    isChecked={allOrders?.length === checkedItems?.length}
+                    disabled={!allOrders?.length > 0}
+                  />{" "}
+                  Line
+                </Th>
+                <Th color="white" fontSize="10px">
+                  MIR ID
+                </Th>
+                <Th color="white" fontSize="10px">
+                  Customer Code
+                </Th>
+                <Th color="white" fontSize="10px">
+                  Customer Name
+                </Th>
+                <Th color="white" fontSize="10px">
+                  Total Quantity Order
+                </Th>
+                <Th color="white" fontSize="10px">
+                  Prepared Date
+                </Th>
+                <Th color="white" fontSize="10px">
+                  Rush
+                </Th>
+                <Th color="white" fontSize="10px">
+                  View
+                </Th>
+                <Th color="white" fontSize="10px">
+                  Reject
+                </Th>
+
+                {/* {TableHead?.map((head, i) => (
                   <Th h="40px" key={i} color="white" fontSize="10px">
                     {head}
                   </Th>
-                ))}
+                ))} */}
               </Tr>
             </Thead>
             <Tbody>
               {forApprovalData?.moveorder?.map((item, i) => (
                 <Tr key={i}>
-                  <Td fontSize="xs">{i + 1}</Td>
+                  <Td fontSize="xs">
+                    <Checkbox
+                      onChange={childCheckHandler}
+                      isChecked={checkedItems.includes(item.mirId)}
+                      value={item.mirId}
+                      color="black"
+                    >
+                      <Text fontSize="xs">{i + 1}</Text>
+                    </Checkbox>
+                  </Td>
+
                   <Td fontSize="xs">{item.mirId}</Td>
                   <Td fontSize="xs">{item.customercode}</Td>
                   <Td fontSize="xs">{item.customerName}</Td>
@@ -233,17 +314,9 @@ export const ForApprovalMoveOrder = ({
                       View
                     </Button>
                   </Td>
-                  <Td>
-                    <Button
-                      fontSize="11px"
-                      borderRadius="none"
-                      size="xs"
-                      colorScheme="blue"
-                      onClick={() => approveHandler(item)}
-                    >
-                      Approve
-                    </Button>
-                  </Td>
+                  {/* <Td>
+
+                  </Td> */}
                   <Td>
                     <Button
                       borderRadius="none"
@@ -271,7 +344,18 @@ export const ForApprovalMoveOrder = ({
             : "No entries available"}
         </Text>
         <Flex>
-          <Pagination
+          <Button
+            colorScheme="blue"
+            size="sm"
+            borderRadius="none"
+            px={2}
+            disabled={!forApprovalData || checkedItems?.length === 0}
+            onClick={approveModal}
+          >
+            Approve
+          </Button>
+
+          {/* <Pagination
             pagesCount={pagesCount}
             currentPage={currentPage}
             onPageChange={handlePageChange}
@@ -297,7 +381,7 @@ export const ForApprovalMoveOrder = ({
                 {"Next >"}
               </PaginationNext>
             </PaginationContainer>
-          </Pagination>
+          </Pagination> */}
         </Flex>
       </Flex>
 
@@ -318,6 +402,7 @@ export const ForApprovalMoveOrder = ({
           printData={viewData}
           fetchNotification={fetchNotification}
           totalQuantity={totalQuantity}
+          mirNo={mirNo}
         />
       )}
       {isReject && (

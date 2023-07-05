@@ -395,6 +395,7 @@ export const ScheduleModal = ({
               // setCustomerName("");
               // fetchCustomerList();
               setSelectedMIRIds([]);
+              setIsAllChecked(false);
               setSearch("");
               setCurrentPage(1);
               // setIsAllChecked(isAllChecked);

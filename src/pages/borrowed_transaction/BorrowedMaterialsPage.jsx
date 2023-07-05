@@ -23,6 +23,11 @@ const fetchBarcodeNoApi = async (itemCode) => {
   return res.data;
 };
 
+const fetchTransactApi = async () => {
+  const res = await request.get(`TransactionType/GetAllActiveTransactionType`);
+  return res.data;
+};
+
 const BorrowedMaterialsPage = ({
   borrowedData,
   fetchActiveBorrowed,
@@ -39,6 +44,7 @@ const BorrowedMaterialsPage = ({
   const [rawMats, setRawMats] = useState([]);
 
   const [barcodeNo, setBarcodeNo] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
   const [totalQuantity, setTotalQuantity] = useState("");
   const [customerData, setCustomerData] = useState({
@@ -107,6 +113,21 @@ const BorrowedMaterialsPage = ({
       setBarcodeNo([]);
     };
   }, [itemCode, borrowedNav]);
+
+  //Transaction Type Fetching
+  const fetchTransaction = () => {
+    fetchTransactApi().then((res) => {
+      setTransactions(res);
+    });
+  };
+
+  useEffect(() => {
+    fetchTransaction();
+
+    return () => {
+      setTransactions([]);
+    };
+  }, []);
 
   //Refetch on change navigation
   useEffect(() => {
@@ -178,6 +199,7 @@ const BorrowedMaterialsPage = ({
               setRawMatsInfo={setRawMatsInfo}
               details={details}
               setDetails={setDetails}
+              transactions={transactions}
               customers={customers}
               rawMats={rawMats}
               barcodeNo={barcodeNo}
