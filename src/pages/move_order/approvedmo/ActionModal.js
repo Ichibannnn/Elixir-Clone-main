@@ -57,7 +57,7 @@ export const PrintModal = ({
     setIsLoading(true);
     try {
       const res = request
-        .put(`Ordering/UpdatePrintStatus`, { orderNo: orderId })
+        .put(`Ordering/UpdatePrintStatus`, [{ orderNo: orderId }])
         .then((res) => {
           setIsLoading(false);
           handlePrint();

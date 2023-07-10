@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import {
   Badge,
+  Box,
   Button,
   Flex,
   HStack,
   Input,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Select,
   Table,
   Tbody,
@@ -30,6 +35,9 @@ import moment from "moment";
 import { ImLocation } from "react-icons/im";
 import { PrintModal, RejectModal, TrackModal } from "./ActionModal";
 import { FaShippingFast } from "react-icons/fa";
+import { GrLocation } from "react-icons/gr";
+import { AiOutlineMore, AiOutlinePrinter } from "react-icons/ai";
+import { GiCancel } from "react-icons/gi";
 
 export const ApproveMoveOrder = ({
   setCurrentPage,
@@ -54,10 +62,10 @@ export const ApproveMoveOrder = ({
     // "Category",
     "Total Quantity Order",
     "Prepared Date",
-    "Rush",
-    "Track",
-    "Print",
-    "Reject",
+    // "Rush",
+    "Action",
+    // "Print",
+    // "Reject",
   ];
 
   const [trackData, setTrackData] = useState([
@@ -243,8 +251,7 @@ export const ApproveMoveOrder = ({
                   <Td fontSize="13px">
                     {moment(order.preparedDate).format("MM/DD/yyyy")}
                   </Td>
-                  <Td fontSize="xs">
-                    {/* {" "} */}
+                  {/* <Td fontSize="xs">
                     {order.rush ? (
                       <FaShippingFast
                         title="Rush Orders"
@@ -254,18 +261,61 @@ export const ApproveMoveOrder = ({
                     ) : (
                       <FaShippingFast fontSize="17px" color="#A0AEC0" />
                     )}
-                  </Td>
+                  </Td> */}
                   <Td>
-                    <Button
+                    <Flex pl={2}>
+                      <Box>
+                        <Menu>
+                          <MenuButton
+                            alignItems="center"
+                            justifyContent="center"
+                            bg="none"
+                          >
+                            <AiOutlineMore fontSize="20px" />
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              icon={<GrLocation fontSize="17px" />}
+                              onClick={() => trackHandler(order)}
+                            >
+                              <Text fontSize="15px">Track</Text>
+                            </MenuItem>
+                            <MenuItem
+                              icon={<AiOutlinePrinter fontSize="17px" />}
+                              onClick={() =>
+                                printHandler(order.mirId, order.quantity)
+                              }
+                            >
+                              <Text fontSize="15px">Print</Text>
+                            </MenuItem>
+                            <MenuItem
+                              icon={<GiCancel fontSize="17px" />}
+                              onClick={() => rejectHandler(order.mirId)}
+                              isDisabled={order.isTransact}
+                              title={
+                                order.isTransact
+                                  ? "Order was already transacted"
+                                  : "Order not yet transacted"
+                              }
+                            >
+                              <Text fontSize="15px" _hover={{ color: "red" }}>
+                                Reject
+                              </Text>
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Box>
+                    </Flex>
+                    {/* <Button
                       size="xs"
                       p={0}
                       bg="none"
                       onClick={() => trackHandler(order)}
                     >
                       <ImLocation color="#314E89" fontSize="19px" />
-                    </Button>
+                    </Button> */}
                   </Td>
-                  <Td>
+                  {/* <Td>
                     <Button
                       fontSize="13px"
                       borderRadius="none"
@@ -293,7 +343,7 @@ export const ApproveMoveOrder = ({
                     >
                       Reject
                     </Button>
-                  </Td>
+                  </Td> */}
                 </Tr>
               ))}
             </Tbody>

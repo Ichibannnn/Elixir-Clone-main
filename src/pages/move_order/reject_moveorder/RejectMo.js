@@ -60,8 +60,8 @@ export const RejectMo = ({
     "Prepared Date",
     // "Date Needed",
     // "Reject Date",
-    "Rush",
-    "Reject",
+    // "Rush",
+    "Action",
   ];
 
   const handlePageChange = (nextPage) => {
@@ -189,8 +189,7 @@ export const RejectMo = ({
                       ""
                     )}
                   </Td> */}
-                  <Td fontSize="xs">
-                    {/* {" "} */}
+                  {/* <Td fontSize="xs">
                     {data.rush ? (
                       <FaShippingFast
                         title="Rush Orders"
@@ -200,7 +199,7 @@ export const RejectMo = ({
                     ) : (
                       <FaShippingFast fontSize="17px" color="#A0AEC0" />
                     )}
-                  </Td>
+                  </Td> */}
                   <Td>
                     <Button
                       borderRadius="none"

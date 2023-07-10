@@ -253,6 +253,8 @@ export const ActualItemQuantity = ({
               ["E", "e", "+", "-"].includes(e.key) && e.preventDefault()
             }
             onPaste={(e) => e.preventDefault()}
+            autoComplete="off"
+            min="1"
             placeholder="Please enter quantity"
             h="15%"
             w="50%"

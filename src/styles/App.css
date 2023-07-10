@@ -136,3 +136,32 @@
 }
 
 /* "linear-gradient(rgba(0, 0, 0, 0.800),rgba(0, 0, 0, 0.5))" */
+
+.badge-container {
+    position: relative;
+  }
+  
+  .badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+  }
+  
+  .bell-icon {
+    width: 14px;
+    height: 14px;
+    background-image: url('C:\Users\GPANGILINAN\OneDrive\Desktop\Elixir-Clone-main\src\assets\notification-bell.png'); /* Replace with the path to your bell icon image */
+    background-size: cover;
+  }
+
+  .my-swal {
+    z-index: 99999999 !important;
+  }

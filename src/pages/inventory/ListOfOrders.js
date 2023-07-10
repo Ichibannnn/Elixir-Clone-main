@@ -30,6 +30,7 @@ export const ListOfOrders = ({
 }) => {
   const TableHead = [
     "Line",
+    "Order No.",
     "Order Date",
     "Date Needed",
     // "Customer Code",
@@ -98,6 +99,7 @@ export const ListOfOrders = ({
                 ) : (
                   <Td fontSize="xs">{i + 1}</Td>
                 )}
+                <Td fontSize="xs">{list.id}</Td>
                 <Td fontSize="xs">
                   {moment(list.orderDate).format("yyyy-MM-DD")}
                 </Td>

@@ -475,6 +475,11 @@ const DrawerComponent = (props) => {
   const { isOpen, onClose, getItemCategoryHandler, editData, disableEdit } =
     props;
   const toast = useToast();
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+
+  const onCloseDrawer = () => {
+    setIsOpenDrawer(false);
+  };
   // const [subCategory, setSubCategory] = useState([]);
 
   // const fetchSubCategory = async () => {
@@ -575,14 +580,14 @@ const DrawerComponent = (props) => {
 
   return (
     <>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="right" onClose={onCloseDrawer}>
         <DrawerOverlay />
         <form onSubmit={handleSubmit(submitHandler)}>
           <DrawerContent>
             <DrawerHeader borderBottomWidth="1px">
               Item Category Form
             </DrawerHeader>
-            <DrawerCloseButton />
+            {/* <DrawerCloseButton /> */}
             <DrawerBody>
               <Stack spacing="7px">
                 {/* <Box>

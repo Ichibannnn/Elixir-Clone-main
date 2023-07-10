@@ -24,8 +24,10 @@ import ForApprovalBorrowedMaterials from "../../borrowed_new/forapproval_borrowe
 import { ApprovedBorrowedApprover } from "../../borrowed_new/approvedborrowed_approver/ApprovedBorrowedApprover";
 import RejectBorrowed from "../../reject_borrowed/RejectBorrowed";
 
-const ApproverBorrowedApproval = () => {
+const ApproverBorrowedApproval = ({ notification, fetchNotification }) => {
   const [navigation, setNavigation] = useState(1);
+
+  // console.log(notification);
 
   return (
     <Flex px={5} pt={5} pb={0} w="full" flexDirection="column" bg="form">
@@ -44,6 +46,15 @@ const ApproverBorrowedApproval = () => {
             borderRadius="none"
           >
             Pending
+            <Badge
+              ml={2}
+              fontSize="10px"
+              variant="solid"
+              colorScheme="red"
+              mb={1}
+            >
+              {notification?.borrowedApproval?.forborrowedApprovalcount}
+            </Badge>
           </Button>
           <Button
             w="10%"
@@ -88,7 +99,10 @@ const ApproverBorrowedApproval = () => {
       >
         {navigation === 1 ? (
           <>
-            <ForApprovalBorrowedMaterials navigation={navigation} />
+            <ForApprovalBorrowedMaterials
+              navigation={navigation}
+              fetchNotification={fetchNotification}
+            />
           </>
         ) : navigation === 2 ? (
           <>

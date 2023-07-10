@@ -76,7 +76,7 @@ const fetchFistoLocationsApi = async () => {
 // FETCH API REASON:
 const fetchElixirApi = async () => {
   const response = await request.get(
-    `https://localhost:7151/api/Customer/GetAllCustomerWithPagination/true?PageNumber=1&PageSize=10000`
+    `Customer/GetAllCustomerWithPagination/true?PageNumber=1&PageSize=10000`
   );
 
   return response.data;

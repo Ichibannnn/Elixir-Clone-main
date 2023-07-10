@@ -171,10 +171,11 @@ const LotCategory = () => {
 
   //EDIT LOT CATEGORY--
   const editLotCategoryHandler = (cat) => {
+    console.log(editData);
     setDisableEdit(true);
     setEditData(cat);
     onOpen();
-    // console.log(mod.mainMenu)
+    console.log(editData);
   };
 
   //FOR DRAWER (Drawer / Drawer Tagging)
@@ -473,6 +474,11 @@ const DrawerComponent = (props) => {
   const { isOpen, onClose, getLotCategoryHandler, editData } = props;
   const toast = useToast();
   const [lotName, setLotName] = useState([]);
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+
+  const onCloseDrawer = () => {
+    setIsOpenDrawer(false);
+  };
 
   const fetchLot = async () => {
     try {
@@ -566,14 +572,14 @@ const DrawerComponent = (props) => {
 
   return (
     <>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="right" onClose={onCloseDrawer}>
         <DrawerOverlay />
         <form onSubmit={handleSubmit(submitHandler)}>
           <DrawerContent>
             <DrawerHeader borderBottomWidth="1px">
               Lot Section Form
             </DrawerHeader>
-            <DrawerCloseButton />
+            {/* <DrawerCloseButton /> */}
             <DrawerBody>
               <Stack spacing="7px">
                 <Box>

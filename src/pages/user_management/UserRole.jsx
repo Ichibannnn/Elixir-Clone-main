@@ -510,6 +510,12 @@ const DrawerComponent = (props) => {
   const { isOpen, onClose, getRolesHandler, editData } = props;
   const toast = useToast();
 
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+
+  const onCloseDrawer = () => {
+    setIsOpenDrawer(false);
+  };
+
   const {
     register,
     handleSubmit,
@@ -581,12 +587,12 @@ const DrawerComponent = (props) => {
 
   return (
     <>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="right" onClose={onCloseDrawer}>
         <DrawerOverlay />
         <form onSubmit={handleSubmit(submitHandler)}>
           <DrawerContent>
             <DrawerHeader borderBottomWidth="1px">Role Form</DrawerHeader>
-            <DrawerCloseButton />
+            {/* <DrawerCloseButton /> */}
             <DrawerBody>
               <Stack spacing="7px">
                 <Box>

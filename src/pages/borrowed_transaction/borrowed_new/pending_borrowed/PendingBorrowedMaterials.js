@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import {
   Badge,
+  Box,
   Button,
   Flex,
   HStack,
   Input,
   InputGroup,
   InputLeftElement,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Select,
   Stack,
   Table,
@@ -35,6 +40,10 @@ import moment from "moment/moment";
 import { decodeUser } from "../../../../services/decode-user";
 import { ViewModal } from "../../viewingBorrowed/ActionButtonBorrowed";
 import { EditModal, PendingCancelModal } from "./PendingActionModal";
+import { BsCheck2Square } from "react-icons/bs";
+import { GiCancel } from "react-icons/gi";
+import { GrView } from "react-icons/gr";
+import { AiOutlineMore } from "react-icons/ai";
 
 const currentUser = decodeUser();
 const userId = currentUser?.id;
@@ -179,7 +188,7 @@ export const PendingBorrowedMaterials = () => {
 
       <Flex mt={5}>
         <PageScroll minHeight="400px" maxHeight="401px">
-          <Table size="sm">
+          <Table size="sm" variant="striped">
             <Thead bgColor="primary">
               <Tr>
                 <Th h="40px" color="white" fontSize="10px">
@@ -228,8 +237,47 @@ export const PendingBorrowedMaterials = () => {
                   <Td fontSize="xs">
                     {borrow.isApproved === false ? "For Approval" : ""}
                   </Td>
-                  <Td fontSize="xs">
-                    <HStack spacing={3} justifyContent="center">
+                  <Td fontSize="xs" ml={3}>
+                    <Flex pl={2}>
+                      <Box ml={5}>
+                        <Menu>
+                          <MenuButton
+                            alignItems="center"
+                            justifyContent="center"
+                            bg="none"
+                          >
+                            <AiOutlineMore fontSize="20px" />
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              icon={<GrView fontSize="17px" />}
+                              onClick={() =>
+                                viewHandler(
+                                  borrow.borrowedPKey,
+                                  borrow.isActive
+                                )
+                              }
+                            >
+                              <Text fontSize="15px">View</Text>
+                            </MenuItem>
+                            <MenuItem
+                              icon={<GiCancel fontSize="17px" />}
+                              onClick={() =>
+                                cancelHandler(
+                                  borrow.borrowedPKey,
+                                  borrow.isActive
+                                )
+                              }
+                            >
+                              <Text fontSize="15px" _hover={{ color: "red" }}>
+                                Cancel
+                              </Text>
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Box>
+                    </Flex>
+                    {/* <HStack spacing={3} justifyContent="center">
                       <Button
                         onClick={() =>
                           viewHandler(borrow.borrowedPKey, borrow.isActive)
@@ -240,16 +288,6 @@ export const PendingBorrowedMaterials = () => {
                       >
                         View
                       </Button>
-                      {/* <Button
-                        onClick={() =>
-                          viewHandler(borrow.borrowedPKey, borrow.isActive)
-                        }
-                        colorScheme="facebook"
-                        size="xs"
-                        borderRadius="none"
-                      >
-                        Edit
-                      </Button> */}
                       <Button
                         onClick={() =>
                           cancelHandler(borrow.borrowedPKey, borrow.isActive)
@@ -260,7 +298,7 @@ export const PendingBorrowedMaterials = () => {
                       >
                         Cancel
                       </Button>
-                    </HStack>
+                    </HStack> */}
                   </Td>
                 </Tr>
               ))}

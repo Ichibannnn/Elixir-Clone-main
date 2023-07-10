@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import {
   Badge,
+  Box,
   Button,
   Flex,
   HStack,
   Input,
   InputGroup,
   InputLeftElement,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Select,
   Stack,
   Table,
@@ -34,6 +39,9 @@ import request from "../../../../services/ApiClient";
 import moment from "moment/moment";
 import { decodeUser } from "../../../../services/decode-user";
 import { PendingCancelModal, ViewModal } from "./ActionModal";
+import { AiOutlineMore } from "react-icons/ai";
+import { GrView } from "react-icons/gr";
+import { GiCancel } from "react-icons/gi";
 // import { PendingCancelModal } from "./PendingActionModal";
 
 const currentUser = decodeUser();
@@ -46,7 +54,7 @@ const fetchBorrowedApi = async (pageNumber, pageSize, search, status) => {
   return res.data;
 };
 
-const PendingReturned = () => {
+const PendingReturned = ({ fetchNotificationWithParams }) => {
   const [issueBorrowData, setBorrowIssueData] = useState([]);
 
   const [pageTotal, setPageTotal] = useState(undefined);
@@ -224,7 +232,40 @@ const PendingReturned = () => {
                   {/* <Td fontSize="xs">{borrow.preparedBy}</Td> */}
                   <Td fontSize="xs">{borrow.statusApprove}</Td>
                   <Td fontSize="xs">
-                    <HStack spacing={3} justifyContent="center">
+                    <Flex pl={2}>
+                      <Box ml={5}>
+                        <Menu>
+                          <MenuButton
+                            alignItems="center"
+                            justifyContent="center"
+                            bg="none"
+                          >
+                            <AiOutlineMore fontSize="20px" />
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              icon={<GrView fontSize="17px" />}
+                              onClick={() =>
+                                viewHandler(borrow.id, borrow.isActive)
+                              }
+                            >
+                              <Text fontSize="15px">View</Text>
+                            </MenuItem>
+                            <MenuItem
+                              icon={<GiCancel fontSize="17px" />}
+                              onClick={() =>
+                                cancelHandler(borrow.id, borrow.isActive)
+                              }
+                            >
+                              <Text fontSize="15px" _hover={{ color: "red" }}>
+                                Cancel
+                              </Text>
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Box>
+                    </Flex>
+                    {/* <HStack spacing={3} justifyContent="center">
                       <Button
                         onClick={() => viewHandler(borrow.id, borrow.isActive)}
                         colorScheme="blue"
@@ -243,7 +284,7 @@ const PendingReturned = () => {
                       >
                         Cancel
                       </Button>
-                    </HStack>
+                    </HStack> */}
                   </Td>
                 </Tr>
               ))}
@@ -321,6 +362,7 @@ const PendingReturned = () => {
           fetchBorrowed={fetchBorrowed}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
+          // fetchNotificationWithParams={fetchNotificationWithParams}
         />
       )}
     </Flex>

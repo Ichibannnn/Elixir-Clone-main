@@ -282,6 +282,7 @@ export const CancelModalApproval = ({
   statusBody,
   setIsLoading,
   isLoading,
+  fetchNotification,
 }) => {
   const [reasonSubmit, setReasonSubmit] = useState("");
   const [reasons, setReasons] = useState([]);
@@ -326,7 +327,7 @@ export const CancelModalApproval = ({
             "success",
             toast
           );
-          //   fetchNotification();
+          fetchNotification();
           fetchBorrowed();
           setIsLoading(false);
           onClose();
@@ -411,6 +412,7 @@ export const ApproveReturnedModal = ({
   statusBody,
   isLoading,
   setIsLoading,
+  fetchNotification,
 }) => {
   const toast = useToast();
   const id = statusBody?.id;
@@ -429,7 +431,7 @@ export const ApproveReturnedModal = ({
             "success",
             toast
           );
-          //   fetchNotification()
+          fetchNotification();
           fetchBorrowed();
           setIsLoading(false);
           onClose();

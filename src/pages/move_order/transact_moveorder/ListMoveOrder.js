@@ -160,9 +160,9 @@ export const ListMoveOrder = ({
                   <Th color="white" fontSize="11px">
                     Prepared Date
                   </Th>
-                  <Th color="white" fontSize="11px">
+                  {/* <Th color="white" fontSize="11px">
                     Rush
-                  </Th>
+                  </Th> */}
                   <Th color="white" fontSize="11px">
                     View
                   </Th>
@@ -197,8 +197,7 @@ export const ListMoveOrder = ({
                     <Td fontSize="xs">
                       {moment(list.preparedDate).format("MM/DD/yyyy")}
                     </Td>
-                    <Td fontSize="xs">
-                      {/* {" "} */}
+                    {/* <Td fontSize="xs">
                       {list.rush ? (
                         <FaShippingFast
                           title="Rush Orders"
@@ -208,7 +207,7 @@ export const ListMoveOrder = ({
                       ) : (
                         <FaShippingFast fontSize="17px" color="#A0AEC0" />
                       )}
-                    </Td>
+                    </Td> */}
                     <Td fontSize="xs">
                       <Button
                         size="xs"

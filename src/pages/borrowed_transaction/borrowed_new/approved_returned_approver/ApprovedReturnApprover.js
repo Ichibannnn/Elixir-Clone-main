@@ -167,7 +167,7 @@ export const ApprovedReturnApprover = () => {
 
       <Flex mt={5}>
         <PageScroll minHeight="400px" maxHeight="401px">
-          <Table size="sm">
+          <Table size="sm" variant="striped">
             <Thead bgColor="primary">
               <Tr>
                 <Th h="40px" color="white" fontSize="10px">

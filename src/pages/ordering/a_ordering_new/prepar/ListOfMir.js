@@ -64,6 +64,8 @@ export const ListOfMir = ({
   setCurrentPage,
   setPageSize,
   pagesCount,
+  notification,
+  fetchNotification,
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [keyword, setKeyword] = useState("");
@@ -161,6 +163,8 @@ export const ListOfMir = ({
   //   }
   // };
 
+  console.log(notification);
+
   return (
     <Flex direction="column" p={4} w="full">
       {/* <Button
@@ -200,11 +204,9 @@ export const ListOfMir = ({
             onClick={() => handleStatusChange(true)}
           >
             Rush Orders
-            {/* {rushOrdersCount > 0 && (
             <Badge ml={2} colorScheme="red" variant="solid" borderRadius="40%">
-              {rushOrdersCount}
+              {notification?.ordering?.orderingnotifcount}
             </Badge>
-          )} */}
           </Button>
         </HStack>
         <HStack flexDirection="row">

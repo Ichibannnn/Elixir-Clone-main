@@ -54,7 +54,7 @@ const fetchGenusApi = async () => {
 // FETCH API REASON:
 const fetchElixirApi = async () => {
   const response = await request.get(
-    `https://localhost:7151/api/Supplier/GetAllSupplierithPagination/true?PageNumber=1&PageSize=10000`
+    `Supplier/GetAllSupplierithPagination/true?PageNumber=1&PageSize=10000`
   );
 
   return response.data;

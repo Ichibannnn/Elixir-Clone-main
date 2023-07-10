@@ -45,7 +45,7 @@ const fetchBorrowedApi = async (pageNumber, pageSize, search, status) => {
   return res.data;
 };
 
-export const ApproveReturnedCustomer = () => {
+export const ApproveReturnedCustomer = ({ fetchNotificationWithParams }) => {
   const [issueBorrowData, setBorrowIssueData] = useState([]);
 
   const [pageTotal, setPageTotal] = useState(undefined);

@@ -147,7 +147,6 @@ const Login = () => {
                 type="password"
                 color="#fff"
                 borderColor="whiteAlpha.300"
-                x
                 // bg="#1A202C"
                 _hover={{ bg: "#1A202C" }}
                 fontSize="xs"
@@ -163,6 +162,7 @@ const Login = () => {
                 w="full"
                 mt={5}
                 isLoading={Loader}
+                disabled={!username || !password}
               >
                 Login
               </Button>

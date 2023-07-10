@@ -514,6 +514,11 @@ const DrawerComponent = (props) => {
   const [roles, setRoles] = useState([]);
   const [departments, setDepartment] = useState([]);
   const toast = useToast();
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+
+  const onCloseDrawer = () => {
+    setIsOpenDrawer(false);
+  };
 
   // SEDAR
   const [pickerItems, setPickerItems] = useState([]);
@@ -737,7 +742,7 @@ const DrawerComponent = (props) => {
 
   return (
     <>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="right" onClose={onCloseDrawer}>
         <DrawerOverlay />
         <form onSubmit={handleSubmit(submitHandler)}>
           <DrawerContent>
@@ -749,7 +754,7 @@ const DrawerComponent = (props) => {
             >
               User Form
             </DrawerHeader>
-            <DrawerCloseButton color="white" />
+            {/* <DrawerCloseButton color="white" /> */}
             <DrawerBody>
               <Stack spacing={4} mt={4}>
                 <Box>
@@ -952,6 +957,12 @@ const DrawerComponentEdit = (props) => {
   const [roles, setRoles] = useState([]);
   const [departments, setDepartment] = useState([]);
   const toast = useToast();
+
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+
+  const onCloseDrawer = () => {
+    setIsOpenDrawer(false);
+  };
 
   // SEDAR
   const [pickerItems, setPickerItems] = useState([]);
@@ -1175,7 +1186,7 @@ const DrawerComponentEdit = (props) => {
 
   return (
     <>
-      <Drawer isOpen={isEdit} placement="right" onClose={onCloseEdit}>
+      <Drawer isOpen={isEdit} placement="right" onClose={onCloseDrawer}>
         <DrawerOverlay />
         <form onSubmit={handleSubmit(submitHandler)}>
           <DrawerContent>
@@ -1187,7 +1198,7 @@ const DrawerComponentEdit = (props) => {
             >
               User Form
             </DrawerHeader>
-            <DrawerCloseButton color="white" />
+            {/* <DrawerCloseButton color="white" /> */}
             <DrawerBody>
               <Stack spacing={4} mt={4}>
                 <Box>

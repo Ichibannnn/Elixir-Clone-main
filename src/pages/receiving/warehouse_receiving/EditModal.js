@@ -369,6 +369,15 @@ export const EditModal = ({
                       Expected Delivery
                       <Input
                         {...register("submitData.expected_delivery")}
+                        type="number"
+                        onWheel={(e) => e.target.blur()}
+                        onKeyDown={(e) =>
+                          ["E", "e", "+", "-"].includes(e.key) &&
+                          e.preventDefault()
+                        }
+                        onPaste={(e) => e.preventDefault()}
+                        autoComplete="off"
+                        min="1"
                         fontSize="11px"
                         size="sm"
                         placeholder="Please provide quantity of expected delivery  (Required)"
@@ -382,6 +391,15 @@ export const EditModal = ({
                       Qty Actual Delivered
                       <Input
                         {...register("submitData.actualDelivered")}
+                        type="number"
+                        onWheel={(e) => e.target.blur()}
+                        onKeyDown={(e) =>
+                          ["E", "e", "+", "-"].includes(e.key) &&
+                          e.preventDefault()
+                        }
+                        onPaste={(e) => e.preventDefault()}
+                        autoComplete="off"
+                        min="1"
                         fontSize="11px"
                         size="sm"
                         placeholder="Please enter quantity (Required)"

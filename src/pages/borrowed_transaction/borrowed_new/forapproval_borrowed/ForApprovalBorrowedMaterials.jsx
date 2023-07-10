@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import {
+  Box,
   Button,
   Flex,
   HStack,
   Input,
   InputGroup,
   InputLeftElement,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Select,
   Stack,
   Table,
@@ -39,6 +44,10 @@ import {
 } from "./ActionModal";
 import Swal from "sweetalert2";
 import { ToastComponent } from "../../../../components/Toast";
+import { AiOutlineMore } from "react-icons/ai";
+import { GrView } from "react-icons/gr";
+import { BsCheck2Square } from "react-icons/bs";
+import { GiCancel } from "react-icons/gi";
 
 const currentUser = decodeUser();
 
@@ -54,7 +63,7 @@ const fetchBorrowedApprovalApi = async (
   return res.data;
 };
 
-const ForApprovalBorrowedMaterials = () => {
+const ForApprovalBorrowedMaterials = ({ fetchNotification }) => {
   const [borrowedApprovalData, setBorrowedApprovalData] = useState([]);
 
   const [pageTotal, setPageTotal] = useState(undefined);
@@ -196,7 +205,7 @@ const ForApprovalBorrowedMaterials = () => {
 
       <Flex mt={5}>
         <PageScroll minHeight="400px" maxHeight="401px">
-          <Table size="sm">
+          <Table variant="striped" size="sm">
             <Thead bgColor="primary">
               <Tr>
                 <Th h="40px" color="white" fontSize="10px">
@@ -245,8 +254,45 @@ const ForApprovalBorrowedMaterials = () => {
                   {/* <Td fontSize="xs">
                     {borrow.isApproved === false ? "For Approval" : ""}
                   </Td> */}
-                  <Td fontSize="xs">
-                    <HStack spacing={3} justifyContent="center">
+                  <Td fontSize="xs" ml={3}>
+                    <Flex pl={2}>
+                      <Box ml={5}>
+                        <Menu>
+                          <MenuButton
+                            alignItems="center"
+                            justifyContent="center"
+                            bg="none"
+                          >
+                            <AiOutlineMore fontSize="20px" />
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              icon={<GrView fontSize="17px" />}
+                              onClick={() => viewHandler(borrow.borrowedPKey)}
+                            >
+                              <Text fontSize="15px">View</Text>
+                            </MenuItem>
+                            <MenuItem
+                              icon={<BsCheck2Square fontSize="17px" />}
+                              onClick={() =>
+                                approveHandler(borrow.borrowedPKey)
+                              }
+                            >
+                              <Text fontSize="15px">Approve</Text>
+                            </MenuItem>
+                            <MenuItem
+                              icon={<GiCancel fontSize="17px" />}
+                              onClick={() => rejectHandler(borrow.borrowedPKey)}
+                            >
+                              <Text fontSize="15px" _hover={{ color: "red" }}>
+                                Reject
+                              </Text>
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Box>
+                    </Flex>
+                    {/* <HStack spacing={3} justifyContent="center">
                       <Button
                         onClick={() => viewHandler(borrow.borrowedPKey)}
                         colorScheme="blue"
@@ -271,7 +317,7 @@ const ForApprovalBorrowedMaterials = () => {
                       >
                         Reject
                       </Button>
-                    </HStack>
+                    </HStack> */}
                   </Td>
                 </Tr>
               ))}
@@ -348,6 +394,7 @@ const ForApprovalBorrowedMaterials = () => {
           fetchBorrowed={fetchBorrowed}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
+          fetchNotification={fetchNotification}
         />
       )}
 
@@ -359,6 +406,7 @@ const ForApprovalBorrowedMaterials = () => {
           fetchBorrowed={fetchBorrowed}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
+          fetchNotification={fetchNotification}
         />
       )}
     </Flex>

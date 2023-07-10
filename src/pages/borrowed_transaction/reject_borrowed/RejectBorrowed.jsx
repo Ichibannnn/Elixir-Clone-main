@@ -121,7 +121,7 @@ const RejectBorrowed = () => {
 
       <Flex mt={5}>
         <PageScroll minHeight="450px" maxHeight="451px">
-          <Table size="sm">
+          <Table size="sm" variant="striped">
             <Thead bgColor="primary" position="sticky" top={0} zIndex={1}>
               <Tr>
                 <Th h="40px" color="white" fontSize="10px">

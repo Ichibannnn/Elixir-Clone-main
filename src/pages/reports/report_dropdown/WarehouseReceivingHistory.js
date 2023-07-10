@@ -9,13 +9,30 @@ import {
   Tr,
   useDisclosure,
   Button,
+  HStack,
+  Select,
+  Stack,
 } from "@chakra-ui/react";
 import request from "../../../services/ApiClient";
 import PageScroll from "../../../utils/PageScroll";
+import {
+  Pagination,
+  usePagination,
+  PaginationNext,
+  PaginationPage,
+  PaginationPrevious,
+  PaginationContainer,
+  PaginationPageGroup,
+} from "@ajna/pagination";
 
-const fetchWarehouseReceivingHistoryApi = async (dateFrom, dateTo) => {
+const fetchWarehouseReceivingHistoryApi = async (
+  dateFrom,
+  dateTo,
+  pageNumber,
+  pageSize
+) => {
   const res = await request.get(
-    `Reports/WareHouseReceivingReports?dateFrom=${dateFrom}&dateTo=${dateTo}`
+    `Reports/WareHouseReceivingReports?PageNumber=${pageNumber}&PageSize=${pageSize}&DateFrom=${dateFrom}&DateTo=${dateTo}`
   );
   return res.data;
 };
@@ -28,12 +45,48 @@ export const WarehouseReceivingHistory = ({
 }) => {
   const [warehouseData, setWarehouseData] = useState([]);
   const [buttonChanger, setButtonChanger] = useState(true);
+  const [pageTotal, setPageTotal] = useState(undefined);
+
+  //PAGINATION
+  const outerLimit = 2;
+  const innerLimit = 2;
+  const {
+    currentPage,
+    setCurrentPage,
+    pagesCount,
+    pages,
+    setPageSize,
+    pageSize,
+  } = usePagination({
+    total: pageTotal,
+    limits: {
+      outer: outerLimit,
+      inner: innerLimit,
+    },
+    initialState: { currentPage: 1, pageSize: 5 },
+  });
+
+  const handlePageChange = (nextPage) => {
+    setCurrentPage(nextPage);
+  };
+
+  const handlePageSizeChange = (e) => {
+    const pageSize = Number(e.target.value);
+    setPageSize(pageSize);
+  };
 
   const fetchWarehouseReceivingHistory = () => {
-    fetchWarehouseReceivingHistoryApi(dateFrom, dateTo, sample).then((res) => {
+    fetchWarehouseReceivingHistoryApi(
+      dateFrom,
+      dateTo,
+      sample,
+      currentPage,
+      pageSize
+    ).then((res) => {
       setWarehouseData(res);
+      console.log(warehouseData);
       setSheetData(
-        res?.map((item, i) => {
+        warehouseData?.inventory?.map((item, i) => {
           return {
             "Line Number": i + 1,
             ID: item.warehouseId,
@@ -42,10 +95,7 @@ export const WarehouseReceivingHistory = ({
             "Item Code": item.itemCode,
             "Item Description": item.itemDescrption,
             UOM: item.uom,
-            // Category: item.category ? item.category : "Miscellaneous",
             Quantity: item.quantity,
-            // 'Manufacturing Date': item.manufacturingDate,
-            // 'Expiration Date': item.expirationDate,
             "Total Reject": item.totalReject,
             Supplier: item.supplierName,
             "Transaction Type": item.transactionType,
@@ -53,6 +103,7 @@ export const WarehouseReceivingHistory = ({
           };
         })
       );
+      setPageTotal(res.totalCount);
     });
   };
 
@@ -62,7 +113,7 @@ export const WarehouseReceivingHistory = ({
     return () => {
       setWarehouseData([]);
     };
-  }, [dateFrom, dateTo, sample]);
+  }, [dateFrom, dateTo, sample, currentPage, pageSize]);
 
   return (
     <Flex w="full" flexDirection="column">
@@ -91,17 +142,12 @@ export const WarehouseReceivingHistory = ({
                     <Th color="white" fontSize="10px" fontWeight="semibold">
                       UOM
                     </Th>
-                    {/* <Th color="white" fontSize="10px" fontWeight="semibold">
-                      Category
-                    </Th> */}
                     <Th color="white" fontSize="10px" fontWeight="semibold">
                       Quantity
                     </Th>
-                    {/* <Th color='white'>Manufacturing Date</Th> */}
                   </>
                 ) : (
                   <>
-                    {/* <Th color='white'>Expiration Date</Th> */}
                     <Th color="white" fontSize="10px" fontWeight="semibold">
                       Total Reject
                     </Th>
@@ -129,15 +175,10 @@ export const WarehouseReceivingHistory = ({
                       <Td fontSize="xs">{item.itemCode}</Td>
                       <Td fontSize="xs">{item.itemDescrption}</Td>
                       <Td fontSize="xs">{item.uom}</Td>
-                      {/* <Td fontSize="xs">
-                        {item.category ? item.category : "Miscellaneous"}
-                      </Td> */}
                       <Td fontSize="xs">{item.quantity}</Td>
-                      {/* <Td>{item.manufacturingDate}</Td> */}
                     </>
                   ) : (
                     <>
-                      {/* <Td>{item.expirationDate}</Td> */}
                       <Td fontSize="xs">{item.totalReject}</Td>
                       <Td fontSize="xs">{item.supplierName}</Td>
                       <Td fontSize="xs">{item.transactionType}</Td>
@@ -151,7 +192,64 @@ export const WarehouseReceivingHistory = ({
         </PageScroll>
       </Flex>
 
-      <Flex justifyContent="end" mt={2}>
+      <Flex justifyContent="space-between" mt={2}>
+        <Stack>
+          <Pagination
+            pagesCount={pagesCount}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          >
+            <PaginationContainer>
+              <PaginationPrevious
+                bg="primary"
+                color="white"
+                p={1}
+                _hover={{ bg: "btnColor", color: "white" }}
+                size="sm"
+              >
+                {"<<"}
+              </PaginationPrevious>
+              <PaginationPageGroup ml={1} mr={1}>
+                {pages.map((page) => (
+                  <PaginationPage
+                    _hover={{ bg: "btnColor", color: "white" }}
+                    _focus={{ bg: "btnColor" }}
+                    p={3}
+                    bg="primary"
+                    color="white"
+                    key={`pagination_page_${page}`}
+                    page={page}
+                    size="sm"
+                  />
+                ))}
+              </PaginationPageGroup>
+              <HStack>
+                <PaginationNext
+                  bg="primary"
+                  color="white"
+                  p={1}
+                  _hover={{ bg: "btnColor", color: "white" }}
+                  size="sm"
+                  mb={2}
+                >
+                  {">>"}
+                </PaginationNext>
+                <Select
+                  onChange={handlePageSizeChange}
+                  bg="#FFFFFF"
+                  // size="sm"
+                  mb={2}
+                  variant="outline"
+                >
+                  <option value={Number(5)}>5</option>
+                  <option value={Number(10)}>10</option>
+                  <option value={Number(25)}>25</option>
+                  <option value={Number(50)}>50</option>
+                </Select>
+              </HStack>
+            </PaginationContainer>
+          </Pagination>
+        </Stack>
         <Button
           size="xs"
           colorScheme="blue"

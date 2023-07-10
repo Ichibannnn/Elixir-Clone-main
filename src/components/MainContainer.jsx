@@ -9,7 +9,12 @@ import { Outlet } from "react-router-dom";
 import PageScrollModalErrorList from "./PageScrollModalErrorList";
 import PageScroll from "../utils/PageScroll";
 
-const MainContainer = ({ notification, fetchNotification }) => {
+const MainContainer = ({
+  notification,
+  fetchNotification,
+  notificationWithParams,
+  fetchNotificationWithParams,
+}) => {
   const [navBarData, setNavbarData] = useState([]);
   const [isMobile] = useMediaQuery("(max-width: 1100px)");
   const [sidebarHandler, setSidebarHandler] = useState(false);
@@ -29,6 +34,8 @@ const MainContainer = ({ notification, fetchNotification }) => {
           setNavbarData={setNavbarData}
           notification={notification}
           fetchNotification={fetchNotification}
+          notificationWithParams={notificationWithParams}
+          fetchNotificationWithParams={fetchNotificationWithParams}
         />
       )}
       <Flex flexDirection="column" width="full">

@@ -488,8 +488,6 @@ const schema = yup.object().shape({
       .string()
       .uppercase()
       .required("Description is required"),
-    // itemCategoryId: yup.number().required("Item Category is required"),
-    // itemCategoryId: yup.number().required("Sub Category is required"),
     subCategoryId: yup.number().required(),
     itemCategoryName: yup
       .string()
@@ -524,6 +522,11 @@ const DrawerComponent = (props) => {
   const [itemCategoryName, setItemCategory] = useState("");
   const [uom, setUom] = useState([]);
   const toast = useToast();
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+
+  const onCloseDrawer = () => {
+    setIsOpenDrawer(false);
+  };
 
   const {
     register,
@@ -600,7 +603,7 @@ const DrawerComponent = (props) => {
 
   const categoryStatusHandler = (data) => {
     const newData = JSON.parse(data);
-    // x`console.log(newData);
+    console.log(data);
     if (data) {
       setItemCategory(newData.itemCategoryName);
       setValue("formData.itemCategoryName", newData.itemCategoryName);
@@ -610,7 +613,7 @@ const DrawerComponent = (props) => {
     }
     // console.log(newData);
   };
-  console.log(watch("formData"));
+  // console.log(watch("formData"));
   const subCategoryStatusHandler = (data) => {
     const newData = JSON.parse(data);
     // console.log(newData);
@@ -691,12 +694,12 @@ const DrawerComponent = (props) => {
 
   return (
     <>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="right" onClose={onCloseDrawer}>
         <DrawerOverlay />
         <form onSubmit={handleSubmit(submitHandler)}>
           <DrawerContent>
             <DrawerHeader borderBottomWidth="1px">Material Form</DrawerHeader>
-            <DrawerCloseButton />
+            {/* <DrawerCloseButton /> */}
             <DrawerBody>
               <Stack spacing="7px">
                 <Box>

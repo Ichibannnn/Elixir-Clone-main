@@ -263,6 +263,9 @@ const OrdersConfirmation = ({
       confirmButtonText: "Yes",
       heightAuto: false,
       width: "40em",
+      customClass: {
+        container: "my-swal",
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         try {

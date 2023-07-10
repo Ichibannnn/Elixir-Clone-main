@@ -77,7 +77,6 @@ const TransactionType = () => {
     status,
     search
   ) => {
-    
     const response = await request.get(
       `TransactionType/GetTransactTypePaginationOrig/${status}?PageNumber=${pageNumber}&PageSize=${pageSize}&search=${search}`
     );
@@ -472,6 +471,11 @@ const currentUser = decodeUser();
 const DrawerComponent = (props) => {
   const { isOpen, onClose, fetchTransactionType, editData } = props;
   const toast = useToast();
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+
+  const onCloseDrawer = () => {
+    setIsOpenDrawer(false);
+  };
 
   const {
     register,
@@ -553,7 +557,7 @@ const DrawerComponent = (props) => {
 
   return (
     <>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="right" onClose={onCloseDrawer}>
         <DrawerOverlay />
         <form onSubmit={handleSubmit(submitHandler)}>
           <DrawerContent>

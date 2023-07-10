@@ -37,7 +37,7 @@ export const MoveOrderHistory = ({
         res?.map((item, i) => {
           return {
             "Line Number": i + 1,
-            "Move Order Id": item.moveOrderId,
+            "MIR Id": item.mirId,
             "Customer Code": item.customerCode,
             "Customer Name": item.customerName,
             "Item Code": item.itemCode,
@@ -81,7 +81,7 @@ export const MoveOrderHistory = ({
             <Thead bgColor="primary" h="40px">
               <Tr>
                 <Th color="white" fontSize="10px" fontWeight="semibold">
-                  Move Order ID
+                  MIR ID
                 </Th>
                 <Th color="white" fontSize="10px" fontWeight="semibold">
                   Customer Code
@@ -161,7 +161,7 @@ export const MoveOrderHistory = ({
             <Tbody>
               {moData?.inventory?.map((item, i) => (
                 <Tr key={i}>
-                  <Td fontSize="xs">{item.moveOrderId}</Td>
+                  <Td fontSize="xs">{item.mirId}</Td>
                   <Td fontSize="xs">{item.customerCode}</Td>
                   <Td fontSize="xs">{item.customerName}</Td>
                   <Td fontSize="xs">{item.customerType}</Td>

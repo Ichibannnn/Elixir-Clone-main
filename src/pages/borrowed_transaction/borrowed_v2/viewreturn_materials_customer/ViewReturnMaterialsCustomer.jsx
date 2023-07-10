@@ -23,7 +23,10 @@ import {
 import PendingReturned from "../../borrowed_new/pending_returned/PendingReturned";
 import { ApproveReturnedCustomer } from "../../borrowed_new/approved_returned_customer/ApproveReturnedCustomer";
 
-const ViewReturnMaterialsCustomer = () => {
+const ViewReturnMaterialsCustomer = ({
+  notificationWithParams,
+  fetchNotificationWithParams,
+}) => {
   const [navigation, setNavigation] = useState(1);
 
   return (
@@ -57,6 +60,15 @@ const ViewReturnMaterialsCustomer = () => {
             borderRadius="none"
           >
             Approved
+            <Badge
+              ml={2}
+              fontSize="10px"
+              variant="solid"
+              colorScheme="red"
+              mb={1}
+            >
+              {notificationWithParams?.returnedApproved?.returnedApprovecount}
+            </Badge>
           </Button>
         </HStack>
       </Flex>
@@ -77,7 +89,10 @@ const ViewReturnMaterialsCustomer = () => {
           </>
         ) : navigation === 2 ? (
           <>
-            <ApproveReturnedCustomer navigation={navigation} />
+            <ApproveReturnedCustomer
+              navigation={navigation}
+              fetchNotificationWithParams={fetchNotificationWithParams}
+            />
           </>
         ) : (
           ""

@@ -146,7 +146,7 @@ const MoveOrder = () => {
     );
   };
 
-  console.log(moveData);
+  // console.log(moveData);
 
   //PAGINATION
   const outerLimit = 2;

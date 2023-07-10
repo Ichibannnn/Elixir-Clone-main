@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import {
   Badge,
+  Box,
   Button,
   Checkbox,
   Flex,
   HStack,
   Input,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Select,
   Table,
   Tbody,
@@ -31,6 +36,9 @@ import moment from "moment";
 import PageScroll from "../../../utils/PageScroll";
 import { ApproveModal, RejectModal, ViewModal } from "./ActionModal";
 import { FaShippingFast } from "react-icons/fa";
+import { AiOutlineMore } from "react-icons/ai";
+import { GrView } from "react-icons/gr";
+import { GiCancel } from "react-icons/gi";
 
 export const ForApprovalMoveOrder = ({
   setCurrentPage,
@@ -250,16 +258,12 @@ export const ForApprovalMoveOrder = ({
                 <Th color="white" fontSize="10px">
                   Prepared Date
                 </Th>
-                <Th color="white" fontSize="10px">
+                {/* <Th color="white" fontSize="10px">
                   Rush
-                </Th>
+                </Th> */}
                 <Th color="white" fontSize="10px">
-                  View
+                  Action
                 </Th>
-                <Th color="white" fontSize="10px">
-                  Reject
-                </Th>
-
                 {/* {TableHead?.map((head, i) => (
                   <Th h="40px" key={i} color="white" fontSize="10px">
                     {head}
@@ -289,8 +293,7 @@ export const ForApprovalMoveOrder = ({
                   <Td fontSize="xs">
                     {moment(item.preparedDate).format("MM/DD/yyyy")}
                   </Td>
-                  <Td fontSize="xs">
-                    {/* {" "} */}
+                  {/* <Td fontSize="xs">
                     {item.rush ? (
                       <FaShippingFast
                         fontSize="17px"
@@ -300,10 +303,39 @@ export const ForApprovalMoveOrder = ({
                     ) : (
                       <FaShippingFast fontSize="17px" color="#A0AEC0" />
                     )}
-                  </Td>
+                  </Td> */}
                   {/* <Td>{item.dateNeeded}</Td> */}
                   <Td>
-                    <Button
+                    <Flex pl={2}>
+                      <Box>
+                        <Menu>
+                          <MenuButton
+                            alignItems="center"
+                            justifyContent="center"
+                            bg="none"
+                          >
+                            <AiOutlineMore fontSize="20px" />
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              icon={<GrView fontSize="17px" />}
+                              onClick={() => viewHandler(item.mirId)}
+                            >
+                              <Text fontSize="15px">View</Text>
+                            </MenuItem>
+                            <MenuItem
+                              icon={<GiCancel fontSize="17px" />}
+                              onClick={() => rejectHandler(item.mirId)}
+                            >
+                              <Text fontSize="15px" _hover={{ color: "red" }}>
+                                Reject
+                              </Text>
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Box>
+                    </Flex>
+                    {/* <Button
                       fontSize="11px"
                       borderRadius="none"
                       size="xs"
@@ -312,12 +344,9 @@ export const ForApprovalMoveOrder = ({
                       onClick={() => viewHandler(item.mirId)}
                     >
                       View
-                    </Button>
+                    </Button> */}
                   </Td>
                   {/* <Td>
-
-                  </Td> */}
-                  <Td>
                     <Button
                       borderRadius="none"
                       size="xs"
@@ -329,7 +358,7 @@ export const ForApprovalMoveOrder = ({
                     >
                       Reject
                     </Button>
-                  </Td>
+                  </Td> */}
                 </Tr>
               ))}
             </Tbody>

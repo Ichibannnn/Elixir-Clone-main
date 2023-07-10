@@ -35,6 +35,11 @@ const DrawerTaggingComponent = ({ isOpen, onClose, taggingData, onOpen }) => {
   const [moduleId, setModuleId] = useState("");
   const [untagModules, setUntagModules] = useState([]);
   const [tagModules, setTagModules] = useState([]);
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+
+  const onCloseDrawer = () => {
+    setIsOpenDrawer(false);
+  };
 
   const toast = useToast();
 
@@ -145,15 +150,21 @@ const DrawerTaggingComponent = ({ isOpen, onClose, taggingData, onOpen }) => {
   return (
     <>
       <Flex>
-        <Drawer size="xl" isOpen={isOpen} placement="right" onClose={onClose}>
+        <Drawer
+          size="xl"
+          isOpen={isOpen}
+          placement="right"
+          onClose={onCloseDrawer}
+        >
           <DrawerOverlay />
 
           <DrawerContent p={7}>
-            <DrawerCloseButton />
+            {/* <DrawerCloseButton /> */}
             <DrawerHeader>
               Module Tagging
               <Text>
-                {taggingData?.roleId} {taggingData?.roleName}
+                {/* {taggingData?.roleId}  */}
+                {taggingData?.roleName}
               </Text>
             </DrawerHeader>
 

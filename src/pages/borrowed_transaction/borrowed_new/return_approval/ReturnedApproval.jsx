@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import {
+  Box,
   Button,
   Flex,
   HStack,
   Input,
   InputGroup,
   InputLeftElement,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Select,
   Stack,
   Table,
@@ -38,6 +43,10 @@ import {
   CancelModalApproval,
   ViewModalApproval,
 } from "./ActionModal";
+import { AiOutlineMore } from "react-icons/ai";
+import { GrView } from "react-icons/gr";
+import { BsCheck2Square } from "react-icons/bs";
+import { GiCancel } from "react-icons/gi";
 // import {
 //   ApproveModal,
 //   RejectModalApproval,
@@ -56,7 +65,7 @@ const fetchBorrowedApprovalApi = async (
   return res.data;
 };
 
-const ReturnedApproval = () => {
+const ReturnedApproval = ({ fetchNotification }) => {
   const [borrowedApprovalData, setBorrowedApprovalData] = useState([]);
 
   const [pageTotal, setPageTotal] = useState(undefined);
@@ -198,7 +207,7 @@ const ReturnedApproval = () => {
 
       <Flex mt={5}>
         <PageScroll minHeight="400px" maxHeight="401px">
-          <Table size="sm">
+          <Table size="sm" variant="striped">
             <Thead bgColor="primary">
               <Tr>
                 <Th h="40px" color="white" fontSize="10px">
@@ -245,7 +254,42 @@ const ReturnedApproval = () => {
                   </Td>
                   <Td fontSize="xs">{borrow.preparedBy}</Td>
                   <Td fontSize="xs">
-                    <HStack spacing={3} justifyContent="center">
+                    <Flex pl={2}>
+                      <Box ml={3}>
+                        <Menu>
+                          <MenuButton
+                            alignItems="center"
+                            justifyContent="center"
+                            bg="none"
+                          >
+                            <AiOutlineMore fontSize="20px" />
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              icon={<GrView fontSize="17px" />}
+                              onClick={() => viewHandler(borrow.id)}
+                            >
+                              <Text fontSize="15px">View</Text>
+                            </MenuItem>
+                            <MenuItem
+                              icon={<BsCheck2Square fontSize="17px" />}
+                              onClick={() => approveHandler(borrow.id)}
+                            >
+                              <Text fontSize="15px">Approve</Text>
+                            </MenuItem>
+                            <MenuItem
+                              icon={<GiCancel fontSize="17px" />}
+                              onClick={() => rejectHandler(borrow.id)}
+                            >
+                              <Text fontSize="15px" _hover={{ color: "red" }}>
+                                Cancel
+                              </Text>
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Box>
+                    </Flex>
+                    {/* <HStack spacing={3} justifyContent="center">
                       <Button
                         onClick={() => viewHandler(borrow.id)}
                         colorScheme="blue"
@@ -270,7 +314,7 @@ const ReturnedApproval = () => {
                       >
                         Cancel
                       </Button>
-                    </HStack>
+                    </HStack> */}
                   </Td>
                 </Tr>
               ))}
@@ -347,6 +391,7 @@ const ReturnedApproval = () => {
           fetchBorrowed={fetchBorrowed}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
+          fetchNotification={fetchNotification}
         />
       )}
 
@@ -358,6 +403,7 @@ const ReturnedApproval = () => {
           fetchBorrowed={fetchBorrowed}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
+          fetchNotification={fetchNotification}
         />
       )}
     </Flex>

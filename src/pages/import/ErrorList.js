@@ -202,6 +202,9 @@ const ErrorList = ({
       confirmButtonText: "Yes",
       heightAuto: false,
       width: "40em",
+      customClass: {
+        container: "my-swal",
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         if (available?.length > 0) {

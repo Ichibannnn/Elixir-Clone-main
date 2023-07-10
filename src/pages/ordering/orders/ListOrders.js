@@ -96,6 +96,9 @@ export const ListOrders = ({
       confirmButtonText: "Yes",
       heightAuto: false,
       width: "40em",
+      customClass: {
+        container: "my-swal",
+      },
     }).then((result) => {
       const submitBody = resultArray.flat().map((submit) => {
         return {

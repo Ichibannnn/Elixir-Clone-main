@@ -24,7 +24,7 @@ import {
 import { ApprovedReturnApprover } from "../../borrowed_new/approved_returned_approver/ApprovedReturnApprover";
 import ReturnedApproval from "../../borrowed_new/return_approval/ReturnedApproval";
 
-const ReturnRequestsApprover = () => {
+const ReturnRequestsApprover = ({ notification, fetchNotification }) => {
   const [navigation, setNavigation] = useState(1);
 
   return (
@@ -44,6 +44,15 @@ const ReturnRequestsApprover = () => {
             borderRadius="none"
           >
             Pending
+            <Badge
+              ml={2}
+              fontSize="10px"
+              variant="solid"
+              colorScheme="red"
+              mb={1}
+            >
+              {notification?.returnedApproval?.forreturnedApprovalcount}
+            </Badge>
           </Button>
           <Button
             w="10%"
@@ -74,7 +83,10 @@ const ReturnRequestsApprover = () => {
       >
         {navigation === 1 ? (
           <>
-            <ReturnedApproval navigation={navigation} />
+            <ReturnedApproval
+              navigation={navigation}
+              fetchNotification={fetchNotification}
+            />
           </>
         ) : navigation === 2 ? (
           <>

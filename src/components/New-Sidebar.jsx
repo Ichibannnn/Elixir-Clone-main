@@ -36,7 +36,12 @@ const fetchTagModuleApi = async () => {
 };
 
 //Main
-const Sidebar = ({ notification, fetchNotification }) => {
+const Sidebar = ({
+  notification,
+  fetchNotification,
+  notificationWithParams,
+  fetchNotificationWithParams,
+}) => {
   // console.log(currentUser);
   // console.log(userId);
   return (
@@ -53,6 +58,8 @@ const Sidebar = ({ notification, fetchNotification }) => {
         <SidebarList
           notification={notification}
           fetchNotification={fetchNotification}
+          notificationWithParams={notificationWithParams}
+          fetchNotificationWithParams={fetchNotificationWithParams}
         />
       </Flex>
       <SidebarFooter />
@@ -65,7 +72,11 @@ const Sidebar = ({ notification, fetchNotification }) => {
 export default Sidebar;
 
 //Navigation
-const SidebarList = ({ notification, fetchNotification }) => {
+const SidebarList = ({
+  notification,
+  fetchNotification,
+  notificationWithParams,
+}) => {
   const { pathname } = useLocation();
   const [tagModules, setTagModules] = useState([]);
   const { menu, setMenu } = useContext(Context);
@@ -118,10 +129,20 @@ const SidebarList = ({ notification, fetchNotification }) => {
       title: "Returned Requests",
       notifcation: notification?.returnedApproval?.forreturnedApprovalcount,
     },
-    // {
-    //     title: 'Inventory',
-    //     notifcation: notification?.moveOrderList?.moveordercount,
-    // }
+    {
+      title: "View Request",
+      notifcation:
+        notificationWithParams?.borrowedApproved?.borrowedApprovecount,
+    },
+    {
+      title: "View Return Materials",
+      notifcation:
+        notificationWithParams?.returnedApproved?.returnedApprovecount,
+    },
+    {
+      title: "Warehouse Receiving",
+      notifcation: notification?.poSummary?.posummarycount,
+    },
   ];
 
   // console.log(notification?.borrowedApproval?.forborrowedApprovalcount);
@@ -143,15 +164,17 @@ const SidebarList = ({ notification, fetchNotification }) => {
             color="white"
           >
             <AccordionButton
-              onClick={() => setMenu(sidebarMenu.subMenu)}
               w="full"
-              justifyContent="space-between"
+              onClick={() => setMenu(sidebarMenu.subMenu)}
+              // justifyContent="space-between"
               color="white"
               fontSize="xs"
             >
-              <Text fontWeight="semibold" textAlign="start" color="white">
-                {sidebarMenu.mainMenu}
-              </Text>
+              <Box flex="1">
+                <Text fontWeight="semibold" textAlign="start" color="white">
+                  {sidebarMenu.mainMenu}
+                </Text>
+              </Box>
               <AccordionIcon color="white" />
             </AccordionButton>
             {/* </Link> */}
@@ -159,52 +182,43 @@ const SidebarList = ({ notification, fetchNotification }) => {
               <PageScroll minHeight="auto" maxHeight="160px">
                 {menu?.map((sub, i) => (
                   <Link to={sub.path} key={sub.path}>
-                    <Box w="full" justifyContent="start" cursor="pointer">
-                      <Flex
-                        w="full"
-                        flexDirection="row"
-                        justifyContent="space-between"
-                      >
-                        <Text
-                          p={1}
-                          m={1}
-                          fontSize="xs"
-                          bgColor={
-                            pathname.includes(sub.path)
-                              ? "blue.600"
-                              : "secondary"
-                          }
-                          textAlign="left"
-                          borderStyle={
-                            pathname.includes(sub.path) ? "groove" : "dashed"
-                          }
-                          _focus={{ bg: "buttonColor" }}
-                          _hover={{
-                            bg: "whiteAlpha.200",
-                            color: "white",
-                          }}
-                        >
-                          {sub.title}
-                          {sideBars.map((side, i) =>
-                            !pathname.includes(sub.path)
-                              ? sub.title === side.title && (
-                                  <Badge key={i} background="none" mb={1}>
-                                    {side.notifcation === 0 ? (
-                                      ""
-                                    ) : (
-                                      <MdOutlineNotificationsActive
-                                        fontSize="15px"
-                                        // color='#87CEAA'
-                                        color="#f56565"
-                                      />
-                                    )}
-                                  </Badge>
-                                )
-                              : ""
-                          )}
-                        </Text>
-                      </Flex>
-                    </Box>
+                    <HStack
+                      w="full"
+                      flexDirection="row"
+                      justifyContent="space-between"
+                      p={2}
+                      fontSize="xs"
+                      bgColor={
+                        pathname.includes(sub.path) ? "blue.600" : "secondary"
+                      }
+                      textAlign="left"
+                      borderStyle={
+                        pathname.includes(sub.path) ? "groove" : "dashed"
+                      }
+                      _focus={{ bg: "buttonColor" }}
+                      _hover={{
+                        bg: "whiteAlpha.200",
+                        color: "white",
+                      }}
+                    >
+                      <Text>{sub.title}</Text>
+                      {sideBars.map((side, i) =>
+                        !pathname.includes(sub.path)
+                          ? sub.title === side.title && (
+                              <Badge
+                                // borderRadius="40px"
+                                fontSize="10px"
+                                key={i}
+                                variant="solid"
+                                colorScheme="red"
+                                mb={1}
+                              >
+                                {side.notifcation === 0 ? "" : side.notifcation}
+                              </Badge>
+                            )
+                          : ""
+                      )}
+                    </HStack>
                   </Link>
                 ))}
               </PageScroll>

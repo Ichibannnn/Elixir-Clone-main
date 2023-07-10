@@ -509,6 +509,7 @@ export const PendingCancelModal = ({
   statusBody,
   setIsLoading,
   isLoading,
+  // fetchNotificationWithParams,
 }) => {
   const [reasonSubmit, setReasonSubmit] = useState("");
   const [reasons, setReasons] = useState([]);
@@ -555,6 +556,7 @@ export const PendingCancelModal = ({
           );
           //   fetchNotification();
           fetchBorrowed();
+          // fetchNotificationWithParams();
           setIsLoading(false);
           onClose();
         })

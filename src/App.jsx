@@ -105,12 +105,24 @@ import ApproverBorrowedApproval from "./pages/borrowed_transaction/borrowed_v2/a
 import ViewReturnMaterialsCustomer from "./pages/borrowed_transaction/borrowed_v2/viewreturn_materials_customer/ViewReturnMaterialsCustomer";
 import ReturnRequestsApprover from "./pages/borrowed_transaction/borrowed_v2/approver_returnrequests/ReturnRequestsApprover";
 
+const currentUser = decodeUser();
+const employeeId = currentUser?.id;
+
 const fetchNotificationApi = async () => {
   const res = await request.get(`Notification/GetNotification`);
   return res.data;
 };
 
+const fetchNotificationParamsApi = async () => {
+  const res = await request.get(
+    `Notification/GetNotificationWithParameters?empid=${employeeId}`
+  );
+  return res.data;
+};
+
 const App = () => {
+  // const [employeeId, setEmployeeId] = useState("");
+  const [notificationWithParams, setNotificationWithParams] = useState([]);
   const [menu, setMenu] = useState(null);
   const user = decodeUser();
 
@@ -135,6 +147,20 @@ const App = () => {
 
     return () => {
       setNotification([]);
+    };
+  }, []);
+
+  const fetchNotificationWithParams = () => {
+    fetchNotificationParamsApi().then((res) => {
+      setNotificationWithParams(res);
+    });
+  };
+
+  useEffect(() => {
+    fetchNotificationWithParams();
+
+    return () => {
+      setNotificationWithParams([]);
     };
   }, []);
 
@@ -227,18 +253,28 @@ const App = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // console.log(notification);
+
+  console.log(notificationWithParams);
+
   return (
     <Context.Provider value={{ menu, setMenu }}>
       <Routes>
         <Route path="/login" element={<Login />} />
 
-        <Route element={<ProtectedRoutes />}>
+        <Route
+          element={<ProtectedRoutes />}
+          notification={notification}
+          fetchNotification={fetchNotification}
+        >
           <Route
             path="/"
             element={
               <MainContainer
                 notification={notification}
                 fetchNotification={fetchNotification}
+                notificationWithParams={notificationWithParams}
+                fetchNotificationWithParams={fetchNotificationWithParams}
               />
             }
           >
@@ -339,6 +375,8 @@ const App = () => {
               <Route
                 path="/receiving/warehouse-receiving"
                 element={<WarehouseReceiving />}
+                notification={notification}
+                fetchNotification={fetchNotification}
               />
               <Route path="/receiving/cancelled-po" element={<CancelledPO />} />
               <Route
@@ -365,13 +403,28 @@ const App = () => {
                 />
               }
             >
-              <Route path="/ordering/orders" element={<Orders />} />
-              <Route path="/ordering/preparation" element={<NewPrepSched />} />
+              <Route
+                path="/ordering/orders"
+                element={<Orders />}
+                notification={notification}
+                fetchNotification={fetchNotification}
+              />
+              <Route
+                path="/ordering/preparation"
+                element={<NewPrepSched />}
+                notification={notification}
+                fetchNotification={fetchNotification}
+              />
               {/* <Route
                 path="/ordering/preparation"
                 element={<PreparationSchedule />}
               />{" "} */}
-              <Route path="/ordering/approval" element={<ApprovalPage />} />
+              <Route
+                path="/ordering/approval"
+                element={<ApprovalPage />}
+                notification={notification}
+                fetchNotification={fetchNotification}
+              />
               <Route path="/ordering/calendar" element={<CalendarPage />} />
             </Route>
 
@@ -398,10 +451,17 @@ const App = () => {
                 />
               }
             >
-              <Route path="/move-order/mo-issue" element={<MoveOrder />} />
+              <Route
+                path="/move-order/mo-issue"
+                element={<MoveOrder />}
+                notification={notification}
+                fetchNotification={fetchNotification}
+              />
               <Route
                 path="/move-order/forapprovalmo"
                 element={<ForApprovalMo />}
+                notification={notification}
+                fetchNotification={fetchNotification}
               />
               <Route
                 path="/move-order/approved-mo"
@@ -414,6 +474,8 @@ const App = () => {
               <Route
                 path="/move-order/transact-moveorder"
                 element={<TransactMoveOrderPage />}
+                notification={notification}
+                fetchNotification={fetchNotification}
               />
             </Route>
 
@@ -542,13 +604,29 @@ const App = () => {
 
               <Route
                 path="/borrowed/view-request"
-                element={user ? <ViewRequest /> : <Navigate to="/login" />}
+                element={
+                  user ? (
+                    <ViewRequest
+                      notificationWithParams={notificationWithParams}
+                      fetchNotificationWithParams={fetchNotificationWithParams}
+                    />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
               />
 
               <Route
                 path="/borrowed/borrowed-requests"
                 element={
-                  user ? <ApproverBorrowedApproval /> : <Navigate to="/login" />
+                  user ? (
+                    <ApproverBorrowedApproval
+                      notification={notification}
+                      fetchNotification={fetchNotification}
+                    />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
                 }
               />
 
@@ -556,7 +634,10 @@ const App = () => {
                 path="/borrowed/return-materials"
                 element={
                   user ? (
-                    <ViewReturnMaterialsCustomer />
+                    <ViewReturnMaterialsCustomer
+                      notificationWithParams={notificationWithParams}
+                      fetchNotificationWithParams={fetchNotificationWithParams}
+                    />
                   ) : (
                     <Navigate to="/login" />
                   )
@@ -566,7 +647,14 @@ const App = () => {
               <Route
                 path="/borrowed/returned-requests"
                 element={
-                  user ? <ReturnRequestsApprover /> : <Navigate to="/login" />
+                  user ? (
+                    <ReturnRequestsApprover
+                      notification={notification}
+                      fetchNotification={fetchNotification}
+                    />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
                 }
               />
             </Route>

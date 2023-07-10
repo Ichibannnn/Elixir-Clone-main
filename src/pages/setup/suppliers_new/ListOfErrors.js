@@ -1,30 +1,30 @@
 import {
-Accordion,
-AccordionButton,
-AccordionIcon,
-AccordionItem,
-AccordionPanel,
-Badge,
-Box,
-Button,
-Flex,
-Modal,
-ModalBody,
-ModalCloseButton,
-ModalContent,
-ModalFooter,
-ModalHeader,
-ModalOverlay,
-Table,
-Tbody,
-Td,
-Text,
-Th,
-Thead,
-Tr,
-useDisclosure,
-useToast,
-VStack,
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  useDisclosure,
+  useToast,
+  VStack,
 } from "@chakra-ui/react";
 import moment from "moment";
 import React from "react";
@@ -36,38 +36,37 @@ import request from "../../../services/ApiClient";
 import PageScroll from "../../../utils/PageScroll";
 
 export const ListOfErrors = (
-isOpen,
-onOpen,
-onClose,
-errorData,
-setErrorData,
-isLoading,
-setIsLoading,) => {
+  isOpen,
+  onOpen,
+  onClose,
+  errorData,
+  setErrorData,
+  isLoading,
+  setIsLoading
+) => {
+  const toast = useToast();
 
-const toast = useToast();
-
-const duplicateList = errorData?.duplicateList?.map((list) => {
+  const duplicateList = errorData?.duplicateList?.map((list) => {
     return {
-        supplier_No: list?.supplier_No,
-        supplierCode: list?.supplierCode,
-        supplierName: list?.supplierName,
+      supplier_No: list?.supplier_No,
+      supplierCode: list?.supplierCode,
+      supplierName: list?.supplierName,
     };
   });
 
-const filteredOrders = errorData?.availableImport?.map((list) => {
+  const filteredOrders = errorData?.availableImport?.map((list) => {
     return {
-        supplier_No: list?.supplier_No,
-        supplierCode: list?.supplierCode,
-        supplierName: list?.supplierName,
+      supplier_No: list?.supplier_No,
+      supplierCode: list?.supplierCode,
+      supplierName: list?.supplierName,
     };
-});
+  });
 
-
-const resultArray = filteredOrders?.map((list) => {
+  const resultArray = filteredOrders?.map((list) => {
     return {
-        supplier_No: list?.supplier_No,
-        supplierCode: list?.supplierCode,
-        supplierName: list?.supplierName,
+      supplier_No: list?.supplier_No,
+      supplierCode: list?.supplierCode,
+      supplierName: list?.supplierName,
     };
   });
 
@@ -84,6 +83,9 @@ const resultArray = filteredOrders?.map((list) => {
       confirmButtonText: "Yes",
       heightAuto: false,
       width: "40em",
+      customClass: {
+        container: "my-swal",
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         try {
@@ -92,9 +94,9 @@ const resultArray = filteredOrders?.map((list) => {
               `Supplier/AddNewSupplier`,
               resultArray.map((item) => {
                 return {
-                    supplier_No: item?.supplier_No,
-                    supplierCode: item?.supplierCode,
-                    supplierName: item?.supplierName,
+                  supplier_No: item?.supplier_No,
+                  supplierCode: item?.supplierCode,
+                  supplierName: item?.supplierName,
                 };
               })
             )
@@ -237,7 +239,7 @@ const resultArray = filteredOrders?.map((list) => {
                       {filteredOrders ? (
                         <Table variant="striped" size="sm" bg="form">
                           <Thead bgColor="gray.600">
-                          <Tr>
+                            <Tr>
                               <Th color="white" fontSize="9px">
                                 Line
                               </Th>
@@ -259,19 +261,19 @@ const resultArray = filteredOrders?.map((list) => {
                           <Tbody>
                             {filteredOrders?.map((d, i) => (
                               <Tr key={i}>
-                              <Td color="gray.600" fontSize="11px">
-                                {i + 1}
-                              </Td>
-                              <Td color="gray.600" fontSize="11px">
-                                {d?.supplier_No}
-                              </Td>
-                              <Td color="gray.600" fontSize="11px">
-                                {d?.supplierCode}
-                              </Td>
-                              <Td color="gray.600" fontSize="11px">
-                                {d?.supplierName}
-                              </Td>
-                            </Tr>
+                                <Td color="gray.600" fontSize="11px">
+                                  {i + 1}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.supplier_No}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.supplierCode}
+                                </Td>
+                                <Td color="gray.600" fontSize="11px">
+                                  {d?.supplierName}
+                                </Td>
+                              </Tr>
                             ))}
                           </Tbody>
                         </Table>
@@ -313,4 +315,4 @@ const resultArray = filteredOrders?.map((list) => {
       </ModalContent>
     </Modal>
   );
-}
+};

@@ -5,7 +5,7 @@ import { ListOfOrders } from "./ListOfOrders";
 import { ListOfMir } from "./ListOfMir";
 import { usePagination } from "@ajna/pagination";
 
-const NewPrepSched = () => {
+const NewPrepSched = ({ notification, fetchNotification }) => {
   // const [customerName, setCustomerName] = useState("");
   // const [customerList, setCustomerList] = useState([]);
 
@@ -28,6 +28,8 @@ const NewPrepSched = () => {
   const [status, setStatus] = useState(false);
   const [pageTotal, setPageTotal] = useState(undefined);
   const [isLoading, setIsLoading] = useState(true);
+
+  // console.log(notification);
 
   // Fetch customer names with pagination
   // const fetchCustomerList = async () => {
@@ -159,6 +161,8 @@ const NewPrepSched = () => {
           setPageSize={setPageSize}
           pagesCount={pagesCount}
           pages={pages}
+          notification={notification}
+          fetchNotification={fetchNotification}
         />
 
         <ListOfOrders

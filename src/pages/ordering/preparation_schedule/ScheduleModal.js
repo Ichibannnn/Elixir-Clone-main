@@ -74,6 +74,9 @@ export const ScheduleModal = ({
       confirmButtonText: "Yes",
       heightAuto: false,
       width: "40em",
+      customClass: {
+        container: "my-swal",
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         const submitArray = checkedItems?.map((item) => {

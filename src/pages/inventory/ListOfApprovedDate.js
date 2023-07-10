@@ -375,9 +375,9 @@ export const ListofApprovedDate = ({
                     </Button>
                   </HStack>
                 </Th>
-                <Th color="white" fontSize="10px">
+                {/* <Th color="white" fontSize="10px">
                   Rush
-                </Th>
+                </Th> */}
                 <Th color="white" fontSize="10px">
                   Cancel
                 </Th>
@@ -415,8 +415,7 @@ export const ListofApprovedDate = ({
                     {moment(order.preparedDate).format("MM/DD/yyyy")}
                   </Td>
 
-                  <Td fontSize="xs">
-                    {/* {" "} */}
+                  {/* <Td fontSize="xs">
                     {order.rush ? (
                       <FaShippingFast
                         title="Rush Orders"
@@ -426,7 +425,7 @@ export const ListofApprovedDate = ({
                     ) : (
                       <FaShippingFast fontSize="17px" color="#A0AEC0" />
                     )}
-                  </Td>
+                  </Td> */}
                   <Td fontSize="11px">
                     <Button
                       size="xs"

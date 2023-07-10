@@ -72,9 +72,7 @@ const Reports = () => {
                   <option value={4}>Miscellaneous Receipt History</option>
                   <option value={5}>Miscellaneous Issue History</option>
                   <option value={6}>Borrowed Materials History</option>
-                  {/* <option value={5}>Transacted Mover Order</option> */}
                   <option value={7}>Cancelled Orders History</option>
-                  {/* <option value={6}>Inventory Movement</option> */}
                 </Select>
                 <Button
                   onClick={handleExport}
@@ -89,7 +87,7 @@ const Reports = () => {
             {/* Viewing Condition  */}
             <Flex justifyContent="start">
               {
-                sample < 6 ? (
+                sample < 7 ? (
                   <Flex justifyContent="start" flexDirection="row">
                     <Flex flexDirection="column" ml={1}>
                       <Flex>
