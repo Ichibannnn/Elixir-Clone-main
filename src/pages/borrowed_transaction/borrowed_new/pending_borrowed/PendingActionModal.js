@@ -409,7 +409,7 @@ export const EditModal = ({
             <Flex justifyContent="space-between" mt={5} w="full">
               <HStack>
                 <Text fontSize="xs" fontWeight="semibold">
-                  Transacted By:
+                  Requested By:
                 </Text>
                 <Text textDecoration="underline" fontSize="xs">
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

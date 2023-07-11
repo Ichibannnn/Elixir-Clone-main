@@ -460,6 +460,7 @@ export const RawMatsInfoModal = ({
                     onKeyDown={(e) =>
                       ["E", "e", "+", "-"].includes(e.key) && e.preventDefault()
                     }
+                    min="1"
                     onPaste={(e) => e.preventDefault()}
                     w="full"
                     bgColor="#fff8dc"

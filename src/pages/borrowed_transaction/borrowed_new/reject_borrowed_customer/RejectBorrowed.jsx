@@ -142,12 +142,12 @@ const RejectBorrowed = () => {
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
                   Rejected Date
+                </Th>{" "}
+                <Th h="40px" color="white" fontSize="10px">
+                  Remarks
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
                   Rejected By
-                </Th>
-                <Th h="40px" color="white" fontSize="10px">
-                  Remarks
                 </Th>
               </Tr>
             </Thead>
@@ -167,9 +167,8 @@ const RejectBorrowed = () => {
                   <Td fontSize="xs">
                     {moment(borrow.rejectDate).format("yyyy-MM-DD")}
                   </Td>
-
-                  <Td fontSize="xs">{borrow.rejectBy}</Td>
                   <Td fontSize="xs">{borrow.remarks}</Td>
+                  <Td fontSize="xs">{borrow.rejectBy}</Td>
                 </Tr>
               ))}
             </Tbody>

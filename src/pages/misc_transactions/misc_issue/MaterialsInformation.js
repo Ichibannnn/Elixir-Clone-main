@@ -543,6 +543,7 @@ export const RawMatsInfoModal = ({
                       ["E", "e", "+", "-"].includes(e.key) && e.preventDefault()
                     }
                     onPaste={(e) => e.preventDefault()}
+                    min="1"
                     w="full"
                     bgColor="#fff8dc"
                   />

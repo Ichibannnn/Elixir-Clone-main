@@ -211,7 +211,7 @@ const MaterialsManagement = () => {
                   type="text"
                   border="1px"
                   bg="#E9EBEC"
-                  placeholder="Search Item Code"
+                  placeholder="Search"
                   borderColor="gray.400"
                   _hover={{ borderColor: "gray.400" }}
                   onChange={(e) => searchHandler(e.target.value)}

@@ -333,9 +333,9 @@ export const ListofApprovedDate = ({
           </Text>
         </Box>
         <PageScroll minHeight="150px" maxHeight="210px">
-          <Table size="sm" variant="simple">
+          <Table size="xs" variant="simple">
             <Thead bgColor="secondary" position="sticky" top={0} zIndex={1}>
-              <Tr>
+              <Tr p={3}>
                 <Th color="white" fontSize="10px">
                   Line
                 </Th>
@@ -463,7 +463,7 @@ export const ListofApprovedDate = ({
                 color="white"
                 p={1}
                 _hover={{ bg: "btnColor", color: "white" }}
-                size="sm"
+                size="xs"
               >
                 {"<<"}
               </PaginationPrevious>
@@ -478,7 +478,7 @@ export const ListofApprovedDate = ({
                     color="white"
                     key={`pagination_page_${page}`}
                     page={page}
-                    size="sm"
+                    size="xs"
                   />
                 ))}
               </PaginationPageGroup>
@@ -489,7 +489,7 @@ export const ListofApprovedDate = ({
                   color="white"
                   p={1}
                   _hover={{ bg: "btnColor", color: "white" }}
-                  size="sm"
+                  size="xs"
                   mb={2}
                 >
                   {">>"}
@@ -501,6 +501,7 @@ export const ListofApprovedDate = ({
                   // size="xs"
                   mb={2}
                   variant="outline"
+                  size="xs"
                 >
                   <option value={Number(5)}>5</option>
                   <option value={Number(10)}>10</option>

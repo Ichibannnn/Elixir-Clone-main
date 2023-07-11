@@ -207,7 +207,7 @@ const LotManagement = () => {
                   type="text"
                   border="1px"
                   bg="#E9EBEC"
-                  placeholder="Search Section Name"
+                  placeholder="Search"
                   borderColor="gray.400"
                   _hover={{ borderColor: "gray.400" }}
                   onChange={(e) => searchHandler(e.target.value)}

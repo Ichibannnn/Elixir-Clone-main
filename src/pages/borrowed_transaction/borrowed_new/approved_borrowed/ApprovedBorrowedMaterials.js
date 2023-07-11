@@ -166,19 +166,19 @@ export const ApprovedBorrowedMaterials = () => {
                 <Th h="40px" color="white" fontSize="10px">
                   Borrowed Date
                 </Th>
-                <Th h="40px" color="white" fontSize="10px">
+                {/* <Th h="40px" color="white" fontSize="10px">
                   Transacted By
-                </Th>
-                <Th h="40px" color="white" fontSize="10px">
-                  Remarks
-                </Th>
+                </Th> */}
+
                 <Th h="40px" color="white" fontSize="10px">
                   Aging Days
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
                   Status
                 </Th>
-
+                <Th h="40px" color="white" fontSize="10px">
+                  Remarks
+                </Th>
                 <Th h="40px" color="white" fontSize="10px">
                   Action
                 </Th>
@@ -201,13 +201,13 @@ export const ApprovedBorrowedMaterials = () => {
                     {moment(borrow.borrowedDate).format("yyyy-MM-DD")}
                   </Td>
 
-                  <Td fontSize="xs">{borrow.preparedBy}</Td>
-                  <Td fontSize="xs">{borrow.reason}</Td>
+                  {/* <Td fontSize="xs">{borrow.preparedBy}</Td> */}
+
                   <Td fontSize="xs">
                     {borrow.agingDays} {`Day(s)`}
                   </Td>
                   <Td fontSize="xs">{borrow.statusApprove}</Td>
-
+                  <Td fontSize="xs">{borrow.reason}</Td>
                   <Td fontSize="xs">
                     <Button
                       onClick={() =>

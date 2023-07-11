@@ -119,6 +119,9 @@ export const ViewModal = ({
       confirmButtonText: "Yes",
       heightAuto: false,
       width: "40em",
+      customClass: {
+        container: "my-swal",
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         try {
@@ -130,12 +133,12 @@ export const ViewModal = ({
               },
             ])
             .then((res) => {
-              ToastComponent(
-                "Success",
-                "Order has been edited!",
-                "success",
-                toast
-              );
+              // ToastComponent(
+              //   "Success",
+              //   "Cancelled !",
+              //   "success",
+              //   toast
+              // );
               onClose();
               fetchBorrowedDetails();
             })
@@ -393,7 +396,7 @@ export const ViewModal = ({
             <Flex justifyContent="space-between" mt={5} w="full">
               <HStack>
                 <Text fontSize="xs" fontWeight="semibold">
-                  Transacted By:
+                  Requested By:
                 </Text>
                 <Text textDecoration="underline" fontSize="xs">
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -523,6 +526,7 @@ export const EditModal = ({
                     ["E", "e", "+", "-"].includes(e.key) && e.preventDefault()
                   }
                   onPaste={(e) => e.preventDefault()}
+                  min="1"
                   w="72%"
                   pl={2}
                   h={7}

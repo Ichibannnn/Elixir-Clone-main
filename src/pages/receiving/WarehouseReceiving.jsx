@@ -233,7 +233,7 @@ const WarehouseReceiving = () => {
                   type="text"
                   border="none"
                   bg="#E9EBEC"
-                  placeholder="Search PO Number"
+                  placeholder="Search"
                   borderColor="gray.400"
                   _hover={{ borderColor: "gray.400" }}
                   onChange={(e) => searchHandler(e.target.value)}

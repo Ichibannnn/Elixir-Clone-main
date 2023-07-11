@@ -138,6 +138,7 @@ export const EditModal = ({
                     ["E", "e", "+", "-"].includes(e.key) && e.preventDefault()
                   }
                   onPaste={(e) => e.preventDefault()}
+                  min="1"
                   w="72%"
                   pl={2}
                   h={7}

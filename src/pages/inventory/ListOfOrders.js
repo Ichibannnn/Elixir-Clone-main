@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Badge,
   Box,
+  HStack,
   Table,
   Tbody,
   Td,
@@ -74,7 +75,7 @@ export const ListOfOrders = ({
         </Text>
       </Box>
       <PageScroll minHeight="150px" maxHeight="200px">
-        <Table size="sm" variant="simple">
+        <Table size="xs" variant="simple">
           <Thead bgColor="secondary">
             <Tr h="30px">
               {TableHead?.map((head, i) => (
@@ -119,13 +120,24 @@ export const ListOfOrders = ({
                       colorScheme="twitter"
                       fontSize="0.7em"
                       variant="solid"
+                      fontWeight="normal"
+                      textTransform="capitalize"
+                      // w="30%"
                     >
                       Done
                     </Badge>
                   ) : (
-                    <Badge colorScheme="gray" variant="solid" fontSize="0.7em">
+                    <Badge
+                      colorScheme="gray"
+                      variant="solid"
+                      fontSize="0.7em"
+                      fontWeight="normal"
+                      textTransform="capitalize"
+                    >
+                      {/* <MdOutlinePendingActions /> */}
                       Pending
                     </Badge>
+                    // <HStack></HStack>
                   )}
                 </Td>
               </Tr>

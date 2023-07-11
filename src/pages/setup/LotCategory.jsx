@@ -206,7 +206,7 @@ const LotCategory = () => {
                   type="text"
                   border="1px"
                   bg="#E9EBEC"
-                  placeholder="Search Lot Name"
+                  placeholder="Search"
                   borderColor="gray.400"
                   _hover={{ borderColor: "gray.400" }}
                   onChange={(e) => searchHandler(e.target.value)}

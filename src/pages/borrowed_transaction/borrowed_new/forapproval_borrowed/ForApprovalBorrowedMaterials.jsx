@@ -221,10 +221,10 @@ const ForApprovalBorrowedMaterials = ({ fetchNotification }) => {
                   Total Borrowed
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
-                  Borrowed Date
+                  Requested Date
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
-                  Transacted By
+                  Requested By
                 </Th>
                 {/* <Th h="40px" color="white" fontSize="10px">
                   Status

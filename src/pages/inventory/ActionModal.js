@@ -152,7 +152,8 @@ export const SaveButton = ({
             ? `Save with delivery status "${deliveryStatus}" and batch number "${batchNumber}"`
             : "Please select a delivery status and batch number."
         }
-        size="sm"
+        borderRadius="none"
+        size="xs"
         colorScheme="blue"
         px={6}
       >

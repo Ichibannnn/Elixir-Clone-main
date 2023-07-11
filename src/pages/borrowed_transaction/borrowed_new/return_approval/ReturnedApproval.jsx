@@ -226,7 +226,7 @@ const ReturnedApproval = ({ fetchNotification }) => {
                   Borrowed Date
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
-                  Transacted By
+                  Borrowed By
                 </Th>
                 {/* <Th h="40px" color="white" fontSize="10px">
                       Status

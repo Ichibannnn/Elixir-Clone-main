@@ -175,7 +175,7 @@ export const ListOfOrders = ({
                 MIR ID
               </Th>
               <Th color="white" fontSize="10px">
-                Order ID
+                Customer Name
               </Th>
               <Th color="white" fontSize="10px">
                 Item Code
@@ -202,7 +202,7 @@ export const ListOfOrders = ({
             {orderList.map((order, i) => (
               <Tr key={i}>
                 <Td fontSize="xs">{order.mirId}</Td>
-                <Td fontSize="xs">{order.id}</Td>
+                <Td fontSize="xs">{order.customerName}</Td>
                 <Td fontSize="xs">{order.itemCode}</Td>
                 <Td fontSize="xs">{order.itemDescription}</Td>
                 <Td fontSize="xs">{order.uom}</Td>

@@ -140,7 +140,7 @@ const RejectBorrowed = () => {
                   Remarks
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
-                  Transacted Date
+                  Requested Date
                 </Th>
                 <Th h="40px" color="white" fontSize="10px">
                   Rejected By
@@ -167,7 +167,7 @@ const RejectBorrowed = () => {
                   <Td fontSize="xs">{borrow.transactionDate}</Td>
                   <Td fontSize="xs">{borrow.rejectBy}</Td>
                   <Td fontSize="xs">
-                    {moment(borrow.rejectDate).format("yyyy-MM-DD")}
+                    {moment(borrow.rejectDate).format("MM/DD/yyyy")}
                   </Td>
 
                   {/* <Td fontSize="xs">
