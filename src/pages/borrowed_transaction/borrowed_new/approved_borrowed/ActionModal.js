@@ -22,6 +22,10 @@ import {
   ModalOverlay,
   useDisclosure,
   Input,
+  Box,
+  FormLabel,
+  Select,
+  Stack,
 } from "@chakra-ui/react";
 import request from "../../../../services/ApiClient";
 import PageScroll from "../../../../utils/PageScroll";
@@ -29,6 +33,13 @@ import moment from "moment";
 // import { EditModal } from "./ActionModalBorrowed";
 import { ToastComponent } from "../../../../components/Toast";
 import Swal from "sweetalert2";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { decodeUser } from "../../../../services/decode-user";
+
+const currentUser = decodeUser();
 
 export const ViewModal = ({
   isOpen,
@@ -36,12 +47,15 @@ export const ViewModal = ({
   statusBody,
   fetchBorrowed,
   setIsLoading,
+  issueBorrowData,
 }) => {
   const {
     isOpen: isEdit,
     onOpen: openEdit,
     onClose: closeEdit,
   } = useDisclosure();
+
+  const { isOpen: isCOA, onOpen: openCOA, onClose: closeCOA } = useDisclosure();
 
   const [borrowedDetailsData, setBorrowedDetailsData] = useState([]);
   const [editData, setEditData] = useState({
@@ -52,7 +66,7 @@ export const ViewModal = ({
     consumes: "",
     quantity: "",
   });
-  const [zeroValue, setZeroValue] = useState(0);
+  const [coaId, setCoaId] = useState("");
 
   const toast = useToast();
 
@@ -84,25 +98,6 @@ export const ViewModal = ({
     setBorrowedDetailsData(updatedBorrowedDetails);
     onClose();
   };
-
-  // const returnZero = () => {
-  //   try {
-  //     const res = request
-  //       .put(`Borrowed/EditReturnedQuantity`, {
-  //         id: editData.id,
-  //         returnQuantity: quantitySubmit,
-  //       })
-  //       .then((res) => {
-  //         ToastComponent("Success", "Order has been edited!", "success", toast);
-  //         onClose();
-  //         fetchBorrowedDetails();
-  //       })
-  //       .catch((err) => {
-  //         // ToastComponent("Error", err.response.data, "error", toast);
-  //         setIsLoading(false);
-  //       });
-  //   } catch (error) {}
-  // };
 
   const returnZero = () => {
     // console.log(borrowedDetailsData[0]?.borrowedPKey);
@@ -206,7 +201,11 @@ export const ViewModal = ({
         try {
           if (statusBody.id) {
             const res = request
-              .put(`Borrowed/SaveReturnedQuantity`, [{ id: statusBody.id }])
+              .put(`Borrowed/SaveReturnedQuantity`, [
+                {
+                  id: statusBody.id,
+                },
+              ])
               .then((res) => {
                 fetchBorrowed();
                 ToastComponent(
@@ -230,6 +229,20 @@ export const ViewModal = ({
         } catch (error) {}
       }
     });
+  };
+
+  const coaIdHandler = (data) => {
+    // console.log(borrowedDetailsData[0]?.borrowedPKey);
+    // console.log(borrowedDetailsData);
+    // console.log(data);
+    if (data) {
+      setCoaId(data);
+
+      openCOA();
+    } else {
+      setCoaId("");
+    }
+    console.log(coaId);
   };
 
   return (
@@ -292,13 +305,17 @@ export const ViewModal = ({
                 <Text fontSize="xs" fontWeight="semibold">
                   Company:
                 </Text>
-                <Text fontSize="xs">{borrowedDetailsData[0]?.companyName}</Text>
+                <Text fontSize="xs">
+                  {borrowedDetailsData[0]?.companyCode} - {""}
+                  {borrowedDetailsData[0]?.companyName}
+                </Text>
               </HStack>
               <HStack>
                 <Text fontSize="xs" fontWeight="semibold">
                   Department:
                 </Text>
                 <Text fontSize="xs">
+                  {borrowedDetailsData[0]?.departmentCode} - {""}
                   {borrowedDetailsData[0]?.departmentName}
                 </Text>
               </HStack>
@@ -307,6 +324,7 @@ export const ViewModal = ({
                   Location:
                 </Text>
                 <Text fontSize="xs">
+                  {borrowedDetailsData[0]?.locationCode} - {""}
                   {borrowedDetailsData[0]?.locationName}
                 </Text>
               </HStack>
@@ -410,7 +428,11 @@ export const ViewModal = ({
         </ModalBody>
         <ModalFooter>
           <ButtonGroup size="sm">
-            <Button colorScheme="blue" onClick={submitBody}>
+            {/* <Button colorScheme="blue" onClick={submitBody}> */}
+            <Button
+              colorScheme="blue"
+              onClick={() => coaIdHandler(borrowedDetailsData[0]?.borrowedPKey)}
+            >
               Submit
             </Button>
             <Button
@@ -429,6 +451,17 @@ export const ViewModal = ({
           onClose={closeEdit}
           editData={editData}
           fetchBorrowedDetails={fetchBorrowedDetails}
+        />
+      )}
+
+      {isCOA && (
+        <AccountTitleModal
+          isOpen={isCOA}
+          onClose={closeCOA}
+          borrowedDetailsData={borrowedDetailsData}
+          coaId={coaId}
+          setCoaId={setCoaId}
+          fetchBorrowed={fetchBorrowed}
         />
       )}
     </Modal>
@@ -547,7 +580,7 @@ export const EditModal = ({
                 disabled={
                   !quantitySubmit ||
                   isLoading ||
-                  quantitySubmit > editData?.consumes
+                  quantitySubmit > editData?.quantity
                 }
                 // disabled={!quantitySubmit || isLoading || quantitySubmit > editData?.consumes}
                 colorScheme="blue"
@@ -565,6 +598,358 @@ export const EditModal = ({
             </ButtonGroup>
           </ModalFooter>
         </ModalContent>
+      </Modal>
+    </>
+  );
+};
+
+const schema = yup.object().shape({
+  formData: yup.object().shape({
+    coaId: yup.string(),
+    companyId: yup.number().required().typeError("Company Name is required"),
+    departmentId: yup
+      .number()
+      .required()
+      .typeError("Department Category is required"),
+    locationId: yup.number().required().typeError("Location Name is required"),
+    accountTitleId: yup.number().required("Account Name is required"),
+  }),
+});
+
+// //ACCOUNT TITLE
+export const AccountTitleModal = ({
+  isOpen,
+  onClose,
+  borrowedDetailsData,
+  coaId,
+  setCoaId,
+  fetchBorrowed,
+  // fetchNotification,
+}) => {
+  const toast = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const [company, setCompany] = useState([]);
+  const [department, setDepartment] = useState([]);
+  const [location, setLocation] = useState([]);
+  const [account, setAccount] = useState([]);
+
+  // console.log("data", borrowedDetailsData);
+  // console.log(
+  //   "borrowedDetailsData",
+  //   borrowedDetailsData?.find((item) => item.borrowedPKey === coaId).companyCode
+  // );
+
+  // FETCH COMPANY API
+  const fetchCompanyApi = async () => {
+    try {
+      const res = await axios.get(
+        "http://10.10.2.76:8000/api/dropdown/company?api_for=vladimir&status=1&paginate=0",
+        {
+          headers: {
+            Authorization: "Bearer " + process.env.REACT_APP_FISTO_TOKEN,
+          },
+        }
+      );
+      setCompany(res.data.result.companies);
+      // console.log(res.data.result.companies);
+    } catch (error) {}
+  };
+
+  // FETCH DEPT API
+  const fetchDepartmentApi = async (id = "") => {
+    try {
+      const res = await axios.get(
+        "http://10.10.2.76:8000/api/dropdown/department?status=1&paginate=0&api_for=vladimir&company_id=" +
+          id,
+        {
+          headers: {
+            Authorization: "Bearer " + process.env.REACT_APP_FISTO_TOKEN,
+          },
+        }
+      );
+      setDepartment(res.data.result.departments);
+      // console.log(res.data.result.companies);
+    } catch (error) {}
+  };
+
+  // FETCH Loc API
+  const fetchLocationApi = async (id = "") => {
+    try {
+      const res = await axios.get(
+        "http://10.10.2.76:8000/api/dropdown/location?status=1&paginate=0&api_for=vladimir&department_id=" +
+          id,
+        {
+          headers: {
+            Authorization: "Bearer " + process.env.REACT_APP_FISTO_TOKEN,
+          },
+        }
+      );
+      setLocation(res.data.result.locations);
+      // console.log(res.data.result.companies);
+    } catch (error) {}
+  };
+
+  // FETCH ACcount API
+  const fetchAccountApi = async () => {
+    try {
+      const res = await axios.get(
+        "http://10.10.2.76:8000/api/dropdown/account-title?status=1&paginate=0",
+        {
+          headers: {
+            Authorization: "Bearer " + process.env.REACT_APP_FISTO_TOKEN,
+          },
+        }
+      );
+      setAccount(res.data.result.account_titles);
+      // console.log(res.data.result.companies);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchCompanyApi();
+    fetchDepartmentApi();
+    fetchLocationApi();
+    fetchAccountApi();
+  }, []);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    setValue,
+    watch,
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: "onChange",
+    defaultValues: {
+      formData: {
+        borrowedPKey: coaId,
+        companyId: "",
+        departmentId: "",
+        locationId: "",
+        accountTitleId: "",
+        addedBy: currentUser.userName,
+      },
+    },
+  });
+
+  useEffect(() => {
+    setValue(
+      "formData.companyId",
+      company?.find(
+        (x) =>
+          x.code ===
+          borrowedDetailsData?.find((item) => item.borrowedPKey === coaId)
+            .companyCode
+      )?.id
+    );
+  }, [company]);
+
+  useEffect(() => {
+    setValue(
+      "formData.departmentId",
+      department?.find(
+        (x) =>
+          x.code ===
+          borrowedDetailsData?.find((item) => item.borrowedPKey === coaId)
+            .departmentCode
+      )?.id
+    );
+  }, [department]);
+
+  useEffect(() => {
+    setValue(
+      "formData.locationId",
+      location?.find(
+        (x) =>
+          x.code ===
+          borrowedDetailsData?.find((item) => item.borrowedPKey === coaId)
+            .locationCode
+      )?.id
+    );
+  }, [location]);
+
+  const submitHandler = async (data) => {
+    const submitArrayBody = borrowedDetailsData?.map((item) => {
+      return {
+        id: coaId,
+        companyCode: company?.find((x) => x.id === data.formData.companyId)
+          ?.code,
+        companyName: company?.find((x) => x.id === data.formData.companyId)
+          ?.name,
+        departmentCode: department?.find(
+          (x) => x.id === data.formData.departmentId
+        )?.code,
+        departmentName: department?.find(
+          (x) => x.id === data.formData.departmentId
+        )?.name,
+        locationCode: location?.find((x) => x.id === data.formData.locationId)
+          ?.code,
+        locationName: location?.find((x) => x.id === data.formData.locationId)
+          ?.name,
+        accountTitles: account?.find(
+          (x) => x.id === data.formData.accountTitleId
+        )?.name,
+        accountCode: account.find((x) => x.id === data.formData.accountTitleId)
+          ?.code,
+        // addedBy: currentUser.fullName,
+      };
+    });
+    console.log("Data", submitArrayBody);
+    try {
+      const response = await request
+        .put(`Borrowed/SaveReturnedQuantity`, [{ submitArrayBody }])
+        .then((response) => {
+          fetchBorrowed();
+          ToastComponent(
+            "Success",
+            "Returned materials was saved",
+            "success",
+            toast
+          );
+          onClose();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <Modal isOpen={isOpen} onClose={() => {}} size="xl" isCentered>
+        <ModalOverlay />
+        <form onSubmit={handleSubmit(submitHandler)}>
+          <ModalContent>
+            <ModalHeader>
+              <Flex justifyContent="center">
+                <Text>Charge of Accounts</Text>
+              </Flex>
+            </ModalHeader>
+            <ModalCloseButton onClick={onClose} />
+
+            <ModalBody>
+              <Stack spacing={2} p={6}>
+                <Box>
+                  <FormLabel fontSize="sm">Company</FormLabel>
+
+                  <HStack w="full">
+                    <Select
+                      {...register("formData.companyId")}
+                      defaultValue={
+                        company?.find(
+                          (x) =>
+                            x.code ===
+                            borrowedDetailsData?.find(
+                              (item) => item.borrowedPKey === coaId
+                            )?.companyCode
+                        )?.id
+                      }
+                      placeholder="Select Company"
+                      fontSize="sm"
+                      onChange={(e) => {
+                        setValue("formData.departmentId", "");
+                        setValue("formData.locationId", "");
+                        fetchDepartmentApi(e.target.value);
+                      }}
+                    >
+                      {company?.map((item) => {
+                        return (
+                          <option key={item.id} value={item.id}>
+                            {item.code} - {item.name}
+                          </option>
+                        );
+                      })}
+                    </Select>
+                  </HStack>
+
+                  <Text color="red" fontSize="xs">
+                    {errors.formData?.companyId?.message}
+                  </Text>
+                </Box>
+
+                <Box>
+                  <FormLabel fontSize="sm">Department</FormLabel>
+                  <Select
+                    {...register("formData.departmentId")}
+                    placeholder="Select Department"
+                    fontSize="sm"
+                    onChange={(e) => {
+                      setValue("formData.locationId", "");
+                      fetchLocationApi(e.target.value);
+                    }}
+                  >
+                    {department?.map((dept) => {
+                      return (
+                        <option key={dept.id} value={dept.id}>
+                          {dept.code} - {dept.name}
+                        </option>
+                      );
+                    })}
+                  </Select>
+
+                  <Text color="red" fontSize="xs">
+                    {errors.formData?.departmentId?.message}
+                  </Text>
+                </Box>
+
+                <Box>
+                  <FormLabel fontSize="sm">Location</FormLabel>
+                  <Select
+                    {...register("formData.locationId")}
+                    placeholder="Select Location"
+                    fontSize="sm"
+                  >
+                    {location?.map((item) => {
+                      return (
+                        <option key={item.id} value={item.id}>
+                          {item.code} - {item.name}
+                        </option>
+                      );
+                    })}
+                  </Select>
+
+                  <Text color="red" fontSize="xs">
+                    {errors.formData?.locationId?.message}
+                  </Text>
+                </Box>
+                <Box>
+                  <FormLabel fontSize="sm">Account Title</FormLabel>
+                  <Select
+                    {...register("formData.accountTitleId")}
+                    placeholder="Select Account"
+                    fontSize="sm"
+                    bgColor="#fff8dc"
+                  >
+                    {account?.map((item) => {
+                      return (
+                        <option key={item.id} value={item.id}>
+                          {item.code} - {item.name}
+                        </option>
+                      );
+                    })}
+                  </Select>
+                  <Text color="red" fontSize="xs">
+                    {errors.formData?.accountTitleId?.message}
+                  </Text>
+                </Box>
+              </Stack>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                type="submit"
+                // disabled={!isValid}
+                colorScheme="blue"
+                px={4}
+              >
+                Submit
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </form>
       </Modal>
     </>
   );

@@ -281,6 +281,7 @@ export const ApprovedBorrowedMaterials = () => {
           isOpen={isView}
           onClose={closeView}
           statusBody={statusBody}
+          issueBorrowData={issueBorrowData}
           fetchBorrowed={fetchBorrowed}
           isLoading={isLoading}
           setIsLoading={setIsLoading}

@@ -104,6 +104,7 @@ import ViewRequest from "./pages/borrowed_transaction/borrowed_v2/view_request/V
 import ApproverBorrowedApproval from "./pages/borrowed_transaction/borrowed_v2/approver_borrowedapproval/ApproverBorrowedApproval";
 import ViewReturnMaterialsCustomer from "./pages/borrowed_transaction/borrowed_v2/viewreturn_materials_customer/ViewReturnMaterialsCustomer";
 import ReturnRequestsApprover from "./pages/borrowed_transaction/borrowed_v2/approver_returnrequests/ReturnRequestsApprover";
+import ImportMaterials from "./pages/import/import_materials/ImportMaterials";
 
 const currentUser = decodeUser();
 const employeeId = currentUser?.id;
@@ -360,6 +361,10 @@ const App = () => {
             >
               <Route path="/import/import-po" element={<ImportPO />} />
               <Route path="/import/import-order" element={<ImportOrder />} />
+              <Route
+                path="/import/import-materials"
+                element={<ImportMaterials />}
+              />
             </Route>
 
             {/* RECEIVING */}

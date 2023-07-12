@@ -58,6 +58,7 @@ export const ListOfSuppliers = ({
       addedBy: currentUser.fullName,
       modifyDate: moment(new Date()).format("yyyy-MM-DD"),
       modifyBy: currentUser.fullName,
+      syncDate: moment(new Date()).format("yyyy-MM-DD"),
     };
   });
 
@@ -94,6 +95,7 @@ export const ListOfSuppliers = ({
                   addedBy: item?.addedBy,
                   modifyDate: item?.modifyDate,
                   modifyBy: item?.modifyBy,
+                  syncDate: item?.syncDate,
                 };
               })
             )
@@ -192,7 +194,7 @@ export const ListOfSuppliers = ({
 
         <Flex p={4}>
           <VStack w="100%" mt={-8}>
-            <PageScroll>
+            <PageScroll minHeight="670px" maxHeight="740px">
               {fetchingData ? (
                 <Stack width="full">
                   <Skeleton height="20px" />
@@ -241,6 +243,15 @@ export const ListOfSuppliers = ({
                       <Th color="#D6D6D6" fontSize="10px">
                         Added By
                       </Th>
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Modified Date
+                      </Th>
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Modified By
+                      </Th>
+                      <Th color="#D6D6D6" fontSize="10px">
+                        Sync Date
+                      </Th>
                       {/* <Th color="#D6D6D6" fontSize="10px">
                         Date Modified
                       </Th>
@@ -270,6 +281,13 @@ export const ListOfSuppliers = ({
                             {moment(supp.dateAdded).format("yyyy/MM/DD")}
                           </Td>
                           <Td fontSize="12px">{supp.addedBy}</Td>
+                          <Td fontSize="12px">
+                            {moment(supp.modifyDate).format("yyyy/MM/DD")}
+                          </Td>
+                          <Td fontSize="12px">{supp.modifyBy}</Td>
+                          <Td fontSize="12px">
+                            {moment(supp.syncDate).format("yyyy/MM/DD")}
+                          </Td>
                           {/* <Td fontSize="12px">
                             {moment(supp.modifyDate).format("yyyy/MM/DD")}
                           </Td>
